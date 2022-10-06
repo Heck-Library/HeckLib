@@ -1,0 +1,10 @@
+{
+  "name": "jevk-script",
+  "scripts": {
+    "start": "node script.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "mjs": "^1.0.0"
+  }
+}

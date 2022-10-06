@@ -1,0 +1,38 @@
+{
+  "name": "mjs",
+  "version": "1.0.0",
+  "description": "3D matrix and vector operations",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imbcmdth/mjs.git"
+  },
+  "keywords": [
+    "3d",
+    "matrix",
+    "vector",
+    "transformation",
+    "javascript"
+  ],
+  "contributors": [
+    {
+      "name": "Vladimir Vukicevic",
+      "url": "http://blog.vlad1.com/"
+    },
+    {
+      "name": "Jon-Carlos Rivera",
+      "email": "jon.carlos.rivera@gmail.com",
+      "url": "http://jon-carlos.com"
+    }
+  ],
+  "scripts": {
+    "test": "vows test/*.js"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.6.0"
+  }
+}
