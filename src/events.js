@@ -203,7 +203,7 @@ export class AnimateTrack {
             return this
         }
     }
-    AnimTime (x) {
+    Time (x) {
         if (isValid(x, 1)) {
             this._data._time = x
             return this

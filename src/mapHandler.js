@@ -88,22 +88,66 @@ export function finalize() {
     difficulty._obstacles.sort((a, b) => a._time - b._time);
     difficulty._events.sort((a, b) => a._time - b._time);
 
-    const vanilla = JSON.parse(readFileSync(getActiveDiff()))
-    const modded = JSON.parse(readFileSync(getActiveDiff(true)))
+    const vanilla = JSON.parse(readFileSync(getActiveDiff()));
+    const modded = JSON.parse(readFileSync(getActiveDiff(true)));
+
+    let animNotes = 0;
+    let animWalls = 0;
+
+    modded._notes.forEach(n => {
+        if (typeof n._customData._animation !== 'undefined'){
+            animNotes++;
+        } else {
+            delete(n._customData._animation)
+        };
+    });
+    modded._obstacles.forEach(n => {
+        if (typeof n._customData._animation !== 'undefined'){
+            animWalls++;
+        } else {
+            delete(n._customData._animation)
+        };
+    });
+
+
+    let AT = 0;
+    let PA = 0;
+    let TP = 0;
+    let PT = 0;
+
+    modded._customData._customEvents.forEach(e => {
+        switch (e._type) {
+            case "AnimateTrack":
+                AT++;
+                break;
+            case "AssignPathAnimation":
+                PA++;
+                break;
+            case "AssignTrackParent":
+                TP++;
+                break;
+            case "AssignPlayerToTrack":
+                PT++;
+                break;
+        }
+    })
 
     const mapInfo = {
-        notes: {
-            vanilla: vanilla._notes.length,
-            modded: modded._notes.length
+        v: {
+            n: vanilla._notes.length,
+            w: vanilla._obstacles.length
         },
-        walls: {
-            vanilla: vanilla._obstacles.length,
-            modded: modded._obstacles.length
+        m: {
+            n: modded._notes.length,
+            aN: animNotes,
+            w: modded._obstacles.length,
+            aW: animWalls,
         }
     };
 
-    console.log("VANILLA MAP INFO\n\nNotes: " + mapInfo.notes.vanilla + "\nWalls: " + mapInfo.walls.vanilla + "\n\n")
-    console.log("MODDED MAP INFO\n\nNotes: " + mapInfo.notes.modded + "\nWalls: " + mapInfo.walls.modded + "\n\n")
+    console.log("=== VANILLA MAP INFO ===\n\nNotes: " + mapInfo.v.n + "\nWalls: " + mapInfo.v.w + "\n\n")
+    console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
+    console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
 
     let a = uniqBy(difficulty._notes, JSON.stringify)
 
