@@ -1,11 +1,11 @@
 
-import { filterNotes, finalize, map, pushNote } from "./src/main.js";
+import { AnimateTrack, filterNotes, finalize, map, pushNote } from "./src/main.js";
 
 map('ExpertPlusStandard.dat', 'ExpertPlusLawless.dat')
 
-filterNotes(8, 16).forEach(n => {
-    n._customData._fake = true;
-    pushNote(n)
-})
+new AnimateTrack()
+.Track("cum")
+.Duration(0)
+.Dis([1])
 
 finalize()
