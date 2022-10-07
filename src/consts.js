@@ -47,7 +47,7 @@ export class Ease {
     static step = "easeStep"
 }
 
-export class Note {
+export class NoteVal {
     static Type = {
         Red: 0,
         Blue: 1,
@@ -66,7 +66,7 @@ export class Note {
     }
 }
 
-export class Wall {
+export class WallVal {
     static Type = {
         Full: 0,
         Crouch: 1
