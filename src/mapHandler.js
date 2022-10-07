@@ -11,23 +11,19 @@ export function getActiveDiff(output) {
 }
 
 export function filterNotes(start, end) {
-    let diff = tempMap();
-    let notes = diff._notes;
+    let notes = mapData()._notes;
     let filtered = notes.filter(n => n._time >= start && n._time <= end);
-
     return filtered;
 }
 
 export function filterWalls(start, end) {
-    let diff = tempMap();
-    let walls = diff._obstacles;
+    let walls = mapData()._obstacles;
     let filtered = walls.filter(w => w._time >= start && w._time <= end);
-
     return filtered;
 }
 
 export function noteTrack(start, end) {
-
+    //idk how to do this
 }
 
 export function map(input, output) {
@@ -61,7 +57,7 @@ export function map(input, output) {
 }
 
 export function mapData() {
-    return JSON.parse(readFileSync(getActiveDiff()));
+    return JSON.parse(readFileSync(getActiveDiff(true)));
 }
 
 export function tempMap() {
