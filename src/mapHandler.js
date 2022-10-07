@@ -88,6 +88,23 @@ export function finalize() {
     difficulty._obstacles.sort((a, b) => a._time - b._time);
     difficulty._events.sort((a, b) => a._time - b._time);
 
+    const vanilla = JSON.parse(readFileSync(getActiveDiff()))
+    const modded = JSON.parse(readFileSync(getActiveDiff(true)))
+
+    const mapInfo = {
+        notes: {
+            vanilla: vanilla._notes.length,
+            modded: modded._notes.length
+        },
+        walls: {
+            vanilla: vanilla._obstacles.length,
+            modded: modded._obstacles.length
+        }
+    };
+
+    console.log("VANILLA MAP INFO\n\nNotes: " + mapInfo.notes.vanilla + "\nWalls: " + mapInfo.walls.vanilla + "\n\n")
+    console.log("MODDED MAP INFO\n\nNotes: " + mapInfo.notes.modded + "\nWalls: " + mapInfo.walls.modded + "\n\n")
+
     let a = uniqBy(difficulty._notes, JSON.stringify)
 
     writeFileSync(getActiveDiff(true), JSON.stringify(difficulty, null, 4));
