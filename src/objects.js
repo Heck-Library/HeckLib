@@ -1,7 +1,7 @@
 import { writeFileSync } from "fs";
 import { isValid } from "./animation.js";
 import { isArr } from "./general.js";
-import { mapData } from "./mapHandler.js";
+import { getActiveDiff, mapData } from "./mapHandler.js";
 
 export class Object {
     constructor(time) {
@@ -132,6 +132,7 @@ export class Note extends Object {
     End () {
         let map = mapData();
         map._notes.push(this);
+        writeFileSync(getActiveDiff(true), JSON.stringify(map, null, 4));
         return this;
     }
 }
@@ -148,6 +149,7 @@ export class Wall extends Object {
     End () {
         let map = mapData();
         map._obstacles.push(this);
+        writeFileSync(getActiveDiff(true), JSON.stringify(map, null, 4));
         return this;
     }
 }
