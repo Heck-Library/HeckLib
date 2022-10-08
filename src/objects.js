@@ -1,7 +1,47 @@
 import { writeFileSync } from "fs";
 import { isValid } from "./animation.js";
+import { notes, walls } from "./consts.js";
 import { isArr } from "./general.js";
-import { getActiveDiff, mapData } from "./mapHandler.js";
+import { getActiveDiff, mapData, notesVar, wallsVar } from "./mapHandler.js";
+
+
+export function filter(obj, start, end, type, direction) {
+    if (obj == notes) {
+        if (typeof type !== 'undefined' && type !== null && (typeof direction === 'undefined' || direction === null))
+            return notesVar.filter(n => n._time >= start && n._time <= end && n._type == type);
+        else if (typeof direction !== 'undefined' && direction !== null && (typeof type === 'undefined' || type === null))
+            return notesVar.filter(n => n._time >= start && n._time <= end && n._cutDirection == direction);
+        else if (typeof direction !== 'undefined' && direction !== null && typeof type !== 'undefined' && type !== null)
+            return notesVar.filter(n => n._time >= start && n._time <= end && n._type == type && n._cutDirection == direction)
+        else
+            return notesVar.filter(n => n._time >= start && n._time <= end);
+    }
+    if (obj == walls) {
+        return wallsVar.filter(w => w._time >= start && w._time <= end);
+    }
+}
+
+export function noteTrack(note, track) {
+    note.forEach(n => {
+        let d = n._customData
+        if (typeof d._track !== 'undefined' && d._track !== null) {
+            if (isArr(d._track)) {
+                const tracks = d._track;
+                if (isArr(track))
+                    tracks.push(...track);
+                else
+                    tracks.push(track);
+            } else {
+                if (isArr(track)) {
+                    track.push(d._track);
+                    d._track = track;
+                } else
+                    d._track = [d._track, track];
+            }
+        } else
+            d._track = track;
+    })
+}
 
 export class Object {
     constructor(time) {

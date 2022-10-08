@@ -4,37 +4,38 @@ import { writeFileSync, readFileSync } from 'fs'
 import { mapDir } from './consts.js';
 import { uniqBy } from './general.js';
 
+export let notesVar;
+export let wallsVar;
+
 export function getActiveDiff(output) {
     if (output) {
         return readFileSync('./temp/out');
     } else return readFileSync('./temp/in');
 }
 
-export function filterNotes(start, end) {
-    let notes = mapData()._notes;
-    let filtered = notes.filter(n => n._time >= start && n._time <= end);
-    return filtered;
-}
-
-export function filterWalls(start, end) {
-    let walls = mapData()._obstacles;
-    let filtered = walls.filter(w => w._time >= start && w._time <= end);
-    return filtered;
-}
-
-export function noteTrack(start, end) {
-    //idk how to do this
-}
-
-export function map(input, output) {
+export function map(input, output, NJS, offset) {
     let diff = JSON.parse(readFileSync(input));
+
+    notesVar = diff._notes;
+    wallsVar = diff._obstacles;
 
     if (!diff._customData) {
         diff._customData = {};
     }
     diff._notes.forEach(x => {
         if (!x._customData) {
-            x._customData = {}
+            x._customData = {
+                _noteJumpStartBeatOffset: offset,
+                _noteJumpMovementSpeed: NJS
+            }
+        }
+    });
+    diff._obstacles.forEach(x => {
+        if (!x._customData) {
+            x._customData = {
+                _noteJumpStartBeatOffset: offset,
+                _noteJumpMovementSpeed: NJS
+            }
         }
     });
 
@@ -54,19 +55,16 @@ export function map(input, output) {
     customData._environments = [];
 
     writeFileSync(output, JSON.stringify(diff, null, 4));
+
+    return diff;
 }
 
 export function mapData() {
     return JSON.parse(readFileSync(getActiveDiff(true)));
 }
-
-export function tempMap() {
-    return JSON.parse(readFileSync('./temp/map'))
-}
-
-export function finalize() {
+export function finalize(difficulty) {
     const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
-    let difficulty = JSON.parse(readFileSync(getActiveDiff(true)));
+
     const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
     function deeperDaddy(obj) {

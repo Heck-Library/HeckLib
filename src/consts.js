@@ -7,6 +7,11 @@ export const Spline = "splineCatmullRom";
 
 export const mapDir = "./temp/map"
 
+export const notes = "note";
+export const walls = "wall";
+export const events = "event";
+
+
 export class Ease {
     static In = {
         Sine : "easeInSine",
