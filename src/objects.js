@@ -2,7 +2,7 @@ import { writeFileSync } from "fs";
 import { isValid } from "./animation.js";
 import { notes, walls } from "./consts.js";
 import { isArr } from "./general.js";
-import { getActiveDiff, mapData, notesVar, wallsVar } from "./mapHandler.js";
+import { notesVar, wallsVar } from "./mapHandler.js";
 
 
 export function filter(obj, start, end, type, direction) {
