@@ -21,7 +21,8 @@ export function filter(obj, start, end, type, direction) {
     }
 }
 
-export function noteTrack(note, track) {
+export function track(note, track) {
+    if (typeof track == 'undefined' || track == null) throw new Error("No track value given.")
     note.forEach(n => {
         let d = n._customData
         if (typeof d._track !== 'undefined' && d._track !== null) {
@@ -51,6 +52,16 @@ export class Object {
         this._customData = {};
         this._customData._animation = {};
     }
+    Track(x) {
+        if (typeof x !== 'string' && !isArr(x)) {
+            throw new Error("Track is supposed to be a string or an array.");
+        }
+        if (isArr(x) && x.length < 2) {
+            throw new Error("Track arrays should contain at least two tracks");
+        }
+        this._customData._track = x;
+        return this;
+    }
     LineIndex (x) {
         if (x >= 0 && x <= 3) { this._lineIndex = x }
         else throw new Error('Line index is a number 0 - 3');
@@ -69,6 +80,11 @@ export class Object {
     LocRot (x) {
         if (isArr(x) && x.length == 3) { this._customData._localRotation = x }
         else throw new Error('Object local rotation should have 3 values');
+        return this;
+    }
+    Scale (x) {
+        if (isArr(x) && x.length == 3) { this._customData._scale = x }
+        else throw new Error('Object scale should have 3 values');
         return this;
     }
     NJS (x) {
@@ -170,9 +186,7 @@ export class Note extends Object {
         return this;
     }
     End () {
-        let map = mapData();
-        map._notes.push(this);
-        writeFileSync(getActiveDiff(true), JSON.stringify(map, null, 4));
+        notesVar.push(this);
         return this;
     }
 }
@@ -186,10 +200,232 @@ export class Wall extends Object {
         if (typeof x === 'number') { this._duration = x }
         else throw new Error('Duration must be a number');
     }
-    End () {
-        let map = mapData();
-        map._obstacles.push(this);
-        writeFileSync(getActiveDiff(true), JSON.stringify(map, null, 4));
+    End (edge) {
+        if (typeof edge !== 'undefined' && edge !== null) {
+            if (!this._customData._animation._scale) {
+                this._customData._animation._scale = [edge, edge, edge];
+            }
+            let wallScale = this._customData._scale
+            this._customData._animation._scale = [...wallScale];
+            wallScale[0] /= edge
+            wallScale[1] /= edge
+            wallScale[2] /= edge
+            this._customData._scale = wallScale;
+        }
+        wallsVar.push(this);
+        return this;
+    }
+}
+export class Data {
+    constructor(t) {
+        this._customData = t._customData
+    }
+    /**
+     * 
+     * @param {boolean} x
+     * @description If true, object will be fake.
+     */
+    Fake (x) {
+        if (typeof x == 'boolean') { this._customData._fake = x }
+        else throw new Error('Fake value should be a boolean');
+        return this;
+    }
+    /**
+     * 
+     * @param {boolean} x
+     * @description If false, object cannot be interacted with.
+     */
+    Interactable (x) {
+        if (typeof x == 'boolean') { this._customData._interactable = x }
+        else throw new Error('Interactable value should be a boolean');
+        return this;
+    }
+    /**
+     * 
+     * @param {number} x
+     * @description Sets the NJS of the object.
+     */
+    NJS (x) {
+        if (typeof x == 'number') { this._customData._noteJumpMovementSpeed = x }
+        else throw new Error('NJS should be a number');
+        return this; 
+    }
+    /**
+     * 
+     * @param {number} x 
+     * @description Sets the offset of the object.
+     */
+    Offset (x) {
+        if (typeof x == 'number') { this._customData._noteJumpStartBeatOffset = x }
+        else throw new Error('Offset should be a number');
+        return this; 
+    }
+    /**
+     * 
+     * @param {[number, number]} x
+     * @description Sets the position of the object
+     */
+    Pos (x) {
+        if (isArr(x) && x.length == 2) { this._customData._position = x }
+        else throw new Error('Position in this context should be an array with two values');
+        return this; 
+    }
+    /**
+     * 
+     * @param {[number, number, number]} x 
+     * @description Sets the initial rotation of the object
+     */
+    Rot (x) {
+        if (isArr(x) && x.length == 3) { this._customData._rotation = x }
+        else throw new Error('Rotation should be an array with 3 values');
+        return this; 
+    }
+    /**
+     * 
+     * @param {[number, number, number]} x 
+     * @description Sets the initial local rotation of the object
+     */
+    LocRot (x) {
+        if (isArr(x) && x.length == 3) { this._customData._localRotation = x }
+        else throw new Error('Local rotation should be an array with 3 values');
+        return this; 
+    }
+    /**
+     * 
+     * @param {[number, number, number]} x 
+     * @returns 
+     */
+    Scale (x) {
+        if (isArr(x) && x.length == 3) { this._customData._scale = x }
+        else throw new Error('Scale should be an array with 3 values');
+        return this;
+    }
+    /**
+     * 
+     * @param {[number, number, number, number?]} x 
+     * @description Sets the initial RGBA values of the object
+     */
+    Col (x) {
+        if (isArr(x) && x.length == 4) { this._customData._color = x }
+        else throw new Error('Color should be an array with 3 values');
+        return this; 
+    }
+    /**
+     *
+     * @param {[number, number]} x 
+     * @description DEPRECATED, DO NOT USE
+     */
+    Flip (x) {
+        if (isArr(x) && x.length == 2) { this._customData._flip = x }
+        else throw new Error('Flip should be an array with 2 values');
+        return this; 
+    }
+    /**
+     *
+     * @param {number} x  
+     * @description Overrides the vanilla _cutDirection with a degrees value.
+     */
+    Dir (x) {
+        if (typeof x == 'number') { this._customData._cutDirection = x }
+        else throw new Error('Cutdirection should be a number');
+        return this; 
+    }
+}
+
+
+export class Anim {
+    constructor(t) {
+        if (!t._customData._animation) t._customData._animation = {}
+        this._customData = t._customData
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Position animation
+     */
+    Pos (x) {
+        if (isValid(x, 3)) { this._customData._animation._position = x }
+        else throw new Error('Position formatted incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Definite position animation
+     */
+    DefPos (x) {
+        if (isValid(x, 3)) { this._customData._animation._definitePosition = x }
+        else throw new Error('Definite position incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Rotation animation
+     */
+    Rot (x) {
+        if (isValid(x, 3)) { this._customData._animation._rotation = x }
+        else throw new Error('Rotation incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Local rotation animation
+     */
+    LocRot (x) {
+        if (isValid(x, 3)) { this._customData._animation._localRotation = x }
+        else throw new Error('Local rotation incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Scale animation
+     */
+    Scale (x) {
+        if (isValid(x, 3)) { this._customData._animation._scale = x }
+        else throw new Error('Scale formatted incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Dissolve animation
+     */
+    Dis (x) {
+        if (isValid(x, 1)) { this._customData._animation._dissolve = x }
+        else throw new Error('Dissolve formatted incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Dissolve arrow animation
+     */
+    DisArr (x) {
+        if (isValid(x, 1)) { this._customData._animation._dissolveArrow = x }
+        else throw new Error('Dissolve arrow formatted incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Dissolve arrow animation
+     */
+    Interactable (x) {
+        if (isValid(x, 1)) { this._customData._animation._interactable = x }
+        else throw new Error('Interactable animation formatted incorrectly');
+        return this;
+    }
+    /**
+     * 
+     * @param {Array} x Keyframe array
+     * @description Color animation
+     */
+    Col (x) {
+        if (isValid(x, 4)) { this._customData._animation._color = x }
+        else throw new Error('Color formatted incorrectly');
         return this;
     }
 }
