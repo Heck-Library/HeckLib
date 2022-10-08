@@ -6,6 +6,7 @@ import { uniqBy } from './general.js';
 
 export let notesVar;
 export let wallsVar;
+export let eventsVar;
 
 export function getActiveDiff(output) {
     if (output) {
@@ -55,6 +56,8 @@ export function map(input, output, NJS, offset) {
     customData._environments = [];
 
     writeFileSync(output, JSON.stringify(diff, null, 4));
+    
+    eventsVar = diff._customData._customEvents;
 
     return diff;
 }

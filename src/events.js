@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { isValid } from "./animation.js";
 import { validTrack } from "./general.js";
-import { getActiveDiff } from "./mapHandler.js";
+import { eventsVar, getActiveDiff } from "./mapHandler.js";
 
 /*
 
@@ -93,6 +93,10 @@ export class BaseEvent {
  * Places an AnimateTrack event
  */
 export class AnimateTrack {
+    /**
+     * 
+     * @param {number} time 
+     */
     constructor(time) {
         this._time = time
         this._type = "AnimateTrack"
@@ -219,36 +223,31 @@ export class AnimateTrack {
             throw new Error('No duration given.')
         }
 
-        let diff = JSON.parse(readFileSync(getActiveDiff(true)));
-
-        let customEvents = diff._customData._customEvents;
-        customEvents.push(this);
-
-        writeFileSync(getActiveDiff(true), JSON.stringify(diff, null, 4))
+        eventsVar.push(this)
 
         return this;
     }
 }
 
 export class PathAnimation extends AnimateTrack {
+    /**
+     * 
+     * @param {number} time 
+     */
     constructor(event, time) {
         super(event);
         this._time = time;
         this._type = "AssignPathAnimation";
     }
 
-    get defPos () { return this._data._definitePosition }
-
-    set defPos (x) { this._data._definitePosition = x }
-
-    defPos (x) {
+    DefPos (x) {
         if (isValid(x, 3)) {
             this._data._definitePosition = x;
             return this
         }
     }
 
-    end () {
+    End () {
         let d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
@@ -256,47 +255,33 @@ export class PathAnimation extends AnimateTrack {
         if (typeof d._duration !== 'undefined' || d._duration !== null) {
             throw new Error('Path animation doesn\'t use duration.')
         }
-
-        let diff = JSON.parse(readFileSync(getActiveDiff()));
-
-        let customEvents = diff._customData._customEvents;
-        customEvents.push(this);
-
-        writeFileSync(getActiveDiff(), JSON.stringify(diff, null, 4))
+        eventsVar.push(this)
 
         return this;
     }
 }
 
 export class TrackParent {
+    /**
+     * 
+     * @param {number} time 
+     */
     constructor(time) {
         this._time = time;
         this._type = "AssignTrackParent";
         this._data = {}
     }
 
-    get parent() { return this._data._parentTrack }
-    get children() { return this._data._childrenTracks }
-
-    set parent(x) {
+    Parent(x) {
         if (typeof x === 'string') { this._data._parentTrack = x }
         else throw new Error('Parent track is supposed to be a string.')
     }
-    set children(x) {
-        if (Array.isArray()) { this._data._childrenTracks = x }
-        else throw new Error('Children tracks are supposed to be in arrays.')
-    } 
-
-    parent(x) {
-        if (typeof x === 'string') { this._data._parentTrack = x }
-        else throw new Error('Parent track is supposed to be a string.')
-    }
-    children(x) {
+    Children(x) {
         if (Array.isArray()) { this._data._childrenTracks = x }
         else throw new Error('Children tracks are supposed to be in arrays.')
     } 
     
-    end () {
+    End () {
         let d = this._data;
         if (!d._parentTrack) {
             throw new Error('No parent track given.')
@@ -304,32 +289,29 @@ export class TrackParent {
         if (!d._childrenTracks) {
             throw new Error('No children tracks given.')
         }
-
-        let diff = JSON.parse(readFileSync(getActiveDiff()));
-
-        let customEvents = diff._customData._customEvents;
-        customEvents.push(this);
-
-        writeFileSync(getActiveDiff(), JSON.stringify(diff, null, 4))
+        eventsVar.push(this)
 
         return this;
     }
 }
 
 export class PlayerTrack {
+    /**
+     * 
+     * @param {number} time 
+     */
     constructor(time) {
         this._time = time;
         this._type = "AssignPlayerToTrack";
         this._data = {}
     }
 
-    get track () { return this._data._track }
-
-    set track(x) {
+    Track(x) {
         if (typeof x === 'string') { this._data._track = x;}
+        return this;
     }
-
-    track(x) {
-        if (typeof x === 'string') { this._data._track = x;}
+    End() {
+        if (!this._data._track) throw new Error('no track set')
+        eventsVar.push(this)
     }
 }
