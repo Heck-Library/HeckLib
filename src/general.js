@@ -74,3 +74,11 @@ export function validTrack (x) {
         throw new Error('Invalid track type.')
     }
 }
+
+export function random(min, max, precision) {
+    let p = 10;
+    if (typeof precision !== 'undefined' && precision !== null) {
+        p = Math.pow(p, precision);
+    }
+    return (Math.floor(Math.random() * (max - min + 1) * p ) + min)/p;
+}

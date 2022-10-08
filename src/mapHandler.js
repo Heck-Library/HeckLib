@@ -56,7 +56,7 @@ export function map(input, output, NJS, offset) {
     customData._environments = [];
 
     writeFileSync(output, JSON.stringify(diff, null, 4));
-    
+
     eventsVar = diff._customData._customEvents;
 
     return diff;
@@ -90,7 +90,7 @@ export function finalize(difficulty) {
     difficulty._events.sort((a, b) => a._time - b._time);
 
     const vanilla = JSON.parse(readFileSync(getActiveDiff()));
-    const modded = JSON.parse(readFileSync(getActiveDiff(true)));
+    const modded = difficulty
 
     let animNotes = 0;
     let animWalls = 0;

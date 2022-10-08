@@ -62,6 +62,11 @@ export class Object {
         this._customData._track = x;
         return this;
     }
+    Color (x) {
+        if (isArr(x) && x.length == 4) { this._customData._color = x }
+        else throw new Error('Color should have 4 values');
+        return this;
+    }
     LineIndex (x) {
         if (x >= 0 && x <= 3) { this._lineIndex = x }
         else throw new Error('Line index is a number 0 - 3');
