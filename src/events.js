@@ -272,13 +272,23 @@ export class TrackParent {
         this._data = {}
     }
 
+    /**
+     * 
+     * @param {string} x Parent track 
+     */
     Parent(x) {
         if (typeof x === 'string') { this._data._parentTrack = x }
         else throw new Error('Parent track is supposed to be a string.')
+        return this;
     }
+    /**
+     * 
+     * @param {string[]} x Children tracks 
+     */
     Children(x) {
         if (Array.isArray()) { this._data._childrenTracks = x }
         else throw new Error('Children tracks are supposed to be in arrays.')
+        return this;
     } 
     
     End () {

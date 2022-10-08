@@ -195,10 +195,12 @@ export class Wall extends Object {
     constructor(obj) {
         super(obj);
         this._duration = 1;
+        this._width = 1;
     }
     Duration (x) {
         if (typeof x === 'number') { this._duration = x }
         else throw new Error('Duration must be a number');
+        return this;
     }
     End (edge) {
         if (typeof edge !== 'undefined' && edge !== null) {
@@ -206,11 +208,15 @@ export class Wall extends Object {
                 this._customData._animation._scale = [edge, edge, edge];
             }
             let wallScale = this._customData._scale
-            this._customData._animation._scale = [...wallScale];
+            let scaledUp = [...wallScale]
+            scaledUp[0] *= edge;
+            scaledUp[1] *= edge;
+            scaledUp[2] *= edge;
+            this._customData._animation._scale = [...scaledUp];
             wallScale[0] /= edge
             wallScale[1] /= edge
             wallScale[2] /= edge
-            this._customData._scale = wallScale;
+            this._customData._scale = [...wallScale];
         }
         wallsVar.push(this);
         return this;
