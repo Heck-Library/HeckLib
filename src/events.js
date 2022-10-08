@@ -286,7 +286,7 @@ export class TrackParent {
      * @param {string[]} x Children tracks 
      */
     Children(x) {
-        if (Array.isArray()) { this._data._childrenTracks = x }
+        if (Array.isArray(x)) { this._data._childrenTracks = x }
         else throw new Error('Children tracks are supposed to be in arrays.')
         return this;
     } 
