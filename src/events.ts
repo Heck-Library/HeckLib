@@ -100,16 +100,16 @@ export class AnimateTrack {
         _track?: track,
         _easing?: string,
         _duration?: number,
-        _position?: xyzAnim|xyzStill,
-        _localPosition?: xyzAnim|xyzStill,
-        _rotation?: xyzAnim|xyzStill,
-        _localRotation?: xyzAnim|xyzStill,
-        _scale?: xyzAnim|xyzStill,
-        _color?: rgbaAnim|rgbaStill,
-        _dissolve?: xAnim|xStill,
-        _dissolveArrow?: xAnim|xStill,
-        _interactable?: xAnim|xStill,
-        _time?: xAnim|xStill
+        _position?: xyzAnim,
+        _localPosition?: xyzAnim,
+        _rotation?: xyzAnim,
+        _localRotation?: xyzAnim,
+        _scale?: xyzAnim,
+        _color?: rgbaAnim,
+        _dissolve?: xAnim,
+        _dissolveArrow?: xAnim,
+        _interactable?: xAnim,
+        _time?: xAnim
     };
     _track: track;
 
@@ -140,53 +140,45 @@ export class AnimateTrack {
         this._data._duration = x
         return this
     }
-    Pos (x: xyzAnim|xyzStill) {
+    Pos (x: xyzAnim) {
         this._data._position = x;
         return this
     }
-    LocPos (x: xyzAnim|xyzStill) {
+    LocPos (x: xyzAnim) {
         this._data._localPosition = x;
         return this
     }
-    Rot (x: xyzAnim|xyzStill) {
+    Rot (x: xyzAnim) {
         this._data._rotation = x;
         return this
     }
-    LocRot (x: xyzAnim|xyzStill) {
+    LocRot (x: xyzAnim) {
         this._data._localRotation = x;
         return this
     }
-    Scale (x: xyzAnim|xyzStill) {
+    Scale (x: xyzAnim) {
         this._data._scale = x;
         return this
     }
-    Color (x: rgbaAnim|rgbaStill) {
+    Color (x: rgbaAnim) {
         this._data._color = x;
         return this
     }
-    Dis (x: xAnim|xStill) {
-        if (isValid(x, 1)) {
-            this._data._dissolve = x
-            return this
-        }
+    Dis (x: xAnim) {
+        this._data._dissolve = x
+        return this
     }
-    DisArr (x: xAnim|xStill) {
-        if (isValid(x, 1)) {
-            this._data._dissolveArrow = x
-            return this
-        }
+    DisArr (x: xAnim) {
+        this._data._dissolveArrow = x
+        return this
     }
-    Interact (x: xAnim|xStill) {
-        if (isValid(x, 1)) {
-            this._data._interactable = x
-            return this
-        }
+    Interact (x: xAnim) {
+        this._data._interactable = x
+        return this
     }
-    Time (x: xAnim|xStill) {
-        if (isValid(x, 1)) {
-            this._data._time = x
-            return this
-        }
+    Time (x: xAnim) {
+        this._data._time = x
+        return this
     }
 
     End () {
