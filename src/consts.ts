@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-namespace
 
 
 
@@ -8,55 +7,12 @@ export const Spline = "splineCatmullRom";
 
 export const mapDir = "./temp/map"
 
-// export const notes = "note";
-// export const walls = "wall";
-// export const events = "event";
+export const notes = "note";
+export const walls = "wall";
+export const events = "event";
 
-export enum Mod {
-    Chroma = "Chroma",
-    Cinema = "Cinema",
-    Noodle = "Noodle Extensions",
-    Mapping = "Mapping Extensions",
-}
 
-export namespace Difficulty {
-    export enum Lawless {
-        Easy = "EasyLawless.dat",
-        Normal = "NormalLawless.dat",
-        Hard = "HardLawless.dat",
-        Expert = "ExpertLawless.dat",
-        ExpertPlus = "ExpertPlusLawless.dat"
-    }
-    export enum Standard {
-        Easy = "EasyStandard.dat",
-        Normal = "NormalStandard.dat",
-        Hard = "HardStandard.dat",
-        Expert = "ExpertStandard.dat",
-        ExpertPlus = "ExpertPluStandard..dat"
-    }
-}
-
-export enum Shape {
-    Sphere = "Sphere",
-    Capsule = "Capsule",
-    Cylinder = "Cylinder",
-    Cube = "Cube",
-    Plane = "Plane",
-    Quad = "Quad",
-    Triangle = "Triangle"
-}
-
-export enum Shader {
-    Standard = "Standard",
-    OpaqueLight = "OpaqueLight",
-    TransparentLight = "TransparentLight"
-}
-
-export enum Font {
-    LiteFont = "./models/litefont.dae"
-}
-
-export namespace ease {
+export namespace Ease {
     export enum In {
         Sine = "easeInSine",
         Cubic = "easeInCubic",
@@ -96,7 +52,7 @@ export namespace ease {
     export const Step = "easeStep"
 }
 
-export namespace Prop {
+export namespace ObjectProp {
     export namespace Note {
         export enum Type {
             Red = 0,
@@ -115,8 +71,10 @@ export namespace Prop {
             Dot = 8
         }
     }
-    export enum Wall {
-        Full = 0,
-        Crouch = 1
+    export namespace Wall {
+        export enum Type {
+            Full = 0,
+            Crouch = 1
+        }
     }
 }
