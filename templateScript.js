@@ -1,4 +1,4 @@
-import { finalize, map, notes, walls } from './src/main.js'
+import { finalize, map } from './src/main.js'
 
 let difficulty = map('ExpertPlusStandard.dat', 'ExpertPlusLawless.dat', 16, 0)
 
