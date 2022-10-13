@@ -1,12 +1,13 @@
 
 
 import { writeFileSync, readFileSync } from 'fs'
-import { uniqBy } from './general.js';
 
+export const pointDefinitions = [];
 export let activeDiff = [];
 export let notes;
 export let walls;
 export let events;
+export let definitions;
 
 export function map(input, output, NJS, offset) {
     let diff = JSON.parse(readFileSync(input));
@@ -44,6 +45,7 @@ export function map(input, output, NJS, offset) {
     writeFileSync(output, JSON.stringify(diff, null, 4));
 
     events = diff._customData._customEvents;
+    definitions = diff._customData._pointDefinitions;
 
     return diff;
 }

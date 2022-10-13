@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+
 import { isValid } from "./animation.js";
 import { isArr } from "./general.js";
 import { notes, walls } from "./mapHandler.js";
