@@ -1,94 +1,8 @@
-import { readFileSync, writeFileSync } from "fs";
+
 import { isValid } from "./animation.js";
 import { validTrack } from "./general.js";
-import { eventsVar, getActiveDiff } from "./mapHandler.js";
+import { events } from "./mapHandler.js";
 
-/*
-
-export class BaseEvent {
-    json = {
-        _time: 0,
-        _type: "",
-        _data: {}
-    }
-    constructor(time) {
-        if (typeof time === "object") {
-            Object.assign(this.json, time);
-            return;
-        }
-        this._time = time;
-    }
-
-    get pos () { return this.json._data._position }
-    get defPos () { return this.json._data._definitePosition }
-    get locPos () { return this.json._data._localPosition }
-    get rot () { return this.json._data._rotation }
-    get locRot () { return this.json._data._localRotation }
-    get scale () { return this.json._data._scale }
-    get color () { return this.json._data._color }
-    get dis () { return this.json._data._dissolve }
-    get disArr () { return this.json._data._dissolveArrow }
-    get interact () { return this.json._data._interactable }
-    get time () { return this.json._data._time }
-
-    set pos (x) {
-        if (isValid(x, 3)) {
-            this.json._data._position = pos;
-        }
-    }
-    set defPos (x) {
-        if (isValid(x, 3)) {
-            this.json._data._definitePosition = x;
-        }
-    }
-    set locPos (x) {
-        if (isValid(x, 3)) {
-            this.json._data._localPosition = x;
-        }
-    }
-    set rot (x) {
-        if (isValid(x, 3)) {
-            this.json._data._rotation = x;
-        }
-    }
-    set locRot (x) {
-        if (isValid(x, 3)) {
-            this.json._data._localRotation = x;
-        }
-    }
-    set scale (x) {
-        if (isValid(x, 3)) {
-            this.json._data._scale = x;
-        }
-    }
-    set color (x) {
-        if (isValid(x, 4)) {
-            this.json._data._color = x;
-        }
-    }
-    set dis (x) {
-        if (isValid(x, 1)) {
-            this.json._data._dissolve = x
-        }
-    }
-    set disArr (x) {
-        if (isValid(x, 1)) {
-            this.json._data._dissolveArrow = x
-        }
-    }
-    set interact (x) {
-        if (isValid(x, 1)) {
-            this.json._data._interactable = x
-        }
-    }
-    set time (x) {
-        if (isValid(x, 1)) {
-            this.json._data._time = x
-        }
-    }
-}
-
-*/
 /**
  * Places an AnimateTrack event
  */
@@ -102,34 +16,6 @@ export class AnimateTrack {
         this._type = "AnimateTrack"
         this._data = {}
     };
-
-    // get time() { return this._time }
-    // get track () { return this._data._track }
-    // get duration () { return this._data._duration }
-    // get pos () { return this._data._position }
-    // get locPos () { return this._data._localPosition }
-    // get rot () { return this._data._rotation }
-    // get locRot () { return this._data._localRotation }
-    // get scale () { return this._data._scale }
-    // get color () { return this._data._color }
-    // get dis () { return this._data._dissolve }
-    // get disArr () { return this._data._dissolveArrow }
-    // get interact () { return this._data._interactable }
-    // get animTime () { return this._data._time }
-
-    // set time(x) { this._time = x }
-    // set track (x) { this._data._track = x }
-    // set duration (x) { this._data._duration = x }
-    // set pos (x) { this._data._position = x }
-    // set locPos (x) { this._data._localPosition = x }
-    // set rot (x) { this._data._rotation = x }
-    // set locRot (x) { this._data._localRotation = x }
-    // set scale (x) { this._data._scale = x }
-    // set color (x) { this._data._color = x }
-    // set dis (x) { this._data._dissolve = x }
-    // set disArr (x) { this._data._dissolveArrow = x }
-    // set interact (x) { this._data._interactable = x }
-    // set animTime (x) { this._data._time = x }
 
     setTime (x) {
         if (typeof x === 'number') { this._time = x }
@@ -223,7 +109,7 @@ export class AnimateTrack {
             throw new Error('No duration given.')
         }
 
-        eventsVar.push(this)
+        events.push(this)
 
         return this;
     }
@@ -255,7 +141,7 @@ export class PathAnimation extends AnimateTrack {
         if (typeof d._duration !== 'undefined' || d._duration !== null) {
             throw new Error('Path animation doesn\'t use duration.')
         }
-        eventsVar.push(this)
+        events.push(this)
 
         return this;
     }
@@ -299,7 +185,7 @@ export class TrackParent {
         if (!d._childrenTracks) {
             throw new Error('No children tracks given.')
         }
-        eventsVar.push(this)
+        events.push(this)
 
         return this;
     }
@@ -322,6 +208,6 @@ export class PlayerTrack {
     }
     End() {
         if (!this._data._track) throw new Error('no track set')
-        eventsVar.push(this)
+        events.push(this)
     }
 }

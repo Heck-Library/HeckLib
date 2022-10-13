@@ -1,24 +1,19 @@
 
-export let activeDiff;
+
 import { writeFileSync, readFileSync } from 'fs'
-import { mapDir } from './consts.js';
 import { uniqBy } from './general.js';
 
-export let notesVar;
-export let wallsVar;
-export let eventsVar;
-
-export function getActiveDiff(output) {
-    if (output) {
-        return readFileSync('./temp/out');
-    } else return readFileSync('./temp/in');
-}
+export let activeDiff = [];
+export let notes;
+export let walls;
+export let events;
 
 export function map(input, output, NJS, offset) {
     let diff = JSON.parse(readFileSync(input));
+    activeDiff = [input, output];
 
-    notesVar = diff._notes;
-    wallsVar = diff._obstacles;
+    notes = diff._notes;
+    walls = diff._obstacles;
 
     if (!diff._customData) {
         diff._customData = {};
@@ -40,15 +35,6 @@ export function map(input, output, NJS, offset) {
         }
     });
 
-    writeFileSync(mapDir, JSON.stringify({
-        _notes: [],
-        _obstacles: [],
-        _events: [],
-        _customData: {}
-    }));
-    writeFileSync('./temp/in', input);
-    writeFileSync('./temp/out', output);
-
     let customData = diff._customData;
     
     customData._customEvents = [];
@@ -57,14 +43,11 @@ export function map(input, output, NJS, offset) {
 
     writeFileSync(output, JSON.stringify(diff, null, 4));
 
-    eventsVar = diff._customData._customEvents;
+    events = diff._customData._customEvents;
 
     return diff;
 }
 
-export function mapData() {
-    return JSON.parse(readFileSync(getActiveDiff(true)));
-}
 export function finalize(difficulty) {
     const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
 
@@ -89,7 +72,7 @@ export function finalize(difficulty) {
     difficulty._obstacles.sort((a, b) => a._time - b._time);
     difficulty._events.sort((a, b) => a._time - b._time);
 
-    const vanilla = JSON.parse(readFileSync(getActiveDiff()));
+    const vanilla = JSON.parse(readFileSync(activeDiff[0]));
     const modded = difficulty
 
     let animNotes = 0;
@@ -150,7 +133,5 @@ export function finalize(difficulty) {
     console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
     console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
 
-    let a = uniqBy(difficulty._notes, JSON.stringify)
-
-    writeFileSync(getActiveDiff(true), JSON.stringify(difficulty, null, 4));
+    writeFileSync(activeDiff[1], JSON.stringify(difficulty, null, 4));
 }

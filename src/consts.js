@@ -52,27 +52,26 @@ export class Ease {
     static step = "easeStep"
 }
 
-export class NoteVal {
-    static Type = {
-        Red: 0,
-        Blue: 1,
-        Bomb: 3
+export class Prop {
+    static Note = {
+        Type: {
+            Red: 0,
+            Blue: 1,
+            Bomb: 3
+        },
+        Direction: {
+            Up: 0,
+            Down: 1,
+            Left: 2,
+            Right: 3,
+            UpL: 4,
+            UpR: 5,
+            DownL: 6,
+            DownR: 7,
+            Dot: 8
+        }
     }
-    static Direction = {
-        Up: 0,
-        Down: 1,
-        Left: 2,
-        Right: 3,
-        UpL: 4,
-        UpR: 5,
-        DownL: 6,
-        DownR: 7,
-        Dot: 8
-    }
-}
-
-export class WallVal {
-    static Type = {
+    static Wall = {
         Full: 0,
         Crouch: 1
     }

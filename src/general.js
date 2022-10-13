@@ -72,7 +72,7 @@ export function validTrack (x) {
         throw new Error('Not enough track names in an array.\nIf you don\'t need more than one track, try making this a string instead.')
     } else if (typeof x !== 'string' && !isArr(x)) {
         throw new Error('Invalid track type.')
-    }
+    } else return true;
 }
 
 export function random(min, max, precision) {

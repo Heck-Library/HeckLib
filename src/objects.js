@@ -1,23 +1,22 @@
 import { writeFileSync } from "fs";
 import { isValid } from "./animation.js";
-import { notes, walls } from "./consts.js";
 import { isArr } from "./general.js";
-import { notesVar, wallsVar } from "./mapHandler.js";
+import { notes, walls } from "./mapHandler.js";
 
 
 export function filter(obj, start, end, type, direction) {
     if (obj == notes) {
         if (typeof type !== 'undefined' && type !== null && (typeof direction === 'undefined' || direction === null))
-            return notesVar.filter(n => n._time >= start && n._time <= end && n._type == type);
+            return notes.filter(n => n._time >= start && n._time <= end && n._type == type);
         else if (typeof direction !== 'undefined' && direction !== null && (typeof type === 'undefined' || type === null))
-            return notesVar.filter(n => n._time >= start && n._time <= end && n._cutDirection == direction);
+            return notes.filter(n => n._time >= start && n._time <= end && n._cutDirection == direction);
         else if (typeof direction !== 'undefined' && direction !== null && typeof type !== 'undefined' && type !== null)
-            return notesVar.filter(n => n._time >= start && n._time <= end && n._type == type && n._cutDirection == direction)
+            return notes.filter(n => n._time >= start && n._time <= end && n._type == type && n._cutDirection == direction)
         else
-            return notesVar.filter(n => n._time >= start && n._time <= end);
+            return notes.filter(n => n._time >= start && n._time <= end);
     }
     if (obj == walls) {
-        return wallsVar.filter(w => w._time >= start && w._time <= end);
+        return walls.filter(w => w._time >= start && w._time <= end);
     }
 }
 
@@ -191,7 +190,7 @@ export class Note extends Object {
         return this;
     }
     End () {
-        notesVar.push(this);
+        notes.push(this);
         return this;
     }
 }
@@ -223,7 +222,7 @@ export class Wall extends Object {
             wallScale[2] /= edge
             this._customData._scale = [...wallScale];
         }
-        wallsVar.push(this);
+        walls.push(this);
         return this;
     }
 }
