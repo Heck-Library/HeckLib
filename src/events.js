@@ -1,7 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 import { isValid } from "./animation.js";
 import { validTrack } from "./general.js";
-import { rgbaAnim, rgbaStill, track, xAnim, xStill, xyzAnim, xyzFrame, xyzStill } from "./types"
 import { eventsVar, getActiveDiff } from "./mapHandler.js";
 
 /*
@@ -94,91 +93,125 @@ export class BaseEvent {
  * Places an AnimateTrack event
  */
 export class AnimateTrack {
-    _time: number;
-    _type: string;
-    _data: {
-        _track?: track,
-        _easing?: string,
-        _duration?: number,
-        _position?: xyzAnim,
-        _localPosition?: xyzAnim,
-        _rotation?: xyzAnim,
-        _localRotation?: xyzAnim,
-        _scale?: xyzAnim,
-        _color?: rgbaAnim,
-        _dissolve?: xAnim,
-        _dissolveArrow?: xAnim,
-        _interactable?: xAnim,
-        _time?: xAnim
-    };
-    _track: track;
-
     /**
      * 
      * @param {number} time 
      */
-    constructor(time: number) {
-        this._time = time;
+    constructor(time) {
+        this._time = time
         this._type = "AnimateTrack"
         this._data = {}
     };
 
-    setTime (x: number) {
+    // get time() { return this._time }
+    // get track () { return this._data._track }
+    // get duration () { return this._data._duration }
+    // get pos () { return this._data._position }
+    // get locPos () { return this._data._localPosition }
+    // get rot () { return this._data._rotation }
+    // get locRot () { return this._data._localRotation }
+    // get scale () { return this._data._scale }
+    // get color () { return this._data._color }
+    // get dis () { return this._data._dissolve }
+    // get disArr () { return this._data._dissolveArrow }
+    // get interact () { return this._data._interactable }
+    // get animTime () { return this._data._time }
+
+    // set time(x) { this._time = x }
+    // set track (x) { this._data._track = x }
+    // set duration (x) { this._data._duration = x }
+    // set pos (x) { this._data._position = x }
+    // set locPos (x) { this._data._localPosition = x }
+    // set rot (x) { this._data._rotation = x }
+    // set locRot (x) { this._data._localRotation = x }
+    // set scale (x) { this._data._scale = x }
+    // set color (x) { this._data._color = x }
+    // set dis (x) { this._data._dissolve = x }
+    // set disArr (x) { this._data._dissolveArrow = x }
+    // set interact (x) { this._data._interactable = x }
+    // set animTime (x) { this._data._time = x }
+
+    setTime (x) {
         if (typeof x === 'number') { this._time = x }
         else throw new Error('Time is a number.')
     }
-    Track (x: track) {
-        this._data._track = x
-        return this
-        
+    Track (x) {
+        if (typeof x === 'string' || Array.isArray(x) && validTrack(x)) {
+            this._data._track = x
+            return this
+        }
     }
-    Easing (x: string) {
+    Easing (x) {
+        if (typeof x === 'string') {
             this._data._easing = x;
             return this
+        }
     }
-    Duration (x: number) {
-        this._data._duration = x
-        return this
+    Duration (x) {
+        if (typeof x === 'number') {
+            this._data._duration = x
+            return this
+        }
     }
-    Pos (x: xyzAnim) {
-        this._data._position = x;
-        return this
+    Pos (x) {
+        if (isValid(x, 3)) {
+            this._data._position = x;
+            return this
+        }
     }
-    LocPos (x: xyzAnim) {
-        this._data._localPosition = x;
-        return this
+    LocPos (x) {
+        if (isValid(x, 3)) {
+            this._data._localPosition = x;
+            return this
+        }
     }
-    Rot (x: xyzAnim) {
-        this._data._rotation = x;
-        return this
+    Rot (x) {
+        if (isValid(x, 3)) {
+            this._data._rotation = x;
+            return this
+        }
     }
-    LocRot (x: xyzAnim) {
-        this._data._localRotation = x;
-        return this
+    LocRot (x) {
+        if (isValid(x, 3)) {
+            this._data._localRotation = x;
+            return this
+        }
     }
-    Scale (x: xyzAnim) {
-        this._data._scale = x;
-        return this
+    Scale (x) {
+        if (isValid(x, 3)) {
+            this._data._scale = x;
+            return this
+        }
     }
-    Color (x: rgbaAnim) {
-        this._data._color = x;
-        return this
+    Color (x) {
+        if (isValid(x, 4)) {
+            this._data._color = x;
+            return this
+        }
     }
-    Dis (x: xAnim) {
-        this._data._dissolve = x
-        return this
+    Dis (x) {
+        if (isValid(x, 1)) {
+            this._data._dissolve = x
+            return this
+        }
     }
-    DisArr (x: xAnim) {
-        this._data._dissolveArrow = x
-        return this
+    DisArr (x) {
+        if (isValid(x, 1)) {
+            this._data._dissolveArrow = x
+            return this
+        }
     }
-    Interact (x: xAnim) {
-        this._data._interactable = x
-        return this
+    Interact (x) {
+        if (isValid(x, 1)) {
+            this._data._interactable = x
+            return this
+        }
     }
-    Time (x: xAnim) {
-        this._data._time = x
-        return this
+    Time (x) {
+        if (isValid(x, 1)) {
+            this._data._time = x
+            return this
+        }
     }
 
     End () {
@@ -201,29 +234,13 @@ export class PathAnimation extends AnimateTrack {
      * 
      * @param {number} time 
      */
-    _data: {
-        _definitePosition?: xyzAnim|xyzStill,
-        _track?: track,
-        _easing?: string,
-        _duration?: number,
-        _position?: xyzAnim|xyzStill,
-        _rotation?: xyzAnim|xyzStill,
-        _localRotation?: xyzAnim|xyzStill,
-        _scale?: xyzAnim|xyzStill,
-        _color?: rgbaAnim|rgbaStill,
-        _dissolve?: xAnim|xStill,
-        _dissolveArrow?: xAnim|xStill,
-        _interactable?: xAnim|xStill,
-        _time?: xAnim|xStill
-    };
-    constructor(event, time : number) {
+    constructor(event, time) {
         super(event);
         this._time = time;
         this._type = "AssignPathAnimation";
-        this._data = {};
     }
 
-    DefPos (x: xyzAnim|xyzStill) {
+    DefPos (x) {
         if (isValid(x, 3)) {
             this._data._definitePosition = x;
             return this
@@ -245,12 +262,6 @@ export class PathAnimation extends AnimateTrack {
 }
 
 export class TrackParent {
-    _time: number;
-    _type: string;
-    _data: {
-        _parentTrack: string,
-        _childrenTracks: string[]
-    }
     /**
      * 
      * @param {number} time 
@@ -258,17 +269,14 @@ export class TrackParent {
     constructor(time) {
         this._time = time;
         this._type = "AssignTrackParent";
-        this._data = {
-            _parentTrack: "",
-            _childrenTracks: [""] 
-        }
+        this._data = {}
     }
 
     /**
      * 
      * @param {string} x Parent track 
      */
-    Parent(x: string) {
+    Parent(x) {
         if (typeof x === 'string') { this._data._parentTrack = x }
         else throw new Error('Parent track is supposed to be a string.')
         return this;
@@ -277,7 +285,7 @@ export class TrackParent {
      * 
      * @param {string[]} x Children tracks 
      */
-    Children(x: string[]) {
+    Children(x) {
         if (Array.isArray(x)) { this._data._childrenTracks = x }
         else throw new Error('Children tracks are supposed to be in arrays.')
         return this;
@@ -298,24 +306,17 @@ export class TrackParent {
 }
 
 export class PlayerTrack {
-    _time: number;
-    _type: string;
-    _data: {
-        _track: string;
-    }
     /**
      * 
      * @param {number} time 
      */
-    constructor(time: number, track: string) {
+    constructor(time) {
         this._time = time;
         this._type = "AssignPlayerToTrack";
-        this._data = {
-            _track: track
-        }
+        this._data = {}
     }
 
-    Track(x: string) {
+    Track(x) {
         if (typeof x === 'string') { this._data._track = x;}
         return this;
     }

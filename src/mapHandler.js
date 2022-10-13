@@ -4,9 +4,9 @@ import { writeFileSync, readFileSync } from 'fs'
 import { mapDir } from './consts.js';
 import { uniqBy } from './general.js';
 
-export let notes;
-export let walls;
-export let events;
+export let notesVar;
+export let wallsVar;
+export let eventsVar;
 
 export function getActiveDiff(output) {
     if (output) {
