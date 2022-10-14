@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any prefer-const
+
 
 export function isArr (x: any) {
     if (Array.isArray(x)) {
@@ -38,14 +40,6 @@ export function HSVtoRGB(h: any, s: number, v: number) {
             throw new Error("Error in HSVtoRGB")
     }
     return [r, g, b];
-}
-
-export function uniqBy(a: any[], key: (arg0: any) => any) {
-    var seen = {};
-    return a.filter(function(item: any) {
-        var k = key(item);
-        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-    })
 }
 
 export function toLinear (x: any) {

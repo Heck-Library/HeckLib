@@ -1,9 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
 
+//import { fs, path } from "./ext.ts";
 
-import { readFileSync, writeFileSync } from '../node_modules/@types/node/fs/promises.d.ts'
+// TODO make the script able to read and write .dat files
 
 export const pointDefinitions = ["NULL"];
+import * as mapFile from '../ExpertPlusStandard.json' assert {type: "json"}
 export let notes: any[];
 export let walls: any[];
 export let events: any[];
@@ -12,7 +14,7 @@ export let activeInput: string;
 export let activeOutput: string;
 
 export function map(input: string, output: string, NJS: number, offset: number) {
-    const diff = JSON.parse(readFileSync(input, "file"));
+    const diff = JSON.parse(JSON.stringify(mapFile))
     activeInput = input;
     activeOutput = output;
 
@@ -45,7 +47,7 @@ export function map(input: string, output: string, NJS: number, offset: number) 
     customData._pointDefinitions = [];
     customData._environments = [];
 
-    writeFileSync(output, JSON.stringify(diff, null, 4));
+    //(output, JSON.stringify(diff, null, 4));
 
     events = diff._customData._customEvents;
     definitions = diff._customData._pointDefinitions;
@@ -77,7 +79,7 @@ export function finalize(difficulty: any) {
     difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
     difficulty._events.sort((a: any, b: any) => a._time - b._time);
 
-    const vanilla = JSON.parse(readFileSync(activeInput));
+    //const vanilla = JSON.parse(fs.readFileSync(activeInput));
     const modded = difficulty
 
     let animNotes = 0;
@@ -125,8 +127,8 @@ export function finalize(difficulty: any) {
 
     const mapInfo = {
         v: {
-            n: vanilla._notes.length,
-            w: vanilla._obstacles.length
+            //n: vanilla._notes.length,
+            //w: vanilla._obstacles.length
         },
         m: {
             n: modded._notes.length,
@@ -136,9 +138,9 @@ export function finalize(difficulty: any) {
         }
     };
 
-    console.log("=== VANILLA MAP INFO ===\n\nNotes: " + mapInfo.v.n + "\nWalls: " + mapInfo.v.w + "\n\n")
+    //console.log("=== VANILLA MAP INFO ===\n\nNotes: " + mapInfo.v.n + "\nWalls: " + mapInfo.v.w + "\n\n")
     console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
     console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
 
-    writeFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
+    //fs.writeFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }
