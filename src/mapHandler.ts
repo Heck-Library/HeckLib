@@ -1,17 +1,20 @@
+// deno-lint-ignore-file no-explicit-any
 
 
-import { writeFileSync, readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from '../node_modules/@types/node/fs/promises.d.ts'
 
-export const pointDefinitions = [];
-export let activeDiff = [];
-export let notes;
-export let walls;
-export let events;
-export let definitions;
+export const pointDefinitions = ["NULL"];
+export let notes: any[];
+export let walls: any[];
+export let events: any[];
+export let definitions: any[];
+export let activeInput: string;
+export let activeOutput: string;
 
-export function map(input, output, NJS, offset) {
-    let diff = JSON.parse(readFileSync(input));
-    activeDiff = [input, output];
+export function map(input: string, output: string, NJS: number, offset: number) {
+    const diff = JSON.parse(readFileSync(input, "file"));
+    activeInput = input;
+    activeOutput = output;
 
     notes = diff._notes;
     walls = diff._obstacles;
@@ -19,7 +22,7 @@ export function map(input, output, NJS, offset) {
     if (!diff._customData) {
         diff._customData = {};
     }
-    diff._notes.forEach(x => {
+    diff._notes.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
         if (!x._customData) {
             x._customData = {
                 _noteJumpStartBeatOffset: offset,
@@ -27,7 +30,7 @@ export function map(input, output, NJS, offset) {
             }
         }
     });
-    diff._obstacles.forEach(x => {
+    diff._obstacles.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
         if (!x._customData) {
             x._customData = {
                 _noteJumpStartBeatOffset: offset,
@@ -36,7 +39,7 @@ export function map(input, output, NJS, offset) {
         }
     });
 
-    let customData = diff._customData;
+    const customData = diff._customData;
     
     customData._customEvents = [];
     customData._pointDefinitions = [];
@@ -50,12 +53,12 @@ export function map(input, output, NJS, offset) {
     return diff;
 }
 
-export function finalize(difficulty) {
+export function finalize(difficulty: any) {
     const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
 
     const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
-    function deeperDaddy(obj) {
+    function deeperDaddy(obj: any) {
         if (obj) 
             for (const key in obj) {
                 if (obj[key] == null) {
@@ -63,36 +66,38 @@ export function finalize(difficulty) {
                 } else if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
                     deeperDaddy(obj[key]);
                 } else if (typeof obj[key] == "number") {
-                    obj[key] = parseFloat(Math.round((obj[key] + Number.EPSILON) * jsonP) / jsonP);
+                    obj[key] = (Math.round((obj[key] + Number.EPSILON) * jsonP) / jsonP);
                 }
             }
         
     }
     deeperDaddy(difficulty)
 
-    difficulty._notes.sort((a, b) => parseFloat(Math.round((a._time + Number.EPSILON) * sortP) / sortP) - parseFloat(Math.round((b._time + Number.EPSILON) * sortP) / sortP) || parseFloat(Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - parseFloat(Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || parseFloat(Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - parseFloat(Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
-    difficulty._obstacles.sort((a, b) => a._time - b._time);
-    difficulty._events.sort((a, b) => a._time - b._time);
+    difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
+    difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
+    difficulty._events.sort((a: any, b: any) => a._time - b._time);
 
-    const vanilla = JSON.parse(readFileSync(activeDiff[0]));
+    const vanilla = JSON.parse(readFileSync(activeInput));
     const modded = difficulty
 
     let animNotes = 0;
     let animWalls = 0;
 
-    modded._notes.forEach(n => {
-        if (typeof n._customData._animation !== 'undefined'){
+    modded._notes.forEach(async (n: any) => {
+        const anim = await n._customData._animation;
+        if (typeof anim !== 'undefined'){
             animNotes++;
         } else {
             delete(n._customData._animation)
-        };
+        }
     });
-    modded._obstacles.forEach(n => {
-        if (typeof n._customData._animation !== 'undefined'){
+    modded._obstacles.forEach(async (n: any) => {
+        const anim = await n._customData._animation
+        if (typeof anim !== 'undefined'){
             animWalls++;
         } else {
             delete(n._customData._animation)
-        };
+        }
     });
 
 
@@ -101,8 +106,8 @@ export function finalize(difficulty) {
     let TP = 0;
     let PT = 0;
 
-    modded._customData._customEvents.forEach(e => {
-        switch (e._type) {
+    modded._customData._customEvents.forEach(async (e: any) => {
+        switch (await e._type) {
             case "AnimateTrack":
                 AT++;
                 break;
@@ -135,5 +140,5 @@ export function finalize(difficulty) {
     console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
     console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
 
-    writeFileSync(activeDiff[1], JSON.stringify(difficulty, null, 4));
+    writeFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }

@@ -1,27 +1,9 @@
-// deno-lint-ignore-file
-
-export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
-
-
-export function isPresent(x: any) {
-    if (typeof x !== 'undefined' && x !== null) return true;
-    return false;
-}
-
 
 export function isArr (x: any) {
     if (Array.isArray(x)) {
         return true;
     } else return false;
 }
-
-/**
- * A function to convert HSV to RGB
- * @param h Hue
- * @param s Saturation
- * @param v Value
- * @returns RGB
- */
 
 export function HSVtoRGB(h: any, s: number, v: number) {
     let r: number, g: number, b: number, i: number, f: number, p: number, q: number, t: number;
@@ -58,13 +40,25 @@ export function HSVtoRGB(h: any, s: number, v: number) {
     return [r, g, b];
 }
 
-/**
- * A function to get a random number between two numbers
- * @param min Minimum value
- * @param max Maximum value
- * @param precision What decimal place to round to
- * @returns Random number
- */
+export function uniqBy(a: any[], key: (arg0: any) => any) {
+    var seen = {};
+    return a.filter(function(item: any) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
+}
+
+export function toLinear (x: any) {
+    let inputKeyframe = x;
+    if (isArr(inputKeyframe)) {
+        for (let i = 0; i < inputKeyframe.length; i++) {
+            if (typeof inputKeyframe[i] === 'string') {
+                inputKeyframe.length = (i);
+            }
+        }
+    }
+    return inputKeyframe;
+}
 
 export function random(min: number, max: number, precision: number | null) {
     let p = 10;

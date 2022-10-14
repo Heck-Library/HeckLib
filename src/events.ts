@@ -1,9 +1,7 @@
 
-import { isValid } from "./animation.js";
-import { validTrack } from "./general.js";
-import { events } from "./mapHandler.js";
-import { track, vec1anim, vec3anim, vec4anim } from "./types";
 
+import { events } from "./mapHandler.ts";
+import { Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
 /**
  * Places an AnimateTrack event
  */
@@ -15,7 +13,7 @@ export class AnimateTrack {
     _time: number;
     _type: string;
     _data: {
-        _track?: track,
+        _track?: Track,
         _duration?: number,
         _easing?: string,
         _position?: vec3anim,
@@ -34,13 +32,13 @@ export class AnimateTrack {
         this._time = time
         this._type = "AnimateTrack"
         this._data = {}
-    };
+    }
 
     setTime (time: number) {
         this._time = time;
         return this;
     }
-    Track (track: track) {
+    Track (track: Track) {
         this._data._track = track
         return this
     }
@@ -94,7 +92,7 @@ export class AnimateTrack {
     }
 
     End () {
-        let d = this._data;
+        const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
         }
@@ -109,25 +107,26 @@ export class AnimateTrack {
 }
 
 export class PathAnimation extends AnimateTrack {
-    _data: {
-        _track?: track,
-        _duration?: number,
-        _easing?: string,
-        _position?: vec3anim,
-        _rotation?: vec3anim,
-        _localRotation?: vec3anim,
-        _scale?: vec3anim,
-        _color?: vec4anim,
-        _dissolve?: vec1anim,
-        _dissolveArrow?: vec1anim,
-        _interactable?: vec1anim,
-        _time?: vec1anim
-        _definitePosition?: vec3anim
-    }
+    declare _data: {
+        _track?: Track;
+        _duration?: number;
+        _easing?: string;
+        _position?: vec3anim;
+        _rotation?: vec3anim;
+        _localRotation?: vec3anim;
+        _scale?: vec3anim;
+        _color?: vec4anim;
+        _dissolve?: vec1anim;
+        _dissolveArrow?: vec1anim;
+        _interactable?: vec1anim;
+        _time?: vec1anim;
+        _definitePosition?: vec3anim;
+    };
     /**
      * 
      * @param {number} time 
      */
+    // deno-lint-ignore no-explicit-any
     constructor(event: any, time: number) {
         super(event);
         this._time = time;
@@ -140,7 +139,7 @@ export class PathAnimation extends AnimateTrack {
     }
 
     End () {
-        let d = this._data;
+        const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
         }
@@ -188,7 +187,7 @@ export class TrackParent {
     } 
     
     End () {
-        let d = this._data;
+        const d = this._data;
         if (!d._parentTrack) {
             throw new Error('No parent track given.')
         }
