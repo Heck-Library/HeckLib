@@ -1,11 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 
-//import { fs, path } from "./ext.ts";
+import { readFileSync, writeFileSync, promises as fsPromises } from "../src/ext.ts";
+import { join } from '../src/ext.ts'
+
 
 // TODO make the script able to read and write .dat files
 
 export const pointDefinitions = ["NULL"];
-import * as mapFile from '../ExpertPlusStandard.json' assert {type: "json"}
 export let notes: any[];
 export let walls: any[];
 export let events: any[];
@@ -14,7 +15,7 @@ export let activeInput: string;
 export let activeOutput: string;
 
 export function map(input: string, output: string, NJS: number, offset: number) {
-    const diff = JSON.parse(JSON.stringify(mapFile))
+    const diff = JSON.parse(JSON.stringify(readFileSync(join('../', input), 'utf-8')));
     activeInput = input;
     activeOutput = output;
 
