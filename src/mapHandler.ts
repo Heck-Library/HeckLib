@@ -1,9 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { readFileSync, writeFileSync, promises as fsPromises } from "../src/ext.ts";
-import { join } from '../src/ext.ts'
-
-
 // TODO make the script able to read and write .dat files
 
 export const pointDefinitions = ["NULL"];
@@ -15,7 +11,7 @@ export let activeInput: string;
 export let activeOutput: string;
 
 export function map(input: string, output: string, NJS: number, offset: number) {
-    const diff = JSON.parse(JSON.stringify(readFileSync(join('../', input), 'utf-8')));
+    const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
     activeInput = input;
     activeOutput = output;
 
@@ -143,5 +139,5 @@ export function finalize(difficulty: any) {
     console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
     console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
 
-    //fs.writeFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
+    Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }
