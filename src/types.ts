@@ -1,3 +1,7 @@
+import { Difficulty, Mod } from './consts.ts';
+import './consts.ts';
+
+
 export type Track = string|string[];
 
 export type lineIndex = 0|1|2|3;
@@ -17,3 +21,22 @@ export type vec4frame = [r: number, g: number, b: number, a: number, time: numbe
 export type vec1anim = vec1frame[]|vec1;
 export type vec3anim = vec3frame[]|vec3;
 export type vec4anim = vec4frame[]|vec4;
+
+export type requirement = Mod.Chroma | Mod.Cinema | Mod.Mapping | Mod.Noodle;
+export type diffFile = 
+    Difficulty.Lawless.Easy |
+    Difficulty.Lawless.Normal |
+    Difficulty.Lawless.Hard |
+    Difficulty.Lawless.Expert |
+    Difficulty.Lawless.ExpertPlus |
+    Difficulty.Standard.Easy |
+    Difficulty.Standard.Normal |
+    Difficulty.Standard.Hard |
+    Difficulty.Standard.Expert |
+    Difficulty.Standard.ExpertPlus;
+
+export type noteJump = "Dynamic" | "Static";
+export type effects = "AllEffects" | "Strobefilter" | "NoEffects";
+export type energy = "Bar" | "Battery";
+export type speed = "Normal" | "Faster" | "Slower" | "SuperFast";
+export type enabledWall = "All" | "FullHeightOnly" | "NoObstacles";

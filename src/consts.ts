@@ -12,6 +12,13 @@ export const mapDir = "./temp/map"
 // export const walls = "wall";
 // export const events = "event";
 
+export enum Mod {
+    Chroma = "Chroma",
+    Cinema = "Cinema",
+    Noodle = "Noodle Extensions",
+    Mapping = "Mapping Extensions",
+}
+
 export namespace Difficulty {
     export enum Lawless {
         Easy = "EasyLawless.dat",
