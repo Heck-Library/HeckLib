@@ -36,7 +36,7 @@ export namespace Difficulty {
     }
 }
 
-export namespace Ease {
+export namespace ease {
     export enum In {
         Sine = "easeInSine",
         Cubic = "easeInCubic",

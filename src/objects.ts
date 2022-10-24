@@ -80,86 +80,86 @@ export class Object {
         };
     }
     //#region customData
-    Track(x: Track) {
+    track(x: Track) {
         this._customData._track = x;
         return this;
     }
-    Color (x: vec4) {
+    color (x: vec4) {
         this._customData._color = x
         return this;
     }
-    LineIndex (x: 0|1|3) {
+    lineIndex (x: 0|1|3) {
         this._lineIndex = x
         return this;
     }
-    Pos (x: vec2) {
+    pos (x: vec2) {
         this._customData._position = x;
         return this;
     }
-    Rot (x: vec3) {
+    rot (x: vec3) {
         this._customData._rotation = x
         return this;
     }
-    LocRot (x: vec3) {
+    localRot (x: vec3) {
         this._customData._localRotation = x
         return this;
     }
-    Scale (x: vec3) {
+    scale (x: vec3) {
         this._customData._scale = x
         return this;
     }
-    NJS (x: number) {
+    njs (x: number) {
         this._customData._noteJumpMovementSpeed = x
         return this;
     }
-    Offset (x: number) {
+    offset (x: number) {
         this._customData._noteJumpStartBeatOffset = x
         return this;
     }
-    Fake (x: boolean) {
+    fake (x: boolean) {
         this._customData._fake = x
         return this;
     }
-    Interactable (x: boolean) {
+    interactable (x: boolean) {
         this._customData._interactable = x
         return this;
     }
     //#endregion
 
     //#region animation
-    PosAnim (x: vec3anim) {
+    posAnim (x: vec3anim) {
         this._customData._animation._position = x
         return this;
     }
-    DefPosAnim (x: vec3anim) {
+    defPosAnim (x: vec3anim) {
         this._customData._animation._definitePosition = x
         return this;
     }
-    RotAnim (x: vec3anim) {
+    rotAnim (x: vec3anim) {
         this._customData._animation._rotation = x
         return this;
     }
-    LocRotAnim (x: vec3anim) {
+    localRotAnim (x: vec3anim) {
         this._customData._animation._localRotation = x
         return this;
     }
-    ScaleAnim (x: vec3anim) {
+    scaleAnim (x: vec3anim) {
         this._customData._animation._scale = x
         return this;
     }
-    ColorAnim (x: vec4anim) {
+    colorAnim (x: vec4anim) {
         this._customData._animation._color = x
         return this;
     }
-    InteractableAnim (x: vec1anim) {
+    interactableAnim (x: vec1anim) {
         this._customData._animation._interactable = x
         return this;
     }
-    DisAnim (x: vec1anim) {
+    disAnim (x: vec1anim) {
         this._customData._animation._dissolve = x
         return this;
     }
-    DisArrAnim (x: vec1anim) {
+    disArrAnim (x: vec1anim) {
         this._customData._animation._dissolveArrow = x
         return this;
     }
@@ -205,38 +205,38 @@ export class Note extends Object {
         this._type = 0;
     }
     //#region vanilla
-    Direction (x: noteDir) {
+    direction (x: noteDir) {
         this._cutDirection = x
         return this;
     }
-    LineLayer (x: lineLayer) {
+    lineLayer (x: lineLayer) {
         this._lineLayer = x
         return this;
     }
-    Type (x: objType) {
+    type (x: objType) {
         this._type = x
         return this;
     }
     //#endregion
     //#region customData
-    Flip (x: vec2) {
+    flip (x: vec2) {
         this._customData._flip = x
         return this;
     }
-    DisableNoteGravity (x: boolean) {
+    disableNoteGravity (x: boolean) {
         this._customData._disableNoteGravity = x
         return this;
     }
-    DisableSpawnEffect (x: boolean) {
+    disableSpawnEffect (x: boolean) {
         this._customData._disableSpawnEffect = x
         return this;
     }
-    DisableNoteLook (x: boolean) {
+    disableNoteLook (x: boolean) {
         this._customData._disableNoteLook = x
         return this;
     }
     //#endregion
-    End () {
+    end () {
         notes.push(this);
         return this;
     }
@@ -250,11 +250,11 @@ export class Wall extends Object {
         this._duration = 1;
         this._width = 1;
     }
-    Duration (x: number) {
+    duration (x: number) {
         this._duration = x
         return this;
     }
-    End (edge?: number) {
+    end (edge?: number) {
         if (typeof edge !== 'undefined' && edge !== null && this._customData._scale) {
             if (!this._customData._animation._scale) {
                 this._customData._animation._scale = [edge, edge, edge];
@@ -274,7 +274,7 @@ export class Wall extends Object {
         return this;
     }
 }
-export class Data {
+export class CustomData {
     _customData: {
         _track?: Track,
         _flip?: vec2,
@@ -300,7 +300,7 @@ export class Data {
      * @param {boolean} x
      * @description If true, object will be fake.
      */
-    Fake (x: boolean) {
+    fake (x: boolean) {
         this._customData._fake = x
         return this;
     }
@@ -309,7 +309,7 @@ export class Data {
      * @param {boolean} x
      * @description If false, object cannot be interacted with.
      */
-    Interactable (x: boolean) {
+    interactable (x: boolean) {
         this._customData._interactable = x
         return this;
     }
@@ -318,7 +318,7 @@ export class Data {
      * @param {number} x
      * @description Sets the NJS of the object.
      */
-    NJS (x: number) {
+    njs (x: number) {
         this._customData._noteJumpMovementSpeed = x
         return this; 
     }
@@ -327,7 +327,7 @@ export class Data {
      * @param {number} x 
      * @description Sets the offset of the object.
      */
-    Offset (x: number) {
+    offset (x: number) {
         this._customData._noteJumpStartBeatOffset = x
         return this; 
     }
@@ -336,7 +336,7 @@ export class Data {
      * @param {[number, number]} x
      * @description Sets the position of the object
      */
-    Pos (x: vec2) {
+    pos (x: vec2) {
         this._customData._position = x
         return this; 
     }
@@ -345,7 +345,7 @@ export class Data {
      * @param {[number, number, number]} x 
      * @description Sets the initial rotation of the object
      */
-    Rot (x: vec3) {
+    rot (x: vec3) {
         this._customData._rotation = x
         return this; 
     }
@@ -354,7 +354,7 @@ export class Data {
      * @param {[number, number, number]} x 
      * @description Sets the initial local rotation of the object
      */
-    LocRot (x: vec3) {
+    localRot (x: vec3) {
         this._customData._localRotation = x
         return this; 
     }
@@ -363,7 +363,7 @@ export class Data {
      * @param {[number, number, number]} x 
      * @returns 
      */
-    Scale (x: vec3) {
+    scale (x: vec3) {
         this._customData._scale = x
         return this;
     }
@@ -372,7 +372,7 @@ export class Data {
      * @param {[number, number, number, number?]} x 
      * @description Sets the initial RGBA values of the object
      */
-    Col (x: vec4) {
+    color (x: vec4) {
         this._customData._color = x
         return this; 
     }
@@ -381,7 +381,7 @@ export class Data {
      * @param {[number, number]} x 
      * @description DEPRECATED, DO NOT USE
      */
-    Flip (x: vec2) {
+    flip (x: vec2) {
         this._customData._flip = x
         return this; 
     }
@@ -390,14 +390,14 @@ export class Data {
      * @param {number} x  
      * @description Overrides the vanilla _cutDirection with a degrees value.
      */
-    Dir (x: number) {
+    dir (x: number) {
         this._customData._cutDirection = x
         return this; 
     }
 }
 
 
-export class Anim {
+export class Animation {
     _customData: {
         _animation: {
             _position?: vec3anim,
@@ -421,7 +421,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Position animation
      */
-    Pos (x: vec3anim) {
+    pos (x: vec3anim) {
         this._customData._animation._position = x
         return this;
     }
@@ -430,7 +430,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Definite position animation
      */
-    DefPos (x: vec3anim) {
+    defPos (x: vec3anim) {
         this._customData._animation._definitePosition = x
         return this;
     }
@@ -439,7 +439,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Rotation animation
      */
-    Rot (x: vec3anim) {
+    rot (x: vec3anim) {
         this._customData._animation._rotation = x
         return this;
     }
@@ -448,7 +448,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Local rotation animation
      */
-    LocRot (x: vec3anim) {
+    localRot (x: vec3anim) {
         this._customData._animation._localRotation = x
         return this;
     }
@@ -457,7 +457,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Scale animation
      */
-    Scale (x: vec3anim) {
+    scale (x: vec3anim) {
         this._customData._animation._scale = x
         return this;
     }
@@ -466,7 +466,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Dissolve animation
      */
-    Dis (x: vec1anim) {
+    dis (x: vec1anim) {
         this._customData._animation._dissolve = x
         return this;
     }
@@ -475,7 +475,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Dissolve arrow animation
      */
-    DisArr (x: vec1anim) {
+    disArr (x: vec1anim) {
         this._customData._animation._dissolveArrow = x
         return this;
     }
@@ -484,7 +484,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Dissolve arrow animation
      */
-    Interactable (x: vec1anim) {
+    interactable (x: vec1anim) {
         this._customData._animation._interactable = x
         return this;
     }
@@ -493,7 +493,7 @@ export class Anim {
      * @param {Array} x Keyframe array
      * @description Color animation
      */
-    Col (x: vec4anim) {
+    color (x: vec4anim) {
         this._customData._animation._color = x
         return this;
     }

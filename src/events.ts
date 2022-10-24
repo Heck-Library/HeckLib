@@ -38,60 +38,59 @@ export class AnimateTrack {
         this._time = time;
         return this;
     }
-    Track (track: Track) {
+    track (track: Track) {
         this._data._track = track
         return this
     }
-    Easing (easing: string) {
+    easing (easing: string) {
             this._data._easing = easing;
             return this
     }
-    Duration (duration: number) {
+    duration (duration: number) {
             this._data._duration = duration
             return this
     }
-    Pos (animation: vec3anim) {
+    pos (animation: vec3anim) {
             this._data._position = animation;
             return this
     }
-    LocPos (animation: vec3anim) {
+    localPos (animation: vec3anim) {
             this._data._localPosition = animation;
             return this
     }
-    Rot (animation: vec3anim) {
+    rot (animation: vec3anim) {
             this._data._rotation = animation;
             return this
     }
-    LocRot (animation: vec3anim) {
+    localRot (animation: vec3anim) {
             this._data._localRotation = animation;
             return this
     }
-    Scale (animation: vec3anim) {
+    scale (animation: vec3anim) {
             this._data._scale = animation;
             return this
     }
-    Color (animation: vec4anim) {
+    color (animation: vec4anim) {
             this._data._color = animation;
             return this
     }
-    Dis (animation: vec1anim) {
+    dis (animation: vec1anim) {
             this._data._dissolve = animation
             return this
     }
-    DisArr (animation: vec1anim) {
+    disArr (animation: vec1anim) {
             this._data._dissolveArrow = animation
             return this
     }
-    Interact (animation: vec1anim) {
+    interactable (animation: vec1anim) {
             this._data._interactable = animation
             return this
     }
-    Time (animation: vec1anim) {
+    time (animation: vec1anim) {
             this._data._time = animation
             return this
     }
-
-    Push () {
+    end () {
         const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
@@ -133,12 +132,12 @@ export class PathAnimation extends AnimateTrack {
         this._type = "AssignPathAnimation";
     }
 
-    DefPos (animation: vec3anim) {
+    defPos (animation: vec3anim) {
         this._data._definitePosition = animation;
         return this
     }
 
-    Push () {
+    end () {
         const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
@@ -173,7 +172,7 @@ export class TrackParent {
      * 
      * @param {string} x Parent track 
      */
-    Parent(x: string) {
+    parent(x: string) {
         this._data._parentTrack = x
         return this;
     }
@@ -181,12 +180,12 @@ export class TrackParent {
      * 
      * @param {string[]} x Children tracks 
      */
-    Children(x: string[]) {
+    children(x: string[]) {
         this._data._childrenTracks = x
         return this;
     } 
     
-    Push () {
+    end () {
         const d = this._data;
         if (!d._parentTrack) {
             throw new Error('No parent track given.')
@@ -216,11 +215,11 @@ export class PlayerTrack {
         this._data = {}
     }
 
-    Track(x: string) {
+    track(x: string) {
         this._data._track = x;
         return this;
     }
-    Push () {
+    end () {
         if (!this._data._track) throw new Error('no track set')
         events.push(this)
     }
