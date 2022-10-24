@@ -4,7 +4,7 @@ import { Track, vec3 } from './types.ts'
 export class Environment {
     e: {
         _id?: string
-        _lookupMethod?: string
+        _lookupMethod?: "Regex" | "Contains" | "Exact"
         _duplicate?: number
         _active?: boolean
         _scale?: vec3
@@ -21,7 +21,7 @@ export class Environment {
     }
 
     id(x: string) { this.e._id = x; return this }
-    method(x: string) { this.e._lookupMethod = x; return this }
+    method(x: "Regex" | "Contains" | "Exact") { this.e._lookupMethod = x; return this }
     duplicate(x: number) { this.e._duplicate = x; return this }
     active(x: boolean) { this.e._active = x; return this }
     scale(x: vec3) { this.e._scale = x; return this }
