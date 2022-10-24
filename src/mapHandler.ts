@@ -5,6 +5,7 @@ import { infoFile } from "./info.ts";
 // TODO make the script able to read and write .dat files
 
 export const pointDefinitions = ["NULL"];
+export let environment: any[];
 export let notes: any[];
 export let walls: any[];
 export let events: any[];
@@ -24,6 +25,7 @@ export function map(input: string, output: string, NJS: number, offset: number) 
     Deno.writeTextFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
     activeInput = input;
     activeOutput = output;
+
 
     notes = diff._notes;
     walls = diff._obstacles;
@@ -52,11 +54,12 @@ export function map(input: string, output: string, NJS: number, offset: number) 
     
     customData._customEvents = [];
     customData._pointDefinitions = [];
-    customData._environments = [];
+    customData._environment = [];
 
     //(output, JSON.stringify(diff, null, 4));
 
     events = diff._customData._customEvents;
+    environment = customData._environment;
     definitions = diff._customData._pointDefinitions;
 
     return diff;
@@ -120,7 +123,8 @@ export function finalize(difficulty: any) {
 
     console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + vanilla._notes.length + "\x1b[0m\nWalls: \x1b[32m\x1b[1m" + vanilla._obstacles.length + "\x1b[0m\n\n")
     console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + modded._notes.length + "\x1b[0m\n" + "Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\nWalls: \x1b[32m\x1b[1m" + modded._obstacles.length + "\x1b[0m\n\n")
-    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\nAnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\nPathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\nTrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\nPlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n");
+    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\nAnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\nPathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\nTrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\nPlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
+    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\nEnvironment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
 
     Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }
