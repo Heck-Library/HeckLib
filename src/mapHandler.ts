@@ -118,9 +118,9 @@ export function finalize(difficulty: any) {
         if (n._customData._fake) fakes++;
     })
 
-    console.log("=== VANILLA MAP INFO ===\n\nNotes: " + vanilla._notes.length + "\nWalls: " + vanilla._obstacles.length + "\n\n")
-    console.log("=== MODDED MAP INFO ===\n\nNotes: " + modded._notes.length + "\n" + "Fake Notes: " + fakes + "\n\nWalls: " + modded._obstacles.length + "\n\n")
-    console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT + "\n");
+    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + vanilla._notes.length + "\x1b[0m\nWalls: \x1b[32m\x1b[1m" + vanilla._obstacles.length + "\x1b[0m\n\n")
+    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + modded._notes.length + "\x1b[0m\n" + "Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\nWalls: \x1b[32m\x1b[1m" + modded._obstacles.length + "\x1b[0m\n\n")
+    console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\nAnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\nPathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\nTrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\nPlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n");
 
     Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }
