@@ -90,11 +90,8 @@ export class Settings {
         }
     };
 
-    constructor(filename: string) {
-        const a = new Info(filename);
-        const d = a.diff;
-
-        if (!d._settings) d._settings = {
+    constructor() {
+        this.s = {
             _playerOptions: {},
             _modifiers: {},
             _environments: {},
@@ -103,8 +100,6 @@ export class Settings {
             _chroma: {},
             _countersPlus: {}
         };
-
-        this.s = d;
     }
 
     //#region Player Options
