@@ -1,5 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 
+import { infoFile } from "./info.ts";
+
 // TODO make the script able to read and write .dat files
 
 export const pointDefinitions = ["NULL"];
@@ -12,6 +14,14 @@ export let activeOutput: string;
 
 export function map(input: string, output: string, NJS: number, offset: number) {
     const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
+    infoFile._difficultyBeatmapSets.forEach((x: any) => {
+        x._difficultyBeatmaps.forEach((y: any) => {
+            delete(y._settings)
+            delete(y._requirements)
+            delete(y._suggestions)
+        })
+    });
+    Deno.writeTextFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
     activeInput = input;
     activeOutput = output;
 
@@ -76,28 +86,8 @@ export function finalize(difficulty: any) {
     difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
     difficulty._events.sort((a: any, b: any) => a._time - b._time);
 
-    //const vanilla = JSON.parse(fs.readFileSync(activeInput));
-    const modded = difficulty
-
-    let animNotes = 0;
-    let animWalls = 0;
-
-    modded._notes.forEach(async (n: any) => {
-        const anim = await n._customData._animation;
-        if (typeof anim !== 'undefined'){
-            animNotes++;
-        } else {
-            delete(n._customData._animation)
-        }
-    });
-    modded._obstacles.forEach(async (n: any) => {
-        const anim = await n._customData._animation
-        if (typeof anim !== 'undefined'){
-            animWalls++;
-        } else {
-            delete(n._customData._animation)
-        }
-    });
+    const vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
+    const modded = JSON.parse(JSON.stringify(difficulty))
 
 
     let AT = 0;
@@ -105,8 +95,8 @@ export function finalize(difficulty: any) {
     let TP = 0;
     let PT = 0;
 
-    modded._customData._customEvents.forEach(async (e: any) => {
-        switch (await e._type) {
+    modded._customData._customEvents.forEach((e: any) => {
+        switch (e._type) {
             case "AnimateTrack":
                 AT++;
                 break;
@@ -120,24 +110,17 @@ export function finalize(difficulty: any) {
                 PT++;
                 break;
         }
+    });
+
+    let fakes = 0;
+
+    modded._notes.forEach((n: any) => {
+        if (n._customData._fake) fakes++;
     })
 
-    const mapInfo = {
-        v: {
-            //n: vanilla._notes.length,
-            //w: vanilla._obstacles.length
-        },
-        m: {
-            n: modded._notes.length,
-            aN: animNotes,
-            w: modded._obstacles.length,
-            aW: animWalls,
-        }
-    };
-
-    //console.log("=== VANILLA MAP INFO ===\n\nNotes: " + mapInfo.v.n + "\nWalls: " + mapInfo.v.w + "\n\n")
-    console.log("=== MODDED MAP INFO ===\n\nNormal Notes: " + mapInfo.m.n + "\nAnimated Notes: " + mapInfo.m.aN + "\n\nWalls: " + mapInfo.m.w + "\nAnimated Walls: " + mapInfo.m.aW + "\n\n")
-    console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT);
+    console.log("=== VANILLA MAP INFO ===\n\nNotes: " + vanilla._notes.length + "\nWalls: " + vanilla._obstacles.length + "\n\n")
+    console.log("=== MODDED MAP INFO ===\n\nNotes: " + modded._notes.length + "\n" + "Fake Notes: " + fakes + "\n\nWalls: " + modded._obstacles.length + "\n\n")
+    console.log("=== CUSTOM EVENTS INFO ===\n\nAnimateTracks: " + AT + "\nPathAnimations: " + PA + "\nTrackParents: " + TP + "\nPlayerTracks: " + PT + "\n");
 
     Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
 }

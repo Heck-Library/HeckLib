@@ -42,18 +42,6 @@ export function HSVtoRGB(h: any, s: number, v: number) {
     return [r, g, b];
 }
 
-export function toLinear (x: any) {
-    let inputKeyframe = x;
-    if (isArr(inputKeyframe)) {
-        for (let i = 0; i < inputKeyframe.length; i++) {
-            if (typeof inputKeyframe[i] === 'string') {
-                inputKeyframe.length = (i);
-            }
-        }
-    }
-    return inputKeyframe;
-}
-
 export function random(min: number, max: number, precision: number | null) {
     let p = 10;
     if (typeof precision !== 'undefined' && precision !== null) {
