@@ -19,9 +19,10 @@ export function filter(obj: any, start: number, end: number, type?: 0|1|3, direc
     if (obj == walls) {
         return walls.filter((w: { _time: number; }) => w._time >= start && w._time <= end);
     }
+    return notes[0];
 }
 
-export function track(note: any[], track: any[]|null) {
+export function track(note: any[], track: Track) {
     if (typeof track == 'undefined' || track == null) throw new Error("No track value given.")
     note.forEach((n: { _customData: any; }) => {
         const d = n._customData
@@ -34,8 +35,8 @@ export function track(note: any[], track: any[]|null) {
                     tracks.push(track);
             } else {
                 if (isArr(track)) {
-                    track.push(d._track);
-                    d._track = track;
+                    const a = [...track, d._track];
+                    d._track = a;
                 } else
                     d._track = [d._track, track];
             }
