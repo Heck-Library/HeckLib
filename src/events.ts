@@ -90,7 +90,7 @@ export class AnimateTrack {
             this._data._time = animation
             return this
     }
-    end () {
+    push () {
         const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
@@ -137,7 +137,7 @@ export class PathAnimation extends AnimateTrack {
         return this
     }
 
-    end () {
+    push () {
         const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
@@ -185,7 +185,7 @@ export class TrackParent {
         return this;
     } 
     
-    end () {
+    push () {
         const d = this._data;
         if (!d._parentTrack) {
             throw new Error('No parent track given.')
@@ -219,7 +219,7 @@ export class PlayerTrack {
         this._data._track = x;
         return this;
     }
-    end () {
+    push () {
         if (!this._data._track) throw new Error('no track set')
         events.push(this)
     }

@@ -36,6 +36,22 @@ export namespace Difficulty {
     }
 }
 
+export enum Shape {
+    Sphere = "Sphere",
+    Capsule = "Capsule",
+    Cylinder = "Cylinder",
+    Cube = "Cube",
+    Plane = "Plane",
+    Quad = "Quad",
+    Triangle = "Triangle"
+}
+
+export enum Shader {
+    Standard = "Standard",
+    OpaqueLight = "OpaqueLight",
+    TransparentLight = "TransparentLight"
+}
+
 export namespace ease {
     export enum In {
         Sine = "easeInSine",

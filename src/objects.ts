@@ -237,7 +237,7 @@ export class Note extends Object {
         return this;
     }
     //#endregion
-    end () {
+    push () {
         notes.push(this);
         return this;
     }
@@ -255,7 +255,7 @@ export class Wall extends Object {
         this._duration = x
         return this;
     }
-    end (edge?: number) {
+    push (edge?: number) {
         if (typeof edge !== 'undefined' && edge !== null && this._customData._scale) {
             if (!this._customData._animation._scale) {
                 this._customData._animation._scale = [edge, edge, edge];
