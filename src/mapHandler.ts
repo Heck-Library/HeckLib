@@ -126,11 +126,18 @@ export namespace Map {
         modded._notes.forEach((n: any) => {
             if (n._customData._fake) fakes++;
         })
-    
-        console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + vanilla._notes.length + "\x1b[0m\nWalls: \x1b[32m\x1b[1m" + vanilla._obstacles.length + "\x1b[0m\n\n")
-        console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\nNotes: \x1b[32m\x1b[1m" + modded._notes.length + "\x1b[0m\n" + "Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\nWalls: \x1b[32m\x1b[1m" + modded._obstacles.length + "\x1b[0m\n\n")
-        console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\nAnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\nPathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\nTrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\nPlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
-        console.log("\x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\nEnvironment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
+        console.log(" \x1b[5m\x1b[35m\x1b[1m __  __                 __      \x1b[37m__           __        ")
+        console.log(" \x1b[35m/\\ \\/\\ \\               /\\ \\  _ \x1b[37m/\\ \\       __/\\ \\       ")
+        console.log(" \x1b[35m\\ \\ \\_\\ \\     __    ___\\ \\ \\/ \\\x1b[37m\\ \\ \\     /\\_\\ \\ \\____  ")
+        console.log(" \x1b[35m \\ \\  _  \\  / __ \\ / ___\\ \\   < \x1b[37m\\ \\ \\    \\/\\ \\ \\  __ \\ ")
+        console.log(" \x1b[35m  \\ \\ \\ \\ \\/\\  __//\\ \\__/\\ \\ \\\\ \\\x1b[37m\\ \\ \\____\\ \\ \\ \\ \\_\\ \\")
+        console.log(" \x1b[35m   \\ \\_\\ \\_\\ \\____\\ \\____\\\\ \\_\\ \\_\x1b[37m\\ \\____/ \\ \\_\\ \\____/")
+        console.log(" \x1b[35m    \\/_/\\/_/\\/____/\\/____/ \\/_/\\/_/\x1b[37m\\/___/   \\/_/\\/___/ ")
+        console.log(" ")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + vanilla._notes.length + "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + vanilla._obstacles.length + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + modded._notes.length + "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + modded._obstacles.length + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
     
         Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
     }
