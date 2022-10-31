@@ -2,7 +2,7 @@
 
 import { infoFile } from "./info.ts";
 import { scuffedWallsInUse } from "./main.ts";
-import { existsSync } from "https://deno.land/std/fs/mod.ts";
+import { existsSync } from "https://deno.land/std@0.161.0/fs/mod.ts";
 
 
 export const pointDefinitions = ["NULL"];
