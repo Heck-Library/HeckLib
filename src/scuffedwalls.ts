@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 import { __dirname } from "./main.ts";
-import { vec2, vec3, vec4, vec1anim, vec3anim, vec4anim, Track, font } from "./types.ts";
+import { vec2, vec3, vec4, vec1anim, vec3anim, vec4anim, Track } from "./types.ts";
 
 // deno-lint-ignore-file no-namespace
 function swFormat(input: string) {
@@ -13,76 +13,7 @@ function swFormat(input: string) {
     Deno.writeTextFileSync('./temp/swTemp.sw', swFile)
 }
 
-class swJSON {
-    sw: {
-        HideMapInRPC: true,
-        MapFolderPath: string,
-        SWFilePath: string,
-        InfoPath: string
-        MapFilePath: string
-        OldMapPath: string
-        ClearConsoleOnRefresh: true,
-        IsAutoImportEnabled: true,
-        IsBackupEnabled: true,
-        Debug: false,
-        IsAutoSimplifyPointDefinitionsEnabled: true,
-        PrettyPrintJson: boolean,
-        BackupPaths: {
-            BackupFolderPath: string
-            BackupSWFolderPath: string
-            BackupMAPFolderPath: string
-        }
-    }
-    constructor(diffName: string) {
-        this.sw = {
-            HideMapInRPC: true,
-            MapFolderPath: __dirname + "temp",
-            SWFilePath: `${__dirname}temp\\swTemp.sw`,
-            InfoPath: __dirname + 'temp\\Info.dat',
-            MapFilePath: `${__dirname}temp\\tempOut.dat`,
-            OldMapPath: `${__dirname}temp\\temp.dat`,
-            ClearConsoleOnRefresh: true,
-            IsAutoImportEnabled: true,
-            IsBackupEnabled: true,
-            Debug: false,
-            IsAutoSimplifyPointDefinitionsEnabled: true,
-            PrettyPrintJson: true,
-            BackupPaths: {
-                BackupFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup`,
-                BackupSWFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup\\` + 'SW_History',
-                BackupMAPFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup\\` + 'Map_History'
-            }
-        }
-    }
-}
-
-export let scuffedWallsInUse = false;
-
 export namespace SW {
-
-    /**
-     * If scuffed walls should be enabled or not.
-     * @param enabled Wether scuffed walls should be enabled or not.
-     * @param diffName The difficulty that scuffed walls should apply to.
-     */
-    export function scuffedWalls(enabled: boolean, diffName: string) {
-        scuffedWallsInUse = enabled;
-        const thing = JSON.stringify({_version: "2.2.0", _notes: [],_obstacles: [],_events: []}, null, 4);
-        Deno.writeTextFileSync('./temp/temp.dat', thing)
-    
-        const swData = new swJSON(diffName)
-        Deno.writeTextFileSync('./temp/swTemp.sw',
-            "Workspace\n\n" +
-            "0: Import\n" +
-            "   Path:temp.dat"
-        )
-        Deno.writeTextFileSync('./ScuffedWalls.json', JSON.stringify(swData.sw, null, 2))
-    
-        const info = JSON.parse(Deno.readTextFileSync('./Info.dat'))
-        const e = JSON.stringify(info, null, 4).replace(diffName, "tempOut.dat");
-        Deno.writeTextFileSync('./temp/Info.dat', e)
-    }
-
     export class SWFunc {
         model: {
             time?: number
@@ -124,7 +55,7 @@ export namespace SW {
         }
         constructor(path: string) {
             this.model = {
-                fullPath: path
+                fullPath: __dirname + path
             }
         }
         time(x: number) {this.model.time = x; return this }
@@ -210,8 +141,8 @@ export namespace SW {
             AnimateScale?: vec3anim,
             AnimateInteractable?: vec1anim
         }
-        constructor(font: font) {
-            super(font);
+        constructor(path: string) {
+            super(path);
             this.texttowall = {
                 line: "text",
                 letting: 1,
