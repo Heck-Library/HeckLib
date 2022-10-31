@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
 import { infoFile } from "./info.ts";
+import { scuffedWallsInUse } from "./main.ts";
 
 
 export const pointDefinitions = ["NULL"];
@@ -139,6 +140,9 @@ export namespace Map {
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
     
-        Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4));
+        Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
+        if (scuffedWallsInUse) {
+            
+        }
     }
 }

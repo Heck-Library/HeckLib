@@ -1,8 +1,65 @@
 // deno-lint-ignore-file no-explicit-any prefer-const
+export let scuffedWallsInUse = false;
+export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
+
+class swJSON {
+    sw: {
+        HideMapInRPC: true,
+        MapFolderPath: string,
+        SWFilePath: string,
+        InfoPath: string
+        MapFilePath: string
+        OldMapPath: string
+        ClearConsoleOnRefresh: true,
+        IsAutoImportEnabled: true,
+        IsBackupEnabled: true,
+        Debug: false,
+        IsAutoSimplifyPointDefinitionsEnabled: true,
+        PrettyPrintJson: boolean,
+        BackupPaths: {
+            BackupFolderPath: string
+            BackupSWFolderPath: string
+            BackupMAPFolderPath: string
+        }
+    }
+    constructor(diffName: string) {
+        this.sw = {
+            HideMapInRPC: true,
+            MapFolderPath: __dirname + "temp",
+            SWFilePath: `${__dirname}temp\\swTemp.sw`,
+            InfoPath: __dirname + 'temp\\Info.dat',
+            MapFilePath: `${__dirname}temp\\tempOut.dat`,
+            OldMapPath: `${__dirname}temp\\temp.dat`,
+            ClearConsoleOnRefresh: true,
+            IsAutoImportEnabled: true,
+            IsBackupEnabled: true,
+            Debug: false,
+            IsAutoSimplifyPointDefinitionsEnabled: true,
+            PrettyPrintJson: true,
+            BackupPaths: {
+                BackupFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup`,
+                BackupSWFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup\\` + 'SW_History',
+                BackupMAPFolderPath: `${__dirname}temp\\${diffName.slice(0, -4)}Backup\\` + 'Map_History'
+            }
+        }
+    }
+}
 
 export function isPresent(x: any) {
     if (typeof x !== 'undefined' && x !== null) return true;
     return false;
+}
+
+export function scuffedWalls(enabled: boolean, diffName: string) {
+    scuffedWallsInUse = enabled;
+
+    const swData = new swJSON(diffName)
+    Deno.writeTextFileSync('./temp/swTemp.sw',
+        "Workspace\n\n" +
+        "0: Import\n" +
+        "   Path:temp/temp.dat"
+    )
+    Deno.writeTextFileSync('./ScuffedWalls.json', JSON.stringify(swData.sw, null, 2))
 }
 
 export function isArr (x: any) {
