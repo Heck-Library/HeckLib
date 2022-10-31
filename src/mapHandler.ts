@@ -2,6 +2,7 @@
 
 import { infoFile } from "./info.ts";
 import { scuffedWallsInUse } from "./main.ts";
+import { existsSync } from "https://deno.land/std/fs/mod.ts";
 
 
 export const pointDefinitions = ["NULL"];
@@ -73,6 +74,12 @@ export namespace Map {
     }
     
     export function finalize(difficulty: any) {
+        if (!scuffedWallsInUse) {
+            Deno.writeTextFileSync('./temp/nosw', "null")
+        } else {
+            if (existsSync('./temp/nosw'))
+                Deno.remove('./temp/nosw')
+        }
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
     
         const jsonP = Math.pow(10, precision);
