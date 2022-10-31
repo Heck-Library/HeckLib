@@ -1,4 +1,6 @@
-// deno-lint-ignore-file no-explicit-any prefer-const
+import { activeOutput } from "./mapHandler.ts";
+
+// deno-lint-ignore-file no-explicit-any prefer-const no-explicit-any
 export let scuffedWallsInUse = false;
 export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
@@ -52,6 +54,8 @@ export function isPresent(x: any) {
 
 export function scuffedWalls(enabled: boolean, diffName: string) {
     scuffedWallsInUse = enabled;
+    const thing = JSON.stringify({_version: "2.2.0", _notes: [],_obstacles: [],_events: []}, null, 4);
+    Deno.writeTextFileSync('./temp/temp.dat', thing)
 
     const swData = new swJSON(diffName)
     Deno.writeTextFileSync('./temp/swTemp.sw',
@@ -60,6 +64,11 @@ export function scuffedWalls(enabled: boolean, diffName: string) {
         "   Path:temp.dat"
     )
     Deno.writeTextFileSync('./ScuffedWalls.json', JSON.stringify(swData.sw, null, 2))
+
+    const info = JSON.parse(Deno.readTextFileSync('./Info.dat'))
+    info._difficultyBeatmapSets[0]._difficultyBeatmaps._beatmapFilename = "tempOut.dat"
+        console.log(info._difficultyBeatmapSets)
+    Deno.writeTextFileSync('./temp/Info.dat', JSON.stringify(info, null, 4))
 }
 
 export function isArr (x: any) {
