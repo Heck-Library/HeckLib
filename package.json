@@ -1,7 +1,0 @@
-{
-  "name": "jevk-script",
-  "scripts": {
-    "start": "deno run script.ts"
-  },
-  "type": "module"
-}
