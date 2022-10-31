@@ -57,7 +57,7 @@ export function scuffedWalls(enabled: boolean, diffName: string) {
     Deno.writeTextFileSync('./temp/swTemp.sw',
         "Workspace\n\n" +
         "0: Import\n" +
-        "   Path:temp/temp.dat"
+        "   Path:temp.dat"
     )
     Deno.writeTextFileSync('./ScuffedWalls.json', JSON.stringify(swData.sw, null, 2))
 }

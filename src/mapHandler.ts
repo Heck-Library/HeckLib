@@ -142,7 +142,24 @@ export namespace Map {
     
         Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
         if (scuffedWallsInUse) {
-            
+            const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
+            const tsNotes = ts._notes;
+            const tsWalls = ts._obstacles;
+            const tsEvents = ts._events;
+            const tsCustomEvents = ts._customData._customEvents;
+
+            const sw = JSON.parse(Deno.readTextFileSync('./temp/tempOut.dat'))
+            const swNotes = sw._notes;
+            const swWalls = sw._obstacles;
+            const swEvents = sw._events;
+            const swCustomEvents = sw._customData._customEvents;
+
+            tsNotes.push(...swNotes)
+            tsWalls.push(...swWalls)
+            tsEvents.push(...swEvents)
+            tsCustomEvents.push(...swCustomEvents)
+
+            Deno.writeTextFileSync(activeOutput, JSON.stringify(ts, null, 4))
         }
     }
 }
