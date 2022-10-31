@@ -1,5 +1,9 @@
 // deno-lint-ignore-file no-explicit-any prefer-const
 
+export function isPresent(x: any) {
+    if (typeof x !== 'undefined' && x !== null) return true;
+    return false;
+}
 
 export function isArr (x: any) {
     if (Array.isArray(x)) {

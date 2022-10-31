@@ -3,8 +3,5 @@
   "scripts": {
     "start": "deno run script.ts"
   },
-  "type": "module",
-  "dependencies": {
-    "mjs": "^1.0.0"
-  }
+  "type": "module"
 }
