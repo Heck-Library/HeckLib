@@ -95,9 +95,31 @@ export namespace Map {
         difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
         difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
         difficulty._events.sort((a: any, b: any) => a._time - b._time);
+
+        Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
+        if (scuffedWallsInUse) {
+            const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
+            const tsNotes = ts._notes;
+            const tsWalls = ts._obstacles;
+            const tsEvents = ts._events;
+            const tsCustomEvents = ts._customData._customEvents;
+
+            const sw = JSON.parse(Deno.readTextFileSync('./temp/tempOut.dat'))
+            const swNotes = sw._notes;
+            const swWalls = sw._obstacles;
+            const swEvents = sw._events;
+            const swCustomEvents = sw._customData._customEvents;
+
+            tsNotes.push(...swNotes)
+            tsWalls.push(...swWalls)
+            tsEvents.push(...swEvents)
+            tsCustomEvents.push(...swCustomEvents)
+
+            Deno.writeTextFileSync(activeOutput, JSON.stringify(ts, null, 4))
+        }
     
         const vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
-        const modded = JSON.parse(JSON.stringify(difficulty))
+        const modded = JSON.parse(Deno.readTextFileSync(activeOutput))
     
     
         let AT = 0;
@@ -139,27 +161,5 @@ export namespace Map {
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + modded._notes.length + "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + modded._obstacles.length + "\x1b[0m\n\n")
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
-    
-        Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
-        if (scuffedWallsInUse) {
-            const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
-            const tsNotes = ts._notes;
-            const tsWalls = ts._obstacles;
-            const tsEvents = ts._events;
-            const tsCustomEvents = ts._customData._customEvents;
-
-            const sw = JSON.parse(Deno.readTextFileSync('./temp/tempOut.dat'))
-            const swNotes = sw._notes;
-            const swWalls = sw._obstacles;
-            const swEvents = sw._events;
-            const swCustomEvents = sw._customData._customEvents;
-
-            tsNotes.push(...swNotes)
-            tsWalls.push(...swWalls)
-            tsEvents.push(...swEvents)
-            tsCustomEvents.push(...swCustomEvents)
-
-            Deno.writeTextFileSync(activeOutput, JSON.stringify(ts, null, 4))
-        }
     }
 }

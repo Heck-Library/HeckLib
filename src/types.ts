@@ -1,5 +1,6 @@
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
 import './consts.ts';
+import { Font } from './main.ts';
 
 
 export type Track = string|string[];
@@ -49,3 +50,5 @@ export type mat = {
     _track?: Track,
     _shaderKeywords?: string[]
 }
+
+export type font = Font.LiteFont

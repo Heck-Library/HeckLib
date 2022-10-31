@@ -52,6 +52,10 @@ export enum Shader {
     TransparentLight = "TransparentLight"
 }
 
+export enum Font {
+    LiteFont = "./models/litefont.dae"
+}
+
 export namespace ease {
     export enum In {
         Sine = "easeInSine",
