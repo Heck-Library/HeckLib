@@ -16,7 +16,7 @@ export class PointDefinition {
      * The name of a point definition
      */
 
-    Name (name: string) {
+    name (name: string) {
             if (!pointDefinitions.includes(name)) {
                 this._name = name;
                 return this;
@@ -27,7 +27,7 @@ export class PointDefinition {
      * An animation to add to the point definition
      */
 
-    Points (animation: vec1anim|vec3anim|vec4anim) {
+    points (animation: vec1anim|vec3anim|vec4anim) {
             this._points = animation;
             return this;
     }
@@ -36,7 +36,7 @@ export class PointDefinition {
      * Pushes the point definition to the map data.
      */
 
-    End () {
+    end () {
         if (typeof this._name !== 'undefined' && this._points.length > 0) {
             pointDefinitions.push(this._name);
             definitions.push(this);
