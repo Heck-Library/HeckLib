@@ -6,10 +6,6 @@ import { Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
  * Places an AnimateTrack event
  */
 export class AnimateTrack {
-    /**
-     * 
-     * @param {number} time 
-     */
     _time: number;
     _type: string;
     _data: {
@@ -33,63 +29,107 @@ export class AnimateTrack {
         this._type = "AnimateTrack"
         this._data = {}
     }
-
+    /**
+     * When the animation should start.
+     */
     setTime (time: number) {
         this._time = time;
         return this;
     }
+    /**
+     *  The track that should be animated.
+     */
     track (track: Track) {
         this._data._track = track
         return this
     }
+    /**
+     * Which easing the animation should use.
+     */
     easing (easing: string) {
             this._data._easing = easing;
             return this
     }
+    /**
+     * The duration of the animation (in beats).
+     */
     duration (duration: number) {
             this._data._duration = duration
             return this
     }
+    /**
+     * Animates position.
+     */
     pos (animation: vec3anim) {
             this._data._position = animation;
             return this
     }
+    /**
+     * Animates local position.
+     */
     localPos (animation: vec3anim) {
             this._data._localPosition = animation;
             return this
     }
+    /**
+     * Animates rotation.
+     */
     rot (animation: vec3anim) {
             this._data._rotation = animation;
             return this
     }
+    /**
+     * Animates local rotation.
+     */
     localRot (animation: vec3anim) {
             this._data._localRotation = animation;
             return this
     }
+    /**
+     * Animates scale.
+     */
     scale (animation: vec3anim) {
             this._data._scale = animation;
             return this
     }
+    /**
+     * Animates color.
+     */
     color (animation: vec4anim) {
             this._data._color = animation;
             return this
     }
+    /**
+     * Animates the dissolve.
+     */
     dis (animation: vec1anim) {
             this._data._dissolve = animation
             return this
     }
+    /**
+     * Animates the arrow dissolve.
+     */
     disArr (animation: vec1anim) {
             this._data._dissolveArrow = animation
             return this
     }
+    /**
+     * Animates interactability (can either be 0 or 1).
+     */
     interactable (animation: vec1anim) {
             this._data._interactable = animation
             return this
     }
+    /**
+     * Animates the time.
+     */
     time (animation: vec1anim) {
             this._data._time = animation
             return this
     }
+    /**
+     * Push the animation to map data.
+     */
     push () {
         const d = this._data;
         if (!d._track) {
@@ -121,10 +161,6 @@ export class PathAnimation extends AnimateTrack {
         _time?: vec1anim;
         _definitePosition?: vec3anim;
     };
-    /**
-     * 
-     * @param {number} time 
-     */
     // deno-lint-ignore no-explicit-any
     constructor(event: any, time: number) {
         super(event);
@@ -132,11 +168,17 @@ export class PathAnimation extends AnimateTrack {
         this._type = "AssignPathAnimation";
     }
 
+    /**
+     * Animates definite position.
+     */
     defPos (animation: vec3anim) {
         this._data._definitePosition = animation;
         return this
     }
 
+    /**
+     * Push the animation to map data.
+     */
     push () {
         const d = this._data;
         if (!d._track) {
@@ -158,10 +200,7 @@ export class TrackParent {
         _parentTrack?: string,
         _childrenTracks?: string[]
     }
-    /**
-     * 
-     * @param {number} time 
-     */
+
     constructor(time: number) {
         this._time = time;
         this._type = "AssignTrackParent";
@@ -169,22 +208,24 @@ export class TrackParent {
     }
 
     /**
-     * 
-     * @param {string} x Parent track 
+     * The name of the parent track.
      */
     parent(x: string) {
         this._data._parentTrack = x
         return this;
     }
+
     /**
-     * 
-     * @param {string[]} x Children tracks 
+     * The name of the child track.
      */
     children(x: string[]) {
         this._data._childrenTracks = x
         return this;
     } 
     
+    /**
+     * Push the track parent to the map data.
+     */
     push () {
         const d = this._data;
         if (!d._parentTrack) {
@@ -205,20 +246,23 @@ export class PlayerTrack {
     _data: {
         _track?: string
     }
-    /**
-     * 
-     * @param {number} time 
-     */
+
     constructor(time: number) {
         this._time = time;
         this._type = "AssignPlayerToTrack";
         this._data = {}
     }
 
+    /**
+     * The name of the track that the player should be assigned to.
+     */
     track(x: string) {
         this._data._track = x;
         return this;
     }
+    /**
+     * Push the player track to the map data.
+     */
     push () {
         if (!this._data._track) throw new Error('no track set')
         events.push(this)

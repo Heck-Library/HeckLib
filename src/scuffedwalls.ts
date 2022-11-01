@@ -60,6 +60,11 @@ export let scuffedWallsInUse = false;
 
 export namespace SW {
 
+    /**
+     * If scuffed walls should be enabled or not.
+     * @param enabled Wether scuffed walls should be enabled or not.
+     * @param diffName The difficulty that scuffed walls should apply to.
+     */
     export function scuffedWalls(enabled: boolean, diffName: string) {
         scuffedWallsInUse = enabled;
         const thing = JSON.stringify({_version: "2.2.0", _notes: [],_obstacles: [],_events: []}, null, 4);

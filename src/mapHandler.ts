@@ -19,7 +19,13 @@ export let activeInput: string;
 export let activeOutput: string;
 
 export namespace Map {
-    export function map(input: string, output: string, NJS: number, offset: number) {
+    /**
+     * @param input The input file for the difficulty.
+     * @param output The output file for the difficulty.
+     * @param NJS The NJS of the new difficulty. 
+     * @param offset The offset of the new difficulty.
+     */
+    export function initialize(input: string, output: string, NJS: number, offset: number) {
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
@@ -73,6 +79,9 @@ export namespace Map {
         return diff;
     }
     
+    /**
+     * @param difficulty The difficulty that the map should be written to.
+     */
     export function finalize(difficulty: any) {
         if (!scuffedWallsInUse) {
             Deno.writeTextFileSync('./temp/nosw', "null")

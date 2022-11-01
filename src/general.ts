@@ -15,6 +15,14 @@ export function isArr (x: any) {
     } else return false;
 }
 
+/**
+ * A function to convert HSV to RGB
+ * @param h Hue
+ * @param s Saturation
+ * @param v Value
+ * @returns RGB
+ */
+
 export function HSVtoRGB(h: any, s: number, v: number) {
     let r: number, g: number, b: number, i: number, f: number, p: number, q: number, t: number;
     if (arguments.length === 1) {
@@ -49,6 +57,14 @@ export function HSVtoRGB(h: any, s: number, v: number) {
     }
     return [r, g, b];
 }
+
+/**
+ * A function to get a random number between two numbers
+ * @param min Minimum value
+ * @param max Maximum value
+ * @param precision What decimal place to round to
+ * @returns Random number
+ */
 
 export function random(min: number, max: number, precision: number | null) {
     let p = 10;
