@@ -67,7 +67,7 @@ export namespace Map {
         customData._customEvents = [];
         customData._pointDefinitions = [];
         customData._environment = [];
-        customData._materials = [];
+        customData._materials = {};
     
         //(output, JSON.stringify(diff, null, 4));
     
@@ -111,6 +111,10 @@ export namespace Map {
         difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
         difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
         difficulty._events.sort((a: any, b: any) => a._time - b._time);
+
+        if (difficulty._customData._materials.length < 1) {
+            delete(difficulty._customData._materials)
+        }
 
         Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
         if (scuffedWallsInUse) {

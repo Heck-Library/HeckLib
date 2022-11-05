@@ -17,6 +17,12 @@ export class Environment {
         _localRotation?: vec3
         _lightID?: number
         _track?: Track
+        _geometry?: {
+            _type: geoShape,
+            _material: string | mat,
+            _collision?: boolean,
+            _track?: Track
+        }
     }
 
     constructor() {
@@ -70,6 +76,24 @@ export class Environment {
     /**
      * Push the environment piece to the map data.
      */
+    
+    geometry() { this.e._geometry = { _type: Shape.Cube, _material: { _color: [1, 1, 1, 1], _shader: Shader.Standard } }; return this; }
+
+    shape(x: geoShape) {
+        if (!this.e._geometry) return this;
+        this.e._geometry._type = x;
+        return this;
+    }
+    material(x: string | mat) {
+        if (!this.e._geometry) return this;
+        this.e._geometry._material = x;
+        return this;
+    }
+    collision(x: boolean) {
+        if (!this.e._geometry) return this;
+        this.e._geometry._collision = x;
+        return this;
+    }
     push() {
         environment.push(this.e);
     }
@@ -110,44 +134,7 @@ export class Material {
     /**
      * Push the material to the map data.
      */
-    push() { materials.push(this.stuff) }
-}
-
-export class Geometry extends Environment{
-    geometry: any
-    e: {
-        _type: geoShape,
-        _material: string | mat,
-        _collision?: boolean,
-        _track?: Track
-    }
-    constructor() {
-        super();
-        this.e = {
-            _type: Shape.Cube,
-            _material: {
-                _color: [1, 1, 1, 1],
-                _shader: Shader.Standard
-            }
-        }
-    }
-    /**
-     * The shape of the geometry.
-     */
-    shape(x: geoShape) { this.e._type = x; return this}
-    /**
-     * Which material the geometry should use.
-     */
-    material(x: string | mat) { this.e._material = x; return this }
-    /**
-     * If the material should have collision or not
-     */
-    collision(x: boolean) { this.e._collision = x; return this }
-    /**
-     * Push the geometry to the map data.
-     */
     push() {
-        this.geometry = {geometry: this.e};
-        environment.push(this.geometry)
+        Object.assign(materials, this.stuff);
     }
 }
