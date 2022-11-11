@@ -1,6 +1,6 @@
 
 
-import { events } from "./mapHandler.ts";
+import { events, V3 } from "./mapHandler.ts";
 import { Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
 /**
  * Places an AnimateTrack event
@@ -131,15 +131,25 @@ export class AnimateTrack {
      * Push the animation to map data.
      */
     push () {
+        let data = JSON.stringify(this);
+
+        if (V3) {
+            data = data.replace(/_/g, "")
+                .replace("time", "b")
+                .replace("type", "t")
+                .replace("data", "d")
+                .replace("\"position\"", "\"offsetPosition\"")
+                .replace("\"rotation\"", "\"offsetWorldRotation\"");
+        }
+
+        data = JSON.parse(data)
+
         const d = this._data;
         if (!d._track) {
             throw new Error('No track given.')
         }
-        if (!d._duration) {
-            throw new Error('No duration given.')
-        }
 
-        events.push(this)
+        events.push(data)
 
         return this;
     }
@@ -162,7 +172,7 @@ export class PathAnimation extends AnimateTrack {
         _definitePosition?: vec3anim;
     };
     // deno-lint-ignore no-explicit-any
-    constructor(event: any, time: number) {
+    constructor(time: number, event?: any) {
         super(event);
         this._time = time;
         this._type = "AssignPathAnimation";
@@ -174,22 +184,6 @@ export class PathAnimation extends AnimateTrack {
     defPos (animation: vec3anim) {
         this._data._definitePosition = animation;
         return this
-    }
-
-    /**
-     * Push the animation to map data.
-     */
-    push () {
-        const d = this._data;
-        if (!d._track) {
-            throw new Error('No track given.')
-        }
-        if (typeof d._duration !== 'undefined' || d._duration !== null) {
-            throw new Error('Path animation doesn\'t use duration.')
-        }
-        events.push(this)
-
-        return this;
     }
 }
 
@@ -227,6 +221,16 @@ export class TrackParent {
      * Push the track parent to the map data.
      */
     push () {
+        let data = JSON.stringify(this);
+
+        if (V3) {
+            data = data.replace(/_/g, "")
+                .replace("time", "b")
+                .replace("type", "t")
+                .replace("data", "d");
+        }
+
+        data = JSON.parse(data)
         const d = this._data;
         if (!d._parentTrack) {
             throw new Error('No parent track given.')
@@ -234,7 +238,7 @@ export class TrackParent {
         if (!d._childrenTracks) {
             throw new Error('No children tracks given.')
         }
-        events.push(this)
+        events.push(data)
 
         return this;
     }
@@ -264,7 +268,17 @@ export class PlayerTrack {
      * Push the player track to the map data.
      */
     push () {
+        let data = JSON.stringify(this);
+
+        if (V3) {
+            data = data.replace(/_/g, "")
+                .replace("time", "b")
+                .replace("type", "t")
+                .replace("data", "d");
+        }
+
+        data = JSON.parse(data)
         if (!this._data._track) throw new Error('no track set')
-        events.push(this)
+        events.push(data)
     }
 }
