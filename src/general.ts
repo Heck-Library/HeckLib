@@ -66,7 +66,7 @@ export function HSVtoRGB(h: any, s: number, v: number) {
  * @returns Random number
  */
 
-export function random(min: number, max: number, precision: number | null) {
+export function random(min: number, max: number, precision?: number) {
     let p = 10;
     if (typeof precision !== 'undefined' && precision !== null) {
         p = Math.pow(p, precision);

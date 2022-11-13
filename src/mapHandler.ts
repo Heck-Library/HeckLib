@@ -13,6 +13,7 @@ export let events: any[];
 export let materials: any[];
 export let geometry: any[];
 export let definitions: any[];
+export let fakeNotes: any[];
 
 export let activeInput: string;
 export let activeOutput: string;
@@ -124,6 +125,7 @@ export namespace Map {
             environment = customData.environment;
             definitions = diff.customData.pointDefinitions;
             materials = customData.materials;
+            fakeNotes = customData.fakeColorNotes;
         }
     
         return diff;
@@ -160,6 +162,8 @@ export namespace Map {
         let TP = 0;
         let PT = 0;
         let fakes = 0;
+        let NotesCount = [0, 0];
+        let WallsCount = [0, 0];
 
         if (!V3) {
             difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
@@ -214,7 +218,9 @@ export namespace Map {
         
             modded._notes.forEach((n: any) => {
                 if (n._customData._fake) fakes++;
-            })
+            });
+            WallsCount = [ vanilla._obstacles.length, modded._obstacles.length ];
+            NotesCount = [ vanilla._notes.length, modded._notes.length ];
         }
         if (V3) {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
@@ -245,7 +251,13 @@ export namespace Map {
                         break;
                 }
             });
+            WallsCount = [ vanilla.obstacles.length, modded.obstacles.length ];
+            NotesCount = [ vanilla.colorNotes.length, modded.colorNotes.length ];
+            fakes = modded.customData.fakeColorNotes.length;
         }
+
+        
+        
 
         console.log(" \x1b[5m\x1b[35m\x1b[1m __  __                 __      \x1b[37m__           __        ")
         console.log(" \x1b[35m/\\ \\/\\ \\               /\\ \\  _ \x1b[37m/\\ \\       __/\\ \\       ")
@@ -256,8 +268,8 @@ export namespace Map {
         console.log(" \x1b[35m    \\/_/\\/_/\\/____/\\/____/ \\/_/\\/_/\x1b[37m\\/___/   \\/_/\\/___/ ")
         console.log(" \x1b[0m ")
         console.log(" ======================================================= \n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + vanilla.colorNotes.length + "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + vanilla.obstacles.length + "\x1b[0m\n\n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + modded.colorNotes.length + "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + modded.customData.fakeColorNotes.length + "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + modded.obstacles.length + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[0] + "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + WallsCount[0] + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[1] + "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + WallsCount[1] + "\x1b[0m\n\n")
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
     }
