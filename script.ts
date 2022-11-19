@@ -1,34 +1,20 @@
-import { AnimateTrack, ease, Map, PathAnimation, PlayerTrack, random, TrackParent } from "./src/main.ts";
-const INPUT = 'ExpertStandard.dat'
+import { AnimateTrack, CustomData, ease, filter, Map, notes, PathAnimation, PlayerTrack, random, Requirement, Settings, track, TrackParent, Wall } from "./src/main.ts";
+const INPUT = 'temp.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, 16, 0)
 
 // #region Noodle stuff below
 
-new AnimateTrack(4)
-    .track("scsads")
-    .duration(2)
-    .color([0, 0, 0, 1]);
+track(filter(notes, 8, 16), ["deez", "nuts"]);
 
-new AnimateTrack(2)
-    .track("osdkoasd")
-    .duration(2)
-
-new TrackParent(3)
-    .children(["dsasd"])
-    .parent("deez")
-
-new PathAnimation(2)
-    .track("deez")
-    .pos([
-        [0, random(5, 10), 0, 0],
-        [0, 0, 0, 0.45, ease.Out.Circ]
-    ])
-
-new PlayerTrack(2)
-    .track("cum")
+new Requirement("ExpertPlusLawless.dat")
+    .chroma()
+    .noodle()
+    .cinema()
     
+new PathAnimation(8).track("deez").duration(2).pos([0, 0, 0]).color("d").dis([0]).disArr([1]).rot("sdasd")
+
 // #endregion Noodle stuff above
 
 Map.finalize(difficulty);

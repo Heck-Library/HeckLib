@@ -164,7 +164,6 @@ export class AnimateTrack {
         if (!V3) delete tempEvent._data[param]
         if (V3) delete tempEvent.d[param]
         const bbbb = JSON.stringify(tempEvent)
-
         if (aaaa.includes(bbbb)) {
             events.pop()
         }

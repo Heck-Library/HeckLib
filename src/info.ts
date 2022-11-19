@@ -37,7 +37,8 @@ export class Suggestion {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
-            y._suggestions = this.s;
+            if (!y._customData) y._customData = {};
+            y._customData._suggestions = this.s;
           }
         });
       }
@@ -57,7 +58,7 @@ export class Requirement {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
-            y._requirements = this.r;
+            if (!y._customData) y._customData = {};
           }
         });
       }
@@ -94,7 +95,8 @@ export class Requirement {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
-            y._requirements = this.r;
+            if (!y._customData) y._customData = {};
+            y._customData._requirements = this.r;
           }
         });
       }
