@@ -13,8 +13,8 @@ export class Cinema {
         playbackSpeed?: number
         loop?: boolean
         endVideoAt?: number
-        screenPosition?: vec3
-        screenRotation?: vec3
+        screenPosition?: {x:number, y:number, z:number}
+        screenRotation?: {x:number, y:number, z:number}
         screenHeight?: number
         screenCurvature?: number
         screenSubsurfaces?: number
@@ -75,8 +75,16 @@ export class Cinema {
     playbackSpeed(x: number) { this.config.playbackSpeed = x; return this;}
     loop(x: boolean) { this.config.loop = x; return this;}
     endVideoAt(x: number) { this.config.endVideoAt = x; return this;}
-    position(x: vec3) { this.config.screenPosition = x; return this;}
-    rotation(x: vec3) { this.config.screenRotation = x; return this;}
+    position(pos: vec3) { this.config.screenPosition = {
+        x: pos[0],
+        y: pos[1],
+        z: pos[2]
+    }; return this;}
+    rotation(rot: vec3) { this.config.screenRotation = {
+        x: rot[0],
+        y: rot[1],
+        z: rot[2]
+    }; return this;}
     height(x: number) { this.config.screenHeight = x; return this;}
     curvature(x: number) { this.config.screenCurvature = x; return this;}
     subsurfaces(x: number) { this.config.screenSubsurfaces = x; return this;}
