@@ -1,4 +1,4 @@
-import { AnimateTrack, CustomData, ease, filter, Map, notes, PathAnimation, PlayerTrack, random, Requirement, Settings, track, TrackParent, Wall } from "./src/main.ts";
+import { AnimateTrack, Cinema, CustomData, ease, filter, Map, notes, PathAnimation, PlayerTrack, random, Requirement, Settings, Suggestion, track, TrackParent, Wall } from "./src/main.ts";
 const INPUT = 'temp.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
@@ -12,7 +12,10 @@ new Requirement("ExpertPlusLawless.dat")
     .chroma()
     .noodle()
     .cinema()
-    
+
+new Cinema("cum")
+    .author("dees")
+    .push();
 new PathAnimation(8).track("deez").duration(2).pos([0, 0, 0]).color("d").dis([0]).disArr([1]).rot("sdasd")
 
 // #endregion Noodle stuff above

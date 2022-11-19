@@ -167,7 +167,7 @@ export class Cinema {
         return this;
     }
     push() {
-        Deno.writeTextFileSync('Cinema.json', JSON.stringify(this.config, null, 4));
+        Deno.writeTextFileSync('cinema-video.json', JSON.stringify(this.config, null, 4));
     }
     //#endregion
 } 
