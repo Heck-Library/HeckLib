@@ -34,7 +34,6 @@ export class AnimateTrack {
      */
     track (track: Track) {
         this._data._track = track
-        this.push("_track");
         return this
     }
     /**
@@ -42,7 +41,6 @@ export class AnimateTrack {
      */
     easing (easing: string) {
             this._data._easing = easing;
-            this.push("_easing");
             return this
     }
     /**
@@ -50,7 +48,6 @@ export class AnimateTrack {
      */
     duration (duration: number) {
             this._data._duration = duration
-            this.push("_duration");
             return this
     }
     /**
@@ -58,7 +55,6 @@ export class AnimateTrack {
      */
     pos (animation: vec3anim) {
             this._data._position = animation;
-            this.push("_position");
             return this
     }
     /**
@@ -66,7 +62,6 @@ export class AnimateTrack {
      */
     localPos (animation: vec3anim) {
             this._data._localPosition = animation;
-            this.push("_localPosition");
             return this
     }
     /**
@@ -74,7 +69,6 @@ export class AnimateTrack {
      */
     rot (animation: vec3anim) {
             this._data._rotation = animation;
-            this.push("_rotation");
             return this
     }
     /**
@@ -82,7 +76,6 @@ export class AnimateTrack {
      */
     localRot (animation: vec3anim) {
             this._data._localRotation = animation;
-            this.push("_localRotation");
             return this
     }
     /**
@@ -90,7 +83,6 @@ export class AnimateTrack {
      */
     scale (animation: vec3anim) {
             this._data._scale = animation;
-            this.push("_scale");
             return this
     }
     /**
@@ -98,7 +90,6 @@ export class AnimateTrack {
      */
     color (animation: vec4anim) {
             this._data._color = animation;
-            this.push("_color");
             return this
     }
     /**
@@ -106,7 +97,6 @@ export class AnimateTrack {
      */
     dis (animation: vec1anim) {
             this._data._dissolve = animation
-            this.push("_dissolve");
             return this
     }
     /**
@@ -114,7 +104,6 @@ export class AnimateTrack {
      */
     disArr (animation: vec1anim) {
             this._data._dissolveArrow = animation
-            this.push("_dissolveArrow");
             return this
     }
     /**
@@ -122,7 +111,6 @@ export class AnimateTrack {
      */
     interactable (animation: vec1anim) {
             this._data._interactable = animation
-            this.push("_interactable");
             return this
     }
     /**
@@ -130,13 +118,12 @@ export class AnimateTrack {
      */
     time (animation: vec1anim) {
             this._data._time = animation
-            this.push("_time");
             return this
     }
     /**
      * Push the animation to map data.
      */
-    private push (param: string) {
+    push () {
         
         let data = JSON.stringify(this);
 
@@ -145,9 +132,6 @@ export class AnimateTrack {
                 .replace("time", "b")
                 .replace("type", "t")
                 .replace("data", "d")
-                .replace("\"position\"", "\"offsetPosition\"")
-                .replace("\"rotation\"", "\"offsetWorldRotation\"");
-            param = param.replace(/_/g, "")
                 .replace("\"position\"", "\"offsetPosition\"")
                 .replace("\"rotation\"", "\"offsetWorldRotation\"");
         }
@@ -159,14 +143,6 @@ export class AnimateTrack {
             throw new Error('No track given.')
         }
 
-        const aaaa = JSON.stringify(events);
-        const tempEvent = JSON.parse(JSON.stringify(data));
-        if (!V3) delete tempEvent._data[param]
-        if (V3) delete tempEvent.d[param]
-        const bbbb = JSON.stringify(tempEvent)
-        if (aaaa.includes(bbbb)) {
-            events.pop()
-        }
         events.push(data)
         return this;
     }
@@ -223,7 +199,6 @@ export class TrackParent {
      */
     parent(x: string) {
         this._data._parentTrack = x
-        this.push("_parentTrack")
         return this;
     }
 
@@ -232,14 +207,13 @@ export class TrackParent {
      */
     children(x: string[]) {
         this._data._childrenTracks = x
-        this.push("_childrenTracks")
         return this;
     } 
     
     /**
      * Push the track parent to the map data.
      */
-    private push (param: string) {
+    push () {
         let data = JSON.stringify(this);
 
         if (V3) {
@@ -247,20 +221,9 @@ export class TrackParent {
                 .replace("time", "b")
                 .replace("type", "t")
                 .replace("data", "d");
-            param = param.replace(/_/g, "")
         }
 
         data = JSON.parse(data)
-
-        const aaaa = JSON.stringify(events);
-        const tempEvent = JSON.parse(JSON.stringify(data));
-        if (!V3) delete tempEvent._data[param]
-        if (V3) delete tempEvent.d[param]
-        const bbbb = JSON.stringify(tempEvent)
-
-        if (aaaa.includes(bbbb)) {
-            events.pop()
-        }
         events.push(data)
 
         return this;
@@ -296,7 +259,10 @@ export class PlayerTrack {
 
         data = JSON.parse(data)
         if (!this._data._track) throw new Error('no track set')
-        events.push(data)
+        return this;
+    }
+    push() {
+        events.push(this)
         return this;
     }
 }
