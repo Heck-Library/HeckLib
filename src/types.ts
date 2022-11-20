@@ -42,8 +42,8 @@ export type energy = "Bar" | "Battery";
 export type speed = "Normal" | "Faster" | "Slower" | "SuperFast";
 export type enabledWall = "All" | "FullHeightOnly" | "NoObstacles";
 
-export type geoShape = Shape.Capsule | Shape.Cube | Shape.Cylinder | Shape.Plane | Shape.Quad | Shape.Sphere | Shape.Triangle;
-export type shaderType = Shader.OpaqueLight | Shader.TransparentLight | Shader.Standard;
+export type geoShape = string | Shape.Capsule | Shape.Cube | Shape.Cylinder | Shape.Plane | Shape.Quad | Shape.Sphere | Shape.Triangle;
+export type shaderType = string | Shader.OpaqueLight | Shader.TransparentLight | Shader.Standard;
 export type mat = {
     _color: vec4,
     _shader: shaderType,
