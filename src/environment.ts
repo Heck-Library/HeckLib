@@ -2,7 +2,7 @@
 
 import { Shader, Shape } from './consts.ts'
 import { environment, materials } from './mapHandler.ts'
-import { geoShape, Track, vec3, vec4, shaderType, mat } from './types.ts'
+import { geoShape, Track, vec3, shaderType, mat } from './types.ts'
 
 export class Environment {
     e: {
@@ -80,7 +80,7 @@ export class Environment {
      * Which track the environment piece should be assigned to.
      */
     track(x: Track) { this.e._track = x; return this }
-    geometry() { this.e._geometry = { _type: Shape.Cube, _material: { _color: [1, 1, 1, 1], _shader: Shader.Standard } }; return this; }
+    geometry() { this.e._geometry = { _type: Shape.Cube, _material: { _color: [1, 1, 1], _shader: Shader.Standard } }; return this; }
 
     shape(x: geoShape) {
         if (!this.e._geometry) return this;
@@ -109,14 +109,14 @@ export class Environment {
 export class Material {
     stuff: any
     m: {
-        _color: vec4,
+        _color: vec3,
         _shader: shaderType,
         _track?: Track,
         _shaderKeywords?: any[]
     }
     constructor(name: string) {
         this.m = {
-            _color: [0, 0, 0, 0],
+            _color: [0, 0, 0],
             _shader: Shader.Standard
         }
         const m = this.m;
@@ -125,7 +125,7 @@ export class Material {
     /**
      * The color of the material.
      */
-    color(x: vec4) { this.stuff[Object.keys(this.stuff)[0]]._color = x; return this; }
+    color(x: vec3) { this.stuff[Object.keys(this.stuff)[0]]._color = x; return this; }
     /**
      * Which shader the material should use.
      */

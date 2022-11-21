@@ -45,7 +45,7 @@ export type enabledWall = "All" | "FullHeightOnly" | "NoObstacles";
 export type geoShape = string | Shape.Capsule | Shape.Cube | Shape.Cylinder | Shape.Plane | Shape.Quad | Shape.Sphere | Shape.Triangle;
 export type shaderType = string | Shader.OpaqueLight | Shader.TransparentLight | Shader.Standard;
 export type mat = {
-    _color: vec4,
+    _color: vec3,
     _shader: shaderType,
     _track?: Track,
     _shaderKeywords?: string[]
