@@ -117,12 +117,13 @@ export class Material {
         _color: vec3,
         _shader: shaderType,
         _track?: Track,
-        _shaderKeywords?: any[]
+        _shaderKeywords?: string[]
     }
     constructor(name: string) {
         this.m = {
             _color: [0, 0, 0],
-            _shader: Shader.Standard
+            _shader: Shader.Standard,
+            _shaderKeywords: []
         }
         const m = this.m;
         this.stuff = JSON.parse(`{"${name}": {"_color": ${JSON.stringify(m._color)},"_shader": ${JSON.stringify(m._shader)}}}`);
