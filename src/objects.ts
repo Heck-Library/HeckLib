@@ -115,6 +115,7 @@ export class Object {
         _rotation?: vec3;
         _localRotation?: vec3;
         _scale?: vec3;
+        _size?: vec3;
         _noteJumpMovementSpeed?: number;
         _noteJumpStartBeatOffset?: number;
         _fake?: boolean;
@@ -157,7 +158,7 @@ export class Object {
     /**
      * The line that should be applied to this object.
      */
-    lineIndex(x: 0 | 1 | 3) {
+    lineIndex(x: 0 | 1 | 2 | 3) {
         this._lineIndex = x;
         return this;
     }
@@ -186,7 +187,9 @@ export class Object {
      * The scale that should be applied to this object.
      */
     scale(x: vec3) {
-        this._customData._scale = x;
+        if (V3) {
+            this._customData._size = x;
+        } else this._customData._scale = x;
         return this;
     }
     /**

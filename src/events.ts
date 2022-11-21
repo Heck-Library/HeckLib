@@ -151,7 +151,7 @@ export class AnimateTrack {
 export class PathAnimation extends AnimateTrack {
     declare _data: {
         _track?: Track;
-        _duration?: number;
+        _duration?: undefined;
         _easing?: string;
         _position?: vec3anim;
         _rotation?: vec3anim;
@@ -161,7 +161,7 @@ export class PathAnimation extends AnimateTrack {
         _dissolve?: vec1anim;
         _dissolveArrow?: vec1anim;
         _interactable?: vec1anim;
-        _time?: vec1anim;
+        _time?: undefined;
         _definitePosition?: vec3anim;
     };
     // deno-lint-ignore no-explicit-any
