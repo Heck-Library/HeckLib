@@ -112,7 +112,7 @@ export class Material {
         _color: vec4,
         _shader: shaderType,
         _track?: Track,
-        _shaderKeywords?: string[]
+        _shaderKeywords?: any[]
     }
     constructor(name: string) {
         this.m = {
