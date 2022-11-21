@@ -28,22 +28,27 @@ export class Environment {
     constructor() {
         this.e = {}
     }
-
-    /**
-     * The id of the environment piece.
-     */
-    id(x: string|RegExp) {
+    regex(x: string|RegExp) {
         let id;
         if (typeof x !== 'string') {
             id = x.toString().replace("/", "").replace(/\/$/, "").replace(/\\/g, "\\\\")
-        } else id = x;
+        } else {
+            id = x.replace(/\\/,"\\\\");
+        }
         this.e._id = id;
+        this.e._lookupMethod = "Regex"
         return this
     }
-    /**
-     * The lookup method to use.
-     */
-    method(x: "Regex" | "Contains" | "Exact") { this.e._lookupMethod = x; return this }
+    contains(x: string) {
+        this.e._id = x;
+        this.e._lookupMethod = "Contains"
+        return this
+    }
+    exact(x: string) {
+        this.e._id = x;
+        this.e._lookupMethod = "Exact"
+        return this
+    }
     /**
      * How many times to duplicate the environment piece.
      */
