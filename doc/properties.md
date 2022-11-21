@@ -13,7 +13,3 @@ The following parameters can be used in material shaders.
 - `Shader.Standard`
 - `Shader.OpaqueLight`
 - `Shader.TransparentLight`
-  
-# Shader keywords
-The following parameters can be used in shader keywords.
-- `
