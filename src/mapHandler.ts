@@ -26,15 +26,15 @@ export namespace Map {
      * @param NJS The NJS of the new difficulty. 
      * @param offset The offset of the new difficulty.
      */
-    function isV3(diffName: string) {
-        const diff = JSON.parse(Deno.readTextFileSync(diffName));
+    async function isV3(diffName: string) {
+        const diff = JSON.parse(await Deno.readTextFile(diffName));
 
         if (typeof diff._version !== 'undefined') V3 = false;
         if (typeof diff.version !== 'undefined') V3 = true;
     }
-    export function initialize(input: string, output: string, NJS: number, offset: number) {
+    export async function initialize(input: string, output: string, NJS: number, offset: number) {
         isV3(`./${input}`);
-        const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
+        const diff = JSON.parse(await Deno.readTextFile(`./${input}`));
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
                 delete(y._settings)
@@ -134,7 +134,8 @@ export namespace Map {
     /**
      * @param difficulty The difficulty that the map should be written to.
      */
-    export function finalize(difficulty: any) {
+    export async function finalize(diff: any) {
+        const difficulty = await diff;
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
     
         const jsonP = Math.pow(10, precision);
@@ -176,13 +177,13 @@ export namespace Map {
 
             Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
             if (scuffedWallsInUse) {
-                const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
+                const ts = JSON.parse(await Deno.readTextFile(activeOutput));
                 const tsNotes = ts._notes;
                 const tsWalls = ts._obstacles;
                 const tsEvents = ts._events;
                 const tsCustomEvents = ts._customData._customEvents;
 
-                const sw = JSON.parse(Deno.readTextFileSync('./temp/tempOut.dat'))
+                const sw = JSON.parse(await Deno.readTextFile('./temp/tempOut.dat'))
                 const swNotes = sw._notes;
                 const swWalls = sw._obstacles;
                 const swEvents = sw._events;
@@ -196,8 +197,8 @@ export namespace Map {
                 Deno.writeTextFileSync(activeOutput, JSON.stringify(ts, null, 4))
             }
         
-            vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
-            modded = JSON.parse(Deno.readTextFileSync(activeOutput))
+            vanilla = JSON.parse(await Deno.readTextFile(activeInput));
+            modded = JSON.parse(await Deno.readTextFile(activeOutput))
         
             modded._customData._customEvents.forEach((e: any) => {
                 switch (e._type) {
@@ -232,8 +233,8 @@ export namespace Map {
         
             Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
         
-            vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
-            modded = JSON.parse(Deno.readTextFileSync(activeOutput))
+            vanilla = JSON.parse(await Deno.readTextFile(activeInput));
+            modded = JSON.parse(await Deno.readTextFile(activeOutput))
         
             modded.customData.customEvents.forEach((e: any) => {
                 switch (e.type) {
