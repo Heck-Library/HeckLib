@@ -1,5 +1,5 @@
 # Geometry properties
-The following properties can be used in geometry shapes.
+The following parameters can be used in geometry shapes.
 - `Shape.Capsule`
 - `Shape.Cube`
 - `Shape.Cylinder`
@@ -7,3 +7,9 @@ The following properties can be used in geometry shapes.
 - `Shape.Quad`
 - `Shape.Sphere`
 - `Shape.Triangle`
+  
+# Shader properties
+The following parameters can be used in material shaders
+- `Shader.Standard`
+- `Shader.OpaqueLight`
+- `Shader.TransparentLight`

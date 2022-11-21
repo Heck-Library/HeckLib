@@ -32,7 +32,14 @@ export class Environment {
     /**
      * The id of the environment piece.
      */
-    id(x: string) { this.e._id = x; return this }
+    id(x: string|RegExp) {
+        let id;
+        if (typeof x !== 'string') {
+            id = x.toString().replace("/", "").replace(/\/$/, "").replace(/\\/g, "\\\\")
+        } else id = x;
+        this.e._id = id;
+        return this
+    }
     /**
      * The lookup method to use.
      */
@@ -73,10 +80,6 @@ export class Environment {
      * Which track the environment piece should be assigned to.
      */
     track(x: Track) { this.e._track = x; return this }
-    /**
-     * Push the environment piece to the map data.
-     */
-    
     geometry() { this.e._geometry = { _type: Shape.Cube, _material: { _color: [1, 1, 1, 1], _shader: Shader.Standard } }; return this; }
 
     shape(x: geoShape) {
@@ -94,6 +97,10 @@ export class Environment {
         this.e._geometry._collision = x;
         return this;
     }
+    /**
+     * Push the environment piece to the map data.
+     */
+    
     push() {
         environment.push(this.e);
     }
