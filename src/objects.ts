@@ -321,8 +321,8 @@ export class Note extends Object {
         };
     };
 
-    constructor(obj: any) {
-        super(obj);
+    constructor(time: number) {
+        super(time);
         this._lineLayer = 0;
         this._cutDirection = 0;
         this._type = 0;
@@ -405,8 +405,8 @@ export class Note extends Object {
 export class Wall extends Object {
     _duration: number;
     _width: number;
-    constructor(obj: any) {
-        super(obj);
+    constructor(time: number) {
+        super(time);
         this._duration = 1;
         this._width = 1;
     }
