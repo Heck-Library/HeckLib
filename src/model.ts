@@ -1,5 +1,5 @@
 import { Environment } from "./environment.ts"
-import { vec3, vec4 } from "./types.ts"
+import { vec3 } from "./types.ts"
 
 export class ModelEnvironment {
     constructor(filePath: string) {
@@ -9,7 +9,7 @@ export class ModelEnvironment {
             pos: vec3,
             rot: vec3,
             scale: vec3,
-            color: vec4,
+            color: vec3,
             track: string
         }) => {
             let shader = "Standard";
