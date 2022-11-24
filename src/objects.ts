@@ -32,81 +32,41 @@ export function filter(
     type?: 0 | 1 | 3,
     direction?: number,
 ) {
-    if (!V3) {
-        if (obj == notes) {
-            if (
-                typeof type !== "undefined" && type !== null &&
-                (typeof direction === "undefined" || direction === null)
-            ) {
-                return notes.filter((n: { _time: number; _type: number }) =>
-                    n._time >= start && n._time <= end && n._type == type
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                (typeof type === "undefined" || type === null)
-            ) {
-                return notes.filter((n: { _time: number; _cutDirection: number }) =>
-                    n._time >= start && n._time <= end && n._cutDirection == direction
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                typeof type !== "undefined" && type !== null
-            ) {
-                return notes.filter((
-                    n: { _time: number; _type: number; _cutDirection: number },
-                ) =>
-                    n._time >= start && n._time <= end && n._type == type &&
-                    n._cutDirection == direction
-                );
-            } else {
-                return notes.filter((n: { _time: number }) =>
-                    n._time >= start && n._time <= end
-                );
-            }
-        }
-        if (obj == walls) {
-            return walls.filter((w: { _time: number }) =>
-                w._time >= start && w._time <= end
+    if (obj == notes) {
+        if (
+            typeof type !== "undefined" && type !== null &&
+            (typeof direction === "undefined" || direction === null)
+        ) {
+            return notes.filter((n: { _time: number; _type: number }) =>
+                n._time >= start && n._time <= end && n._type == type
+            );
+        } else if (
+            typeof direction !== "undefined" && direction !== null &&
+            (typeof type === "undefined" || type === null)
+        ) {
+            return notes.filter((n: { _time: number; _cutDirection: number }) =>
+                n._time >= start && n._time <= end && n._cutDirection == direction
+            );
+        } else if (
+            typeof direction !== "undefined" && direction !== null &&
+            typeof type !== "undefined" && type !== null
+        ) {
+            return notes.filter((
+                n: { _time: number; _type: number; _cutDirection: number },
+            ) =>
+                n._time >= start && n._time <= end && n._type == type &&
+                n._cutDirection == direction
+            );
+        } else {
+            return notes.filter((n: { _time: number }) =>
+                n._time >= start && n._time <= end
             );
         }
     }
-    if (V3) {
-        if (obj == notes) {
-            if (
-                typeof type !== "undefined" && type !== null &&
-                (typeof direction === "undefined" || direction === null)
-            ) {
-                return notes.filter((n: { b: number; c: number }) =>
-                    n.b >= start && n.b <= end && n.c == type
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                (typeof type === "undefined" || type === null)
-            ) {
-                return notes.filter((n: { b: number; d: number }) =>
-                    n.b >= start && n.b <= end && n.d == direction
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                typeof type !== "undefined" && type !== null
-            ) {
-                return notes.filter((
-                    n: { b: number; c: number; d: number },
-                ) =>
-                    n.b >= start && n.b <= end && n.c == type &&
-                    n.d == direction
-                );
-            } else {
-                return notes.filter((n: { b: number }) =>
-                    n.b >= start && n.b <= end
-                );
-            }
-        }
-        if (obj == walls) {
-            return walls.filter((w: { b: number }) =>
-                w.b >= start && w.b <= end
-            );
-        }
+    if (obj == walls) {
+        return walls.filter((w: { _time: number }) =>
+            w._time >= start && w._time <= end
+        );
     }
     return notes[0];
 }
@@ -117,50 +77,29 @@ export function filter(
  * @param track The array of tracks or the name of the track that should be assigned.
  */
 export function track(obj: any[], track: Track) {
-    obj.forEach((n: any) => {
-        if (!V3) {
-            const d = n._customData;
-            if (typeof d._track !== "undefined" && d._track !== null) {
-                if (isArr(d._track)) {
-                    const tracks = d._track;
-                    if (isArr(track)) {
-                        tracks.push(...track);
-                    } else {
-                        tracks.push(track);
-                    }
+    if (typeof track == "undefined" || track == null) {
+        throw new Error("No track value given.");
+    }
+    obj.forEach((n: { _customData: any }) => {
+        const d = n._customData;
+        if (typeof d._track !== "undefined" && d._track !== null) {
+            if (isArr(d._track)) {
+                const tracks = d._track;
+                if (isArr(track)) {
+                    tracks.push(...track);
                 } else {
-                    if (isArr(track)) {
-                        const a = [...track, d._track];
-                        d._track = a;
-                    } else {
-                        d._track = [d._track, track];
-                    }
+                    tracks.push(track);
                 }
             } else {
-                d._track = track;
-            }
-        }
-        if (V3) {
-            const d = n.customData;
-            if (typeof d.track !== "undefined" && d.track !== null) {
-                if (isArr(d.track)) {
-                    const tracks = d.track;
-                    if (isArr(track)) {
-                        tracks.push(...track);
-                    } else {
-                        tracks.push(track);
-                    }
+                if (isArr(track)) {
+                    const a = [...track, d._track];
+                    d._track = a;
                 } else {
-                    if (isArr(track)) {
-                        const a = [...track, d.track];
-                        d.track = a;
-                    } else {
-                        d.track = [d._rack, track];
-                    }
+                    d._track = [d._track, track];
                 }
-            } else {
-                d.track = track;
             }
+        } else {
+            d._track = track;
         }
     });
 }
@@ -454,9 +393,6 @@ export class Note extends Object {
                 .replace("lineLayer", "y")
                 .replace("\"type", "\"a\": 0,\"c")
                 .replace("cutDirection", "d");
-            if (JSON.stringify(this).includes("\"fake\":true")) {
-                data = data.replace(/"fake":true,?/, "");
-            }
             out = JSON.parse(data);
         }
         if (!V3) {
@@ -515,102 +451,114 @@ export class Wall extends Object {
 
 //todo V3 wall scale, note cutdirection and fake notes
 export class CustomData {
-    _customData: {
-        _track?: Track;
-        _flip?: vec2;
-        _color?: vec4;
-        _position?: vec2;
-        _rotation?: vec3;
-        _localRotation?: vec3;
-        _scale?: vec3;
-        _noteJumpMovementSpeed?: number;
-        _noteJumpStartBeatOffset?: number;
-        _disableNoteGravity?: boolean;
-        _disableSpawnEffect?: boolean;
-        _disableNoteLook?: boolean;
-        _fake?: boolean;
-        _interactable?: boolean;
-        _cutDirection?: number;
-    };
-    constructor(t: { _customData: any }) {
-        this._customData = t._customData;
+    objs: any[]
+    //_customData: {
+    //    _track?: Track;
+    //    _flip?: vec2;
+    //    _color?: vec4;
+    //    _position?: vec2;
+    //    _rotation?: vec3;
+    //    _localRotation?: vec3;
+    //    _scale?: vec3;
+    //    _noteJumpMovementSpeed?: number;
+    //    _noteJumpStartBeatOffset?: number;
+    //    _disableNoteGravity?: boolean;
+    //    _disableSpawnEffect?: boolean;
+    //    _disableNoteLook?: boolean;
+    //    _fake?: boolean;
+    //    _interactable?: boolean;
+    //    _cutDirection?: number;
+    //};
+    constructor(t: any[]) {
+        this.objs = [...t];
     }
     /**
      * Whether the object should be fake or not.
      */
     fake(x: boolean) {
-        if (!V3) {
-            this._customData._fake = x;
-        } if (V3) {
-            throw new Error("V3 maps no longer store fake notes in _customData.")
-        }
+        this.objs.forEach((n:any) => {
+            if (!V3) {
+                n._customData._fake = x;
+            } if (V3) {
+                throw new Error("V3 maps no longer store fake notes in _customData.")
+            }
+        });
         return this;
     }
     /**
      * Whether the object should be interactable or not.
      */
     interactable(x: boolean) {
-        this._customData._interactable = x;
+        this.objs.forEach((n:any) => n._customData._interactable = x);
+        this.final()
         return this;
     }
     /**
      * What the NJS of the object should be.
      */
     njs(x: number) {
-        this._customData._noteJumpMovementSpeed = x;
+        this.objs.forEach((n:any) => n._customData._noteJumpMovementSpeed = x);
+        this.final()
         return this;
     }
     /**
      * What the offset of the object should be.
      */
     offset(x: number) {
-        this._customData._noteJumpStartBeatOffset = x;
+        this.objs.forEach((n:any) => n._customData._noteJumpStartBeatOffset = x);
+        this.final()
         return this;
     }
     /**
      * What the position value of the object should be.
      */
     pos(x: vec2) {
-        this._customData._position = x;
+        this.objs.forEach((n:any) => n._customData._position = x);
+        this.final()
         return this;
     }
     /**
      * What the rotation value of the object should be.
      */
     rot(x: vec3) {
-        this._customData._rotation = x;
+        this.objs.forEach((n:any) => n._customData._rotation = x);
+        this.final()
         return this;
     }
     /**
      * What the local rotation value of the object should be.
      */
     localRot(x: vec3) {
-        this._customData._localRotation = x;
+        this.objs.forEach((n:any) => n._customData._localRotation = x);
+        this.final()
         return this;
     }
     /**
      * What the scale of the object should be.
      */
     scale(x: vec3) {
-        this._customData._scale = x;
+        this.objs.forEach((n:any) => n._customData._scale = x);
+        this.final()
         return this;
     }
     /**
      * What the color of the object should be
      */
     color(x: vec4) {
-        this._customData._color = x;
+        this.objs.forEach((n:any) => n._customData._color = x);
+        this.final()
         return this;
     }
     /**
      * The direction that the note should be faced towards in degrees.
      */
     dir(x: number) {
-        this._customData._cutDirection = x;
+        this.objs.forEach((n:any) => n._customData._cutDirection = x);
+        this.final()
         return this;
     }
     private final() {
-        let data = JSON.stringify(this._customData)
+        let data = JSON.stringify(this.objs)
         if (V3) {
             data = data
                 .replace("_interactable", "uninteractable")
@@ -624,85 +572,87 @@ export class CustomData {
 }
 
 export class Animation {
-    _customData: {
-        _animation: {
-            _position?: vec3anim;
-            _definitePosition?: vec3anim;
-            _rotation?: vec3anim;
-            _localRotation?: vec3anim;
-            _scale?: vec3anim;
-            _color?: vec4anim;
-            _interactable?: vec1anim;
-            _dissolve?: vec1anim;
-            _dissolveArrow?: vec1anim;
-        };
-    };
-    // deno-lint-ignore ban-types
-    constructor(t: { _customData: { _animation: {} } }) {
-        if (!t._customData._animation) t._customData._animation = {};
-        this._customData = t._customData;
+    objs: any[];
+    //_customData: {
+    //    _animation: {
+    //        _position?: vec3anim;
+    //        _definitePosition?: vec3anim;
+    //        _rotation?: vec3anim;
+    //        _localRotation?: vec3anim;
+    //        _scale?: vec3anim;
+    //        _color?: vec4anim;
+    //        _interactable?: vec1anim;
+    //        _dissolve?: vec1anim;
+    //        _dissolveArrow?: vec1anim;
+    //    };
+    //};
+    constructor(t: any) {
+        this.objs = [...t];
+        this.objs.forEach((n: any) => {
+        if (!n._customData._animation) n._customData._animation = {};
+        });
     }
     /**
      * The position animation that should be applied to this object.
      */
     pos(x: vec3anim) {
-        this._customData._animation._position = x;
+        this.objs.forEach((n: any) => n._customData._animation._position = x);
         return this;
     }
     /**
      * The definite position animation that should be applied to this object.
      */
     defPos(x: vec3anim) {
-        this._customData._animation._definitePosition = x;
+        this.objs.forEach((n: any) => n._customData._animation._definitePosition = x);
         return this;
     }
     /**
      * The rotation animation that should be applied to this object.
      */
     rot(x: vec3anim) {
-        this._customData._animation._rotation = x;
+        this.objs.forEach((n: any) => n._customData._animation._rotation = x);
         return this;
     }
     /**
      * The local rotation animation that should be applied to this object.
      */
     localRot(x: vec3anim) {
-        this._customData._animation._localRotation = x;
+        this.objs.forEach((n: any) => n._customData._animation._localRotation = x);
         return this;
     }
     /**
      * The scale animation animation that should be applied to this object.
      */
     scale(x: vec3anim) {
-        this._customData._animation._scale = x;
+        this.objs.forEach((n: any) => n._customData._animation._scale = x);
         return this;
     }
     /**
      * The dissolve animation that should be applied to this object.
      */
     dis(x: vec1anim) {
-        this._customData._animation._dissolve = x;
+        this.objs.forEach((n: any) => n._customData._animation._dissolve = x);
         return this;
     }
     /**
      * The dissolve arrow animation that should be applied to this object.
      */
     disArr(x: vec1anim) {
-        this._customData._animation._dissolveArrow = x;
+        this.objs.forEach((n: any) => n._customData._animation._dissolveArrow = x);
         return this;
     }
     /**
      * The interactable animation that should be applied to this object (0 = not interactable, > 0 = interactable).
      */
     interactable(x: vec1anim) {
-        this._customData._animation._interactable = x;
+        this.objs.forEach((n: any) => n._customData._animation._interactable = x);
         return this;
     }
     /**
      * The color animation that should be applied to this object.
      */
     color(x: vec4anim) {
-        this._customData._animation._color = x;
+        this.objs.forEach((n: any) => n._customData._animation._color = x);
         return this;
     }
 }
