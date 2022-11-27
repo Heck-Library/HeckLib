@@ -33,6 +33,7 @@ export namespace Map {
         if (typeof diff.version !== 'undefined') V3 = true;
     }
     export function initialize(input: string, output: string, NJS: number, offset: number) {
+        const info = infoFile;
         isV3(`./${input}`);
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
@@ -45,6 +46,18 @@ export namespace Map {
         Deno.writeTextFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
         activeInput = input;
         activeOutput = output;
+
+        if (info._difficultyBeatmapSets) {
+            info._difficultyBeatmapSets.forEach((x: any) => {
+                if (JSON.stringify(x).includes(output)) {
+                    x._difficultyBeatmaps.forEach((y: any) => {
+                        if (JSON.stringify(y).includes(output)) {
+                            y._customData = {};
+                        }
+                    })
+                }
+            })
+        }
     
     
         if (!V3) {
@@ -220,7 +233,7 @@ export namespace Map {
                 if (n._customData._fake) fakes++;
             });
             WallsCount = [ vanilla._obstacles.length, modded._obstacles.length ];
-            NotesCount = [ vanilla._notes.length, modded._notes.length ];
+            NotesCount = [ vanilla._notes.length, modded._notes.length - fakes];
         }
         if (V3) {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
