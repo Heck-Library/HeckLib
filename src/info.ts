@@ -558,13 +558,15 @@ export class Settings {
 
   private End() {
     infoFile._difficultyBeatmapSets.forEach((x: any) => {
-      if (this.f.includes(x._beatmapCharacteristicNalrame)) {
-        x._difficultyBeatmaps.forEach((y: any) => {
-          if (y._beatmapFilename.includes(this.f)) {
-            y._settings = this.s;
-          }
-        });
-      }
+        if (this.f.includes(x._beatmapCharacteristicName)) {
+            x._difficultyBeatmaps.forEach((y: any) => {
+                if (y._beatmapFilename.includes(this.f)) {
+                    if(!y._customData) y._customData = {}
+                    if(!y._customData._settings) y._customData._settings = {}
+                    y._customData._settings = this.s;
+                }
+            });
+        }
     });
     Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
   }
