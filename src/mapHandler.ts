@@ -19,7 +19,21 @@ export let activeInput: string;
 export let activeOutput: string;
 export let V3: boolean;
 
+let formatting = false
+
 export namespace Map {
+    /**
+     * @summary Toggles ouput file formatting
+     * @param enabled If true, the output difficulty will be JSON formatted.
+     * @example Map.formatFile(true)
+     */
+    export function formatFile(enabled: boolean) {
+        if (enabled) {
+            formatting = true;
+        } else {
+            formatting = false;
+        }
+    }
     /**
      * @param input The input file for the difficulty.
      * @param output The output file for the difficulty.
@@ -186,8 +200,11 @@ export namespace Map {
             if (difficulty._customData._materials.length < 1) {
                 delete(difficulty._customData._materials)
             }
-
-            Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
+            let outputtedDiff = JSON.stringify(difficulty)
+            if (formatting == true) {
+                outputtedDiff = JSON.stringify(difficulty, null, 4)
+            }
+            Deno.writeTextFileSync(activeOutput, outputtedDiff)
             if (scuffedWallsInUse) {
                 const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
                 const tsNotes = ts._notes;
@@ -243,7 +260,7 @@ export namespace Map {
                 delete(difficulty.customData.materials)
             }
         
-            Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 4))
+            Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 0))
         
             vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
             modded = JSON.parse(Deno.readTextFileSync(activeOutput))
@@ -281,9 +298,20 @@ export namespace Map {
         console.log(" \x1b[35m    \\/_/\\/_/\\/____/\\/____/ \\/_/\\/_/\x1b[37m\\/___/   \\/_/\\/___/ ")
         console.log(" \x1b[0m ")
         console.log(" ======================================================= \n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[0] + "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + WallsCount[0] + "\x1b[0m\n\n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" + "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[1] + "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes + "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + WallsCount[1] + "\x1b[0m\n\n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" + "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT + "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA + "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP + "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT + "\x1b[0m\n\n");
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" + "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" +
+            "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[0] + 
+            "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + WallsCount[0] + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" +
+            "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[1] +
+            "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes +
+            "\x1b[0m\n\n Walls: \x1b[32m\x1b[1m" + WallsCount[1] + "\x1b[0m\n\n")
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" +
+            "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT +
+            "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA +
+            "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP +
+            "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT +
+            "\x1b[0m\n\n");
+        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
+            "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
     }
 }
