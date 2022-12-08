@@ -1,6 +1,7 @@
 import { Map } from "./src/main.ts";
 const INPUT = 'ExpertPlusStandard.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
+const LIGHTS = 'EasyLightshow.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, 16, 0)
 
@@ -11,5 +12,5 @@ Map.formatFile(true)
 
 
 // #endregion Noodle stuff above
-
+Map.lightshow(LIGHTS)
 Map.finalize(difficulty);

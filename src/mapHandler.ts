@@ -14,17 +14,61 @@ export let events: any[];
 export let materials: any = {};
 export let geometry: any[];
 export let definitions: any[];
+export let lights: any[];
 export let fakeNotes: any[];
 export let fakeWalls: any[];
 export let fakeBombs: any[];
 
 export let activeInput: string;
 export let activeOutput: string;
+export let activeLightshow: string;
 export let V3: boolean;
 
 let formatting = false
 
 export namespace Map {
+    export function lightshow(file: string) {
+        let dir = file;
+        if (!file.includes(".dat")) {
+            dir += ".dat";
+        }
+        activeLightshow = dir;
+        let lightevents = JSON.parse(Deno.readTextFileSync(activeLightshow))._events;
+        if (V3) {
+            let stringLights = JSON.stringify(lightevents);
+            stringLights = stringLights
+                .replace(/_/g, "")
+                .replace(/lockPosition/g, "lockRotation")
+                .replace(/"reset":\w+,?/g, "")
+                .replace(/"counterSpin":\w+,?/g, "")
+                .replace(/time/g, "b")
+                .replace(/type/g, "et")
+            if (stringLights.includes("floatValue")) {
+                stringLights = stringLights
+                    .replace(/floatValue/g, "f")
+                    .replace(/value/g, "i");
+            } else {
+                stringLights = stringLights.replace(/"value/g, "\"f\":0,\"i")
+            }
+            lightevents = JSON.parse(stringLights);
+        }
+        lights.length = 0;
+        lightevents.forEach((x: any) => {
+            if (x.customData && V3) {
+                if (x.customData.lightGradient) {
+                    const g = JSON.parse(JSON.stringify(x.customData.lightGradient));
+                    delete x.customData.lightGradient;
+                    x.et = 4;
+                    const newEvent = JSON.parse(JSON.stringify(x));
+                    newEvent.b += g.duration;
+                    newEvent.customData.color = g.endColor;
+                    x.customData.color = g.startColor;
+                    lights.push(newEvent);
+                }
+            }
+            lights.push(x)
+        })
+    }
     /**
      * @summary Toggles ouput file formatting
      * @param enabled If true, the output difficulty will be JSON formatted.
@@ -80,6 +124,7 @@ export namespace Map {
         if (!V3) {
             notes = diff._notes;
             walls = diff._obstacles;
+            lights = diff._events;
             
             if (!diff._customData) {
                 diff._customData = {};
@@ -119,6 +164,7 @@ export namespace Map {
             notes = diff.colorNotes;
             walls = diff.obstacles;
             bombs = diff.bombNotes;
+            lights = diff.basicBeatmapEvents;
             
             if (!diff.customData) {
                 diff.customData = {};
