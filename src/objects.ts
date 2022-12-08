@@ -455,6 +455,12 @@ export class Note extends Object {
                 .replace("\"type", "\"a\": 0,\"c")
                 .replace("cutDirection", "d");
             out = JSON.parse(data);
+            if (data.includes("fake")) {
+                data = data.replace(/"fake":(true|false),?/g, "")
+                out = JSON.parse(data);
+                fakeNotes.push(out);
+                return;
+            }
         }
         if (!V3) {
             out = this;
@@ -501,7 +507,14 @@ export class Wall extends Object {
                 .replace("\"lineIndex", "\"y\":0,\"x")
                 .replace("duration", "d")
                 .replace("\"width", "\"h\":5,\"w")
+                .replace(/"type":\d+,?/, "")
             out = JSON.parse(data);
+            if (data.includes("fake")) {
+                data = data.replace(/"fake":(true|false),?/g, "")
+                out = JSON.parse(data);
+                fakeWalls.push(out);
+                return;
+            }
         }
         if (!V3) {
             out = this;
@@ -633,7 +646,7 @@ export class CustomData {
      */
     pos(x: vec2) {
         if (!V3) this.objs.forEach((n:any) => n._customData._position = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.position = x);
+        if (V3) this.objs.forEach((n:any) => n.customData.coordinates = x);
         this.final()
         return this;
     }
@@ -642,7 +655,7 @@ export class CustomData {
      */
     rot(x: vec3) {
         if (!V3) this.objs.forEach((n:any) => n._customData._rotation = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.rotation = x);
+        if (V3) this.objs.forEach((n:any) => n.customData.worldRotation = x);
         this.final()
         return this;
     }
@@ -660,7 +673,16 @@ export class CustomData {
      */
     scale(x: vec3) {
         if (!V3) this.objs.forEach((n:any) => n._customData._scale = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.scale = x);
+        if (V3) {
+            this.objs.forEach((n:any) => {
+                if (notes.includes(n) || fakeNotes.includes(n) || bombs.includes(n) || fakeBombs.includes(n)) {
+                    n.customData.scale = x
+                }
+                if (walls.includes(n) || fakeWalls.includes(n)) {
+                    n.customData.size = x;
+                }
+            });
+        }
         this.final()
         return this;
     }
