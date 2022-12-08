@@ -540,7 +540,6 @@ export class Wall extends Object {
     }
 }
 
-//todo V3 wall scale, note cutdirection and fake notes
 export class CustomData {
     objs: any[]
     //_customData: {
