@@ -447,6 +447,7 @@ export class Note extends Object {
     push() {
         let data = JSON.stringify(this);
         let out;
+        let bomb;
         if (V3) {
             data = data.replace(/_/g, "")
                 .replace("time", "b")
@@ -455,6 +456,22 @@ export class Note extends Object {
                 .replace("\"type", "\"a\": 0,\"c")
                 .replace("cutDirection", "d");
             out = JSON.parse(data);
+            if (out.c == 3) {
+                bomb = {
+                    b: out.b,
+                    x: out.x,
+                    y: out.y,
+                    customData: out.customData
+                }
+                if (JSON.stringify(bomb).includes("fake")) {
+                    let stringBomb = JSON.stringify(bomb);
+                    stringBomb = stringBomb.replace(/,?"fake":(true|false)/g, "")
+                    bomb = JSON.parse(stringBomb);
+                    fakeBombs.push(bomb);
+                    return;
+                }
+                bombs.push(bomb);
+            }
             if (data.includes("fake")) {
                 data = data.replace(/"fake":(true|false),?/g, "")
                 out = JSON.parse(data);
