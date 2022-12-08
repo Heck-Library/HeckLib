@@ -8,12 +8,15 @@ export const pointDefinitions = ["NULL"];
 
 export let environment: any[];
 export let notes: any[];
+export let bombs: any[];
 export let walls: any[];
 export let events: any[];
 export let materials: any = {};
 export let geometry: any[];
 export let definitions: any[];
 export let fakeNotes: any[];
+export let fakeWalls: any[];
+export let fakeBombs: any[];
 
 export let activeInput: string;
 export let activeOutput: string;
@@ -52,9 +55,9 @@ export namespace Map {
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
-                delete(y._settings)
-                delete(y._requirements)
-                delete(y._suggestions)
+                if (y._settings) delete(y._settings)
+                if (y._requirements) delete(y._requirements)
+                if (y._suggestions) delete(y._suggestions)
             })
         });
         Deno.writeTextFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
@@ -115,12 +118,19 @@ export namespace Map {
         else if (V3) {
             notes = diff.colorNotes;
             walls = diff.obstacles;
+            bombs = diff.bombNotes;
             
             if (!diff.customData) {
                 diff.customData = {};
             }
             if (!diff.customData.fakeColorNotes) {
                 diff.customData.fakeColorNotes = [];
+            }
+            if (!diff.customData.fakeObstacles) {
+                diff.customData.fakeObstacles = [];
+            }
+            if (!diff.customData.fakeBombNotes) {
+                diff.customData.fakeBombNotes = [];
             }
             diff.colorNotes.forEach((x: { customData: { noteJumpStartBeatOffset: number; noteJumpMovementSpeed: number; }; }) => {
                 if (!x.customData) {
@@ -153,6 +163,8 @@ export namespace Map {
             definitions = diff.customData.pointDefinitions;
             materials = customData.materials;
             fakeNotes = customData.fakeColorNotes;
+            fakeWalls = customData.fakeObstacles;
+            fakeBombs = customData.fakeBombNotes
         }
     
         return diff;
@@ -259,8 +271,13 @@ export namespace Map {
             if (difficulty.customData.materials.length < 1) {
                 delete(difficulty.customData.materials)
             }
-        
-            Deno.writeTextFileSync(activeOutput, JSON.stringify(difficulty, null, 0))
+
+            let outputtedDiff = JSON.stringify(difficulty)
+            if (formatting == true) {
+                outputtedDiff = JSON.stringify(difficulty, null, 4)
+            }
+            
+            Deno.writeTextFileSync(activeOutput, outputtedDiff)
         
             vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
             modded = JSON.parse(Deno.readTextFileSync(activeOutput))

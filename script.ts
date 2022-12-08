@@ -1,9 +1,10 @@
 import { Map } from "./src/main.ts";
-const INPUT = 'temp.dat'
+const INPUT = 'ExpertPlusStandard.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, 16, 0)
 
+Map.formatFile(true)
 // #region Noodle stuff below
 
 

@@ -2,7 +2,7 @@
 
 import { isArr } from "./general.ts";
 import { V3 } from "./main.ts";
-import { notes, walls } from "./mapHandler.ts";
+import { bombs, fakeBombs, fakeNotes, fakeWalls, notes, walls } from "./mapHandler.ts";
 import {
     lineIndex,
     lineLayer,
@@ -540,9 +540,21 @@ export class CustomData {
         this.objs.forEach((n:any) => {
             if (!V3) {
                 n._customData._fake = x;
-            } if (V3) {
-                throw new Error('fake don\'t work on v3 yet')
-                //fakeNotes.push(n)
+            } if (V3 && x) {
+                if (n.x && n.y && n.a && n.c) {
+                    if (notes.includes(n)) {
+                        delete notes[notes.indexOf(n)]
+                        fakeNotes.push(n);
+                    } else if (bombs.includes(n)) {
+                        delete bombs[bombs.indexOf(n)]
+                        fakeBombs.push(n);
+                    }
+                } else if (n.w && n.h) {
+                    if (walls.includes(n)) {
+                        delete walls[walls.indexOf(n)]
+                        fakeWalls.push(n);
+                    }
+                }
             }
         });
         return this;
