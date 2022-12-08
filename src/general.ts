@@ -71,5 +71,5 @@ export function random(min: number, max: number, precision?: number) {
     if (typeof precision !== 'undefined' && precision !== null) {
         p = Math.pow(p, precision);
     }
-    return (Math.floor(Math.random() * (max - min + 1) * p ) + min)/p;
+    return Math.round((Math.random() * (max - min + 1) + min) * p) / p;
 }
