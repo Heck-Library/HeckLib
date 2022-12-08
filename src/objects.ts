@@ -533,6 +533,43 @@ export class CustomData {
     constructor(t: any[]) {
         this.objs = [...t];
     }
+    disableNoteGravity(x: boolean) {
+        this.objs.forEach((n: any) => {
+            if (!V3) {
+                n._customData._disableNoteGravity = x;
+            }
+            if (V3) {
+                n.customData.disableNoteGravity = x;
+            }
+        })
+        return this;
+    }
+    disableNoteLook(x: boolean) {
+        this.objs.forEach((n: any) => {
+            if (!V3) {
+                n._customData._disableNoteLook = x;
+            }
+            if (V3) {
+                n.customData.disableNoteLook = x;
+            }
+        })
+        return this;
+    }
+    disableSpawnEffect(x: boolean) {
+        this.objs.forEach((n: any) => {
+            if (!V3) {
+                n._customData._disableSpawnEffect = x;
+            }
+            if (V3) {
+                let thing = true;
+                if (x) {
+                    thing = false
+                }
+                n.customData.spawnEffect = thing;
+            }
+        })
+        return this;
+    }
     /**
      * Whether the object should be fake or not.
      */
