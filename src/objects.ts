@@ -562,6 +562,17 @@ export class CustomData {
     constructor(t: any[]) {
         this.objs = [...t];
     }
+    track(x: Track) {
+        this.objs.forEach((n: any) => {
+            if (!V3) {
+                n._customData._track = x;
+            }
+            if (V3) {
+                n.customData.track = x;
+            }
+        });
+        return this;
+    }
     disableNoteGravity(x: boolean) {
         this.objs.forEach((n: any) => {
             if (!V3) {
