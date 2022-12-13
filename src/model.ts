@@ -1,29 +1,27 @@
-import { Environment } from "./environment.ts"
-import { vec3 } from "./types.ts"
+import { Environment, Material } from "./environment.ts"
+import { geoShape, shaderType, vec3 } from "./types.ts"
 
 export class ModelEnvironment {
-    constructor(filePath: string) {
+    constructor(filePath: string, color: vec3, shader: shaderType, materialName: string) {
         const model = JSON.parse(Deno.readTextFileSync(filePath))
         const objs = model.objects;
         objs.forEach((x: {
-            pos: vec3,
-            rot: vec3,
+            position: vec3,
+            rotation: vec3,
             scale: vec3,
-            color: vec3,
-            track: string
+            shape: geoShape
         }) => {
-            let shader = "Standard";
-            if (x.track.length > 1) shader = x.track[1];
+            new Material(materialName)
+                .color(color)
+                .shader(shader)
+                .push();
 
             new Environment()
                 .geometry()
-                .shape(x.track[0])
-                .material({
-                    _color: x.color,
-                    _shader: shader,
-                })
-                .pos(x.pos)
-                .rot(x.rot)
+                .shape(x.shape)
+                .material(materialName)
+                .pos(x.position)
+                .rot(x.rotation)
                 .scale(x.scale)
                 .push();
         })

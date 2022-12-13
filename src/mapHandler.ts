@@ -18,6 +18,7 @@ export let lights: any[];
 export let fakeNotes: any[];
 export let fakeWalls: any[];
 export let fakeBombs: any[];
+export const materialNames: string[] = [];
 
 export let activeInput: string;
 export let activeOutput: string;

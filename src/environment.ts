@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { Shader, Shape } from './consts.ts'
-import { environment, materials } from './mapHandler.ts'
+import { V3 } from './main.ts'
+import { environment, materialNames, materials } from './mapHandler.ts'
 import { geoShape, Track, vec3, shaderType, mat } from './types.ts'
 
 export class Environment {
@@ -31,9 +32,9 @@ export class Environment {
     regex(x: string|RegExp) {
         let id;
         if (typeof x !== 'string') {
-            id = x.toString().replace("/", "").replace(/\/$/, "").replace(/\\/g, "\\\\")
+            id = x.toString().replace("/", "").replace(/\/$/, "")
         } else {
-            id = x.replace(/\\/,"\\\\");
+            id = x;
         }
         this.e._id = id;
         this.e._lookupMethod = "Regex"
@@ -107,12 +108,18 @@ export class Environment {
      */
     
     push() {
-        environment.push(this.e);
+        let out = this.e;
+        if (V3) {
+            const stringified = JSON.stringify(this.e).replace(/_/g, "")
+            out = JSON.parse(stringified);
+        }
+        environment.push(out);
     }
 }
 
 export class Material {
     stuff: any
+    name: string
     m: {
         _color: vec3,
         _shader: shaderType,
@@ -120,6 +127,7 @@ export class Material {
         _shaderKeywords?: string[]
     }
     constructor(name: string) {
+        this.name = name
         this.m = {
             _color: [0, 0, 0],
             _shader: Shader.Standard,
@@ -148,6 +156,15 @@ export class Material {
      * Push the material to the map data.
      */
     push() {
-        Object.assign(materials, this.stuff);
+        let out = this.stuff;
+        if (V3) {
+            const stringified = JSON.stringify(this.stuff).replace(/_/g, "")
+            out = JSON.parse(stringified);
+        }
+        if (materialNames.includes(this.name)) {
+            return;
+        }
+        materialNames.push(this.name);
+        Object.assign(materials, out);
     }
 }
