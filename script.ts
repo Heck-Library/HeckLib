@@ -1,16 +1,17 @@
-import { Map } from "./src/main.ts";
-const INPUT = 'ExpertPlusStandard.dat'
+import { Map, ModelWall } from "./src/main.ts";
+const INPUT = 'temp.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
-const LIGHTS = 'EasyLightshow.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, 16, 0)
 
 Map.formatFile(true)
 // #region Noodle stuff below
 
-
+new ModelWall(4, "untitled.json")
+    .duration(24)
+    .outline(12)
+    .push();
 
 
 // #endregion Noodle stuff above
-Map.lightshow(LIGHTS)
 Map.finalize(difficulty);
