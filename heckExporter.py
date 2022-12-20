@@ -15,14 +15,23 @@ import json
 import bpy
 
 def objData(x):
-    deez = "yo"
+    deez = "Cube"
+    colorName = "White"
+    color = (1, 1, 1)
     if (x.material_slots):
         deez = x.material_slots[0].name
+        try:
+            colorName = x.material_slots[1].name
+            c = bpy.data.materials[colorName].node_tree.nodes["Principled BSDF"].inputs[0].default_value
+            color = (c[0], c[1], c[2])
+        except:
+            print("no color material, assigning white")
     cool = {
         "rotation": (round(x.rotation_euler[0], 3),round(x.rotation_euler[1], 3),round(x.rotation_euler[2], 3)),
         "position":(round(x.location[0], 3),round(x.location[1], 3),round(x.location[2], 3)),
         "scale":(round(x.scale[0], 3),round(x.scale[1], 3),round(x.scale[2], 3)),
         "shape":deez,
+        "color":color
     }
     return cool
 
@@ -30,6 +39,7 @@ def write_some_data(context, filepath, use_some_setting):
     objs = []
     for obj in bpy.data.objects:
         stuff = objData(obj)
+        print(stuff)
         objs.append(stuff)
     print("running hecklib export...")
     thingy = {"objects":objs}
