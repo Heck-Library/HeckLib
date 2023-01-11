@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
+import { Prop } from "./consts.ts";
 import { infoFile } from "./info.ts";
 import { scuffedWallsInUse } from "./main.ts";
 
@@ -124,6 +125,7 @@ export namespace Map {
     
         if (!V3) {
             notes = diff._notes;
+            bombs = notes.filter(n => n._type == Prop.Note.Type.Bomb)
             walls = diff._obstacles;
             lights = diff._events;
             
@@ -306,7 +308,7 @@ export namespace Map {
             });
         
             modded._notes.forEach((n: any) => {
-                if (n._customData._fake) fakes++;
+                if (n._customData && n._customData._fake) fakes++;
             });
             WallsCount = [ vanilla._obstacles.length, modded._obstacles.length ];
             NotesCount = [ vanilla._notes.length, modded._notes.length - fakes];

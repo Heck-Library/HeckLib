@@ -1,183 +1,193 @@
+// deno-lint-ignore-file no-explicit-any
 
 
 import { events, V3 } from "./mapHandler.ts";
-import { Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
+import { customEventData, Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
 /**
  * Places an AnimateTrack event
  */
 export class AnimateTrack {
-    _time: number;
-    _type: string;
-    _data: {
-        _track?: Track,
-        _duration?: number,
-        _easing?: string,
-        _position?: vec3anim,
-        _localPosition?: vec3anim,
-        _rotation?: vec3anim,
-        _localRotation?: vec3anim,
-        _scale?: vec3anim,
-        _color?: vec4anim,
-        _dissolve?: vec1anim,
-        _dissolveArrow?: vec1anim,
-        _interactable?: vec1anim,
-        _time?: vec1anim
-    }
-
-    constructor(time: number) {
-        this._time = time
-        this._type = "AnimateTrack"
-        this._data = {}
+    stuff = {};
+    json: {
+        b: number
+        t: string
+        d: customEventData
+    };
+    constructor(eventData: customEventData) {
+        this.json = {
+            b: eventData.time,
+            t: "AnimateTrack",
+            d: eventData
+        };
+        return this;
     }
     /**
      *  The track that should be animated.
      */
-    track (track: Track) {
-        this._data._track = track
-        return this
+    Track (track: Track) {
+            this.json.d.track = track
+            return this
     }
     /**
      * Which easing the animation should use.
      */
-    easing (easing: string) {
-            this._data._easing = easing;
+    Easing (easing: string) {
+            this.json.d.easing = easing;
             return this
     }
     /**
      * The duration of the animation (in beats).
      */
-    duration (duration: number) {
-            this._data._duration = duration
+    Duration (duration: number) {
+            this.json.d.duration = duration
             return this
     }
     /**
      * Animates position.
      */
-    pos (animation: vec3anim) {
-            this._data._position = animation;
+    Pos (animation: vec3anim) {
+            this.json.d.position = animation;
             return this
     }
     /**
      * Animates local position.
      */
-    localPos (animation: vec3anim) {
-            this._data._localPosition = animation;
+    LocalPos (animation: vec3anim) {
+            this.json.d.localPosition = animation;
             return this
     }
     /**
      * Animates rotation.
      */
-    rot (animation: vec3anim) {
-            this._data._rotation = animation;
+    Rot (animation: vec3anim) {
+            this.json.d.rotation = animation;
             return this
     }
     /**
      * Animates local rotation.
      */
-    localRot (animation: vec3anim) {
-            this._data._localRotation = animation;
+    LocalRot (animation: vec3anim) {
+            this.json.d.localRotation = animation;
             return this
     }
     /**
      * Animates scale.
      */
-    scale (animation: vec3anim) {
-            this._data._scale = animation;
+    Scale (animation: vec3anim) {
+            this.json.d.scale = animation;
             return this
     }
     /**
      * Animates color.
      */
-    color (animation: vec4anim) {
-            this._data._color = animation;
+    Color (animation: vec4anim) {
+            this.json.d.color = animation;
             return this
     }
     /**
      * Animates the dissolve.
      */
-    dis (animation: vec1anim) {
-            this._data._dissolve = animation
+    Dis (animation: vec1anim) {
+            this.json.d.dissolve = animation
             return this
     }
     /**
      * Animates the arrow dissolve.
      */
-    disArr (animation: vec1anim) {
-            this._data._dissolveArrow = animation
+    DisArr (animation: vec1anim) {
+            this.json.d.dissolveArrow = animation
             return this
     }
     /**
      * Animates interactability (can either be 0 or 1).
      */
-    interactable (animation: vec1anim) {
-            this._data._interactable = animation
+    Interactable (animation: vec1anim) {
+            this.json.d.interactable = animation
             return this
     }
     /**
      * Animates the time.
      */
-    time (animation: vec1anim) {
-            this._data._time = animation
+    Time (animation: vec1anim) {
+            this.json.d.timeAnim = animation
             return this
     }
-    /**
-     * Push the animation to map data.
-     */
-    push () {
-        
-        let data = JSON.stringify(this);
 
-        if (V3) {
-            data = data.replace(/_/g, "")
-                .replace("time", "b")
-                .replace("type", "t")
-                .replace("data", "d")
-                .replace("\"position\"", "\"offsetPosition\"")
-                .replace("\"rotation\"", "\"offsetWorldRotation\"");
+    set time(time: number) { this.json.b = time}
+    get time(): number { return this.json.b; }
+
+    set type(type: string) { this.json.t = type}
+    get type(): string { return this.json.t; }
+
+    set easing(easing: string) { this.json.d.easing = easing; }
+    get easing(): string { if (!this.json.d.easing) return ""; else return this.json.d.easing; }
+
+    set track(track: Track) { this.json.d.track = track}
+    get track(): Track { if (!this.json.d.track) return ""; else return this.json.d.track; }
+
+    set duration(duration: number) { this.json.d.duration = duration}
+    get duration(): number { if (!this.json.d.duration) return 0; else return this.json.d.duration}
+
+    set position(animation: vec3anim) { this.json.d.position = animation; }
+    get position(): vec3anim { if (!this.json.d.position) return []; else return this.json.d.position; }
+
+    set localPosition(animation: vec3anim) { this.json.d.localPosition = animation; }
+    get localPosition(): vec3anim { if (!this.json.d.localPosition) return []; else return this.json.d.localPosition; }
+
+    set rotation(animation: vec3anim) { this.json.d.rotation = animation; }
+    get rotation(): vec3anim { if (!this.json.d.rotation) return []; else return this.json.d.rotation; }
+
+    set localRotation(animation: vec3anim) { this.json.d.localRotation = animation; }
+    get localRotation(): vec3anim { if (!this.json.d.localRotation) return []; else return this.json.d.localRotation; }
+
+    set scale(animation: vec3anim) { this.json.d.scale = animation; }
+    get scale(): vec3anim { if (!this.json.d.scale) return []; else return this.json.d.scale; }
+
+    set color(animation: vec4anim) { this.json.d.color = animation; }
+    get color(): vec4anim { if (!this.json.d.color) return []; else return this.json.d.color; }
+
+    set dissolve(animation: vec1anim) { this.json.d.dissolve = animation; }
+    get dissolve(): vec1anim { if (!this.json.d.dissolve) return []; else return this.json.d.dissolve; }
+
+    set dissolveArrow(animation: vec1anim) { this.json.d.dissolveArrow = animation; }
+    get dissolveArrow(): vec1anim { if (!this.json.d.dissolveArrow) return []; else return this.json.d.dissolveArrow; }
+
+    set interactable(animation: vec1anim) { this.json.d.interactable = animation; }
+    get interactable(): vec1anim { if (!this.json.d.interactable) return []; else return this.json.d.interactable; }
+
+    set timeAnim(animation: vec1anim) { this.json.d.timeAnim = animation; }
+    get timeAnim(): vec1anim { if (!this.json.d.timeAnim) return []; else return this.json.d.timeAnim; }
+    
+    private jsonifyClasses() {
+        const d: any = this.json;
+        delete d.d.time;
+        Object.assign(this.stuff, d)
+        if (!V3) {
+            this.stuff = JSON.parse(JSON.stringify(this.stuff)
+                .replace(/"b":/g, '"time":')
+                .replace(/"t":/g, '"type":')
+                .replace(/"d":/g, '"data":')
+                .replace(/"([\w\d]+)":/g, '"_$1":')
+            )
         }
+    }
 
-        data = JSON.parse(data)
-
-        const d = this._data;
-        if (!d._track) {
-            throw new Error('No track given.')
-        }
-
-        events.push(data)
+    push() {
+        this.jsonifyClasses()
+        events.push(this.stuff)
         return this;
     }
 }
 
-export class PathAnimation extends AnimateTrack {
-    declare _data: {
-        _track?: Track;
-        _duration?: undefined;
-        _easing?: string;
-        _position?: vec3anim;
-        _rotation?: vec3anim;
-        _localRotation?: vec3anim;
-        _scale?: vec3anim;
-        _color?: vec4anim;
-        _dissolve?: vec1anim;
-        _dissolveArrow?: vec1anim;
-        _interactable?: vec1anim;
-        _time?: undefined;
-        _definitePosition?: vec3anim;
-    };
-    // deno-lint-ignore no-explicit-any
-    constructor(time: number, event?: any) {
-        super(event);
-        this._time = time;
-        this._type = "AssignPathAnimation";
+export class AssignPathAnimation extends AnimateTrack {
+    constructor(customData: customEventData) {
+        super(customData);
     }
-
     /**
      * Animates definite position.
      */
-    defPos (animation: vec3anim) {
-        this._data._definitePosition = animation;
-        return this
-    }
+    set definitePosition(animation: vec3anim) { this.json.d.definitePosition = animation; }
+    get definitePosition(): vec3anim { if (!this.json.d.definitePosition) return []; else return this.json.d.definitePosition; }
 }
 
 export class TrackParent {

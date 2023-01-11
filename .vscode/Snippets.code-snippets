@@ -1,0 +1,27 @@
+{
+    "AnimateTrack": {
+        "scope": "typescript",
+        "prefix": "animTrack",
+        "body": [
+            "new AnimateTrack({",
+            "    time: 0,",
+            "    track: \"\",",
+            "    duration: 0,",
+            "    $0",
+            "}).push();"
+        ],
+        "description": "Adds the structure for an AnimateTrack event"
+    },
+    "AssignPathAnimation": {
+        "scope": "typescript",
+        "prefix": "pathAnim",
+        "body": [
+            "new AssignPathAnimation({",
+            "    time: 0,",
+            "    track: \"\",",
+            "    $0",
+            "}).push();"
+        ],
+        "description": "Adds the structure for an AssignPathAnimation event"
+    }
+}

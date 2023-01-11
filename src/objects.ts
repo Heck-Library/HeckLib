@@ -2,7 +2,7 @@
 
 import { isArr } from "./general.ts";
 import { V3 } from "./main.ts";
-import { bombs, fakeBombs, fakeNotes, fakeWalls, notes, walls } from "./mapHandler.ts";
+import { notes, walls } from "./mapHandler.ts";
 import {
     lineIndex,
     lineLayer,
@@ -447,7 +447,6 @@ export class Note extends Object {
     push() {
         let data = JSON.stringify(this);
         let out;
-        let bomb;
         if (V3) {
             data = data.replace(/_/g, "")
                 .replace("time", "b")
@@ -456,28 +455,6 @@ export class Note extends Object {
                 .replace("\"type", "\"a\": 0,\"c")
                 .replace("cutDirection", "d");
             out = JSON.parse(data);
-            if (out.c == 3) {
-                bomb = {
-                    b: out.b,
-                    x: out.x,
-                    y: out.y,
-                    customData: out.customData
-                }
-                if (JSON.stringify(bomb).includes("fake")) {
-                    let stringBomb = JSON.stringify(bomb);
-                    stringBomb = stringBomb.replace(/,?"fake":(true|false)/g, "")
-                    bomb = JSON.parse(stringBomb);
-                    fakeBombs.push(bomb);
-                    return;
-                }
-                bombs.push(bomb);
-            }
-            if (data.includes("fake")) {
-                data = data.replace(/"fake":(true|false),?/g, "")
-                out = JSON.parse(data);
-                fakeNotes.push(out);
-                return;
-            }
         }
         if (!V3) {
             out = this;
@@ -524,14 +501,7 @@ export class Wall extends Object {
                 .replace("\"lineIndex", "\"y\":0,\"x")
                 .replace("duration", "d")
                 .replace("\"width", "\"h\":5,\"w")
-                .replace(/"type":\d+,?/, "")
             out = JSON.parse(data);
-            if (data.includes("fake")) {
-                data = data.replace(/"fake":(true|false),?/g, "")
-                out = JSON.parse(data);
-                fakeWalls.push(out);
-                return;
-            }
         }
         if (!V3) {
             out = this;
@@ -540,6 +510,7 @@ export class Wall extends Object {
     }
 }
 
+//todo V3 wall scale, note cutdirection and fake notes
 export class CustomData {
     objs: any[]
     //_customData: {
@@ -562,51 +533,27 @@ export class CustomData {
     constructor(t: any[]) {
         this.objs = [...t];
     }
-    track(x: Track) {
-        this.objs.forEach((n: any) => {
-            if (!V3) {
-                n._customData._track = x;
-            }
-            if (V3) {
-                n.customData.track = x;
-            }
-        });
-        return this;
-    }
     disableNoteGravity(x: boolean) {
         this.objs.forEach((n: any) => {
-            if (!V3) {
-                n._customData._disableNoteGravity = x;
-            }
-            if (V3) {
-                n.customData.disableNoteGravity = x;
-            }
-        })
-        return this;
-    }
-    disableNoteLook(x: boolean) {
-        this.objs.forEach((n: any) => {
-            if (!V3) {
-                n._customData._disableNoteLook = x;
-            }
-            if (V3) {
-                n.customData.disableNoteLook = x;
-            }
+            n._customData._disableNoteGravity = x;
         })
         return this;
     }
     disableSpawnEffect(x: boolean) {
         this.objs.forEach((n: any) => {
-            if (!V3) {
-                n._customData._disableSpawnEffect = x;
-            }
-            if (V3) {
-                let thing = true;
-                if (x) {
-                    thing = false
-                }
-                n.customData.spawnEffect = thing;
-            }
+            n._customData._disableSpawnEffect = x;
+        })
+        return this;
+    }
+    disableNoteLook(x: boolean) {
+        this.objs.forEach((n: any) => {
+            n._customData._disableNoteLook = x;
+        })
+        return this;
+    }
+    track(x: Track) {
+        this.objs.forEach((n: any) => {
+            n._customData._track = x;
         })
         return this;
     }
@@ -617,21 +564,9 @@ export class CustomData {
         this.objs.forEach((n:any) => {
             if (!V3) {
                 n._customData._fake = x;
-            } if (V3 && x) {
-                if (n.x && n.y && n.a && n.c) {
-                    if (notes.includes(n)) {
-                        delete notes[notes.indexOf(n)]
-                        fakeNotes.push(n);
-                    } else if (bombs.includes(n)) {
-                        delete bombs[bombs.indexOf(n)]
-                        fakeBombs.push(n);
-                    }
-                } else if (n.w && n.h) {
-                    if (walls.includes(n)) {
-                        delete walls[walls.indexOf(n)]
-                        fakeWalls.push(n);
-                    }
-                }
+            } if (V3) {
+                throw new Error('fake don\'t work on v3 yet')
+                //fakeNotes.push(n)
             }
         });
         return this;
@@ -673,7 +608,7 @@ export class CustomData {
      */
     pos(x: vec2) {
         if (!V3) this.objs.forEach((n:any) => n._customData._position = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.coordinates = x);
+        if (V3) this.objs.forEach((n:any) => n.customData.position = x);
         this.final()
         return this;
     }
@@ -682,7 +617,7 @@ export class CustomData {
      */
     rot(x: vec3) {
         if (!V3) this.objs.forEach((n:any) => n._customData._rotation = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.worldRotation = x);
+        if (V3) this.objs.forEach((n:any) => n.customData.rotation = x);
         this.final()
         return this;
     }
@@ -700,16 +635,7 @@ export class CustomData {
      */
     scale(x: vec3) {
         if (!V3) this.objs.forEach((n:any) => n._customData._scale = x);
-        if (V3) {
-            this.objs.forEach((n:any) => {
-                if (notes.includes(n) || fakeNotes.includes(n) || bombs.includes(n) || fakeBombs.includes(n)) {
-                    n.customData.scale = x
-                }
-                if (walls.includes(n) || fakeWalls.includes(n)) {
-                    n.customData.size = x;
-                }
-            });
-        }
+        if (V3) this.objs.forEach((n:any) => n.customData.scale = x);
         this.final()
         return this;
     }

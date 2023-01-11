@@ -1,6 +1,8 @@
+// deno-lint-ignore-file no-namespace
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
 import './consts.ts';
 import { Font } from './main.ts';
+import { track } from './objects.ts';
 
 
 export type Track = string|string[];
@@ -49,6 +51,59 @@ export type mat = {
     _shader: shaderType,
     _track?: Track,
     _shaderKeywords?: string[]
+}
+
+export namespace objectData {
+    export type noteData = {
+        time: number,
+        x: lineIndex,
+        y: lineLayer,
+        color: objType,
+        direction?: noteDir
+    }
+
+    export type customData = {
+        track?: Track,
+        color?: vec4,
+        position?: vec2,
+        rotation?: vec3,
+        localRotation?: vec3,
+        scale?: vec3,
+        size?: vec3,
+        njs?: number,
+        offset?: number,
+        fake?: boolean,
+        interactable?: boolean
+    }
+
+    export type animationData = {
+        position?: vec3anim,
+        definitePosition?: vec3anim,
+        rotation?: vec3anim,
+        scale?: vec3anim,
+        color?: vec4anim,
+        interactable?: vec1anim,
+        dissolve?: vec1anim,
+        dissolveArrow?: vec1anim
+    }
+}
+
+export type customEventData = { 
+    time: number,
+    track: Track,
+    duration?: number,
+    easing?: string,
+    position?: vec3anim,
+    localPosition?: vec3anim,
+    definitePosition?: vec3anim,
+    rotation?: vec3anim,
+    localRotation?: vec3anim,
+    scale?: vec3anim,
+    color?: vec4anim,
+    dissolve?: vec1anim,
+    dissolveArrow?: vec1anim,
+    interactable?: vec1anim,
+    timeAnim?: vec1anim
 }
 
 export type font = Font.LiteFont

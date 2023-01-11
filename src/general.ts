@@ -1,5 +1,7 @@
 // deno-lint-ignore-file
 
+import { AnimateTrack, V3 } from "./main.ts";
+
 export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
 
@@ -8,6 +10,28 @@ export function isPresent(x: any) {
     return false;
 }
 
+export function edit(x: any[]): any {
+    x.forEach((y: any) => {
+        if (V3) {
+            if (y.t == "AnimateTrack") {
+                const data = JSON.parse(JSON.stringify(y.d));
+                Object.assign(data, y.d)
+                const a = new AnimateTrack(data);
+                a.time = y.b;
+                return a;
+            }
+        }
+        if (!V3) {
+            if (y._type == "AnimateTrack") {
+                const data = JSON.parse(JSON.stringify(y._data));
+                Object.assign(data, y._data)
+                const a = new AnimateTrack(data);
+                a.time = y._time;
+                return JSON.stringify(a);
+            }
+        }
+    })
+}
 
 export function isArr (x: any) {
     if (Array.isArray(x)) {
