@@ -36,8 +36,6 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 ### Editing
 > To edit the script, open your map folder in Visual Studio Code and start editing the `script.ts`. This file already contains the initialisation of the map.
 >
-> By just typing `new` and adding a space will give you a bunch of different things you can do with the script. Documentation for these will be added later.
-> 
 > If you need any help with it, ask me on Discord: `Jevk#0004`
 
 ### Running The Script
