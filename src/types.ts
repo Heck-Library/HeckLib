@@ -1,8 +1,7 @@
-// deno-lint-ignore-file no-namespace
+
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
 import './consts.ts';
 import { Font } from './main.ts';
-import { track } from './objects.ts';
 
 
 export type Track = string|string[];
@@ -53,42 +52,104 @@ export type mat = {
     _shaderKeywords?: string[]
 }
 
-export namespace objectData {
-    export type noteData = {
-        time: number,
-        x: lineIndex,
-        y: lineLayer,
-        color: objType,
-        direction?: noteDir
-    }
-
-    export type customData = {
-        track?: Track,
-        color?: vec4,
-        position?: vec2,
-        rotation?: vec3,
-        localRotation?: vec3,
-        scale?: vec3,
-        size?: vec3,
-        njs?: number,
-        offset?: number,
-        fake?: boolean,
-        interactable?: boolean
-    }
-
-    export type animationData = {
-        position?: vec3anim,
-        definitePosition?: vec3anim,
-        rotation?: vec3anim,
-        scale?: vec3anim,
-        color?: vec4anim,
-        interactable?: vec1anim,
-        dissolve?: vec1anim,
-        dissolveArrow?: vec1anim
-    }
+export type WALL = {
+    time: number,
+    x?: lineIndex,
+    y?: lineLayer,
+    duration?: number,
+    width?: number,
+    height?: number,
+    data?: customNoteData
 }
 
-export type customEventData = { 
+export type wallData = {
+    time: number,
+    x?: lineIndex,
+    y?: lineLayer,
+    duration?: number,
+    width?: number,
+    height?: number
+}
+
+export type customWallData = {
+    track?: Track,
+    color?: vec4,
+    position?: vec2,
+    rotation?: vec3,
+    localRotation?: vec3,
+    scale?: vec3|vec2,
+    njs?: number,
+    offset?: number,
+    fake?: boolean,
+    interactable?: boolean
+}
+
+
+export type NOTE = {
+    time: number,
+    x?: lineIndex,
+    y?: lineLayer,
+    type?: objType,
+    direction?: noteDir,
+    data: customNoteData,
+    anim: animationData
+}
+
+export type noteData = {
+    time: number,
+    x?: lineIndex,
+    y?: lineLayer,
+    type?: objType,
+    direction?: noteDir
+}
+
+export type customNoteData = {
+    track?: Track,
+    color?: vec4,
+    position?: vec2,
+    rotation?: vec3,
+    localRotation?: vec3,
+    flip?: vec2,
+    scale?: vec3,
+    njs?: number,
+    offset?: number,
+    fake?: boolean,
+    interactable?: boolean,
+    disableSpawnEffect?: boolean,
+    disableNoteGravity?: boolean,
+    disableNoteLook?: boolean
+}
+
+export type animationData = {
+    position?: vec3anim,
+    definitePosition?: vec3anim,
+    rotation?: vec3anim,
+    localRotation?: vec3anim,
+    scale?: vec3anim,
+    color?: vec4anim,
+    interactable?: vec1anim,
+    dissolve?: vec1anim,
+    dissolveArrow?: vec1anim
+}
+
+export type animateTrackData = { 
+    time: number,
+    track: Track,
+    duration?: number,
+    easing?: string,
+    position?: vec3anim,
+    localPosition?: vec3anim,
+    rotation?: vec3anim,
+    localRotation?: vec3anim,
+    scale?: vec3anim,
+    color?: vec4anim,
+    dissolve?: vec1anim,
+    dissolveArrow?: vec1anim,
+    interactable?: vec1anim,
+    timeAnim?: vec1anim
+}
+
+export type pathAnimData = { 
     time: number,
     track: Track,
     duration?: number,
@@ -103,7 +164,6 @@ export type customEventData = {
     dissolve?: vec1anim,
     dissolveArrow?: vec1anim,
     interactable?: vec1anim,
-    timeAnim?: vec1anim
 }
 
 export type font = Font.LiteFont

@@ -65,17 +65,19 @@ export class ModelWall {
         }) => {
             let col: vec3 = [1, 1, 1]
             if (x.color) col = x.color;
-            this.walls.push(
-                new Wall(time)
-                .fake(true)
-                .interactable(false)
-                .duration(1)
-                .color([...col, 1])
-                .pos([0, 0])
-                .defPosAnim(x.position)
-                .rot(x.rotation)
-                .scale(x.scale)
-            );
+            new Wall({
+                time: time,
+                duration: 1
+            }, {
+                fake: true,
+                interactable: false,
+                color: [...col, 1],
+                position: [0, 0],
+                rotation: x.rotation,
+                scale: x.scale
+            }, {
+                definitePosition: x.position
+            }).push()
         });
     }
     track(track: Track) {

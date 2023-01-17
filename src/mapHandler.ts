@@ -1,8 +1,9 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
-import { Prop } from "./consts.ts";
 import { infoFile } from "./info.ts";
 import { scuffedWallsInUse } from "./main.ts";
+import { Note } from "./objects.ts";
+import { NOTE } from "./types.ts";
 
 
 export const pointDefinitions = ["NULL"];
@@ -110,6 +111,7 @@ export namespace Map {
         activeInput = input;
         activeOutput = output;
 
+        const goofyAHhNotes: any[] = [];
         if (info._difficultyBeatmapSets) {
             info._difficultyBeatmapSets.forEach((x: any) => {
                 if (JSON.stringify(x).includes(output)) {
@@ -124,8 +126,20 @@ export namespace Map {
     
     
         if (!V3) {
-            notes = diff._notes;
-            bombs = notes.filter(n => n._type == Prop.Note.Type.Bomb)
+            diff._notes.forEach((n: Record<string, any>) => {
+                const thing = new Note({
+                    time: n._time,
+                    type: n._type,
+                    direction: n._cutDirection,
+                    x: n._lineIndex,
+                    y: n._lineLayer
+                }, {
+                    offset: offset,
+                    njs: NJS
+                })
+                goofyAHhNotes.push(thing);
+            })
+            notes = goofyAHhNotes;
             walls = diff._obstacles;
             lights = diff._events;
             
@@ -164,7 +178,20 @@ export namespace Map {
             materials = customData._materials;
         }
         else if (V3) {
-            notes = diff.colorNotes;
+            diff.colorNotes.forEach((n: Record<string, any>) => {
+                const thing = new Note({
+                    time: n.b,
+                    type: n.c,
+                    direction: n.d,
+                    x: n.x,
+                    y: n.y
+                }, {
+                    offset: offset,
+                    njs: NJS
+                })
+                goofyAHhNotes.push(thing);
+            })
+            notes = goofyAHhNotes;
             walls = diff.obstacles;
             bombs = diff.bombNotes;
             lights = diff.basicBeatmapEvents;
@@ -254,6 +281,35 @@ export namespace Map {
         let WallsCount = [0, 0];
 
         if (!V3) {
+            const noteArr: any[] = []
+            notes.forEach((n: NOTE) => {
+                let noteJSON: Record<string, any> = {
+                    _time: n.time,
+                    _type: n.type,
+                    _cutDirection: n.direction,
+                    _lineIndex: n.x,
+                    _lineLayer: n.y,
+                    _customData: {
+                        ...n.data,
+                        _animation: {
+                            ...n.anim
+                        }
+                    }
+                }
+                const stringified = JSON.stringify(noteJSON)
+                    .replace('"njs"', '"noteJumpMovementSpeed"')
+                    .replace('"offset"', '"noteJumpStartBeatOffset"')
+                    .replace(/"([^_][\w\d]+)":/g, '"_$1":')
+                noteJSON = JSON.parse(stringified)
+                if (Object.keys(noteJSON._customData._animation).length < 1) {
+                    delete noteJSON._customData._animation
+                }
+                if (Object.keys(noteJSON._customData).length < 1) {
+                    delete noteJSON._customData
+                }
+                noteArr.push(noteJSON)
+            })
+            difficulty._notes = noteArr;
             difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
             difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
             difficulty._events.sort((a: any, b: any) => a._time - b._time);
@@ -314,6 +370,71 @@ export namespace Map {
             NotesCount = [ vanilla._notes.length, modded._notes.length - fakes];
         }
         if (V3) {
+            const noteArr: any[] = []
+            notes.forEach((n: NOTE) => {
+                let noteJSON: Record<string, any> = {
+                    b: n.time,
+                    c: n.type,
+                    d: n.direction,
+                    x: n.x,
+                    y: n.y,
+                    customData: {
+                        ...n.data,
+                        animation: {
+                            ...n.anim
+                        }
+                    }
+                }
+                const stringified = JSON.stringify(noteJSON)
+                    .replace('"position"', '"coordinates"')
+                    .replace('"rotation"', '"worldRotation"')
+                    .replace('"interactable":false', '"uninteractable":true')
+                    .replace('"njs"', '"noteJumpMovementSpeed"')
+                    .replace('"offset"', '"noteJumpStartBeatOffset"')
+                    .replace('"disableSpawnEffect":true', '"spawnEffect":false')
+                noteJSON = JSON.parse(stringified)
+                if (Object.keys(noteJSON.customData.animation).length < 1) {
+                    delete noteJSON.customData.animation
+                }
+                if (Object.keys(noteJSON.customData).length < 1) {
+                    delete noteJSON.customData
+                }
+                noteArr.push(noteJSON)
+            })
+            difficulty.colorNotes = JSON.parse(JSON.stringify(noteArr));
+            noteArr.length = 0;
+
+            fakeNotes.forEach((n: NOTE) => {
+                let noteJSON: Record<string, any> = {
+                    b: n.time,
+                    c: n.type,
+                    d: n.direction,
+                    x: n.x,
+                    y: n.y,
+                    customData: {
+                        ...n.data,
+                        animation: {
+                            ...n.anim
+                        }
+                    }
+                }
+                const stringified = JSON.stringify(noteJSON)
+                    .replace('"position"', '"coordinates"')
+                    .replace('"rotation"', '"worldRotation"')
+                    .replace('"interactable":false', '"uninteractable":true')
+                    .replace('"njs"', '"noteJumpMovementSpeed"')
+                    .replace('"offset"', '"noteJumpStartBeatOffset"')
+                    .replace('"disableSpawnEffect":true', '"spawnEffect":false')
+                noteJSON = JSON.parse(stringified)
+                if (Object.keys(noteJSON.customData.animation).length < 1) {
+                    delete noteJSON.customData.animation
+                }
+                if (Object.keys(noteJSON.customData).length < 1) {
+                    delete noteJSON.customData
+                }
+                noteArr.push(noteJSON)
+            })
+            difficulty.customData.fakeColorNotes = noteArr;
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);

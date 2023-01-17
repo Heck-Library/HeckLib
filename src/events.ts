@@ -1,8 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
 
 
+import { pathAnimData } from "./main.ts";
 import { events, V3 } from "./mapHandler.ts";
-import { customEventData, Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
+import { animateTrackData, Track, vec1anim, vec3anim, vec4anim } from "./types.ts";
 /**
  * Places an AnimateTrack event
  */
@@ -11,9 +12,9 @@ export class AnimateTrack {
     json: {
         b: number
         t: string
-        d: customEventData
+        d: animateTrackData
     };
-    constructor(eventData: customEventData) {
+    constructor(eventData: animateTrackData) {
         this.json = {
             b: eventData.time,
             t: "AnimateTrack",
@@ -21,6 +22,7 @@ export class AnimateTrack {
         };
         return this;
     }
+    //#region methods
     /**
      *  The track that should be animated.
      */
@@ -112,7 +114,9 @@ export class AnimateTrack {
             this.json.d.timeAnim = animation
             return this
     }
+    //#endregion
 
+    //#region getters and setters
     set time(time: number) { this.json.b = time}
     get time(): number { return this.json.b; }
 
@@ -157,7 +161,7 @@ export class AnimateTrack {
 
     set timeAnim(animation: vec1anim) { this.json.d.timeAnim = animation; }
     get timeAnim(): vec1anim { if (!this.json.d.timeAnim) return []; else return this.json.d.timeAnim; }
-    
+    //#endregion
     private jsonifyClasses() {
         const d: any = this.json;
         delete d.d.time;
@@ -180,7 +184,8 @@ export class AnimateTrack {
 }
 
 export class AssignPathAnimation extends AnimateTrack {
-    constructor(customData: customEventData) {
+    declare json: { b: number; t: string; d: pathAnimData; };
+    constructor(customData: pathAnimData) {
         super(customData);
     }
     /**

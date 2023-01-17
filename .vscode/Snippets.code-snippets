@@ -23,5 +23,22 @@
             "}).push();"
         ],
         "description": "Adds the structure for an AssignPathAnimation event"
+    },
+
+    "Note": {
+        "scope": "typescript",
+        "prefix": "note",
+        "body": [
+            "new Note({",
+            "    //Vanilla data",
+            "    time: 0$0,",
+            "}, {",
+            "    //Custom data",
+            "    ",
+            "}, {",
+            "    //Animation data",
+            "    ",
+            "}).push();"
+        ]
     }
 }

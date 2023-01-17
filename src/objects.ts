@@ -1,20 +1,19 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { isArr } from "./general.ts";
-import { V3 } from "./main.ts";
-import { notes, walls } from "./mapHandler.ts";
+import { fakeWalls, V3 } from "./main.ts";
+import { fakeBombs, fakeNotes, notes, walls } from "./mapHandler.ts";
 import {
+    animationData,
+    customNoteData,
+    customWallData,
     lineIndex,
     lineLayer,
+    noteData,
     noteDir,
     objType,
     Track,
-    vec1anim,
-    vec2,
-    vec3,
-    vec3anim,
-    vec4,
-    vec4anim,
+    wallData
 } from "./types.ts";
 
 /**
@@ -165,606 +164,115 @@ import {
     });
 }
 
-export class Object {
-    _time: number;
-    _lineIndex: lineIndex;
-    _type: objType;
-    _customData: {
-        _track?: Track;
-        _color?: vec4;
-        _position?: vec2;
-        _rotation?: vec3;
-        _localRotation?: vec3;
-        _scale?: vec3;
-        _size?: vec3;
-        _noteJumpMovementSpeed?: number;
-        _noteJumpStartBeatOffset?: number;
-        _fake?: boolean;
-        _interactable?: boolean;
-        _animation: {
-            _position?: vec3anim;
-            _definitePosition?: vec3anim;
-            _rotation?: vec3anim;
-            _localRotation?: vec3anim;
-            _scale?: vec3anim;
-            _color?: vec4anim;
-            _interactable?: vec1anim;
-            _dissolve?: vec1anim;
-            _dissolveArrow?: vec1anim;
-        };
-    };
-    constructor(time: number) {
-        this._time = time;
-        this._lineIndex = 0;
-        this._type = 0;
-        this._customData = {
-            _animation: {},
-        };
+export class Note {
+    private json: {
+        nD: noteData,
+        cD: customNoteData,
+        aD: animationData
     }
-    //#region customData
-    /**
-     * The track that should be applied to this object.
-     */
-    track(x: Track) {
-        this._customData._track = x;
-        return this;
-    }
-    /**
-     * The color that should be applied to this object.
-     */
-    color(x: vec4) {
-        this._customData._color = x;
-        return this;
-    }
-    /**
-     * The line that should be applied to this object.
-     */
-    lineIndex(x: 0 | 1 | 2 | 3) {
-        this._lineIndex = x;
-        return this;
-    }
-    /**
-     * The position that should be applied to this object.
-     */
-    pos(x: vec2) {
-        this._customData._position = x;
-        return this;
-    }
-    /**
-     * The rotation that should be applied to this object.
-     */
-    rot(x: vec3) {
-        this._customData._rotation = x;
-        return this;
-    }
-    /**
-     * The local rotation that should be applied to this object.
-     */
-    localRot(x: vec3) {
-        this._customData._localRotation = x;
-        return this;
-    }
-    /**
-     * The scale that should be applied to this object.
-     */
-    scale(x: vec3) {
-        if (V3) {
-            this._customData._size = x;
-        } else this._customData._scale = x;
-        return this;
-    }
-    /**
-     * The NJS that should be applied to this object.
-     */
-    njs(x: number) {
-        this._customData._noteJumpMovementSpeed = x;
-        return this;
-    }
-    /**
-     * The offset that should be applied to this object.
-     */
-    offset(x: number) {
-        this._customData._noteJumpStartBeatOffset = x;
-        return this;
-    }
-    /**
-     * Whether the object should be fake or not.
-     */
-    fake(x: boolean) {
-        this._customData._fake = x;
-        return this;
-    }
-    /**
-     * Whether the objects should be interactable or not.
-     */
-    interactable(x: boolean) {
-        this._customData._interactable = x;
-        return this;
-    }
-    //#endregion
+    constructor(noteData: noteData, customData?: customNoteData, animatinoData?: animationData) {
+        this.json = {nD: noteData, cD: {}, aD: {}};
+        if (customData) this.json.cD = customData;
+        if (animatinoData) this.json.aD = animatinoData;
 
-    //#region animation
-    /**
-     * The position animation that should be applied to this object.
-     */
-    posAnim(x: vec3anim) {
-        this._customData._animation._position = x;
-        return this;
+        if (!noteData.time) this.json.nD.time = 0;
+        if (!noteData.type) this.json.nD.type = 0;
+        if (!noteData.direction) this.json.nD.direction = 0;
+        if (!noteData.x) this.json.nD.x = 0;
+        if (!noteData.y) this.json.nD.y = 0;
     }
-    /**
-     * The definite position animation that should be applied to this object.
-     */
-    defPosAnim(x: vec3anim) {
-        this._customData._animation._definitePosition = x;
-        return this;
-    }
-    /**
-     * The rotation animation that should be applied to this object.
-     */
-    rotAnim(x: vec3anim) {
-        this._customData._animation._rotation = x;
-        return this;
-    }
-    /**
-     * The local rotation animation that should be applied to this object.
-     */
-    localRotAnim(x: vec3anim) {
-        this._customData._animation._localRotation = x;
-        return this;
-    }
-    /**
-     * The scale animation animation that should be applied to this object.
-     */
-    scaleAnim(x: vec3anim) {
-        this._customData._animation._scale = x;
-        return this;
-    }
-    /**
-     * The color animation that should be applied to this object.
-     */
-    colorAnim(x: vec4anim) {
-        this._customData._animation._color = x;
-        return this;
-    }
-    /**
-     * The interactable animation that should be applied to this object (0 = not interactable, > 0 = interactable).
-     */
-    interactableAnim(x: vec1anim) {
-        this._customData._animation._interactable = x;
-        return this;
-    }
-    /**
-     * The dissolve animation that should be applied to this object.
-     */
-    disAnim(x: vec1anim) {
-        this._customData._animation._dissolve = x;
-        return this;
-    }
-    /**
-     * The dissolve arrow animation that should be applied to this object.
-     */
-    disArrAnim(x: vec1anim) {
-        this._customData._animation._dissolveArrow = x;
-        return this;
-    }
-    //#endregion
-}
 
-export class Note extends Object {
-    _lineLayer: lineLayer;
-    _cutDirection: noteDir;
-    _type: objType;
-    declare _customData: {
-        _track?: Track;
-        _flip?: vec2;
-        _color?: vec4;
-        _position?: vec2;
-        _rotation?: vec3;
-        _localRotation?: vec3;
-        _scale?: vec3;
-        _noteJumpMovementSpeed?: number;
-        _noteJumpStartBeatOffset?: number;
-        _disableNoteGravity?: boolean;
-        _disableSpawnEffect?: boolean;
-        _disableNoteLook?: boolean;
-        _fake?: boolean;
-        _interactable?: boolean;
-        _animation: {
-            _position?: vec3anim;
-            _definitePosition?: vec3anim;
-            _rotation?: vec3anim;
-            _localRotation?: vec3anim;
-            _scale?: vec3anim;
-            _color?: vec4anim;
-            _interactable?: vec1anim;
-            _dissolve?: vec1anim;
-            _dissolveArrow?: vec1anim;
-        };
-    };
+    //#region getters and setters-
+    set time(time: number) { this.json.nD.time = time }
+    get time(): number { return this.json.nD.time; }
 
-    constructor(time: number) {
-        super(time);
-        this._lineLayer = 0;
-        this._cutDirection = 0;
-        this._type = 0;
-    }
-    //#region vanilla
-    /**
-     * The direction of the note.
-     */
-    direction(x: noteDir) {
-        this._cutDirection = x;
-        return this;
-    }
-    /**
-     * The line layer of the note.
-     */
-    lineLayer(x: lineLayer) {
-        this._lineLayer = x;
-        return this;
-    }
-    /**
-     * The type of the note.
-     */
-    type(x: objType) {
-        this._type = x;
-        return this;
-    }
+    set type(type: objType) { this.json.nD.type = type }
+    get type(): objType { if (this.json.nD.type) return this.json.nD.type; return 0; }
+
+    set x(x: lineIndex) { this.json.nD.x = x }
+    get x(): lineIndex { if (this.json.nD.x) return this.json.nD.x; return 0; }
+
+    set y(y: lineLayer) { this.json.nD.y = y }
+    get y(): lineLayer { if (this.json.nD.y) return this.json.nD.y; return 0; }
+
+    set direction(direction: noteDir) { this.json.nD.direction = direction }
+    get direction(): noteDir { if (this.json.nD.direction) return this.json.nD.direction; return 0; }
+
+    set data(param: any) { this.json.cD = param }
+    get data(): customNoteData { return this.json.cD }
+
+    set anim(param: any) { this.json.aD = param}
+    get anim(): animationData { return this.json.aD }
     //#endregion
-    //#region customData
-    /**
-     * The flip amount of the note.
-     */
-    flip(x: vec2) {
-        this._customData._flip = x;
-        return this;
-    }
-    /**
-     * Whether to disabled note gravity or not.
-     */
-    disableNoteGravity(x: boolean) {
-        this._customData._disableNoteGravity = x;
-        return this;
-    }
-    /**
-     * Whether to disabled spawn effect or not.
-     */
-    disableSpawnEffect(x: boolean) {
-        this._customData._disableSpawnEffect = x;
-        return this;
-    }
-    /**
-     * Whether to disabled note look or not.
-     */
-    disableNoteLook(x: boolean) {
-        this._customData._disableNoteLook = x;
-        return this;
-    }
-    //#endregion
-    /**
-     * Push the note to the map data.
-     */
     push() {
-        let data = JSON.stringify(this);
-        let out;
-        if (V3) {
-            data = data.replace(/_/g, "")
-                .replace("time", "b")
-                .replace("lineIndex", "x")
-                .replace("lineLayer", "y")
-                .replace("\"type", "\"a\": 0,\"c")
-                .replace("cutDirection", "d");
-            out = JSON.parse(data);
-        }
-        if (!V3) {
-            out = this;
-        }
-        notes.push(out);
-    }
-}
-
-export class Wall extends Object {
-    _duration: number;
-    _width: number;
-    constructor(time: number) {
-        super(time);
-        this._duration = 1;
-        this._width = 1;
-    }
-    duration(x: number) {
-        this._duration = x;
-        return this;
-    }
-    push(edge?: number) {
-        if (
-            typeof edge !== "undefined" && edge !== null && this._customData._scale
-        ) {
-            if (!this._customData._animation._scale) {
-                this._customData._animation._scale = [edge, edge, edge];
+        if (V3 && this.json.cD.fake) {
+            delete this.json.cD.fake;
+            switch (this.json.nD.type) {
+                case 3:
+                    fakeBombs.push(this);
+                    break;
+                default:
+                    fakeNotes.push(this);
+                    break;
             }
-            const wallScale = this._customData._scale;
-            const scaledUp = JSON.parse(JSON.stringify(wallScale));
-            scaledUp[0] *= edge;
-            scaledUp[1] *= edge;
-            scaledUp[2] *= edge;
-            this._customData._animation._scale = [...scaledUp];
-            wallScale[0] /= edge;
-            wallScale[1] /= edge;
-            wallScale[2] /= edge;
-            this._customData._scale = [...wallScale];
+            return this;
         }
-        let out;
-        if (V3) {
-            let data = JSON.stringify(this);
-            data = data.replace(/_/g, "")
-                .replace("time", "b")
-                .replace("\"lineIndex", "\"y\":0,\"x")
-                .replace("duration", "d")
-                .replace("\"width", "\"h\":5,\"w")
-            out = JSON.parse(data);
-        }
-        if (!V3) {
-            out = this;
-        }
-        walls.push(out);
+        notes.push(this);
+        return this;
     }
 }
 
-//todo V3 wall scale, note cutdirection and fake notes
-export class CustomData {
-    objs: any[]
-    //_customData: {
-    //    _track?: Track;
-    //    _flip?: vec2;
-    //    _color?: vec4;
-    //    _position?: vec2;
-    //    _rotation?: vec3;
-    //    _localRotation?: vec3;
-    //    _scale?: vec3;
-    //    _noteJumpMovementSpeed?: number;
-    //    _noteJumpStartBeatOffset?: number;
-    //    _disableNoteGravity?: boolean;
-    //    _disableSpawnEffect?: boolean;
-    //    _disableNoteLook?: boolean;
-    //    _fake?: boolean;
-    //    _interactable?: boolean;
-    //    _cutDirection?: number;
-    //};
-    constructor(t: any[]) {
-        this.objs = [...t];
+export class Wall {
+    private json: {
+        wD: wallData
+        cD: customWallData
+        aD: animationData
     }
-    disableNoteGravity(x: boolean) {
-        this.objs.forEach((n: any) => {
-            n._customData._disableNoteGravity = x;
-        })
-        return this;
-    }
-    disableSpawnEffect(x: boolean) {
-        this.objs.forEach((n: any) => {
-            n._customData._disableSpawnEffect = x;
-        })
-        return this;
-    }
-    disableNoteLook(x: boolean) {
-        this.objs.forEach((n: any) => {
-            n._customData._disableNoteLook = x;
-        })
-        return this;
-    }
-    track(x: Track) {
-        this.objs.forEach((n: any) => {
-            n._customData._track = x;
-        })
-        return this;
-    }
-    /**
-     * Whether the object should be fake or not.
-     */
-    fake(x: boolean) {
-        this.objs.forEach((n:any) => {
-            if (!V3) {
-                n._customData._fake = x;
-            } if (V3) {
-                throw new Error('fake don\'t work on v3 yet')
-                //fakeNotes.push(n)
-            }
-        });
-        return this;
-    }
-    /**
-     * Whether the object should be interactable or not.
-     */
-    interactable(x: boolean) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._interactable = x);
-        if (V3) {
-            let ye: boolean;
-            if (x) ye = false
-            if (!x) ye = true
-            this.objs.forEach((n:any) => n.customData.uninteractable = ye);
-        }
-        this.final()
-        return this;
-    }
-    /**
-     * What the NJS of the object should be.
-     */
-    njs(x: number) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._noteJumpMovementSpeed = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.noteJumpMovementSpeed = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the offset of the object should be.
-     */
-    offset(x: number) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._noteJumpStartBeatOffset = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.noteJumpStartBeatOffset = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the position value of the object should be.
-     */
-    pos(x: vec2) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._position = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.position = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the rotation value of the object should be.
-     */
-    rot(x: vec3) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._rotation = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.rotation = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the local rotation value of the object should be.
-     */
-    localRot(x: vec3) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._localRotation = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.localRotation = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the scale of the object should be.
-     */
-    scale(x: vec3) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._scale = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.scale = x);
-        this.final()
-        return this;
-    }
-    /**
-     * What the color of the object should be
-     */
-    color(x: vec4) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._color = x);
-        if (V3) this.objs.forEach((n:any) => n.customData.color = x);
-        this.final()
-        return this;
-    }
-    /**
-     * The direction that the note should be faced towards in degrees.
-     */
-    dir(x: number) {
-        if (!V3) this.objs.forEach((n:any) => n._customData._cutDirection = x);
-        if (V3) this.objs.forEach((n:any) => n.a = x);
-        this.final()
-        return this;
-    }
-    private final() {
-        let data = JSON.stringify(this.objs)
-        if (V3) {
-            data = data
-                .replace("_interactable", "uninteractable")
-                .replace("_disableSpawnEffect", "spawnEffect")
-                .replace(/_/g, "")
-                .replace("position", "coordinates")
-                .replace("rotation", "worldRotation");
-        }
-        return data;
-    }
-}
+    constructor(wallData: wallData, customData?: customWallData, animationData?: animationData) {
+        this.json = {wD: wallData, cD: {}, aD: {}};
+        if (customData) this.json.cD = customData;
+        if (animationData) this.json.aD = animationData;
 
-export class Animation {
-    objs: any[];
-    //_customData: {
-    //    _animation: {
-    //        _position?: vec3anim;
-    //        _definitePosition?: vec3anim;
-    //        _rotation?: vec3anim;
-    //        _localRotation?: vec3anim;
-    //        _scale?: vec3anim;
-    //        _color?: vec4anim;
-    //        _interactable?: vec1anim;
-    //        _dissolve?: vec1anim;
-    //        _dissolveArrow?: vec1anim;
-    //    };
-    //};
-    constructor(t: any) {
-        this.objs = [...t];
-        this.objs.forEach((n: any) => {
-            if (!V3)
-                if (!n._customData._animation) n._customData._animation = {};
-            if (V3)
-                if (!n.customData.animation) n.customData.animation = {};
-        });
+        if (!wallData.time) this.json.wD.time = 0;
+        if (!wallData.duration) this.json.wD.duration = 1;
+        if (!wallData.width) this.json.wD.width = 1;
+        if (!wallData.height) this.json.wD.height = 1;
+        if (!wallData.x) this.json.wD.x = 0;
+        if (!wallData.y) this.json.wD.y = 0;
     }
-    /**
-     * The position animation that should be applied to this object.
-     */
-    pos(x: vec3anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._position = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.position = x);
-        return this;
-    }
-    /**
-     * The definite position animation that should be applied to this object.
-     */
-    defPos(x: vec3anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._definitePosition = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.definitePosition = x);
-        return this;
-    }
-    /**
-     * The rotation animation that should be applied to this object.
-     */
-    rot(x: vec3anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._rotation = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.rotation = x);
-        return this;
-    }
-    /**
-     * The local rotation animation that should be applied to this object.
-     */
-    localRot(x: vec3anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._localRotation = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.localRotation = x);
-        return this;
-    }
-    /**
-     * The scale animation animation that should be applied to this object.
-     */
-    scale(x: vec3anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._scale = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.scale = x);
-        return this;
-    }
-    /**
-     * The dissolve animation that should be applied to this object.
-     */
-    dis(x: vec1anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._dissolve = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.dissolve = x);
-        return this;
-    }
-    /**
-     * The dissolve arrow animation that should be applied to this object.
-     */
-    disArr(x: vec1anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._dissolveArrow = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.dissolveArrow = x);
-        return this;
-    }
-    /**
-     * The interactable animation that should be applied to this object (0 = not interactable, > 0 = interactable).
-     */
-    interactable(x: vec1anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._interactable = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.interactable = x);
-        return this;
-    }
-    /**
-     * The color animation that should be applied to this object.
-     */
-    color(x: vec4anim) {
-        if (!V3) this.objs.forEach((n: any) => n._customData._animation._color = x);
-        if (V3) this.objs.forEach((n: any) => n.customData.animation.color = x);
+
+    //#region getters and setters
+    set time(time: number) { this.json.wD.time = time; }
+    get time(): number { return this.json.wD.time; }
+
+    set duration(duration: number) { this.json.wD.duration = duration; }
+    get duration(): number { if (this.json.wD.duration) return this.json.wD.duration; return 0; }
+
+    set width(width: number) { this.json.wD.width = width; }
+    get width(): number { if (this.json.wD.width) return this.json.wD.width; return 0; }
+
+    set height(height: number) { this.json.wD.height = height; }
+    get height(): number { if (this.json.wD.height) return this.json.wD.height; return 0; }
+
+    set x(x: lineIndex) { this.json.wD.x = x; }
+    get x(): lineIndex { if (this.json.wD.x) return this.json.wD.x; return 0; }
+
+    set y(y: lineLayer) { this.json.wD.y = y; }
+    get y(): lineLayer { if (this.json.wD.y) return this.json.wD.y; return 0; }
+
+    set data(param: any) { this.json.cD = param; }
+    get data(): customWallData { return this.json.cD; }
+    
+    set anim(param: any) { this.json.aD = param; }
+    get anim(): animationData { return this.json.aD; }
+    //#endregion
+    push() {
+        if (V3 && this.json.cD.fake) {
+            delete this.json.cD.fake;
+            fakeWalls.push(this);
+            return this;
+        }
+        walls.push(this);
         return this;
     }
 }
