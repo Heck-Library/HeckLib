@@ -59,7 +59,8 @@ export type WALL = {
     duration?: number,
     width?: number,
     height?: number,
-    data?: customNoteData
+    data: customNoteData,
+    anim: animationData
 }
 
 export type wallData = {

@@ -2,17 +2,19 @@
 
 import { isArr } from "./general.ts";
 import { fakeWalls, V3 } from "./main.ts";
-import { fakeBombs, fakeNotes, notes, walls } from "./mapHandler.ts";
+import { bombs, fakeNotes, notes, walls } from "./mapHandler.ts";
 import {
     animationData,
     customNoteData,
     customWallData,
     lineIndex,
     lineLayer,
+    NOTE,
     noteData,
     noteDir,
     objType,
     Track,
+    WALL,
     wallData
 } from "./types.ts";
 
@@ -24,91 +26,108 @@ import {
  * @param direction What the direction to filter should be (CAN ONLY BE APPLIED TO NOTES).
  * @returns The filtered objects.
  */
- export function filter(
-    obj: any,
+export function filter(
+    obj: any[],
     start: number,
     end: number,
-    type?: 0 | 1 | 3,
-    direction?: number,
+    type?: 0|1|3,
+    direction?: number
 ) {
-    if (!V3) {
-        if (obj == notes) {
-            if (
-                typeof type !== "undefined" && type !== null &&
-                (typeof direction === "undefined" || direction === null)
-            ) {
-                return notes.filter((n: { _time: number; _type: number }) =>
-                    n._time >= start && n._time <= end && n._type == type
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                (typeof type === "undefined" || type === null)
-            ) {
-                return notes.filter((n: { _time: number; _cutDirection: number }) =>
-                    n._time >= start && n._time <= end && n._cutDirection == direction
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                typeof type !== "undefined" && type !== null
-            ) {
-                return notes.filter((
-                    n: { _time: number; _type: number; _cutDirection: number },
-                ) =>
-                    n._time >= start && n._time <= end && n._type == type &&
-                    n._cutDirection == direction
-                );
-            } else {
-                return notes.filter((n: { _time: number }) =>
-                    n._time >= start && n._time <= end
-                );
-            }
-        }
-        if (obj == walls) {
-            return walls.filter((w: { _time: number }) =>
-                w._time >= start && w._time <= end
-            );
-        }
+    if (obj == fakeNotes || obj == notes) {
+        const f: (NOTE)[] = obj.filter((n: NOTE) => n.time >= start && n.time <= end)
+        if (type && !direction) return f.filter((n: NOTE) => n.type == type);
+        if (!type && direction) return f.filter((n: NOTE) => n.direction == direction);
+        if (type && direction) return f.filter((n: NOTE) => n.direction == direction && n.type == type);
+        return f;
     }
-    if (V3) {
-        if (obj == notes) {
-            if (
-                typeof type !== "undefined" && type !== null &&
-                (typeof direction === "undefined" || direction === null)
-            ) {
-                return notes.filter((n: { b: number; c: number }) =>
-                    n.b >= start && n.b <= end && n.c == type
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                (typeof type === "undefined" || type === null)
-            ) {
-                return notes.filter((n: { b: number; d: number }) =>
-                    n.b >= start && n.b <= end && n.d == direction
-                );
-            } else if (
-                typeof direction !== "undefined" && direction !== null &&
-                typeof type !== "undefined" && type !== null
-            ) {
-                return notes.filter((
-                    n: { b: number; c: number; d: number },
-                ) =>
-                    n.b >= start && n.b <= end && n.c == type &&
-                    n.d == direction
-                );
-            } else {
-                return notes.filter((n: { b: number }) =>
-                    n.b >= start && n.b <= end
-                );
-            }
-        }
-        if (obj == walls) {
-            return walls.filter((w: { b: number }) =>
-                w.b >= start && w.b <= end
-            );
-        }
+    if (obj == fakeWalls || obj == walls) {
+        return obj.filter((w: WALL) => w.time >= start && w.time <= end);
     }
-    return notes[0];
+    return [];
 }
+
+// export function filter(
+//     obj: any,
+//     start: number,
+//     end: number,
+//     type?: 0 | 1 | 3,
+//     direction?: number,
+// ) {
+//     if (!V3) {
+//         if (obj == notes) {
+//             if (!type && !direction) {
+//                 return notes.filter((n: { _time: number; _type: number }) =>
+//                     n._time >= start && n._time <= end && n._type == type
+//                 );
+//             } else if (
+//                 typeof direction !== "undefined" && direction !== null &&
+//                 (typeof type === "undefined" || type === null)
+//             ) {
+//                 return notes.filter((n: { _time: number; _cutDirection: number }) =>
+//                     n._time >= start && n._time <= end && n._cutDirection == direction
+//                 );
+//             } else if (
+//                 typeof direction !== "undefined" && direction !== null &&
+//                 typeof type !== "undefined" && type !== null
+//             ) {
+//                 return notes.filter((
+//                     n: { _time: number; _type: number; _cutDirection: number },
+//                 ) =>
+//                     n._time >= start && n._time <= end && n._type == type &&
+//                     n._cutDirection == direction
+//                 );
+//             } else {
+//                 return notes.filter((n: { _time: number }) =>
+//                     n._time >= start && n._time <= end
+//                 );
+//             }
+//         }
+//         if (obj == walls) {
+//             return walls.filter((w: { _time: number }) =>
+//                 w._time >= start && w._time <= end
+//             );
+//         }
+//     }
+//     if (V3) {
+//         if (obj == notes) {
+//             if (
+//                 typeof type !== "undefined" && type !== null &&
+//                 (typeof direction === "undefined" || direction === null)
+//             ) {
+//                 return notes.filter((n: { b: number; c: number }) =>
+//                     n.b >= start && n.b <= end && n.c == type
+//                 );
+//             } else if (
+//                 typeof direction !== "undefined" && direction !== null &&
+//                 (typeof type === "undefined" || type === null)
+//             ) {
+//                 return notes.filter((n: { b: number; d: number }) =>
+//                     n.b >= start && n.b <= end && n.d == direction
+//                 );
+//             } else if (
+//                 typeof direction !== "undefined" && direction !== null &&
+//                 typeof type !== "undefined" && type !== null
+//             ) {
+//                 return notes.filter((
+//                     n: { b: number; c: number; d: number },
+//                 ) =>
+//                     n.b >= start && n.b <= end && n.c == type &&
+//                     n.d == direction
+//                 );
+//             } else {
+//                 return notes.filter((n: { b: number }) =>
+//                     n.b >= start && n.b <= end
+//                 );
+//             }
+//         }
+//         if (obj == walls) {
+//             return walls.filter((w: { b: number }) =>
+//                 w.b >= start && w.b <= end
+//             );
+//         }
+//     }
+//     return notes[0];
+// }
 
 /**
  * Assign a track to notes or walls.
@@ -205,16 +224,8 @@ export class Note {
     get anim(): animationData { return this.json.aD }
     //#endregion
     push() {
-        if (V3 && this.json.cD.fake) {
-            delete this.json.cD.fake;
-            switch (this.json.nD.type) {
-                case 3:
-                    fakeBombs.push(this);
-                    break;
-                default:
-                    fakeNotes.push(this);
-                    break;
-            }
+        if (V3 && this.type == 3) {
+            bombs.push(this);
             return this;
         }
         notes.push(this);
@@ -267,11 +278,6 @@ export class Wall {
     get anim(): animationData { return this.json.aD; }
     //#endregion
     push() {
-        if (V3 && this.json.cD.fake) {
-            delete this.json.cD.fake;
-            fakeWalls.push(this);
-            return this;
-        }
         walls.push(this);
         return this;
     }
