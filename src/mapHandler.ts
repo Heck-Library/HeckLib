@@ -3,7 +3,7 @@
 import { infoFile } from "./info.ts";
 import { scuffedWallsInUse, WALL } from "./main.ts";
 import { Note } from "./objects.ts";
-import { NOTE } from "./types.ts";
+import { CUSTOMEVENT, NOTE } from "./types.ts";
 
 
 export const pointDefinitions = ["NULL"];
@@ -119,6 +119,27 @@ function notesToJSON() {
         } else noteArr.push(noteJSON)
     })
     return noteArr
+}
+
+function customEventsToJSON() {
+    const eventArr: any[] = []
+    events.forEach((e: CUSTOMEVENT) => {
+        const eventJSON: Record<string, any> = {
+            b: e.time,
+            t: e.type,
+            d: e.data
+        }
+        let stringified = JSON.stringify(eventJSON)
+        if (!V3) {
+            stringified = stringified
+                .replace('"b":', '"time":')
+                .replace('"t":', '"type":')
+                .replace('"d":', '"data":')
+                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
+        }
+        eventArr.push(JSON.parse(stringified))
+    });
+    return eventArr;
 }
 
 export namespace Map {
@@ -375,6 +396,7 @@ export namespace Map {
         if (!V3) {
             difficulty._notes = notesToJSON();
             difficulty._obstacles = wallsToJSON();
+            difficulty._customData._customEvents = customEventsToJSON();
             difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
             difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
             difficulty._events.sort((a: any, b: any) => a._time - b._time);
@@ -437,6 +459,7 @@ export namespace Map {
         if (V3) {
             difficulty.colorNotes = notesToJSON();
             difficulty.obstacles = wallsToJSON();
+            difficulty.customData.customEvents = customEventsToJSON();
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);

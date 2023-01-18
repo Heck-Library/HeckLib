@@ -40,5 +40,21 @@
             "    ",
             "}).push();"
         ]
+    },
+    "Wall": {
+        "scope": "typescript",
+        "prefix": "wall",
+        "body": [
+            "new Wall({",
+            "    //Vanilla data",
+            "    time: 0$0",
+            "}, {",
+            "    //Custom data",
+            "    ",
+            "}, {",
+            "    //Animation data",
+            "    ",
+            "}).push();"
+        ]
     }
 }

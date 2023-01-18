@@ -85,6 +85,11 @@ export type customWallData = {
     interactable?: boolean
 }
 
+export type CUSTOMEVENT = {
+    time: number
+    type: string
+    data: animateTrackData|pathAnimData
+}
 
 export type NOTE = {
     time: number,
@@ -133,10 +138,9 @@ export type animationData = {
     dissolveArrow?: vec1anim
 }
 
-export type animateTrackData = { 
-    time: number,
+export type animateTrackData = {
     track: Track,
-    duration?: number,
+    duration: number,
     easing?: string,
     position?: vec3anim,
     localPosition?: vec3anim,
@@ -150,10 +154,9 @@ export type animateTrackData = {
     timeAnim?: vec1anim
 }
 
-export type pathAnimData = { 
-    time: number,
+export type pathAnimData = {
     track: Track,
-    duration?: number,
+    duration: number,
     easing?: string,
     position?: vec3anim,
     localPosition?: vec3anim,
