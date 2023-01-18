@@ -3,8 +3,7 @@
         "scope": "typescript",
         "prefix": "animTrack",
         "body": [
-            "new AnimateTrack({",
-            "    time: 0,",
+            "new AnimateTrack(0, {",
             "    track: \"\",",
             "    duration: 0,",
             "    $0",
@@ -16,13 +15,29 @@
         "scope": "typescript",
         "prefix": "pathAnim",
         "body": [
-            "new AssignPathAnimation({",
-            "    time: 0,",
+            "new AssignPathAnimation(0, {",
             "    track: \"\",",
             "    $0",
             "}).push();"
         ],
         "description": "Adds the structure for an AssignPathAnimation event"
+    },
+    "TrackParent": {
+        "scope": "typescript",
+        "prefix": "trackParent",
+        "body": [
+            "new AssignTrackParent(0, {",
+            "    parentTrack: \"$0\"",
+            "    childrenTracks: [\"\"]",
+            "}).push()"
+        ],
+        "description": "Adds the structure for an AssignTrackParent event"
+    },
+    "PlayerTrack": {
+        "scope": "typescript",
+        "prefix": "playerTrack",
+        "body": "new AssignPlayerToTrack(0, \"$0\").push();",
+        "description": "Adds the structure for an AssignPlayerToTrack event"
     },
 
     "Note": {
@@ -39,7 +54,8 @@
             "    //Animation data",
             "    ",
             "}).push();"
-        ]
+        ],
+        "description": "Adds the structure for a note"
     },
     "Wall": {
         "scope": "typescript",
@@ -55,6 +71,7 @@
             "    //Animation data",
             "    ",
             "}).push();"
-        ]
+        ],
+        "description": "Adds the structure for a wall"
     }
 }

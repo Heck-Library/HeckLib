@@ -1,28 +1,28 @@
-// deno-lint-ignore-file no-namespace
+// deno-lint-ignore-file no-namespace no-explicit-any
 
-import { animateTrackData } from "./main.ts"
+import { animateTrackData, pathAnimData } from "./main.ts"
 import { events } from "./mapHandler.ts"
-import { Track, vec1anim, vec3anim, vec4anim } from "./types.ts"
+import { parentTrackType, playerTrackType, Track, vec1anim, vec3anim, vec4anim } from "./types.ts"
 
 export namespace Builder {
-    export class AnimateTrack {
+    //#region events
+    class BaseEvent {
         json: {
             time: number
             type: string
-            data: animateTrackData
+            data: Record<string, any>
         }
         constructor(time: number) {
             this.json = {
                 time: time,
-                type: "AnimateTrack",
-                data: {
-                    track: [],
-                    duration: 1
-                }
+                type: "",
+                data: {}
             }
-            return this
         }
-        //#region methods
+        
+        get time(): number { return this.json.time; }
+        get type(): string { return this.json.type; }
+        get data(): Record<string, any> { return this.json.data; }
         /**
          *  The track that should be animated.
          */
@@ -30,6 +30,17 @@ export namespace Builder {
                 this.json.data.track = track
                 return this
         }
+        push() {
+            events.push(this);
+            return this;
+        }
+    }
+    class BaseAnimEvent extends BaseEvent {
+        constructor(time: number) {
+            super(time);
+        }
+        
+        //#region methods
         /**
          * Which easing the animation should use.
          */
@@ -49,13 +60,6 @@ export namespace Builder {
          */
         pos (animation: vec3anim) {
                 this.json.data.position = animation;
-                return this
-        }
-        /**
-         * Animates local position.
-         */
-        localPos (animation: vec3anim) {
-                this.json.data.localPosition = animation;
                 return this
         }
         /**
@@ -107,17 +111,105 @@ export namespace Builder {
                 this.json.data.interactable = animation
                 return this
         }
+    }
+    export class AnimateTrack extends BaseAnimEvent{
+        json: {
+            time: number
+            type: string
+            data: animateTrackData
+        }
+        constructor(time: number) {
+            super(time);
+            this.json = {
+                time: time,
+                type: "AnimateTrack",
+                data: {
+                    track: [],
+                    duration: 1
+                }
+            }
+            return this
+        }
+        /**
+         * Animates local position.
+         */
+        localPos (animation: vec3anim) {
+                this.json.data.localPosition = animation;
+                return this
+        }
         /**
          * Animates the time.
          */
-        time (animation: vec1anim) {
+        timeAnim (animation: vec1anim) {
                 this.json.data.timeAnim = animation
                 return this
         }
         //#endregion
-    
-        push() {
-            events.push(this);
+
+    }
+    export class PathAnimation extends BaseAnimEvent {
+        json: {
+            time: number
+            type: string
+            data: pathAnimData
+        }
+        constructor(time: number) {
+            super(time);
+            this.json = {
+                time: time,
+                type: "AssignPathAnimation",
+                data: {
+                    track: ""
+                }
+            }
+        }
+        definitePosition(animation: vec3anim) {
+            this.json.data.definitePosition = animation;
+            return this;
         }
     }
+    export class TrackParent extends BaseEvent {
+        json: {
+            time: number
+            type: string
+            data: parentTrackType
+        }
+        constructor(time: number) {
+            super(time);
+            this.json = {
+                time: time,
+                type: "AssignTrackParent",
+                data: {
+                    parentTrack: "",
+                    childrenTracks: [""]
+                }
+            }
+        }
+        track(track: Track) {
+            this.json.data.parentTrack = track;
+            return this;
+        }
+        children(x: string[]) {
+            this.json.data.childrenTracks = x;
+            return this;
+        }
+    }
+    export class PlayerTrack extends BaseEvent {
+        json: {
+            time: number
+            type: string
+            data: playerTrackType
+        }
+        constructor(time: number, track: Track) {
+            super(time);
+            this.json = {
+                time: time,
+                type: "AssignPlayerToTrack",
+                data: {
+                    track
+                }
+            }
+        } 
+    }
+    //#endregion
 }

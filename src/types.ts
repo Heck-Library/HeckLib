@@ -138,6 +138,15 @@ export type animationData = {
     dissolveArrow?: vec1anim
 }
 
+export type parentTrackType = {
+    parentTrack: Track,
+    childrenTracks: string[]
+}
+
+export type playerTrackType = {
+    track: Track
+}
+
 export type animateTrackData = {
     track: Track,
     duration: number,
@@ -156,7 +165,6 @@ export type animateTrackData = {
 
 export type pathAnimData = {
     track: Track,
-    duration: number,
     easing?: string,
     position?: vec3anim,
     localPosition?: vec3anim,
@@ -168,6 +176,22 @@ export type pathAnimData = {
     dissolve?: vec1anim,
     dissolveArrow?: vec1anim,
     interactable?: vec1anim,
+}
+
+export type animComponentData = {
+    track: Track,
+    duration: number,
+    easing?: string,
+    BloomFogEnvironment?: {
+        attenuation?: vec1anim,
+        offset?: vec1anim,
+        startY?: vec1anim,
+        height?: vec1anim
+    },
+    TubeBloomPrePassLight?: {
+        colorAlphaMultiplier?: vec1anim,
+        bloomFogIntensityMultiplier?: vec1anim
+    }
 }
 
 export type font = Font.LiteFont

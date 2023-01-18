@@ -46,140 +46,28 @@ export function filter(
     return [];
 }
 
-// export function filter(
-//     obj: any,
-//     start: number,
-//     end: number,
-//     type?: 0 | 1 | 3,
-//     direction?: number,
-// ) {
-//     if (!V3) {
-//         if (obj == notes) {
-//             if (!type && !direction) {
-//                 return notes.filter((n: { _time: number; _type: number }) =>
-//                     n._time >= start && n._time <= end && n._type == type
-//                 );
-//             } else if (
-//                 typeof direction !== "undefined" && direction !== null &&
-//                 (typeof type === "undefined" || type === null)
-//             ) {
-//                 return notes.filter((n: { _time: number; _cutDirection: number }) =>
-//                     n._time >= start && n._time <= end && n._cutDirection == direction
-//                 );
-//             } else if (
-//                 typeof direction !== "undefined" && direction !== null &&
-//                 typeof type !== "undefined" && type !== null
-//             ) {
-//                 return notes.filter((
-//                     n: { _time: number; _type: number; _cutDirection: number },
-//                 ) =>
-//                     n._time >= start && n._time <= end && n._type == type &&
-//                     n._cutDirection == direction
-//                 );
-//             } else {
-//                 return notes.filter((n: { _time: number }) =>
-//                     n._time >= start && n._time <= end
-//                 );
-//             }
-//         }
-//         if (obj == walls) {
-//             return walls.filter((w: { _time: number }) =>
-//                 w._time >= start && w._time <= end
-//             );
-//         }
-//     }
-//     if (V3) {
-//         if (obj == notes) {
-//             if (
-//                 typeof type !== "undefined" && type !== null &&
-//                 (typeof direction === "undefined" || direction === null)
-//             ) {
-//                 return notes.filter((n: { b: number; c: number }) =>
-//                     n.b >= start && n.b <= end && n.c == type
-//                 );
-//             } else if (
-//                 typeof direction !== "undefined" && direction !== null &&
-//                 (typeof type === "undefined" || type === null)
-//             ) {
-//                 return notes.filter((n: { b: number; d: number }) =>
-//                     n.b >= start && n.b <= end && n.d == direction
-//                 );
-//             } else if (
-//                 typeof direction !== "undefined" && direction !== null &&
-//                 typeof type !== "undefined" && type !== null
-//             ) {
-//                 return notes.filter((
-//                     n: { b: number; c: number; d: number },
-//                 ) =>
-//                     n.b >= start && n.b <= end && n.c == type &&
-//                     n.d == direction
-//                 );
-//             } else {
-//                 return notes.filter((n: { b: number }) =>
-//                     n.b >= start && n.b <= end
-//                 );
-//             }
-//         }
-//         if (obj == walls) {
-//             return walls.filter((w: { b: number }) =>
-//                 w.b >= start && w.b <= end
-//             );
-//         }
-//     }
-//     return notes[0];
-// }
-
 /**
  * Assign a track to notes or walls.
  * @param obj The array of objects that the track should be assigned to.
  * @param track The array of tracks or the name of the track that should be assigned.
  */
- export function track(obj: any[], track: Track) {
-    obj.forEach((n: any) => {
-        if (!V3) {
-            const d = n._customData;
-            if (typeof d._track !== "undefined" && d._track !== null) {
-                if (isArr(d._track)) {
-                    const tracks = d._track;
-                    if (isArr(track)) {
-                        tracks.push(...track);
-                    } else {
-                        tracks.push(track);
-                    }
-                } else {
-                    if (isArr(track)) {
-                        const a = [...track, d._track];
-                        d._track = a;
-                    } else {
-                        d._track = [d._track, track];
-                    }
-                }
-            } else {
-                d._track = track;
-            }
+export function track(obj: any[], track: Track) {
+    obj.forEach((x: Record<string, any>) => {
+        const d = x.data;
+        if (!d.track) {
+            d.track = track;
+            return;
         }
-        if (V3) {
-            const d = n.customData;
-            if (typeof d.track !== "undefined" && d.track !== null) {
-                if (isArr(d.track)) {
-                    const tracks = d.track;
-                    if (isArr(track)) {
-                        tracks.push(...track);
-                    } else {
-                        tracks.push(track);
-                    }
-                } else {
-                    if (isArr(track)) {
-                        const a = [...track, d.track];
-                        d.track = a;
-                    } else {
-                        d.track = [d._rack, track];
-                    }
-                }
-            } else {
-                d.track = track;
-            }
+        if (!isArr(d.track)) {
+            if (isArr(track)) {
+                const a = [...track, d.track];
+                d.track = a;
+            } else d.track = [d.track, track];
+            return;
         }
+        const tracks = d.track;
+        if (isArr(track)) tracks.push(...track);
+        else tracks.push(track);
     });
 }
 

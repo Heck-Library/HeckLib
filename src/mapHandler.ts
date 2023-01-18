@@ -92,6 +92,8 @@ function notesToJSON() {
                 }
             }
         }
+        if (Object.keys(noteJSON.customData.animation).length < 1) delete noteJSON.customData.animation;
+        if (Object.keys(noteJSON.customData).length < 1) delete noteJSON.customData
         let stringified = JSON.stringify(noteJSON)
             .replace('"njs"', '"noteJumpMovementSpeed"')
             .replace('"offset"', '"noteJumpStartBeatOffset"')
@@ -111,9 +113,7 @@ function notesToJSON() {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":')
         }
         noteJSON = JSON.parse(stringified)
-        if (Object.keys(noteJSON.customData.animation).length < 1) delete noteJSON.customData.animation;
-        if (Object.keys(noteJSON.customData).length < 1) delete noteJSON.customData
-        else if (Object.keys(noteJSON.customData).includes("fake")) {
+        if (V3 && Object.keys(noteJSON.customData).includes("fake")) {
             delete noteJSON.customData.fake;
             fakeNotes.push(noteJSON)
         } else noteArr.push(noteJSON)
@@ -259,22 +259,22 @@ export namespace Map {
             if (!diff._customData) {
                 diff._customData = {};
             }
-            diff._notes.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
-                if (!x._customData) {
-                    x._customData = {
-                        _noteJumpStartBeatOffset: offset,
-                        _noteJumpMovementSpeed: NJS
-                    }
-                }
-            });
-            diff._obstacles.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
-                if (!x._customData) {
-                    x._customData = {
-                        _noteJumpStartBeatOffset: offset,
-                        _noteJumpMovementSpeed: NJS
-                    }
-                }
-            });
+            // diff._notes.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
+            //     if (!x._customData) {
+            //         x._customData = {
+            //             _noteJumpStartBeatOffset: offset,
+            //             _noteJumpMovementSpeed: NJS
+            //         }
+            //     }
+            // });
+            // diff._obstacles.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
+            //     if (!x._customData) {
+            //         x._customData = {
+            //             _noteJumpStartBeatOffset: offset,
+            //             _noteJumpMovementSpeed: NJS
+            //         }
+            //     }
+            // });
         
             const customData = diff._customData;
 
