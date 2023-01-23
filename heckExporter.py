@@ -12,8 +12,8 @@ bl_info = {
 import bpy
 import json
 
-def main(context):
-    for ob in context.scene.objects:
+def getJson(context, formatting):
+    for ob in bpy.context.scene.objects:
         mats = ob.material_slots
         objType = ""
         if "cube" in mats or "Cube" in mats:
@@ -31,18 +31,15 @@ def main(context):
         if "triangle" in mats or "Triangle" in mats:
             objType = "Triangle"
         print(objType)
-        matCol = mats["color"].material.diffuse_color
-        col = (
-        round(matCol[0]*1000)/1000,
-        round(matCol[1]*1000)/1000,
-        round(matCol[2]*1000)/1000,
-        round(matCol[3]*1000)/1000
-        )
-        pos = (
-        round(ob.location[0]*1000)/1000,
-        round(ob.location[2]*1000)/1000,
-        round(ob.location[1]*1000)/1000
-        )
+        col = (1, 1, 1, 1)
+        if "Color" in mats or "color" in mats:
+            matCol = mats["color"].material.diffuse_color
+            col = (
+            round(matCol[0]*1000)/1000,
+            round(matCol[1]*1000)/1000,
+            round(matCol[2]*1000)/1000,
+            round(matCol[3]*1000)/1000
+            )
         rot = (
         round(ob.rotation_euler[0]*360*1000)/1000,
         round(ob.rotation_euler[2]*360*1000)/1000,
@@ -53,6 +50,11 @@ def main(context):
         round(ob.scale[2]*1000)/1000,
         round(ob.scale[1]*1000)/1000
         )
+        pos = (
+        round((ob.location[0]-scale[0]/2)*1000)/1000,
+        round((ob.location[2]-scale[2]/2)*1000)/1000,
+        round((ob.location[1]-scale[1]/2)*1000)/1000
+        )
         x = {
             "position": pos,
             "rotation": rot,
@@ -60,50 +62,58 @@ def main(context):
             "color": col
         }
         y = json.dumps(x)
-        print(y)
+        if formatting == True:
+            y = json.dumps(x, indent=4)
+        return y
 
+def writeJson(context, filepath, formatting):
+    f = open(filepath, 'w', encoding='utf-8')
+    f.write(getJson(bpy, formatting))
+    f.close()
 
-class SimpleOperator(bpy.types.Operator):
-    """Tooltip"""
-    bl_idname = "object.simple_operator"
-    bl_label = "Simple Object Operator"
+    return {'FINISHED'}
 
-    @classmethod
-    def poll(cls, context):
-        return context.active_object is not None
+from bpy_extras.io_utils import ExportHelper
+
+class ExportHeckData(bpy.types.Operator, ExportHelper):
+    bl_idname = "export.hecklib"
+    bl_label = "Export HeckLib (.json)"
+
+    filename_ext = ".json"
+
+    filter_glob: bpy.props.StringProperty(
+        default="*.json",
+        options={'HIDDEN'},
+        maxlen=255
+    )
+
+    use_setting: bpy.props.BoolProperty(
+        name="Formatted",
+        description="Enables file formatting",
+        default=False
+    )
 
     def execute(self, context):
-        main(context)
-        return {'FINISHED'}
-    
-class LayoutButton(bpy.types.Panel):
-    """Creates a Panel in the scene context"""
-    bl_label = "Layout"
-    bl_idname = "SCENE_PT_layout"
-    bl_space_type = "PROPERTIES"
-    bl_region_type = "WINDOW"
-    bl_context = "scene"
-    
-    def draw(self, context):
-        layout = self.layout
-        
-        scene = context.scene
-        
-        layout.label(text="TEST:")
-        row = layout.row()
-        row.scale_y = 2.0
-        row.operator("object.simple_operator")
+        return writeJson(context, self.filepath, self.use_setting)
+
+def menuExport(self, context):
+    self.layout.operator(ExportHeckData.bl_idname, text="HeckLib Export (.json)")
 
 # Register and add to the "object" menu (required to also use F3 search "Simple Object Operator" for quick access)
 def register():
-    bpy.utils.register_class(SimpleOperator)
-    bpy.utils.register_class(LayoutButton)
+    bpy.utils.register_class(ExportHeckData)
+    bpy.types.TOPBAR_MT_file_export.append(menuExport)
+    print("Registered")
+    #bpy.utils.register_class(LayoutButton)
 
 
 def unregister():
-    bpy.utils.unregister_class(SimpleOperator)
-    bpy.utils.unregister_class(LayoutButton)
+    bpy.utils.unregister_class(ExportHeckData)
+    bpy.types.TOPBAR_MT_file_export.remove(menuExport)
+    print("Unregistered")
+    #bpy.utils.unregister_class(LayoutButton)
 
+register()
 
 if __name__ == "__main__":
     register()
