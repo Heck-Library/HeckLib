@@ -52,10 +52,6 @@ export enum Shader {
     TransparentLight = "TransparentLight"
 }
 
-export enum Font {
-    LiteFont = "./models/litefont.dae"
-}
-
 export namespace ease {
     export enum In {
         Sine = "easeInSine",
@@ -94,29 +90,4 @@ export namespace ease {
         Bounce = "easeInOutBounce"
     }
     export const Step = "easeStep"
-}
-
-export namespace Prop {
-    export namespace Note {
-        export enum Type {
-            Red = 0,
-            Blue = 1,
-            Bomb = 3
-        }
-        export enum Direction {
-            Up = 0,
-            Down = 1,
-            Left = 2,
-            Right = 3,
-            UpL = 4,
-            UpR = 5,
-            DownL = 6,
-            DownR = 7,
-            Dot = 8
-        }
-    }
-    export enum Wall {
-        Full = 0,
-        Crouch = 1
-    }
 }

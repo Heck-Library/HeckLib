@@ -5,7 +5,6 @@ import { scuffedWallsInUse, WALL } from "./main.ts";
 import { Note } from "./objects.ts";
 import { CUSTOMEVENT, NOTE } from "./types.ts";
 
-
 export const pointDefinitions = ["NULL"];
 
 export let environment: any[];
@@ -113,7 +112,7 @@ function notesToJSON() {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":')
         }
         noteJSON = JSON.parse(stringified)
-        if (V3 && Object.keys(noteJSON.customData).includes("fake")) {
+        if (V3 && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
             delete noteJSON.customData.fake;
             fakeNotes.push(noteJSON)
         } else noteArr.push(noteJSON)
@@ -210,6 +209,7 @@ export namespace Map {
         if (typeof diff.version !== 'undefined') V3 = true;
     }
     export function initialize(input: string, output: string, NJS: number, offset: number) {
+        console.time('HeckLib ran in')
         const info = infoFile;
         isV3(`./${input}`);
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
@@ -527,5 +527,6 @@ export namespace Map {
             "\x1b[0m\n\n");
         console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
             "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
+        console.timeEnd('HeckLib ran in')
     }
 }

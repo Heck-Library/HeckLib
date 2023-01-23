@@ -34,8 +34,10 @@ This page shows the basic usage of objects and what you can do with them.
 >## Global object properties
 >These properties are supported by both notes and walls.
 >>### Supported properties
->>
->> #### Initial values
+>> #### Vanilla Values
+>> - `time: number` Assigns the object's time value.
+>> - `x: 0-3` assigns the object's `x` value or line index.
+>> #### Custom Data values
 >> - `track: string|string[]` Assigns the object's track.
 >> - `color: vec4` Assigns the object's color.
 >> - `x: 0-3)` Assigns the object's.
@@ -63,11 +65,15 @@ This page shows the basic usage of objects and what you can do with them.
 >```ts
 >new Note(time)
 >```
+> Or you can also use the `note` snippet to create the entire structure instantly.
 >>### Supported properties
+>>#### Note values
+>> - `time: number` Assigns the note's time.
 >> - `direction: 0-8` Assigns the note's cutDirection.
->> - `lineLayer: 0-2` Assigns the note's lineLayer.
->> - `lineIndex: 0-2` Assigns the note's lineIndex.
+>> - `x: 0-2` Assigns the note's lineLayer.
+>> - `y: 0-2` Assigns the note's lineIndex.
 >> - `type: 0, 1, 3` Assigns the note's type.
+>>#### Custom Data Values
 >> - `flip: vec2` Assigns the note's flip animation.
 >> - `disableNoteGravity: boolean` Disables the notes's gravity animation.
 >> - `disableSpawnEffect: boolean` Disables the notes's spawn flash effect.
@@ -78,8 +84,9 @@ This page shows the basic usage of objects and what you can do with them.
 >```ts
 >new Wall(time)
 >```
+> Or you can also use the `wall` snippet to create the entire structure instantly.
 >>### Supported properties
->> - `.duration(number)` Sets the duration of the wall.
+>> - `duration: number` Sets the duration of the wall.
 
 # Object editing
 > ## Filtering
@@ -89,13 +96,18 @@ This page shows the basic usage of objects and what you can do with them.
 > ```
 > This selects all notes and allows you to edit them
 >
-> Doing this with walls is literally the same, you just replace `notes` with `walls`.
+> You can also filter other types of stuff. Here's a list of everything you can filter:
+>> - `notes` Filters notes.
+>> - `walls` Filters walls.
+>> - `events` Filters customEvents.
+>> - `lights` Filters light events.
+>> - `bombs` Filters bombs. (V3 only)
 > ### Advanced Filters
 > You can also add parameters to filters. These parameters are `type` and `direction`.
 >
 > The code below would target all red notes between times `69` and `420` that are facing down.
 > ```ts
-> filter(notes, 69, 420, Prop.Note.Type.Red, Prop.Note.Direction.Down);
+> filter(notes, 69, 420, Note.Type.Red, Note.Direction.Down);
 > ```
 > Yes, it is a bit long syntax but at least it's all in one function.
 > ## Tracks
@@ -107,46 +119,44 @@ This page shows the basic usage of objects and what you can do with them.
 > ## Editing Custom Data
 > Once you've filtered your notes, you can start adding custom data to them like this.
 > ```ts
->new CustomData(filter(notes, 8, 16))
->   .fake(true)
->   .interactable(false)
+> filter(notes, 8, 16).forEach((n: NOTE) => {
+>     n.data.disableNoteGravity = true;
+> })
 >```
-> The syntax above would make all notes between `8` and `16` fake and non-interactable.
+> The syntax above would make all notes between `8` and `16` not have the note jump gravity effect.
 >
 > Animations work in a similar way.
 > ```ts
->new Animation(filter(notes, 8, 16))
->    .pos([
->        [0, 5, 0, 0],
->        [0, 0, 0, 0.45, ease.Out.Circ]
->    ]);
+> filter(notes, 8, 16).forEach((n: NOTE) => {
+>     n.anim.position = [
+>         [0, 5, 0, 0],
+>         [0, 0, 0, 0.45, ease.Out.Circ]
+>     ];
+> })
 > ```
 > This makes all the notes spawn 5 units above normal and gradually come down to the player.
-> ## Randomising values
-> If you want to randomise an animation, such as position, you would have to use a `forEach` statement for that because of the way how classes work in TS.
 >
-> It is also recommended to create and reuse a variable for all filtered objects.
-> 
+> It is very much recommended to use variables when editing a lot of values to prevent messy and long code.
+>
+> For example:
 > ```ts
-> let f;
->
-> f = filter(notes, 0, 27.9)
-> f.forEach((x: any) => {
->     new CustomData([x])
->     .offset(0.5)
->     new Animation([x])
->     .pos([
->         [0, random(0, 5), 0, 0],
->         [0, 0, 0, 0.45, ease.Out.Circ]
->     ])
->     .localRot([
->         [random(-50, 50), random(-50, 50), random(-170, 170), 0],
->         [0, 0, 0, 0.25, ease.Out.Cubic]
->     ])
->     .rot([
->         [random(-20, 5), random(-20, 20), random(-40, 40), 0],
->         [0, 0, 0, 0.225, ease.Out.Circ]
->     ])
-> });
+> filter(notes, 8, 16).forEach((n: NOTE) => {
+>     n.data.fake = true;
+>     n.data.interactable = false;
+>     n.data.disableNoteGravity = true;
+>     n.data.disableSpawnEffect = true;
+>     n.data.disableNoteLook = true;
+> })
 > ```
-> The reason for using a `forEach` statement is because otherwise every filtered object would have the same values. These values are different for every run but would still carry over to the next objects.
+> Can be shortened to
+>```ts
+> filter(notes, 8, 16).forEach((n: NOTE) => {
+>     const d = n.data;
+>     d.fake = true;
+>     d.interactable = false;
+>     d.disableNoteGravity = true;
+>     d.disableSpawnEffect = true;
+>     d.disableNoteLook = true;
+> })
+>```
+> This way, you don't have to type `n.data` before the actual property, but instead just do `d`.

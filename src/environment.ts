@@ -32,9 +32,9 @@ export class Environment {
     regex(x: string|RegExp) {
         let id;
         if (typeof x !== 'string') {
-            id = x.toString().replace("/", "").replace(/\/$/, "")
+            id = x.toString().replaceAll("/", "")
         } else {
-            id = x;
+            id = x.toString().replaceAll("/", "");
         }
         this.e._id = id;
         this.e._lookupMethod = "Regex"

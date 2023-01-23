@@ -12,10 +12,11 @@ import {
     NOTE,
     noteData,
     noteDir,
-    objType,
+    noteType,
     Track,
     WALL,
-    wallData
+    wallData,
+wallType
 } from "./types.ts";
 
 /**
@@ -72,6 +73,22 @@ export function track(obj: any[], track: Track) {
 }
 
 export class Note {
+    static Direction: Record<string, noteDir> = {
+        Up: 0,
+        Down: 1,
+        Left: 2,
+        Right: 3,
+        UpL: 4,
+        UpR: 5,
+        DownL: 6,
+        DownR: 7,
+        Dot: 8
+    }
+    static Type: Record<string, noteType> = {
+        Red: 0,
+        Blue: 1,
+        Bomb: 3
+    }
     private json: {
         nD: noteData,
         cD: customNoteData,
@@ -93,8 +110,8 @@ export class Note {
     set time(time: number) { this.json.nD.time = time }
     get time(): number { return this.json.nD.time; }
 
-    set type(type: objType) { this.json.nD.type = type }
-    get type(): objType { if (this.json.nD.type) return this.json.nD.type; return 0; }
+    set type(type: noteType) { this.json.nD.type = type }
+    get type(): noteType { if (this.json.nD.type) return this.json.nD.type; return 0; }
 
     set x(x: lineIndex) { this.json.nD.x = x }
     get x(): lineIndex { if (this.json.nD.x) return this.json.nD.x; return 0; }
@@ -105,10 +122,10 @@ export class Note {
     set direction(direction: noteDir) { this.json.nD.direction = direction }
     get direction(): noteDir { if (this.json.nD.direction) return this.json.nD.direction; return 0; }
 
-    set data(param: any) { this.json.cD = param }
+    set data(param: customNoteData) { this.json.cD = param }
     get data(): customNoteData { return this.json.cD }
 
-    set anim(param: any) { this.json.aD = param}
+    set anim(param: animationData) { this.json.aD = param}
     get anim(): animationData { return this.json.aD }
     //#endregion
     push() {
@@ -122,6 +139,7 @@ export class Note {
 }
 
 export class Wall {
+    static Type: Record<string, wallType>
     private json: {
         wD: wallData
         cD: customWallData
