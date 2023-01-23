@@ -1,9 +1,10 @@
-// deno-lint-ignore-file no-explicit-any
+
 import { Environment, Material } from "./environment.ts"
-import { Track, vec4 } from "./main.ts";
-import { V3, walls } from "./mapHandler.ts";
+import { AnimateTrack } from "./events.ts";
+import { Track, vec4, WALL } from "./main.ts";
+import { walls } from "./mapHandler.ts";
 import { Wall } from "./objects.ts";
-import { geoShape, shaderType, vec3 } from "./types.ts"
+import { geoShape, JsonModel, shaderType, vec3, vec3anim } from "./types.ts"
 
 export class ModelEnvironment {
     /**
@@ -51,21 +52,12 @@ export class ModelEnvironment {
 }
 
 export class ModelWall {
-    walls: any[] = [];
+    walls: WALL[] = [];
     constructor(time: number, filePath: string) {
-        if (V3) throw new Error("ModelWall does not work with V3 yet")
         const model = JSON.parse(Deno.readTextFileSync(filePath))
-        const objs = model.objects;
-        objs.forEach((x: {
-            position: vec3,
-            rotation: vec3,
-            scale: vec3,
-            shape: geoShape,
-            color: vec4
-        }) => {
-            let col: vec4 = [1, 1, 1, 1]
-            if (x.color) col = x.color;
-            new Wall({
+        model.forEach((x: JsonModel) => {
+            const col = x.color;
+            const w: WALL = new Wall({
                 time: time,
                 duration: 1
             }, {
@@ -73,64 +65,66 @@ export class ModelWall {
                 interactable: false,
                 color: [...col],
                 position: [0, 0],
-                rotation: x.rotation,
+                localRotation: x.rotation,
                 scale: x.scale
             }, {
                 definitePosition: x.position
-            }).push()
+            })
+            this.walls.push(w);
         });
     }
     track(track: Track) {
-        if (!V3)
-        this.walls.forEach(x => {
-            x._customData._track = track;
+        this.walls.forEach((x: WALL) => {
+            x.data.track = track;
         })
         return this;
     }
     alpha(alpha: number) {
-        if (!V3)
-        this.walls.forEach(x => {
-            x._customData._color[3] = alpha;
+        this.walls.forEach((x: WALL) => {
+            if (x.data.color) x.data.color[3] = alpha;
         })
         return this;
     }
-    position(pos: vec3) {
-        if (!V3)
-        this.walls.forEach(x => {
-            const bruh = x._customData._animation._definitePosition;
-            bruh[0] += pos[0];
-            bruh[1] += pos[1];
-            bruh[2] += pos[2];
-        })
+    position(pos: vec3anim, duration?: number) {
+        const fw = this.walls[0].data;
+        if (fw.track) {
+            let track: Track;
+            let d = 0;
+            if (duration) d = duration;
+            if (Array.isArray(fw.track)) track = fw.track[fw.track.length - 1];
+            else track = fw.track;
+            new AnimateTrack(0, {
+                track: track,
+                duration: d,
+                position: pos
+            }).push();
+        }
         return this;
     }
     duration(duration: number) {
-        if (!V3)
         this.walls.forEach(x => {
-            x._customData.duration = duration;
+            x.duration = duration;
         })
         return this;
     }
     color(color: vec4) {
-        if (!V3)
         this.walls.forEach(x => {
-            x._customData._color = color;
+            x.data.color = color;
         })
         return this;
     }
     outline(thickness: number) {
-        if (!V3)
         this.walls.forEach(x => {
-            const d = x._customData;
-            d._scale[0] /= thickness;
-            d._scale[1] /= thickness;
-            d._scale[2] /= thickness;
-            d._animation._scale = [thickness, thickness, thickness];
+                if (x.data.scale) {
+                x.data.scale[0] /= thickness;
+                x.data.scale[1] /= thickness;
+                x.data.scale[2] /= thickness;
+                x.anim.scale = [thickness, thickness, thickness];
+            }
         })
         return this;
     }
     push() {
-        if (!V3)
         this.walls.forEach(x => {
             walls.push(x);
         })

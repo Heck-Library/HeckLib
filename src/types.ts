@@ -78,7 +78,8 @@ export type customWallData = {
     position?: vec2,
     rotation?: vec3,
     localRotation?: vec3,
-    scale?: vec3|vec2,
+    size?: vec2,
+    scale?: vec3,
     njs?: number,
     offset?: number,
     fake?: boolean,
@@ -192,6 +193,14 @@ export type animComponentData = {
         colorAlphaMultiplier?: vec1anim,
         bloomFogIntensityMultiplier?: vec1anim
     }
+}
+
+export type JsonModel = {
+    position: vec3,
+    rotation: vec3,
+    scale: vec3,
+    shape: geoShape,
+    color: vec4
 }
 
 export type font = Font.LiteFont

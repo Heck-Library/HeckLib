@@ -138,6 +138,8 @@ export class Wall {
         if (!wallData.height) this.json.wD.height = 1;
         if (!wallData.x) this.json.wD.x = 0;
         if (!wallData.y) this.json.wD.y = 0;
+
+        return this
     }
 
     //#region getters and setters
