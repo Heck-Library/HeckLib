@@ -9,80 +9,104 @@ bl_info = {
     "category": "Import-Export"
 }
 
-hmd = True
-
-import json
 import bpy
+import json
 
-def objData(x):
-    deez = "Cube"
-    colorName = "White"
-    color = (1, 1, 1)
-    if (x.material_slots):
-        deez = x.material_slots[0].name
-        try:
-            colorName = x.material_slots[1].name
-            c = bpy.data.materials[colorName].node_tree.nodes["Principled BSDF"].inputs[0].default_value
-            color = (c[0], c[1], c[2])
-        except:
-            print("no color material, assigning white")
-    cool = {
-        "rotation": (round(x.rotation_euler[0], 3),round(x.rotation_euler[1], 3),round(x.rotation_euler[2], 3)),
-        "position":(round(x.location[0], 3),round(x.location[1], 3),round(x.location[2], 3)),
-        "scale":(round(x.scale[0], 3),round(x.scale[1], 3),round(x.scale[2], 3)),
-        "shape":deez,
-        "color":color
-    }
-    return cool
+def main(context):
+    for ob in context.scene.objects:
+        mats = ob.material_slots
+        objType = ""
+        if "cube" in mats or "Cube" in mats:
+            objType = "Cube"
+        if "sphere" in mats or "Sphere" in mats:
+            objType = "Sphere"
+        if "cylinder" in mats or "Cylinder" in mats:
+            objType = "Cylinder"
+        if "capsule" in mats or "Capsule" in mats:
+            objType = "Capsule"
+        if "plane" in mats or "Plane" in mats:
+            objType = "Plane"
+        if "quad" in mats or "Quad" in mats:
+            objType = "Quad"
+        if "triangle" in mats or "Triangle" in mats:
+            objType = "Triangle"
+        print(objType)
+        matCol = mats["color"].material.diffuse_color
+        col = (
+        round(matCol[0]*1000)/1000,
+        round(matCol[1]*1000)/1000,
+        round(matCol[2]*1000)/1000,
+        round(matCol[3]*1000)/1000
+        )
+        pos = (
+        round(ob.location[0]*1000)/1000,
+        round(ob.location[2]*1000)/1000,
+        round(ob.location[1]*1000)/1000
+        )
+        rot = (
+        round(ob.rotation_euler[0]*360*1000)/1000,
+        round(ob.rotation_euler[2]*360*1000)/1000,
+        round(ob.rotation_euler[1]*360*1000)/1000
+        )
+        scale = (
+        round(ob.scale[0]*1000)/1000,
+        round(ob.scale[2]*1000)/1000,
+        round(ob.scale[1]*1000)/1000
+        )
+        x = {
+            "position": pos,
+            "rotation": rot,
+            "scale": scale,
+            "color": col
+        }
+        y = json.dumps(x)
+        print(y)
 
-def write_some_data(context, filepath, use_some_setting):
-    objs = []
-    for obj in bpy.data.objects:
-        stuff = objData(obj)
-        print(stuff)
-        objs.append(stuff)
-    print("running hecklib export...")
-    thingy = {"objects":objs}
-    f = open(filepath, 'w', encoding='utf-8')
-    f.write(json.dumps(thingy, indent=4))
-    f.close()
 
-    return {'FINISHED'}
+class SimpleOperator(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.simple_operator"
+    bl_label = "Simple Object Operator"
 
-from bpy_extras.io_utils import ExportHelper
-from bpy.props import StringProperty
-from bpy.types import Operator
-
-
-class ExportHeck(Operator, ExportHelper):
-    bl_idname = "export_test.some_data" 
-    bl_label = "Export Some Data"
-
-    filename_ext = ".json"
-
-    filter_glob: StringProperty(
-        default="*.json",
-        options={'HIDDEN'},
-        maxlen=255,
-    )
+    @classmethod
+    def poll(cls, context):
+        return context.active_object is not None
 
     def execute(self, context):
-        return write_some_data(context, self.filepath, True)
+        main(context)
+        return {'FINISHED'}
+    
+class LayoutButton(bpy.types.Panel):
+    """Creates a Panel in the scene context"""
+    bl_label = "Layout"
+    bl_idname = "SCENE_PT_layout"
+    bl_space_type = "PROPERTIES"
+    bl_region_type = "WINDOW"
+    bl_context = "scene"
+    
+    def draw(self, context):
+        layout = self.layout
+        
+        scene = context.scene
+        
+        layout.label(text="TEST:")
+        row = layout.row()
+        row.scale_y = 2.0
+        row.operator("object.simple_operator")
 
-
-def menu_func_export(self, context):
-    self.layout.operator(ExportHeck.bl_idname, text="HeckLib Export (.json)")
-
+# Register and add to the "object" menu (required to also use F3 search "Simple Object Operator" for quick access)
 def register():
-    bpy.utils.register_class(ExportHeck)
-    bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
+    bpy.utils.register_class(SimpleOperator)
+    bpy.utils.register_class(LayoutButton)
 
 
 def unregister():
-    bpy.utils.unregister_class(ExportHeck)
-    bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
+    bpy.utils.unregister_class(SimpleOperator)
+    bpy.utils.unregister_class(LayoutButton)
 
 
-if hmd:
+if __name__ == "__main__":
     register()
-    hmd = False
+
+    # test call
+    bpy.ops.object.simple_operator()

@@ -1,6 +1,6 @@
 
 import { Map } from "./src/main.ts";
-const INPUT = 'ExpertStandard.dat'
+const INPUT = 'ExpertPlusStandard.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, 16, 0)
