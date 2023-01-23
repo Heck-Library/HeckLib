@@ -13,9 +13,10 @@ import bpy
 import json
 
 def getJson(context, formatting):
+    y = []
     for ob in bpy.context.scene.objects:
         mats = ob.material_slots
-        objType = ""
+        objType = "Cube"
         if "cube" in mats or "Cube" in mats:
             objType = "Cube"
         if "sphere" in mats or "Sphere" in mats:
@@ -59,12 +60,14 @@ def getJson(context, formatting):
             "position": pos,
             "rotation": rot,
             "scale": scale,
-            "color": col
+            "color": col,
+            "shape": objType
         }
-        y = json.dumps(x)
-        if formatting == True:
-            y = json.dumps(x, indent=4)
-        return y
+        y.append(x)
+
+    if formatting == True:
+        return json.dumps(y, indent=4)
+    return json.dumps(y)
 
 def writeJson(context, filepath, formatting):
     f = open(filepath, 'w', encoding='utf-8')

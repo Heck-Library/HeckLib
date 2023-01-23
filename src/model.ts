@@ -61,9 +61,9 @@ export class ModelWall {
             rotation: vec3,
             scale: vec3,
             shape: geoShape,
-            color: vec3
+            color: vec4
         }) => {
-            let col: vec3 = [1, 1, 1]
+            let col: vec4 = [1, 1, 1, 1]
             if (x.color) col = x.color;
             new Wall({
                 time: time,
@@ -71,7 +71,7 @@ export class ModelWall {
             }, {
                 fake: true,
                 interactable: false,
-                color: [...col, 1],
+                color: [...col],
                 position: [0, 0],
                 rotation: x.rotation,
                 scale: x.scale
