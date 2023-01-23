@@ -1,16 +1,7 @@
 // deno-lint-ignore-file no-namespace
-
-
-
-
-
 export const Spline = "splineCatmullRom";
 
 export const mapDir = "./temp/map"
-
-// export const notes = "note";
-// export const walls = "wall";
-// export const events = "event";
 
 export enum Mod {
     Chroma = "Chroma",

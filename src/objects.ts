@@ -139,7 +139,10 @@ export class Note {
 }
 
 export class Wall {
-    static Type: Record<string, wallType>
+    static Type: Record<string, wallType> = {
+        Full: 0,
+        Crouch: 1
+    }
     private json: {
         wD: wallData
         cD: customWallData
