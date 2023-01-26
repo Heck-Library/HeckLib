@@ -1,6 +1,5 @@
 
 /*.dat
-temp
 script.js
 srcJs/animation.js
 srcJs/consts.js
@@ -11,12 +10,8 @@ srcJs/main.js
 srcJs/mapHandler.js
 srcJs/objects.js
 src/text.ts
-ExpertPlusLawless.datSW
-ScuffedWalls.exe
-ScuffedWalls.json
 font.dae
 Cinema.json
 models/template.json
-HeckLib.zip
 untitled.json
 *.zip

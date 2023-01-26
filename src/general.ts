@@ -2,6 +2,9 @@
 
 export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
+export function lerp(start:number, end:number, amount:number): number {
+    return (1 - amount) * start + amount * end;
+}
 
 export function isPresent(x: any) {
     if (typeof x !== 'undefined' && x !== null) return true;
