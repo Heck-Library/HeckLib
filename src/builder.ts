@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-namespace no-explicit-any
 
-import { animateTrackData, pathAnimData } from "./main.ts"
+
 import { events } from "./mapHandler.ts"
-import { parentTrackType, playerTrackType, Track, vec1anim, vec3anim, vec4anim } from "./types.ts"
+import { parentTrackType, animateTrackData, pathAnimData, playerTrackType, Track, vec1anim, vec3anim, vec4anim } from "./types.ts"
 
 export namespace Builder {
     //#region events

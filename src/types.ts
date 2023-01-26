@@ -1,6 +1,5 @@
 
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
-import './consts.ts';
 
 
 export type Track = string|string[];
@@ -210,4 +209,29 @@ export type InitProperties = {
     njs: number,
     offset: number,
     lightshow?: string
+}
+
+export type FinalizeProperties = {
+    formatting?: boolean,
+    /**
+     * showVanillaStats is VERY performance heavy and will slow down your script
+     */
+    showVanillaStats?: {
+        notes?: boolean,
+        walls?: boolean,
+        bombs?: boolean,
+        lights?: boolean
+    },
+    /**
+     * showModdedStats is VERY performance heavy and will slow down your script
+     */
+    showModdedStats?: {
+        notes?: boolean,
+        walls?: boolean,
+        bombs?: boolean,
+        lights?: boolean,
+        customEvents?: boolean,
+        pointDefinitions?: boolean,
+        showEnvironmentStats?: boolean
+    },
 }

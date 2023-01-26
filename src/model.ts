@@ -1,7 +1,7 @@
 
 import { Environment, Material } from "./environment.ts"
 import { AnimateTrack } from "./events.ts";
-import { Track, vec4, WALL } from "./main.ts";
+import { Track, vec4, WALL } from "./types.ts";
 import { walls } from "./mapHandler.ts";
 import { Wall } from "./objects.ts";
 import { geoShape, JsonModel, shaderType, vec3, vec3anim } from "./types.ts"

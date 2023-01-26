@@ -1,7 +1,5 @@
 // deno-lint-ignore-file
 
-import { AnimateTrack, V3 } from "./main.ts";
-
 export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
 

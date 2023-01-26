@@ -1,5 +1,5 @@
-import { V3 } from "./main.ts";
-import { events } from "./mapHandler.ts";
+
+import { events, V3 } from "./mapHandler.ts";
 import { animateTrackData, Track, pathAnimData, parentTrackType, playerTrackType, animComponentData } from "./types.ts";
 /**
  * Places an AnimateTrack event

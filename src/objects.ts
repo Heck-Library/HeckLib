@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { isArr } from "./general.ts";
-import { fakeWalls, V3 } from "./main.ts";
-import { bombs, fakeNotes, notes, walls } from "./mapHandler.ts";
+import { bombs, fakeWalls, fakeNotes, notes, V3, walls } from "./mapHandler.ts";
 import {
     animationData,
     customNoteData,
@@ -73,6 +72,10 @@ export function track(obj: any[], track: Track) {
 }
 
 export class Note {
+    /**
+     * Arrow direction values.
+     * @example Note.Direction.Down returns 1
+     */
     static Direction: Record<string, noteDir> = {
         Up: 0,
         Down: 1,
@@ -88,7 +91,7 @@ export class Note {
         Red: 0,
         Blue: 1,
         /**
-         * Bomb is a V2 only feature
+         * Bomb type is a V2 only feature
          */
         Bomb: 3
     }
@@ -110,27 +113,74 @@ export class Note {
     }
 
     //#region getters and setters-
+    /**
+     * Sets the time value of the note.
+     */
     set time(time: number) { this.json.nD.time = time }
+    /**
+     * Gets the time value of the note.
+     */
     get time(): number { return this.json.nD.time; }
 
+    /**
+     * Sets the type value of the note.
+     */
     set type(type: noteType) { this.json.nD.type = type }
+    /**
+     * Gets the type value of the note.
+     */
     get type(): noteType { if (this.json.nD.type) return this.json.nD.type; return 0; }
 
+    /**
+     * Sets the horizontal position value of the note.
+     */
     set x(x: lineIndex) { this.json.nD.x = x }
+    /**
+     * Gets the horizontal position value of the note.
+     */
     get x(): lineIndex { if (this.json.nD.x) return this.json.nD.x; return 0; }
 
+    /**
+     * Sets the vertical position value of the note.
+     */
     set y(y: lineLayer) { this.json.nD.y = y }
+    /**
+     * Gets the vertical position value of the note.
+     */
     get y(): lineLayer { if (this.json.nD.y) return this.json.nD.y; return 0; }
 
+    /**
+     * Sets the arrow direction value of the note.
+     */
     set direction(direction: noteDir) { this.json.nD.direction = direction }
+    /**
+     * Gets the arrow direction value of the note.
+     */
     get direction(): noteDir { if (this.json.nD.direction) return this.json.nD.direction; return 0; }
 
+    /**
+     * Sets the data values of the note.
+     */
     set data(param: customNoteData) { this.json.cD = param }
+    /**
+     * Gets the data values of the note.
+     */
     get data(): customNoteData { return this.json.cD }
 
+    /**
+     * Sets the animation values of the note.
+     */
     set anim(param: animationData) { this.json.aD = param}
+    /**
+     * Gets the animation values of the note.
+     */
     get anim(): animationData { return this.json.aD }
     //#endregion
+    
+    /**
+     * Pushes the note to the map as a class.
+     * @returns Note
+     */
     push() {
         if (V3 && this.type == 3) {
             bombs.push(this);

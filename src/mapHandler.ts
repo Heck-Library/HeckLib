@@ -1,9 +1,8 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
 import { infoFile } from "./info.ts";
-import { Wall } from "./main.ts";
-import { Note } from "./objects.ts";
-import { CUSTOMEVENT, InitProperties, NOTE, WALL } from "./types.ts";
+import { Note, Wall } from "./objects.ts";
+import { CUSTOMEVENT, FinalizeProperties, InitProperties, NOTE, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
@@ -215,6 +214,112 @@ function customEventsToJSON() {
     return eventArr;
 }
 
+function showStats(properties?: FinalizeProperties) {
+    const vs = {
+        notes: 0,
+        walls: 0,
+        bombs: 0,
+        lights: 0
+    };
+    const ms = {
+        notes: 0,
+        fakeNotes: 0,
+        walls: 0,
+        fakeWalls: 0,
+        bombs: 0,
+        fakeBombs: 0,
+        lights: 0,
+        customEvents: {
+            animTrack: 0,
+            pathAnim: 0,
+            trackParent: 0,
+            playerTrack: 0,
+            fogTrack: 0
+        },
+        pointDefinitions: 0,
+        environments: 0
+    }
+    if (!properties) return {
+        moddedStats: ms,
+        vanillaStats: vs
+    };
+    const p = properties;
+    if (p.showModdedStats) {
+        const s = p.showModdedStats;
+        if (s.notes) {
+            if (V3) {
+                ms.notes = notes.length;
+                ms.fakeNotes = fakeNotes.length;
+            } else {
+                notes.forEach((n: NOTE) => {
+                    if (n.data.fake) ms.fakeNotes++
+                    else ms.notes++
+                })
+            }
+        }
+        if (s.walls) {
+            if (V3) {
+                ms.walls = walls.length;
+                ms.fakeWalls = fakeWalls.length;
+            } else {
+                walls.forEach((w: WALL) => {
+                    if (w.data.fake) ms.fakeWalls++;
+                    else ms.walls++;
+                })
+            }
+        }
+        if (s.bombs) {
+            if (V3) {
+                ms.bombs = bombs.length;
+                ms.fakeBombs = fakeBombs.length;
+            } else {
+                bombs.forEach((n: NOTE) => {
+                    if (n.data.fake) ms.fakeBombs++;
+                    else ms.bombs++;
+                })
+            }
+        }
+        if (s.lights) ms.lights = lights.length;
+        if (s.customEvents) {
+            events.forEach((e: Record<string, any>) => {
+                switch (e.type) {
+                    case "AnimateTrack":
+                        ms.customEvents.animTrack++;
+                        break;
+                    case "AssignPathAnimation":
+                        ms.customEvents.pathAnim++;
+                        break;
+                    case "AssignTrackParent":
+                        ms.customEvents.trackParent++;
+                        break;
+                    case "AssignPlayerToTrack":
+                        ms.customEvents.playerTrack++;
+                        break;
+                    case "AssignFogTrack":
+                        ms.customEvents.fogTrack++;
+                        break;
+                }
+            });
+        }
+        if (s.pointDefinitions) ms.pointDefinitions = definitions.length;
+        if (s.showEnvironmentStats) ms.environments = environment.length;
+    }
+    if (p.showVanillaStats) {
+        const s = p.showVanillaStats;
+        const d = JSON.parse(Deno.readTextFileSync(activeInput));
+        if (V3) {
+            if (s.notes) vs.notes = d.colorNotes.length;
+            if (s.bombs) vs.bombs = d.bombNotes.length;
+            if (s.lights) vs.lights = d.basicBeatmapEvents.length;
+            if (s.walls) vs.walls = d.obstacles.length;
+        }
+    }
+    return {
+        moddedStats: ms,
+        vanillaStats: vs
+    };
+}
+
 export namespace Map {
     function lightshow(file: string) {
         if (lights.length < 1) lights.length = 0;
@@ -344,9 +449,9 @@ export namespace Map {
     /**
      * @param difficulty The difficulty that the map should be written to.
      */
-    export function finalize(difficulty: any) {
+    export function finalize(difficulty: any, properties?: FinalizeProperties) {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
-    
+        if (properties && properties.formatting) formatting = true;
         const jsonP = Math.pow(10, precision);
         const sortP = Math.pow(10, 2);
         function deeperDaddy(obj: any) {
@@ -363,18 +468,6 @@ export namespace Map {
             
         }
         deeperDaddy(difficulty)
-    
-        //#region declare counters
-        let vanilla:any;
-        let modded:any;
-        let AT = 0;
-        let PA = 0;
-        let TP = 0;
-        let PT = 0;
-        let fakes = 0;
-        let NotesCount = [0, 0];
-        let WallsCount = [0, 0];
-        //#endregion
 
         if (!V3) {
             difficulty._notes = notesToJSON();
@@ -392,32 +485,6 @@ export namespace Map {
                 outputtedDiff = JSON.stringify(difficulty, null, 4)
             }
             Deno.writeTextFileSync(activeOutput, outputtedDiff)
-        
-            vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
-            modded = JSON.parse(Deno.readTextFileSync(activeOutput))
-        
-            modded._customData._customEvents.forEach((e: any) => {
-                switch (e._type) {
-                    case "AnimateTrack":
-                        AT++;
-                        break;
-                    case "AssignPathAnimation":
-                        PA++;
-                        break;
-                    case "AssignTrackParent":
-                        TP++;
-                        break;
-                    case "AssignPlayerToTrack":
-                        PT++;
-                        break;
-                }
-            });
-        
-            modded._notes.forEach((n: any) => {
-                if (n._customData && n._customData._fake) fakes++;
-            });
-            WallsCount = [ vanilla._obstacles.length, modded._obstacles.length ];
-            NotesCount = [ vanilla._notes.length, modded._notes.length - fakes];
         }
         if (V3) {
             difficulty.colorNotes = notesToJSON();
@@ -436,34 +503,11 @@ export namespace Map {
             }
             
             Deno.writeTextFileSync(activeOutput, outputtedDiff)
-        
-            vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
-            modded = JSON.parse(Deno.readTextFileSync(activeOutput))
-        
-            modded.customData.customEvents.forEach((e: any) => {
-                switch (e.type) {
-                    case "AnimateTrack":
-                        AT++;
-                        break;
-                    case "AssignPathAnimation":
-                        PA++;
-                        break;
-                    case "AssignTrackParent":
-                        TP++;
-                        break;
-                    case "AssignPlayerToTrack":
-                        PT++;
-                        break;
-                }
-            });
-            WallsCount = [ vanilla.obstacles.length, modded.obstacles.length ];
-            NotesCount = [ vanilla.colorNotes.length, modded.colorNotes.length ];
-            fakes = modded.customData.fakeColorNotes.length;
         }
 
-
-        
-        
+        const stats = showStats(properties);
+        const ms = stats.moddedStats;
+        const vs = stats.vanillaStats;
 
         console.log(" \x1b[5m\x1b[35m\x1b[1m __  __                 __      \x1b[37m__           __        ")
         console.log(" \x1b[35m/\\ \\/\\ \\               /\\ \\  _ \x1b[37m/\\ \\       __/\\ \\       ")
@@ -474,22 +518,25 @@ export namespace Map {
         console.log(" \x1b[35m    \\/_/\\/_/\\/____/\\/____/ \\/_/\\/_/\x1b[37m\\/___/   \\/_/\\/___/ ")
         console.log(" \x1b[0m ")
         console.log(" ======================================================= \n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" +
-            "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[0] + 
-            "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + WallsCount[0] + "\x1b[0m\n\n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" +
-            "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + NotesCount[1] +
-            "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + fakes +
-            "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + WallsCount[1] + 
-            "\x1b[0m\n" + " Lights: \x1b[32m\x1b[1m" + lights.length + "\x1b[0m\n\n")
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" +
-            "\n\n AnimateTracks: \x1b[32m\x1b[1m" + AT +
-            "\x1b[0m\n PathAnimations: \x1b[32m\x1b[1m" + PA +
-            "\x1b[0m\n TrackParents: \x1b[32m\x1b[1m" + TP +
-            "\x1b[0m\n PlayerTracks: \x1b[32m\x1b[1m" + PT +
-            "\x1b[0m\n PointDefinitions: \x1b[32m\x1b[1m" + pointDefinitions.length +
+        if (properties?.showVanillaStats) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== VANILLA MAP INFO ===" + "\x1b[0m" +
+            "\n\n Notes: \x1b[32m\x1b[1m" + vs.notes + 
+            "\x1b[0m\n Bombs: \x1b[32m\x1b[1m" + vs.bombs + 
+            "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + vs.walls + "\x1b[0m\n\n")
+        if (properties?.showModdedStats) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== MODDED MAP INFO ===" +
+            "\x1b[0m" + "\n\n Notes: \x1b[32m\x1b[1m" + ms.notes +
+            "\x1b[0m\n" + " Fake Notes: \x1b[32m\x1b[1m" + ms.fakeNotes +
+            "\x1b[0m\n Walls: \x1b[32m\x1b[1m" + ms.walls + 
+            "\x1b[0m\n Fake Walls: \x1b[32m\x1b[1m" + ms.fakeWalls + 
+            "\x1b[0m\n" + " Lights: \x1b[32m\x1b[1m" + ms.lights + "\x1b[0m\n\n")
+        if (properties?.showModdedStats?.customEvents) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== CUSTOM EVENTS INFO ===" + "\x1b[0m" +
+            "\n\n AnimateTracks: \x1b[32m\x1b[1m" + ms.customEvents.animTrack +
+            "\x1b[0m\n AssignPathAnimations: \x1b[32m\x1b[1m" + ms.customEvents.pathAnim +
+            "\x1b[0m\n AssignTrackParents: \x1b[32m\x1b[1m" + ms.customEvents.trackParent +
+            "\x1b[0m\n AssignPlayerToTracks: \x1b[32m\x1b[1m" + ms.customEvents.playerTrack +
+            "\x1b[0m\n AssignFogTracks: \x1b[32m\x1b[1m" + ms.customEvents.fogTrack +
+            "\x1b[0m\n PointDefinitions: \x1b[32m\x1b[1m" + ms.pointDefinitions +
             "\x1b[0m\n\n");
-        console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
+        if (properties?.showModdedStats?.showEnvironmentStats) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
             "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
         console.timeEnd('HeckLib ran in')
     }

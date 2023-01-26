@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { Shader, Shape } from './consts.ts'
-import { V3 } from './main.ts'
-import { environment, materialNames, materials } from './mapHandler.ts'
+import { environment, materialNames, materials, V3 } from './mapHandler.ts'
 import { geoShape, Track, vec3, shaderType, mat } from './types.ts'
 
 export class Environment {

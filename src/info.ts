@@ -1,10 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 
-import { effects } from "./main.ts";
-import { noteJump } from "./main.ts";
-import { enabledWall } from "./types.ts";
-import { energy } from "./types.ts";
-import { speed } from "./types.ts";
+import { noteJump, enabledWall, energy, speed, effects } from "./types.ts";
 
 export const infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
 

@@ -1,15 +1,12 @@
-
 import { AnimateTrack, ease, Map } from "./src/main.ts";
 const INPUT = 'ExpertPlusStandard.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
-    formatting: true,
     njs: 16,
     offset: 0
 })
 // #region Noodle stuff below´
-
 for (let i = 0; i <= 10000; i++) {
     new AnimateTrack(i, {
         track: `foo${i / 2}`,
@@ -23,4 +20,4 @@ for (let i = 0; i <= 10000; i++) {
 }
 
 // #endregion Noodle stuff above
-Map.finalize(difficulty);
+Map.finalize(difficulty)
