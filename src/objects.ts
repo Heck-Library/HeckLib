@@ -87,6 +87,9 @@ export class Note {
     static Type: Record<string, noteType> = {
         Red: 0,
         Blue: 1,
+        /**
+         * Bomb is a V2 only feature
+         */
         Bomb: 3
     }
     private json: {
@@ -139,6 +142,9 @@ export class Note {
 }
 
 export class Wall {
+    /**
+     * These only work with V2
+    */
     static Type: Record<string, wallType> = {
         Full: 0,
         Crouch: 1
