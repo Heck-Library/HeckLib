@@ -1,9 +1,9 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
 import { infoFile } from "./info.ts";
-import { scuffedWallsInUse, WALL } from "./main.ts";
+import { Wall } from "./main.ts";
 import { Note } from "./objects.ts";
-import { CUSTOMEVENT, NOTE } from "./types.ts";
+import { CUSTOMEVENT, InitProperties, NOTE, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
@@ -27,6 +27,80 @@ export let activeLightshow: string;
 export let V3: boolean;
 
 let formatting = false
+
+function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): WALL[] {
+    const wallArr: WALL[] = [];
+    if (V3) {
+        wallInput.forEach((w: Record<string, any>) => {
+            wallArr.push(new Wall({
+                //Vanilla data
+                time: w.b,
+                duration: w.d,
+                x: w.x,
+                y: w.y,
+                width: w.w,
+                height: w.h
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        })
+    } else {
+        wallInput.forEach((w: Record<string, any>) => {
+            wallArr.push(new Wall({
+                //Vanilla data
+                time: w._time,
+                duration: w._duration,
+                width: w._width,
+                x: w._lineIndex,
+                y: w._type
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        });
+    }
+    return wallArr;
+}
+
+function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): NOTE[] {
+    const noteArr: NOTE[] = [];
+    if (V3) {
+        noteInput.forEach((n: Record<string, any>) => {
+            noteArr.push(new Note({
+                //Vanilla data
+                time: n.b,
+                x: n.x,
+                y: n.y,
+                type: n.c,
+                direction: n.d
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }))
+        })
+    } else {
+        noteInput.forEach((n: Record<string, any>) => {
+            noteArr.push(new Note({
+                //Vanilla data
+                time: n._time,
+                x: n._lineIndex,
+                y: n._lineLayer,
+                type: n._type,
+                direction: n._cutDirection
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }))
+        })
+    }
+    return noteArr;
+}
+
 
 function wallsToJSON() {
     const wallArr: any[] = [];
@@ -58,7 +132,7 @@ function wallsToJSON() {
             stringified = stringified
                 .replace('"b":', '"time":')
                 .replace('"x":', '"lineIndex":')
-                .replace(/"y":\d/, '"type":0')
+                .replace(/"y":(\d)/, '"type":$1')
                 .replace('"d":', '"duration":')
                 .replace('"w":', '"width":')
                 .replace(/"h":\d+,/, '')
@@ -142,54 +216,17 @@ function customEventsToJSON() {
 }
 
 export namespace Map {
-    export function lightshow(file: string) {
-        let dir = file;
-        if (!file.includes(".dat")) {
-            dir += ".dat";
-        }
-        activeLightshow = dir;
-        let lightevents = JSON.parse(Deno.readTextFileSync(activeLightshow))._events;
-        if (V3) {
-            let stringLights = JSON.stringify(lightevents);
-            stringLights = stringLights
-                .replace(/_/g, "")
-                .replace(/lockPosition/g, "lockRotation")
-                .replace(/"reset":\w+,?/g, "")
-                .replace(/"counterSpin":\w+,?/g, "")
-                .replace(/time/g, "b")
-                .replace(/type/g, "et")
-            if (stringLights.includes("floatValue")) {
-                stringLights = stringLights
-                    .replace(/floatValue/g, "f")
-                    .replace(/value/g, "i");
-            } else {
-                stringLights = stringLights.replace(/"value/g, "\"f\":0,\"i")
-            }
-            lightevents = JSON.parse(stringLights);
-        }
-        lights.length = 0;
-        lightevents.forEach((x: any) => {
-            if (x.customData && V3) {
-                if (x.customData.lightGradient) {
-                    const g = JSON.parse(JSON.stringify(x.customData.lightGradient));
-                    delete x.customData.lightGradient;
-                    x.et = 4;
-                    const newEvent = JSON.parse(JSON.stringify(x));
-                    newEvent.b += g.duration;
-                    newEvent.customData.color = g.endColor;
-                    x.customData.color = g.startColor;
-                    lights.push(newEvent);
-                }
-            }
-            lights.push(x)
-        })
+    function lightshow(file: string) {
+        if (lights.length < 1) lights.length = 0;
+        const lightShowDiff = JSON.parse(Deno.readTextFileSync(file))
+        console.log(lightShowDiff)
     }
     /**
      * @summary Toggles ouput file formatting
      * @param enabled If true, the output difficulty will be JSON formatted.
      * @example Map.formatFile(true)
      */
-    export function formatFile(enabled: boolean) {
+    function formatFile(enabled: boolean) {
         if (enabled) {
             formatting = true;
         } else {
@@ -208,8 +245,13 @@ export namespace Map {
         if (typeof diff._version !== 'undefined') V3 = false;
         if (typeof diff.version !== 'undefined') V3 = true;
     }
-    export function initialize(input: string, output: string, NJS: number, offset: number) {
+    export function initialize(input: string, output: string, properties: InitProperties) {
         console.time('HeckLib ran in')
+        const p = properties;
+        const NJS = p.njs;
+        const offset = p.offset;
+        if (p.formatting) formatFile(true);
+        if (typeof p.lightshow == 'string') lightshow(`./${p.lightshow}`)
         const info = infoFile;
         isV3(`./${input}`);
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
@@ -239,42 +281,13 @@ export namespace Map {
     
     
         if (!V3) {
-            diff._notes.forEach((n: Record<string, any>) => {
-                const thing = new Note({
-                    time: n._time,
-                    type: n._type,
-                    direction: n._cutDirection,
-                    x: n._lineIndex,
-                    y: n._lineLayer
-                }, {
-                    offset: offset,
-                    njs: NJS
-                })
-                goofyAHhNotes.push(thing);
-            })
-            notes = goofyAHhNotes;
-            walls = diff._obstacles;
+            notes = JSONtoNotes(diff._notes, NJS, offset);
+            walls = JSONtoWalls(diff._obstacles, NJS, offset);
             lights = diff._events;
             
             if (!diff._customData) {
                 diff._customData = {};
             }
-            // diff._notes.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
-            //     if (!x._customData) {
-            //         x._customData = {
-            //             _noteJumpStartBeatOffset: offset,
-            //             _noteJumpMovementSpeed: NJS
-            //         }
-            //     }
-            // });
-            // diff._obstacles.forEach((x: { _customData: { _noteJumpStartBeatOffset: number; _noteJumpMovementSpeed: number; }; }) => {
-            //     if (!x._customData) {
-            //         x._customData = {
-            //             _noteJumpStartBeatOffset: offset,
-            //             _noteJumpMovementSpeed: NJS
-            //         }
-            //     }
-            // });
         
             const customData = diff._customData;
 
@@ -283,29 +296,14 @@ export namespace Map {
             customData._environment = [];
             customData._materials = {};
         
-            //(output, JSON.stringify(diff, null, 4));
-        
             events = diff._customData._customEvents;
             environment = customData._environment;
             definitions = diff._customData._pointDefinitions;
             materials = customData._materials;
         }
         else if (V3) {
-            diff.colorNotes.forEach((n: Record<string, any>) => {
-                const thing = new Note({
-                    time: n.b,
-                    type: n.c,
-                    direction: n.d,
-                    x: n.x,
-                    y: n.y
-                }, {
-                    offset: offset,
-                    njs: NJS
-                })
-                goofyAHhNotes.push(thing);
-            })
-            notes = goofyAHhNotes;
-            walls = diff.obstacles;
+            notes = JSONtoNotes(diff.colorNotes, NJS, offset);
+            walls = JSONtoWalls(diff.obstacles, NJS, offset);
             bombs = diff.bombNotes;
             lights = diff.basicBeatmapEvents;
             
@@ -321,22 +319,6 @@ export namespace Map {
             if (!diff.customData.fakeBombNotes) {
                 diff.customData.fakeBombNotes = [];
             }
-            diff.colorNotes.forEach((x: { customData: { noteJumpStartBeatOffset: number; noteJumpMovementSpeed: number; }; }) => {
-                if (!x.customData) {
-                    x.customData = {
-                        noteJumpStartBeatOffset: offset,
-                        noteJumpMovementSpeed: NJS
-                    }
-                }
-            });
-            diff.obstacles.forEach((x: { customData: { noteJumpStartBeatOffset: number; noteJumpMovementSpeed: number; }; }) => {
-                if (!x.customData) {
-                    x.customData = {
-                        noteJumpStartBeatOffset: offset,
-                        noteJumpMovementSpeed: NJS
-                    }
-                }
-            });
         
             const customData = diff.customData;
 
@@ -382,7 +364,7 @@ export namespace Map {
         }
         deeperDaddy(difficulty)
     
-
+        //#region declare counters
         let vanilla:any;
         let modded:any;
         let AT = 0;
@@ -392,6 +374,7 @@ export namespace Map {
         let fakes = 0;
         let NotesCount = [0, 0];
         let WallsCount = [0, 0];
+        //#endregion
 
         if (!V3) {
             difficulty._notes = notesToJSON();
@@ -409,26 +392,6 @@ export namespace Map {
                 outputtedDiff = JSON.stringify(difficulty, null, 4)
             }
             Deno.writeTextFileSync(activeOutput, outputtedDiff)
-            if (scuffedWallsInUse) {
-                const ts = JSON.parse(Deno.readTextFileSync(activeOutput));
-                const tsNotes = ts._notes;
-                const tsWalls = ts._obstacles;
-                const tsEvents = ts._events;
-                const tsCustomEvents = ts._customData._customEvents;
-
-                const sw = JSON.parse(Deno.readTextFileSync('./temp/tempOut.dat'))
-                const swNotes = sw._notes;
-                const swWalls = sw._obstacles;
-                const swEvents = sw._events;
-                const swCustomEvents = sw._customData._customEvents;
-
-                tsNotes.push(...swNotes)
-                tsWalls.push(...swWalls)
-                tsEvents.push(...swEvents)
-                tsCustomEvents.push(...swCustomEvents)
-
-                Deno.writeTextFileSync(activeOutput, JSON.stringify(ts, null, 4))
-            }
         
             vanilla = JSON.parse(Deno.readTextFileSync(activeInput));
             modded = JSON.parse(Deno.readTextFileSync(activeOutput))
@@ -463,8 +426,8 @@ export namespace Map {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
-            if (difficulty.customData.materials.length < 1) {
-                delete(difficulty.customData.materials)
+            if (difficulty.customData.materials && Object.keys(difficulty.customData.materials).length < 1) {
+                delete difficulty.customData.materials
             }
 
             let outputtedDiff = JSON.stringify(difficulty)
@@ -497,6 +460,7 @@ export namespace Map {
             NotesCount = [ vanilla.colorNotes.length, modded.colorNotes.length ];
             fakes = modded.customData.fakeColorNotes.length;
         }
+
 
         
         

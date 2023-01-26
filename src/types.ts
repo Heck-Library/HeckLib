@@ -202,3 +202,12 @@ export type JsonModel = {
     shape: geoShape,
     color: vec4
 }
+
+
+
+export type InitProperties = {
+    formatting?: boolean,
+    njs: number,
+    offset: number,
+    lightshow?: string
+}
