@@ -4,6 +4,9 @@ import { noteJump, enabledWall, energy, speed, effects } from "./types.ts";
 
 export const infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
 
+/**
+ * Adds suggestions to the map
+ */
 export class Suggestion {
   s: string[];
   f: string;
@@ -13,7 +16,7 @@ export class Suggestion {
     this.f = filename;
   }
   /**
-   * Adds the Chroma suggestion to the map.
+   * Adds Chroma as a suggestion to the map.
    */
   chroma() {
     this.s.push("Chroma");
@@ -21,7 +24,7 @@ export class Suggestion {
     return this;
   }
   /**
-   * Adds the Cinema suggestion to the map.
+   * Adds Cinema as a suggestion to the map.
    */
   cinema() {
     this.s.push("Cinema");
@@ -43,6 +46,9 @@ export class Suggestion {
   }
 }
 
+/**
+ * Adds requirements to the map
+ */
 export class Requirement {
   r: string[];
   f: string;
@@ -62,7 +68,7 @@ export class Requirement {
     Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
   }
   /**
-   * Adds the Noodle Extensions requirement to the map.
+   * Adds Noodle Extensions as a requirement to the map.
    */
   noodle() {
     this.r.push("Noodle Extensions");
@@ -70,7 +76,7 @@ export class Requirement {
     return this;
   }
   /**
-   * Adds the Chroma requirement to the map.
+   * Adds Chroma as a requirement to the map.
    */
   chroma() {
     this.r.push("Chroma");
@@ -78,7 +84,7 @@ export class Requirement {
     return this;
   }
   /**
-   * Adds the Cinema requirement to the map.
+   * Adds Cinema as a requirement to the map.
    */
   cinema() {
     this.r.push("Cinema");
@@ -101,6 +107,9 @@ export class Requirement {
   }
 }
 
+/**
+ * Settings setter properties
+ */
 export class Settings {
   s: {
     _playerOptions: {
