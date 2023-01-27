@@ -2,13 +2,16 @@
 
 export const __dirname = new URL('.', import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
+/**
+ * A function for linear interpolation.
+ * @param start First value
+ * @param end Last value
+ * @param amount Interpolation amount
+ * @returns Interpolated value
+ * @example lerp(5, 10, 0.5); returns 7.5
+ */
 export function lerp(start:number, end:number, amount:number): number {
     return (1 - amount) * start + amount * end;
-}
-
-export function isPresent(x: any) {
-    if (typeof x !== 'undefined' && x !== null) return true;
-    return false;
 }
 
 export function isArr (x: any) {
