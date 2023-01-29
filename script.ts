@@ -1,4 +1,4 @@
-import { AnimateTrack, ease, Map, random } from "./src/main.ts";
+import { Map } from "./src/main.ts";
 const INPUT = 'ExpertPlusStandard.dat'
 const OUTPUT = 'ExpertPlusLawless.dat'
 
@@ -11,4 +11,6 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 
 
 // #endregion Noodle stuff above
-Map.finalize(difficulty, {formatting:true})
+Map.finalize(difficulty, {
+    formatting:true
+})

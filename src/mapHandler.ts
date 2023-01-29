@@ -2,18 +2,18 @@
 
 import { infoFile } from "./info.ts";
 import { Note, Wall } from "./objects.ts";
-import { CUSTOMEVENT, FinalizeProperties, InitProperties, NOTE, WALL } from "./types.ts";
+import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, NOTE, POINTDEFINITION, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
 export let environment: any[];
-export let notes: any[];
+export let notes: NOTE[];
 export let bombs: any[];
-export let walls: any[];
+export let walls: WALL[];
 export let events: any[];
 export let materials: any = {};
 export let geometry: any[];
-export let definitions: any[];
+export const definitions: POINTDEFINITION[] = [];
 export let lights: any[];
 export let fakeNotes: any[];
 export let fakeWalls: any[];
@@ -118,6 +118,8 @@ function wallsToJSON() {
                 }
             }
         }
+        if (Object.keys(wallJSON.customData.animation).length < 1) delete wallJSON.customData.animation;
+        if (Object.keys(wallJSON.customData).length < 1) delete wallJSON.customData;
         let stringified = JSON.stringify(wallJSON)
             .replace('"njs"', '"noteJumpMovementSpeed"')
             .replace('"offset"', '"noteJumpStartBeatOffset"')
@@ -138,12 +140,13 @@ function wallsToJSON() {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":')
         }
         wallJSON = JSON.parse(stringified);
-        if (Object.keys(wallJSON.customData.animation).length < 1) delete wallJSON.customData.animation;
-        if (Object.keys(wallJSON.customData).length < 1) delete wallJSON.customData;
-        else if (Object.keys(wallJSON.customData).includes("fake")) {
+        if (V3 && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;
-            fakeWalls.push(wallJSON);
-        } else wallArr.push(wallJSON)
+            delete walls[walls.indexOf(w)];
+            fakeWalls.push(wallJSON)
+        } else {
+            wallArr.push(wallJSON);
+        }
     });
     return wallArr;
 }
@@ -212,6 +215,24 @@ function customEventsToJSON() {
         eventArr.push(JSON.parse(stringified))
     });
     return eventArr;
+}
+
+type JSONDefV2 = {_name: string, _points: anyAnimation};
+type JSONDefV3 = Record<string, anyAnimation>;
+function pointDefinitionsToJSON(): Record<string, JSONDefV3>|JSONDefV2[] {
+    if (V3) {
+        const defCollection: Record<string, JSONDefV3> = {};
+        definitions.forEach((d: POINTDEFINITION) => {
+            const definition = {[d.name]: d.points}
+            Object.assign(defCollection, definition);
+        })
+        return defCollection;
+    }
+    const defArr: JSONDefV2[] = [];
+    definitions.forEach((d: POINTDEFINITION) => {
+        defArr.push({_name: d.name, _points: d.points});
+    })
+    return defArr;
 }
 
 function showStats(properties?: FinalizeProperties) {
@@ -403,7 +424,6 @@ export namespace Map {
         
             events = diff._customData._customEvents;
             environment = customData._environment;
-            definitions = diff._customData._pointDefinitions;
             materials = customData._materials;
         }
         else if (V3) {
@@ -436,7 +456,6 @@ export namespace Map {
         
             events = diff.customData.customEvents;
             environment = customData.environment;
-            definitions = diff.customData.pointDefinitions;
             materials = customData.materials;
             fakeNotes = customData.fakeColorNotes;
             fakeWalls = customData.fakeObstacles;
@@ -473,6 +492,7 @@ export namespace Map {
             difficulty._notes = notesToJSON();
             difficulty._obstacles = wallsToJSON();
             difficulty._customData._customEvents = customEventsToJSON();
+            difficulty._customData._pointDefinitions = pointDefinitionsToJSON();
             difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
             difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
             difficulty._events.sort((a: any, b: any) => a._time - b._time);
@@ -490,6 +510,7 @@ export namespace Map {
             difficulty.colorNotes = notesToJSON();
             difficulty.obstacles = wallsToJSON();
             difficulty.customData.customEvents = customEventsToJSON();
+            difficulty.customData.pointDefinitions = pointDefinitionsToJSON();
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);

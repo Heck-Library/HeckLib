@@ -51,6 +51,13 @@ export type mat = {
     _shaderKeywords?: string[]
 }
 
+export type anyAnimation = vec1anim|vec3anim|vec4anim;
+
+export type POINTDEFINITION = {
+    name: string,
+    points: vec1anim|vec3anim|vec4anim
+}
+
 export type WALL = {
     time: number,
     x?: lineIndex,

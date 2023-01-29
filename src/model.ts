@@ -57,6 +57,26 @@ export class ModelWall {
         const model = JSON.parse(Deno.readTextFileSync(filePath))
         model.forEach((x: JsonModel) => {
             const col = x.color;
+            const s: [number, number, number] = x.scale;
+            const r: [number, number, number] = x.rotation;
+            r[0] = Math.round((r[0] / 6.2832 - 180) * 1000) / 1000;
+            r[1] = Math.round((r[1] / 6.2832 - 180) * 1000) / 1000;
+            r[2] = Math.round((r[2] / 6.2832 - 180) * 1000) / 1000;
+
+            const p: [number, number, number] = x.position
+            p[0] = Math.round((p[0] / 1.666 - s[0] / 2 - (r[0] / 360 * s[0])) * 1000) / 1000;
+            p[1] = Math.round((p[1] / 1.666 - s[1] / 2 - (r[1] / 360 * s[1])) * 1000) / 1000;
+            p[2] = Math.round((p[2] / 1.666 - s[2] / 2 - (r[2] / 360 * s[2])) * 1000) / 1000;
+
+            p[0] += r[2] / 360;
+            p[0] -= r[1] / 360;
+
+            p[1] += r[2] / 360;
+            p[1] += r[0] / 360;
+
+            p[2] += r[0] / 360;
+            p[2] += r[1] / 360;
+
             const w: WALL = new Wall({
                 time: time,
                 duration: 1
@@ -65,10 +85,10 @@ export class ModelWall {
                 interactable: false,
                 color: [...col],
                 position: [0, 0],
-                localRotation: x.rotation,
-                scale: x.scale
+                localRotation: r,
+                scale: s
             }, {
-                definitePosition: x.position
+                definitePosition: p,
             })
             this.walls.push(w);
         });
