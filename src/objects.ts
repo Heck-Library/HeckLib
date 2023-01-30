@@ -19,20 +19,22 @@ wallType
 } from "./types.ts";
 
 /**
- * @param obj The objects to filter (either notes or walls).
+ * @param obj The objects to filter.
  * @param start What the start beat to filter should be.
  * @param end What the end beat to filter should be.
- * @param type What the type to filter should be (CAN ONLY BE APPLIED TO NOTES).
- * @param direction What the direction to filter should be (CAN ONLY BE APPLIED TO NOTES).
+ * @param type What the type to filter should be.
  * @returns The filtered objects.
  */
-export function filter(
-    obj: any[],
-    start: number,
-    end: number,
-    type?: 0|1|3,
-    direction?: number
-) {
+export function filter(obj: WALL[], start: number, end: number, type?: 0|1): WALL[]
+/**
+ * @param obj The objects to filter.
+ * @param start What the start beat to filter should be.
+ * @param end What the end beat to filter should be.
+ * @param type What the type to filter should be.
+ * @param direction What the direction to filter should be.
+ * @returns The filtered objects.
+ */
+export function filter(obj: NOTE[], start: number, end: number, type?: 0|1|3, direction?: number): NOTE[] {
     if (obj == fakeNotes || obj == notes) {
         const f: (NOTE)[] = obj.filter((n: NOTE) => n.time >= start && n.time <= end)
         if (type && !direction) return f.filter((n: NOTE) => n.type == type);
@@ -51,7 +53,7 @@ export function filter(
  * @param obj The array of objects that the track should be assigned to.
  * @param track The array of tracks or the name of the track that should be assigned.
  */
-export function track(obj: any[], track: Track) {
+export function track(obj: NOTE[]|WALL[], track: Track): void {
     obj.forEach((x: Record<string, any>) => {
         const d = x.data;
         if (!d.track) {
