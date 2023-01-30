@@ -1,4 +1,11 @@
 {
+    "PointDefinition": {
+        "scope": "typescript",
+        "prefix": "pointDef",
+        "body": "new PointDefinition(\"\", [$0]).push();",
+        "description": "Creates the structure for a PointDefinition."
+    },
+
     "AnimateTrack": {
         "scope": "typescript",
         "prefix": "animTrack",
