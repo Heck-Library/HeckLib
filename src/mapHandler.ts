@@ -101,7 +101,7 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
 }
 
 
-function wallsToJSON() {
+function wallsToJSON(): Record<string, any> {
     const wallArr: any[] = [];
     walls.forEach((w: WALL) => {
         let wallJSON: Record<string, any> = {
@@ -151,7 +151,7 @@ function wallsToJSON() {
     return wallArr;
 }
 
-function notesToJSON() {
+function notesToJSON(): Record<string, any> {
     const noteArr: any[] = []
     notes.forEach((n: NOTE) => {
         let noteJSON: Record<string, any> = {
@@ -196,7 +196,7 @@ function notesToJSON() {
     return noteArr
 }
 
-function customEventsToJSON() {
+function customEventsToJSON(): Record<string, any> {
     const eventArr: any[] = []
     events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
@@ -235,7 +235,34 @@ function pointDefinitionsToJSON(): Record<string, JSONDefV3>|JSONDefV2[] {
     return defArr;
 }
 
-function showStats(properties?: FinalizeProperties) {
+type statsType = {
+    moddedStats: {
+        notes: number,
+        fakeNotes: number,
+        walls: number,
+        fakeWalls: number,
+        bombs: number,
+        fakeBombs: number,
+        lights: number,
+        customEvents: {
+            animTrack: number,
+            pathAnim: number,
+            trackParent: number,
+            playerTrack: number,
+            fogTrack: number
+        },
+        pointDefinitions: number,
+        environments: number
+    },
+    vanillaStats: {
+        notes: number,
+        walls: number,
+        bombs: number,
+        lights: number
+    }
+};
+
+function showStats(properties?: FinalizeProperties): statsType {
     const vs = {
         notes: 0,
         walls: 0,
@@ -342,36 +369,31 @@ function showStats(properties?: FinalizeProperties) {
 }
 
 export namespace Map {
+    // TODO Lightshow importer 
     function lightshow(file: string) {
         if (lights.length < 1) lights.length = 0;
         const lightShowDiff = JSON.parse(Deno.readTextFileSync(file))
         console.log(lightShowDiff)
     }
-    /**
-     * @summary Toggles ouput file formatting
-     * @param enabled If true, the output difficulty will be JSON formatted.
-     * @example Map.formatFile(true)
-     */
-    function formatFile(enabled: boolean) {
+    function formatFile(enabled: boolean): void {
         if (enabled) {
             formatting = true;
         } else {
             formatting = false;
         }
     }
-    /**
-     * @param input The input file for the difficulty.
-     * @param output The output file for the difficulty.
-     * @param NJS The NJS of the new difficulty. 
-     * @param offset The offset of the new difficulty.
-     */
     function isV3(diffName: string) {
         const diff = JSON.parse(Deno.readTextFileSync(diffName));
 
         if (typeof diff._version !== 'undefined') V3 = false;
         if (typeof diff.version !== 'undefined') V3 = true;
     }
-    export function initialize(input: string, output: string, properties: InitProperties) {
+    /**
+     * @param input The input file for the difficulty.
+     * @param output The output file for the difficulty.
+     * @param properties The additional properties such as NJS and offset.
+     */
+    export function initialize(input: string, output: string, properties: InitProperties): Record<string, any> {
         console.time('HeckLib ran in')
         const p = properties;
         const NJS = p.njs;
@@ -392,7 +414,6 @@ export namespace Map {
         activeInput = input;
         activeOutput = output;
 
-        const goofyAHhNotes: any[] = [];
         if (info._difficultyBeatmapSets) {
             info._difficultyBeatmapSets.forEach((x: any) => {
                 if (JSON.stringify(x).includes(output)) {
@@ -468,7 +489,7 @@ export namespace Map {
     /**
      * @param difficulty The difficulty that the map should be written to.
      */
-    export function finalize(difficulty: any, properties?: FinalizeProperties) {
+    export function finalize(difficulty: any, properties?: FinalizeProperties): void {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
         if (properties && properties.formatting) formatting = true;
         const jsonP = Math.pow(10, precision);
