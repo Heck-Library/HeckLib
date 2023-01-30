@@ -14,7 +14,7 @@ export function lerp(start:number, end:number, amount:number): number {
     return (1 - amount) * start + amount * end;
 }
 
-export function isArr (x: any) {
+export function isArr (x: any): boolean {
     if (Array.isArray(x)) {
         return true;
     } else return false;
@@ -25,10 +25,10 @@ export function isArr (x: any) {
  * @param h Hue
  * @param s Saturation
  * @param v Value
- * @returns RGB
+ * @returns [R, G, B]
  */
 
-export function HSVtoRGB(h: any, s: number, v: number) {
+export function HSVtoRGB(h: any, s: number, v: number): [number, number, number] {
     let r: number, g: number, b: number, i: number, f: number, p: number, q: number, t: number;
     if (arguments.length === 1) {
         (s = h.s), (v = h.v), (h = h.h);
@@ -71,7 +71,7 @@ export function HSVtoRGB(h: any, s: number, v: number) {
  * @returns Random number
  */
 
-export function random(min: number, max: number, precision?: number) {
+export function random(min: number, max: number, precision?: number): number {
     let p = 10;
     if (typeof precision !== 'undefined' && precision !== null) {
         p = Math.pow(p, precision);
