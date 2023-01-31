@@ -1,7 +1,5 @@
 
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
-import { LightEvent } from './lights.ts';
-
 
 export type Track = string|string[];
 
@@ -31,11 +29,18 @@ export type diffFile =
     Difficulty.Lawless.Hard |
     Difficulty.Lawless.Expert |
     Difficulty.Lawless.ExpertPlus |
+
     Difficulty.Standard.Easy |
     Difficulty.Standard.Normal |
     Difficulty.Standard.Hard |
     Difficulty.Standard.Expert |
-    Difficulty.Standard.ExpertPlus;
+    Difficulty.Standard.ExpertPlus |
+
+    Difficulty.Lightshow.Easy |
+    Difficulty.Lightshow.Normal |
+    Difficulty.Lightshow.Hard |
+    Difficulty.Lightshow.Expert |
+    Difficulty.Lightshow.ExpertPlus;
 
 export type noteJump = "Dynamic" | "Static";
 export type effects = "AllEffects" | "Strobefilter" | "NoEffects";
@@ -58,7 +63,7 @@ export type POINTDEFINITION = {
     name: string,
     points: vec1anim|vec3anim|vec4anim
 }
-
+//#region Objects
 export type WALL = {
     time: number,
     x?: lineIndex,
@@ -93,12 +98,6 @@ export type customWallData = {
     interactable?: boolean
 }
 
-export type CUSTOMEVENT = {
-    time: number
-    type: string
-    data: animateTrackData|pathAnimData
-}
-
 export type NOTE = {
     time: number,
     x?: lineIndex,
@@ -107,35 +106,6 @@ export type NOTE = {
     direction?: noteDir,
     data: customNoteData,
     anim: animationData
-}
-
-export type LIGHT = {
-    time: number,
-    type: number,
-    value: number,
-    float?: number,
-    data?: lightCustomData
-}
-
-export type lightData = {
-    time: number,
-    type: number,
-    value: number,
-    float?: number
-}
-
-export type lightCustomData = {
-    lightID?: number,
-    color?: vec3|vec4,
-    easing?: string,
-    lerpType?: "HSV"|"RGB",
-    lockPosition?: boolean,
-    nameFilter?: string,
-    rotation?: number,
-    step?: number,
-    prop?: number,
-    speed?: number,
-    direction?: 0|1
 }
 
 export type noteData = {
@@ -174,7 +144,40 @@ export type animationData = {
     dissolve?: vec1anim,
     dissolveArrow?: vec1anim
 }
+//#endregion
 
+//#region Lights
+export type LIGHT = {
+    time: number,
+    type: number,
+    value: number,
+    float?: number,
+    data?: lightCustomData
+}
+
+export type lightData = {
+    time: number,
+    type: number,
+    value: number,
+    float?: number
+}
+
+export type lightCustomData = {
+    lightID?: number,
+    color?: vec3|vec4,
+    easing?: string,
+    lerpType?: "HSV"|"RGB",
+    lockPosition?: boolean,
+    nameFilter?: string,
+    rotation?: number,
+    step?: number,
+    prop?: number,
+    speed?: number,
+    direction?: 0|1
+}
+//#endregion
+
+//#region CustomEvents
 export type parentTrackType = {
     parentTrack: Track,
     childrenTracks: string[]
@@ -231,6 +234,12 @@ export type animComponentData = {
     }
 }
 
+export type CUSTOMEVENT = {
+    time: number
+    type: string
+    data: animateTrackData|pathAnimData|playerTrackType|parentTrackType
+}
+//#endregion
 export type JsonModel = {
     position: vec3,
     rotation: vec3,
@@ -239,10 +248,7 @@ export type JsonModel = {
     color: vec4
 }
 
-
-
 export type InitProperties = {
-    formatting?: boolean,
     njs: number,
     offset: number,
     lightshow?: string
