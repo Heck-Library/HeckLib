@@ -1,5 +1,6 @@
 
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
+import { LightEvent } from './lights.ts';
 
 
 export type Track = string|string[];
@@ -106,6 +107,35 @@ export type NOTE = {
     direction?: noteDir,
     data: customNoteData,
     anim: animationData
+}
+
+export type LIGHT = {
+    time: number,
+    type: number,
+    value: number,
+    float?: number,
+    data?: lightCustomData
+}
+
+export type lightData = {
+    time: number,
+    type: number,
+    value: number,
+    float?: number
+}
+
+export type lightCustomData = {
+    lightID?: number,
+    color?: vec3|vec4,
+    easing?: string,
+    lerpType?: "HSV"|"RGB",
+    lockPosition?: boolean,
+    nameFilter?: string,
+    rotation?: number,
+    step?: number,
+    prop?: number,
+    speed?: number,
+    direction?: 0|1
 }
 
 export type noteData = {
