@@ -36,13 +36,15 @@ export function filter(obj: WALL[], start: number, end: number, type?: 0|1): WAL
  */
 export function filter(obj: NOTE[], start: number, end: number, type?: 0|1|3, direction?: number): NOTE[] {
     if (obj == fakeNotes || obj == notes) {
-        const f: (NOTE)[] = obj.filter((n: NOTE) => n.time >= start && n.time <= end)
+        const f: NOTE[] = obj.filter((n: NOTE) => n.time >= start && n.time <= end);
         if (type && !direction) return f.filter((n: NOTE) => n.type == type);
         if (!type && direction) return f.filter((n: NOTE) => n.direction == direction);
         if (type && direction) return f.filter((n: NOTE) => n.direction == direction && n.type == type);
         return f;
     }
     if (obj == fakeWalls || obj == walls) {
+        const f: WALL[] = obj.filter((w: WALL) => w.time >= start && w.time <= end);
+        if (type) return f.filter((w: WALL) => w.y);
         return obj.filter((w: WALL) => w.time >= start && w.time <= end);
     }
     return [];
