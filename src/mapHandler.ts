@@ -281,10 +281,9 @@ function lightsToJSON(): Record<string, any> {
             b: l.time,
             et: l.type,
             i: l.value,
-            f: l.float,
         }
+        if (l.float) lightJSON.f = l.float;
         if (l.data && Object.keys(l.data).length > 0) lightJSON.customData = l.data
-        i
         let stringified = JSON.stringify(lightJSON);
         if (!V3) {
             stringified = stringified
