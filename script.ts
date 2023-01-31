@@ -4,7 +4,8 @@ const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
     njs: 16,
-    offset: 0
+    offset: 0,
+    lightshow: Difficulty.Lightshow.Easy
 });
 // #region Noodle stuff below
 
@@ -13,5 +14,5 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 
 // #endregion Noodle stuff above
 Map.finalize(difficulty, {
-    formatting: false
+    formatting: true
 });
