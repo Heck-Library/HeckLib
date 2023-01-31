@@ -147,18 +147,22 @@ export type animationData = {
 //#endregion
 
 //#region Lights
+
+export type lightType = 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18;
+export type lightValue = 0|1|2|3|4|5|6|7|8|9|10|11|12
+
 export type LIGHT = {
     time: number,
-    type: number,
-    value: number,
+    type: lightType,
+    value: lightValue,
     float?: number,
     data?: lightCustomData
 }
 
 export type lightData = {
     time: number,
-    type: number,
-    value: number,
+    type: lightType,
+    value: lightValue,
     float?: number
 }
 
