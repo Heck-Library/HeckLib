@@ -1,4 +1,4 @@
-import { LIGHT, lightCustomData, lightData } from "./types.ts"
+import { LIGHT, lightCustomData, lightData, lightType, lightValue } from "./types.ts"
 
 export class LightEvent {
     static readonly Direction = {
@@ -46,7 +46,7 @@ export class LightEvent {
     }
     public json: LIGHT;
 
-    constructor(obj: lightData, customData: lightCustomData) {
+    constructor(obj: lightData, customData?: lightCustomData) {
         this.json = {
             time: obj.time,
             type: obj.type,
@@ -57,18 +57,18 @@ export class LightEvent {
         return this;
     }
 
-    set time(time: number) { this.time = time; }
-    get time(): number { return this.time; }
+    set time(time: number) { this.json.time = time; }
+    get time(): number { return this.json.time; }
 
-    set type(type: 0|1|2|3|4|5|6|7|8|9) { this.type = type; }
-    get type(): 0|1|2|3|4|5|6|7|8|9 { return this.type; }
+    set type(type: lightType) { this.json.type = type; }
+    get type(): lightType { return this.json.type; }
 
-    set value(value: number) { this.value = value; }
-    get value(): number { return this.value; }
+    set value(value: lightValue) { this.json.value = value; }
+    get value(): lightValue { return this.json.value; }
 
-    set float(float: number) { this.float = float; }
-    get float(): number { return this.float; }
+    set float(float: number) { this.json.float = float; }
+    get float(): number { if (this.json.float) return this.json.float; return 0 }
 
-    set data(data: lightCustomData) { this.data = data; }
-    get data(): lightCustomData { return this.data; }
+    set data(data: lightCustomData) { this.json.data = data; }
+    get data(): lightCustomData { if (this.json.data) return this.json.data; return {} }
 }
