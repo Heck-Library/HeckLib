@@ -10,7 +10,7 @@ export let environment: any[];
 export let notes: NOTE[];
 export let bombs: any[];
 export let walls: WALL[];
-export let events: any[];
+export let events: CUSTOMEVENT[];
 export let materials: any = {};
 export let geometry: any[];
 export const definitions: POINTDEFINITION[] = [];
@@ -398,7 +398,6 @@ export namespace Map {
         const p = properties;
         const NJS = p.njs;
         const offset = p.offset;
-        if (p.formatting) formatFile(true);
         if (typeof p.lightshow == 'string') lightshow(`./${p.lightshow}`)
         const info = infoFile;
         isV3(`./${input}`);
