@@ -1,12 +1,13 @@
-import { Map } from "./src/main.ts";
-const INPUT = 'ExpertPlusStandard.dat';
-const OUTPUT = 'ExpertPlusLawless.dat';
+import { diffFile, Difficulty, Map } from "./src/main.ts";
+const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
+const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
     njs: 16,
     offset: 0
 });
 // #region Noodle stuff below
+
 
 
 
