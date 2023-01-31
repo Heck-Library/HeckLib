@@ -1,8 +1,9 @@
 // deno-lint-ignore-file no-explicit-any no-namespace
 
 import { infoFile } from "./info.ts";
+import { LightEvent } from "./lights.ts";
 import { Note, Wall } from "./objects.ts";
-import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, NOTE, POINTDEFINITION, WALL } from "./types.ts";
+import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
@@ -14,7 +15,7 @@ export let events: CUSTOMEVENT[];
 export let materials: any = {};
 export let geometry: any[];
 export const definitions: POINTDEFINITION[] = [];
-export let lights: any[];
+export let lights: LIGHT[] = [];
 export let fakeNotes: any[];
 export let fakeWalls: any[];
 export let fakeBombs: any[];
@@ -98,6 +99,62 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
         })
     }
     return noteArr;
+}
+
+function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIGHT[] {
+    const lightArr: LIGHT[] = [];
+    if (lightsV3) {
+        lightInput.forEach((l: Record<string, any>) => {
+            const light: LIGHT = new LightEvent({
+                time: l.b,
+                type: l.et,
+                value: l.i,
+                float: l.f
+            })
+            if (l.customData) {
+                light.data = {
+                    color: l.customData.color,
+                    lightID: l.customData.lightID,
+                    easing: l.customData.easing,
+                    lerpType: l.customData.lerpType,
+                    lockPosition: l.customData.lockRotation,
+                    speed: l.customData.speed,
+                    direction: l.customData.direction,
+                    nameFilter: l.customData.nameFilter,
+                    rotation: l.customData.rotation,
+                    step: l.customData.step,
+                    prop: l.prop
+                }
+            }
+            lightArr.push();
+        })
+    } else {
+        lightInput.forEach((l: Record<string, any>) => {
+            const light: LIGHT = new LightEvent({
+                time: l._time,
+                type: l._type,
+                value: l._value,
+                float: l._floatValue
+            })
+            if (l._customData) {
+                light.data = {
+                    color: l._customData._color,
+                    lightID: l._customData._lightID,
+                    easing: l._customData._easing,
+                    lerpType: l._customData._lerpType,
+                    lockPosition: l._customData._lockRotation,
+                    speed: l._customData._speed,
+                    direction: l._customData._direction,
+                    nameFilter: l._customData._nameFilter,
+                    rotation: l._customData._rotation,
+                    step: l._customData._step,
+                    prop: l._customData._prop
+                }
+            }
+            lightArr.push(light)
+        })
+    }
+    return lightArr;
 }
 
 
@@ -215,6 +272,32 @@ function customEventsToJSON(): Record<string, any> {
         eventArr.push(JSON.parse(stringified))
     });
     return eventArr;
+}
+
+function lightsToJSON(): Record<string, any> {
+    const lightArr: Record<string, any>[] = [];
+    lights.forEach((l: LIGHT) => {
+        const lightJSON: Record<string, any> = {
+            b: l.time,
+            et: l.type,
+            i: l.value,
+            f: l.float,
+        }
+        if (l.data && Object.keys(l.data).length > 0) lightJSON.customData = l.data
+        i
+        let stringified = JSON.stringify(lightJSON);
+        if (!V3) {
+            stringified = stringified
+                .replace('"b":', '"time":')
+                .replace('"et":', '"type":')
+                .replace('"i":', '"value":')
+                .replace('"f":', '"floatValue":')
+                .replace('"lockRotation":', '"lockPosition":')
+                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
+        }
+        lightArr.push(JSON.parse(stringified));
+    })
+    return lightArr;
 }
 
 type JSONDefV2 = {_name: string, _points: anyAnimation};
@@ -370,17 +453,16 @@ function showStats(properties?: FinalizeProperties): statsType {
 
 export namespace Map {
     // TODO Lightshow importer 
-    function lightshow(file: string) {
-        if (lights.length < 1) lights.length = 0;
+    function lightshowImport(file: string) {
+        let lV3 = false;
         const lightShowDiff = JSON.parse(Deno.readTextFileSync(file))
-        console.log(lightShowDiff)
-    }
-    function formatFile(enabled: boolean): void {
-        if (enabled) {
-            formatting = true;
-        } else {
-            formatting = false;
-        }
+        if (lightShowDiff.version) lV3 = true;
+        let localLights: Record<string, any>[];
+
+        if (lV3) localLights = lightShowDiff.basicBeatmapEvents;
+        else localLights = lightShowDiff._events;
+
+        lights = JSONtoLights(localLights, lV3);
     }
     function isV3(diffName: string) {
         const diff = JSON.parse(Deno.readTextFileSync(diffName));
@@ -398,7 +480,10 @@ export namespace Map {
         const p = properties;
         const NJS = p.njs;
         const offset = p.offset;
-        if (typeof p.lightshow == 'string') lightshow(`./${p.lightshow}`)
+        if (typeof p.lightshow == 'string') {
+            lights.length = 0;
+            lightshowImport(`./${p.lightshow}`)
+        }
         const info = infoFile;
         isV3(`./${input}`);
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
@@ -429,7 +514,7 @@ export namespace Map {
         if (!V3) {
             notes = JSONtoNotes(diff._notes, NJS, offset);
             walls = JSONtoWalls(diff._obstacles, NJS, offset);
-            lights = diff._events;
+            if (!p.lightshow) lights = diff._events;
             
             if (!diff._customData) {
                 diff._customData = {};
@@ -450,7 +535,7 @@ export namespace Map {
             notes = JSONtoNotes(diff.colorNotes, NJS, offset);
             walls = JSONtoWalls(diff.obstacles, NJS, offset);
             bombs = diff.bombNotes;
-            lights = diff.basicBeatmapEvents;
+            if (!p.lightshow) lights = diff.basicBeatmapEvents;
             
             if (!diff.customData) {
                 diff.customData = {};
@@ -481,7 +566,6 @@ export namespace Map {
             fakeWalls = customData.fakeObstacles;
             fakeBombs = customData.fakeBombNotes
         }
-    
         return diff;
     }
     
@@ -511,6 +595,7 @@ export namespace Map {
         if (!V3) {
             difficulty._notes = notesToJSON();
             difficulty._obstacles = wallsToJSON();
+            difficulty._events = lightsToJSON();
             difficulty._customData._customEvents = customEventsToJSON();
             difficulty._customData._pointDefinitions = pointDefinitionsToJSON();
             difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
@@ -529,6 +614,7 @@ export namespace Map {
         if (V3) {
             difficulty.colorNotes = notesToJSON();
             difficulty.obstacles = wallsToJSON();
+            difficulty.basicBeatmapEvents = lightsToJSON();
             difficulty.customData.customEvents = customEventsToJSON();
             difficulty.customData.pointDefinitions = pointDefinitionsToJSON();
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
