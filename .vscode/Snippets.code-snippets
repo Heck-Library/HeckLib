@@ -81,6 +81,18 @@
         ],
         "description": "Adds the structure for a wall"
     },
+    "NoteTrack": {
+        "scope": "typescript",
+        "prefix": "noteTrack",
+        "body": "track(filter(notes, 0, $0));",
+        "description": "Creates the function for adding tracks to notes between two time values."
+    },
+    "WallTrack": {
+        "scope": "typescript",
+        "prefix": "wallTrack",
+        "body": "track(filter(walls, 0, $0));",
+        "description": "Creates the function for adding tracks to notes between two time values."
+    },
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
