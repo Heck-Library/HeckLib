@@ -23,7 +23,14 @@ export namespace Difficulty {
         Normal = "NormalStandard.dat",
         Hard = "HardStandard.dat",
         Expert = "ExpertStandard.dat",
-        ExpertPlus = "ExpertPluStandard..dat"
+        ExpertPlus = "ExpertPlusStandard.dat"
+    }
+    export enum Lightshow {
+        Easy = "EasyLightshow.dat",
+        Normal = "NormalLightshow.dat",
+        Hard = "HardLightshow.dat",
+        Expert = "ExpertLightshow.dat",
+        ExpertPlus = "ExpertPlusLightshow.dat"
     }
 }
 
