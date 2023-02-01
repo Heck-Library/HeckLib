@@ -1,11 +1,10 @@
-import { diffFile, Difficulty, Map } from "./src/main.ts";
+import { Map, diffFile, Difficulty } from './src/main.ts';
 const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
 const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
     njs: 16,
-    offset: 0,
-    lightshow: Difficulty.Lightshow.Easy
+    offset: 0
 });
 // #region Noodle stuff below
 

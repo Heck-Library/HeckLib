@@ -126,7 +126,7 @@ function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIG
                     prop: l.prop
                 }
             }
-            lightArr.push();
+            lightArr.push(light);
         })
     } else {
         lightInput.forEach((l: Record<string, any>) => {
@@ -275,7 +275,7 @@ function customEventsToJSON(): Record<string, any> {
 }
 
 function lightsToJSON(): Record<string, any> {
-    const lightArr: Record<string, any>[] = [];
+    const lightArr: any[] = [];
     lights.forEach((l: LIGHT) => {
         const lightJSON: Record<string, any> = {
             b: l.time,
@@ -479,7 +479,7 @@ export namespace Map {
         const p = properties;
         const NJS = p.njs;
         const offset = p.offset;
-        if (typeof p.lightshow == 'string') {
+        if (p.lightshow) {
             lights.length = 0;
             lightshowImport(`./${p.lightshow}`)
         }
@@ -513,7 +513,7 @@ export namespace Map {
         if (!V3) {
             notes = JSONtoNotes(diff._notes, NJS, offset);
             walls = JSONtoWalls(diff._obstacles, NJS, offset);
-            if (!p.lightshow) lights = diff._events;
+            if (!p.lightshow) lights = JSONtoLights(diff._events, V3);
             
             if (!diff._customData) {
                 diff._customData = {};
@@ -534,7 +534,7 @@ export namespace Map {
             notes = JSONtoNotes(diff.colorNotes, NJS, offset);
             walls = JSONtoWalls(diff.obstacles, NJS, offset);
             bombs = diff.bombNotes;
-            if (!p.lightshow) lights = diff.basicBeatmapEvents;
+            if (!p.lightshow) lights = JSONtoLights(diff.basicBeatmapEvents, V3);
             
             if (!diff.customData) {
                 diff.customData = {};
@@ -563,7 +563,7 @@ export namespace Map {
             materials = customData.materials;
             fakeNotes = customData.fakeColorNotes;
             fakeWalls = customData.fakeObstacles;
-            fakeBombs = customData.fakeBombNotes
+            fakeBombs = customData.fakeBombNotes;
         }
         return diff;
     }
@@ -573,7 +573,9 @@ export namespace Map {
      */
     export function finalize(difficulty: any, properties?: FinalizeProperties): void {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
-        if (properties && properties.formatting) formatting = true;
+        if (properties) {
+            if (properties.formatting) formatting = true;
+        }
         const jsonP = Math.pow(10, precision);
         const sortP = Math.pow(10, 2);
         function deeperDaddy(obj: any) {

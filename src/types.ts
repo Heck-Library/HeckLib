@@ -253,12 +253,25 @@ export type JsonModel = {
 }
 
 export type InitProperties = {
+    /**
+     * Sets the NJS of all notes
+     */
     njs: number,
+    /**
+     * Sets the offset of all notes
+     */
     offset: number,
+    /**
+     * Imports the lightshow from another difficulty.
+     */
     lightshow?: string
 }
 
 export type FinalizeProperties = {
+    /**
+     * Formats and indents the file.
+     * SIGNIFICANTLY INCREASES FILESIZE, DISABLE BEFORE FINAL RUN
+     */
     formatting?: boolean,
     /**
      * showVanillaStats is VERY performance heavy and will slow down your script

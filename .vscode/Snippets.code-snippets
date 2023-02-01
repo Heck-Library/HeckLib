@@ -1,8 +1,16 @@
 {
+    "ImportAll": {
+        "scope": "typescript",
+        "prefix": "importAllModules",
+        "body": "import * from './src/main.ts';",
+        "description": "Imports EVERYTHING from HeckLib. May cause slower script runtime."
+    },
+
+
     "PointDefinition": {
         "scope": "typescript",
         "prefix": "pointDef",
-        "body": "new PointDefinition(\"\", [$0]).push();",
+        "body": "new PointDefinition(\"\", [\"$0\"]).push();",
         "description": "Creates the structure for a PointDefinition."
     },
 
@@ -10,7 +18,7 @@
         "scope": "typescript",
         "prefix": "animTrack",
         "body": [
-            "new AnimateTrack($0, {",
+            "new AnimateTrack(0$0, {",
             "    track: \"\",",
             "    duration: 0,",
             "    ",
@@ -22,7 +30,7 @@
         "scope": "typescript",
         "prefix": "pathAnim",
         "body": [
-            "new AssignPathAnimation($0, {",
+            "new AssignPathAnimation(0$0, {",
             "    track: \"\",",
             "    ",
             "}).push();"
@@ -33,7 +41,7 @@
         "scope": "typescript",
         "prefix": "trackParent",
         "body": [
-            "new AssignTrackParent($0, {",
+            "new AssignTrackParent(0$0, {",
             "    parentTrack: \"\"",
             "    childrenTracks: [\"\"]",
             "}).push()"
@@ -43,7 +51,7 @@
     "PlayerTrack": {
         "scope": "typescript",
         "prefix": "playerTrack",
-        "body": "new AssignPlayerToTrack($0, \"\").push();",
+        "body": "new AssignPlayerToTrack(0$0, \"\").push();",
         "description": "Adds the structure for an AssignPlayerToTrack event"
     },
 
@@ -53,7 +61,7 @@
         "body": [
             "new Note({",
             "    //Vanilla data",
-            "    time: $0,",
+            "    time: 0$0,",
             "}, {",
             "    //Custom data",
             "    ",
@@ -70,7 +78,7 @@
         "body": [
             "new Wall({",
             "    //Vanilla data",
-            "    time: $0",
+            "    time: 0$0",
             "}, {",
             "    //Custom data",
             "    ",
@@ -84,35 +92,35 @@
     "NoteTrack": {
         "scope": "typescript",
         "prefix": "noteTrack",
-        "body": "track(filter(notes, 0, $0));",
+        "body": "track(filter(notes, 0, 4$0), \"\");",
         "description": "Creates the function for adding tracks to notes between two time values."
     },
     "WallTrack": {
         "scope": "typescript",
         "prefix": "wallTrack",
-        "body": "track(filter(walls, 0, $0));",
+        "body": "track(filter(walls, 0, 4$0), \"\");",
         "description": "Creates the function for adding tracks to notes between two time values."
     },
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
-        "body": "filter(notes, 0, $0);",
+        "body": "filter(notes, 0, 4$0);",
         "description": "Creates the function for filtering notes between two times."
     },
     "FilterWalls": {
         "scope": "typescript",
         "prefix": "filterWalls",
-        "body": "filter(walls, 0, $0);",
+        "body": "filter(walls, 0, 4$0);",
         "description": "Creates the function for filtering walls between two times."
     },
     "ForEachNote": {
         "scope": "typescript",
         "prefix": "forEachNote",
         "body": [
-            "forEach((n: NOTE) => {",
+            "filter(notes, 0, 4$0).forEach((n: NOTE) => {",
             "    const d = n.data;",
             "    const a = n.anim;",
-            "    $0",
+            "    ",
             "});"
         ],
         "description": "Creates a forEach loop for filtered notes."
@@ -121,10 +129,10 @@
         "scope": "typescript",
         "prefix": "forEachWall",
         "body": [
-            "forEach((w: WALL) => {",
+            "filter(walls, 0, 4$0).forEach((w: WALL) => {",
             "    const d = w.data;",
             "    const a = w.anim;",
-            "    $0",
+            "    ",
             "});"
         ],
         "description": "Creates a forEach loop for filtered walls."
