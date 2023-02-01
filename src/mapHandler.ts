@@ -3,7 +3,7 @@
 import { infoFile } from "./info.ts";
 import { LightEvent } from "./lights.ts";
 import { Note, Wall } from "./objects.ts";
-import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, WALL } from "./types.ts";
+import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, V3DIFF, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
@@ -158,7 +158,7 @@ function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIG
 }
 
 
-function wallsToJSON(): Record<string, any> {
+function wallsToJSON(): Record<string, any>[] {
     const wallArr: any[] = [];
     walls.forEach((w: WALL) => {
         let wallJSON: Record<string, any> = {
@@ -208,7 +208,7 @@ function wallsToJSON(): Record<string, any> {
     return wallArr;
 }
 
-function notesToJSON(): Record<string, any> {
+function notesToJSON(): V2JsonNote[] {
     const noteArr: any[] = []
     notes.forEach((n: NOTE) => {
         let noteJSON: Record<string, any> = {
@@ -253,7 +253,7 @@ function notesToJSON(): Record<string, any> {
     return noteArr
 }
 
-function customEventsToJSON(): Record<string, any> {
+function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = []
     events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
@@ -274,7 +274,7 @@ function customEventsToJSON(): Record<string, any> {
     return eventArr;
 }
 
-function lightsToJSON(): Record<string, any> {
+function lightsToJSON(): Record<string, any>[] {
     const lightArr: any[] = [];
     lights.forEach((l: LIGHT) => {
         const lightJSON: Record<string, any> = {
@@ -301,15 +301,16 @@ function lightsToJSON(): Record<string, any> {
 
 type JSONDefV2 = {_name: string, _points: anyAnimation};
 type JSONDefV3 = Record<string, anyAnimation>;
-function pointDefinitionsToJSON(): Record<string, JSONDefV3>|JSONDefV2[] {
-    if (V3) {
-        const defCollection: Record<string, JSONDefV3> = {};
-        definitions.forEach((d: POINTDEFINITION) => {
-            const definition = {[d.name]: d.points}
-            Object.assign(defCollection, definition);
-        })
-        return defCollection;
-    }
+function pointDefinitionsToV3JSON(): Record<string, JSONDefV3> {
+    const defCollection: Record<string, JSONDefV3> = {};
+    definitions.forEach((d: POINTDEFINITION) => {
+        const definition = {[d.name]: d.points}
+        Object.assign(defCollection, definition);
+    })
+    return defCollection;
+}
+
+function pointDefinitionsToV2JSON(): JSONDefV2[] {
     const defArr: JSONDefV2[] = [];
     definitions.forEach((d: POINTDEFINITION) => {
         defArr.push({_name: d.name, _points: d.points});
@@ -574,7 +575,14 @@ export namespace Map {
     export function finalize(difficulty: any, properties?: FinalizeProperties): void {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
         if (properties) {
-            if (properties.formatting) formatting = true;
+            const p = properties;
+            if (p.formatting) formatting = true;
+            if (p.translateToV3) {
+                V3 = true;
+            }
+            if (p.translateToV2) {
+                V3 = false;
+            }
         }
         const jsonP = Math.pow(10, precision);
         const sortP = Math.pow(10, 2);
@@ -594,21 +602,30 @@ export namespace Map {
         deeperDaddy(difficulty)
 
         if (!V3) {
-            difficulty._notes = notesToJSON();
-            difficulty._obstacles = wallsToJSON();
-            difficulty._events = lightsToJSON();
-            difficulty._customData._customEvents = customEventsToJSON();
-            difficulty._customData._pointDefinitions = pointDefinitionsToJSON();
-            difficulty._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
-            difficulty._obstacles.sort((a: any, b: any) => a._time - b._time);
-            difficulty._events.sort((a: any, b: any) => a._time - b._time);
+            const newDiff: V2DIFF = {
+                _version: "2.2.0",
+                _notes: notesToJSON(),
+                _obstacles: wallsToJSON(),
+                _events: lightsToJSON(),
+                _waypoints: [],
+                _customData: {
+                    _bookmarks: [],
+                    _customEvents: customEventsToJSON(),
+                    _environment: [],
+                    _pointDefinitions: pointDefinitionsToV2JSON(),
+                    _materials: {}
+                }
+            }
+            newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
+            newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
+            newDiff._events.sort((a: any, b: any) => a._time - b._time);
 
-            if (difficulty._customData._materials.length < 1) {
+            if (newDiff._customData._materials.length < 1) {
                 delete(difficulty._customData._materials)
             }
-            let outputtedDiff = JSON.stringify(difficulty)
+            let outputtedDiff = JSON.stringify(newDiff)
             if (formatting == true) {
-                outputtedDiff = JSON.stringify(difficulty, null, 4)
+                outputtedDiff = JSON.stringify(newDiff, null, 4)
             }
             Deno.writeTextFileSync(activeOutput, outputtedDiff)
         }

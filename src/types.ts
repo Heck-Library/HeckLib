@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 
 import { Difficulty, Mod, Shader, Shape } from './consts.ts';
 
@@ -252,6 +253,50 @@ export type JsonModel = {
     color: vec4
 }
 
+export type V3DIFF = {
+    version: "3.1.0",
+    customData: {
+        environment: Record<string, any>[],
+        fakeColorNotes: Record<string, any>[],
+        customEvents: Record<string, any>[],
+        pointDefinitions: Record<string, any>,
+        fakeObstacles: Record<string, any>[],
+        fakeBombNotes: Record<string, any>[]
+    },
+    bpmEvents: {b:number, m:number}[],
+    rotationEvents: Record<string, any>[],
+    colorNotes: Record<string, any>[],
+    bombNotes: Record<string, any>[],
+    obstacles: Record<string, any>[],
+    sliders: Record<string, any>[],
+    burstSliders: Record<string, any>[],
+    waypoints: Record<string, any>[],
+    basicBeatmapEvents: Record<string, any>[],
+    colorBoostBeatmapEvents: Record<string, any>[],
+    lightColorEventBoxGroups: Record<string, any>[],
+    lightRotationEventBoxGroups: Record<string, any>[],
+    basicEventTypesWithKeywords: Record<string, any>,
+    useNormalEventsAsCompatibleEvents: boolean
+}
+
+export type V2JsonNote = {_time: number, _lineIndex: number, _lineLayer: number, _type: number, _cutDirection: number, _customData?: Record<string, any>};
+
+export type V2DIFF = {
+    _version: "2.2.0",
+    _notes: V2JsonNote[],
+    _obstacles: Record<string, any>[],
+    _events: Record<string, any>[],
+    _waypoints: Record<string, any>[],
+    _customData: {
+        _time?: number,
+        _environment: Record<string, any>[],
+        _customEvents: Record<string, any>[],
+        _bookmarks: Record<string, any>[],
+        _pointDefinitions: Record<string, any>[],
+        _materials: Record<string, any>
+    }
+}
+
 export type InitProperties = {
     /**
      * Sets the NJS of all notes
@@ -268,6 +313,8 @@ export type InitProperties = {
 }
 
 export type FinalizeProperties = {
+    translateToV3?: boolean,
+    translateToV2?: boolean,
     /**
      * Formats and indents the file.
      * SIGNIFICANTLY INCREASES FILESIZE, DISABLE BEFORE FINAL RUN
