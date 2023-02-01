@@ -634,7 +634,7 @@ export namespace Map {
             difficulty.obstacles = wallsToJSON();
             difficulty.basicBeatmapEvents = lightsToJSON();
             difficulty.customData.customEvents = customEventsToJSON();
-            difficulty.customData.pointDefinitions = pointDefinitionsToJSON();
+            difficulty.customData.pointDefinitions = pointDefinitionsToV3JSON();
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
