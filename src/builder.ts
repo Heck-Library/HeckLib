@@ -2,7 +2,7 @@
 
 
 import { events } from "./mapHandler.ts"
-import { parentTrackType, animateTrackData, pathAnimData, playerTrackType, Track, vec1anim, vec3anim, vec4anim } from "./types.ts"
+import { parentTrackType, animateTrackData, pathAnimData, playerTrackType, Track, vec1anim, vec3anim, vec4anim, fogTrackData } from "./types.ts"
 
 export namespace Builder {
     //#region events
@@ -29,10 +29,6 @@ export namespace Builder {
         track (track: Track) {
                 this.json.data.track = track
                 return this
-        }
-        push() {
-            events.push(this);
-            return this;
         }
     }
     class BaseAnimEvent extends BaseEvent {
@@ -145,6 +141,10 @@ export namespace Builder {
                 return this
         }
         //#endregion
+        push() {
+            events.push(this);
+            return this;
+        }
 
     }
     export class PathAnimation extends BaseAnimEvent {
@@ -165,6 +165,10 @@ export namespace Builder {
         }
         definitePosition(animation: vec3anim) {
             this.json.data.definitePosition = animation;
+            return this;
+        }
+        push() {
+            events.push(this);
             return this;
         }
     }
@@ -193,6 +197,10 @@ export namespace Builder {
             this.json.data.childrenTracks = x;
             return this;
         }
+        push() {
+            events.push(this);
+            return this;
+        }
     }
     export class PlayerTrack extends BaseEvent {
         json: {
@@ -210,6 +218,31 @@ export namespace Builder {
                 }
             }
         } 
+        push() {
+            events.push(this);
+            return this;
+        }
+    }
+    export class AssignFogTrack extends BaseEvent {
+        json: {
+            time: number
+            type: "AssignFogTrack"
+            data: fogTrackData
+        }
+        constructor(time: number, track: Track) {
+            super(time);
+            this.json = {
+                time: time,
+                type: "AssignFogTrack",
+                data: {
+                    track: track
+                }
+            }
+        }
+        push() {
+            events.push(this);
+            return this;
+        }
     }
     //#endregion
 }

@@ -13,6 +13,5 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 
 // #endregion Noodle stuff above
 Map.finalize(difficulty, {
-    formatting: true,
-    translateToV2: true
+    formatting: true
 });
