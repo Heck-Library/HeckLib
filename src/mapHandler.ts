@@ -3,7 +3,7 @@
 import { infoFile } from "./info.ts";
 import { LightEvent } from "./lights.ts";
 import { Note, Wall } from "./objects.ts";
-import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, V3DIFF, WALL } from "./types.ts";
+import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
@@ -257,9 +257,9 @@ function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = []
     events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
-            b: e.time,
-            t: e.type,
-            d: e.data
+            b: e.json.time,
+            t: e.json.type,
+            d: e.json.data
         }
         let stringified = JSON.stringify(eventJSON)
         if (!V3) {
