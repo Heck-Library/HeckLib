@@ -239,10 +239,16 @@ export type animComponentData = {
     }
 }
 
+export type fogTrackData = {
+    track: Track
+}
+
 export type CUSTOMEVENT = {
-    time: number
-    type: string
-    data: animateTrackData|pathAnimData|playerTrackType|parentTrackType
+    json: {
+        time: number
+        type: string
+        data: fogTrackData|animateTrackData|pathAnimData|playerTrackType|parentTrackType
+    }
 }
 //#endregion
 export type JsonModel = {
