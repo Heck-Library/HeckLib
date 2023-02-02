@@ -1,16 +1,8 @@
 {
-    "ImportAll": {
-        "scope": "typescript",
-        "prefix": "importAllModules",
-        "body": "import * from './src/main.ts';",
-        "description": "Imports EVERYTHING from HeckLib. May cause slower script runtime."
-    },
-
-
     "PointDefinition": {
         "scope": "typescript",
         "prefix": "pointDef",
-        "body": "new PointDefinition(\"\", [\"$0\"]).push();",
+        "body": "new PointDefinition(\"NAME\", [$0]).push();",
         "description": "Creates the structure for a PointDefinition."
     },
 
@@ -51,8 +43,13 @@
     "PlayerTrack": {
         "scope": "typescript",
         "prefix": "playerTrack",
-        "body": "new AssignPlayerToTrack(0$0, \"\").push();",
+        "body": "new AssignPlayerToTrack(0, \"$0\").push();",
         "description": "Adds the structure for an AssignPlayerToTrack event"
+    },
+    "FogTrack": {
+        "scope": "typescript",
+        "prefix": "fogTrack",
+        "body": "new AssignFogTrack(0, \"$0\").push();"
     },
 
     "Note": {
