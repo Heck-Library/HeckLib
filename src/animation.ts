@@ -1,27 +1,34 @@
-
 import { definitions, pointDefinitions } from "./mapHandler.ts";
-import { anyAnimation, POINTDEFINITION } from "./types.ts";
+import { unknownAnimation, POINTDEFINITION } from "./types.ts";
 
 export class PointDefinition {
-    private json: POINTDEFINITION;
-    constructor(name: string, points: anyAnimation) {
-        this.json = {
-            name: name,
-            points: points
-        }
-        return this;
-    }
+  private json: POINTDEFINITION;
+  constructor(name: string, points: unknownAnimation) {
+    this.json = {
+      name: name,
+      points: points,
+    };
+    return this;
+  }
 
-    set name(name: string) { this.json.name = name; }
-    get name(): string { return this.json.name; }
+  set name(name: string) {
+    this.json.name = name;
+  }
+  get name(): string {
+    return this.json.name;
+  }
 
-    set points(animation: anyAnimation) { this.json.points = animation; }
-    get points(): anyAnimation { return this.json.points; }
+  set points(animation: unknownAnimation) {
+    this.json.points = animation;
+  }
+  get points(): unknownAnimation {
+    return this.json.points;
+  }
 
-    push() {
-        definitions.push(this)
-        pointDefinitions.push(this.json.name)
-    }
+  push() {
+    definitions.push(this);
+    pointDefinitions.push(this.json.name);
+  }
 }
 
 // export class PointDefinition {
