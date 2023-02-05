@@ -25,7 +25,7 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > Visual Studio Code needs an extension to support Deno. You can find them by pressing `Ctrl + Shift + X` on your keyboard. This opens the extensions tab. Search `Deno` from the extensions. Install the first extension from the list, this should make Deno compatible with your VSC.
 
 ### Map Setup
-> Copy or downlaod the example.ts file into your map directory (where your Info.dat lives etc.)
+> Copy or downlaod the `example.ts` file into your map directory (where your `Info.dat` lives etc.)
 > If necessary, cache the dependencies using `deno cache .\example.ts` 
 
 ## Scripting
