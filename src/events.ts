@@ -4,7 +4,7 @@ import { animateTrackData, Track, pathAnimData, parentTrackType, playerTrackType
 /**
  * Places an AnimateTrack event
  */
-export class AnimateTrack {
+export class AnimateTrack implements CUSTOMEVENT{
     private json: {
         time: number
         type: string

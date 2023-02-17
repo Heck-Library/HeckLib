@@ -1,24 +1,22 @@
-// deno-lint-ignore-file no-explicit-any no-namespace
-
 import { infoFile } from "./info.ts";
 import { LightEvent } from "./lights.ts";
 import { Note, Wall } from "./objects.ts";
-import { anyAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, WALL } from "./types.ts";
+import { unknownAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, WALL } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 
-export let environment: any[];
+export let environment: unknown[];
 export let notes: NOTE[];
-export let bombs: any[];
+export let bombs: unknown[];
 export let walls: WALL[];
 export let events: CUSTOMEVENT[];
-export let materials: any = {};
-export let geometry: any[];
+export let materials: unknown = {};
+export let geometry: unknown[];
 export const definitions: POINTDEFINITION[] = [];
 export let lights: LIGHT[] = [];
-export let fakeNotes: any[];
-export let fakeWalls: any[];
-export let fakeBombs: any[];
+export let fakeNotes: unknown[];
+export let fakeWalls: unknown[];
+export let fakeBombs: unknown[];
 export const materialNames: string[] = [];
 
 export let activeInput: string;
@@ -28,10 +26,10 @@ export let V3: boolean;
 
 let formatting = false
 
-function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): WALL[] {
+function JSONtoWalls(wallInput: Record<string, unknown>[], NJS: number, offset: number): WALL[] {
     const wallArr: WALL[] = [];
     if (V3) {
-        wallInput.forEach((w: Record<string, any>) => {
+        wallInput.forEach((w: Record<string, unknown>) => {
             wallArr.push(new Wall({
                 //Vanilla data
                 time: w.b,
@@ -47,7 +45,7 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
             }));
         })
     } else {
-        wallInput.forEach((w: Record<string, any>) => {
+        wallInput.forEach((w: Record<string, unknown>) => {
             wallArr.push(new Wall({
                 //Vanilla data
                 time: w._time,
@@ -65,10 +63,10 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
     return wallArr;
 }
 
-function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): NOTE[] {
+function JSONtoNotes(noteInput: Record<string, unknown>[], NJS: number, offset: number): NOTE[] {
     const noteArr: NOTE[] = [];
     if (V3) {
-        noteInput.forEach((n: Record<string, any>) => {
+        noteInput.forEach((n: Record<string, unknown>) => {
             noteArr.push(new Note({
                 //Vanilla data
                 time: n.b,
@@ -83,7 +81,7 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
             }))
         })
     } else {
-        noteInput.forEach((n: Record<string, any>) => {
+        noteInput.forEach((n: Record<string, unknown>) => {
             noteArr.push(new Note({
                 //Vanilla data
                 time: n._time,
@@ -101,10 +99,10 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
     return noteArr;
 }
 
-function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIGHT[] {
+function JSONtoLights(lightInput: Record<string, unknown>[], lightsV3: boolean): LIGHT[] {
     const lightArr: LIGHT[] = [];
     if (lightsV3) {
-        lightInput.forEach((l: Record<string, any>) => {
+        lightInput.forEach((l: Record<string, unknown>) => {
             const light: LIGHT = new LightEvent({
                 time: l.b,
                 type: l.et,
@@ -129,7 +127,7 @@ function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIG
             lightArr.push(light);
         })
     } else {
-        lightInput.forEach((l: Record<string, any>) => {
+        lightInput.forEach((l: Record<string, unknown>) => {
             const light: LIGHT = new LightEvent({
                 time: l._time,
                 type: l._type,
@@ -158,10 +156,10 @@ function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIG
 }
 
 
-function wallsToJSON(): Record<string, any>[] {
-    const wallArr: any[] = [];
+function wallsToJSON(): Record<string, unknown>[] {
+    const wallArr: unknown[] = [];
     walls.forEach((w: WALL) => {
-        let wallJSON: Record<string, any> = {
+        let wallJSON: Record<string, unknown> = {
             b: w.time,
             x: w.x,
             y: w.y,
@@ -209,9 +207,9 @@ function wallsToJSON(): Record<string, any>[] {
 }
 
 function notesToJSON(): V2JsonNote[] {
-    const noteArr: any[] = []
+    const noteArr: unknown[] = []
     notes.forEach((n: NOTE) => {
-        let noteJSON: Record<string, any> = {
+        let noteJSON: Record<string, unknown> = {
             b: n.time,
             c: n.type,
             d: n.direction,
@@ -253,10 +251,10 @@ function notesToJSON(): V2JsonNote[] {
     return noteArr
 }
 
-function customEventsToJSON(): Record<string, any>[] {
-    const eventArr: any[] = []
+function customEventsToJSON(): Record<string, unknown>[] {
+    const eventArr: unknown[] = []
     events.forEach((e: CUSTOMEVENT) => {
-        const eventJSON: Record<string, any> = {
+        const eventJSON: Record<string, unknown> = {
             b: e.json.time,
             t: e.json.type,
             d: e.json.data
@@ -274,10 +272,10 @@ function customEventsToJSON(): Record<string, any>[] {
     return eventArr;
 }
 
-function lightsToJSON(): Record<string, any>[] {
-    const lightArr: any[] = [];
+function lightsToJSON(): Record<string, unknown>[] {
+    const lightArr: unknown[] = [];
     lights.forEach((l: LIGHT) => {
-        const lightJSON: Record<string, any> = {
+        const lightJSON: Record<string, unknown> = {
             b: l.time,
             et: l.type,
             i: l.value,
@@ -299,8 +297,8 @@ function lightsToJSON(): Record<string, any>[] {
     return lightArr;
 }
 
-type JSONDefV2 = {_name: string, _points: anyAnimation};
-type JSONDefV3 = Record<string, anyAnimation>;
+type JSONDefV2 = {_name: string, _points: unknownAnimation};
+type JSONDefV3 = Record<string, unknownAnimation>;
 function pointDefinitionsToV3JSON(): Record<string, JSONDefV3> {
     const defCollection: Record<string, JSONDefV3> = {};
     definitions.forEach((d: POINTDEFINITION) => {
@@ -412,7 +410,7 @@ function showStats(properties?: FinalizeProperties): statsType {
         }
         if (s.lights) ms.lights = lights.length;
         if (s.customEvents) {
-            events.forEach((e: Record<string, any>) => {
+            events.forEach((e: Record<string, unknown>) => {
                 switch (e.type) {
                     case "AnimateTrack":
                         ms.customEvents.animTrack++;
@@ -457,7 +455,7 @@ export namespace Map {
         let lV3 = false;
         const lightShowDiff = JSON.parse(Deno.readTextFileSync(file))
         if (lightShowDiff.version) lV3 = true;
-        let localLights: Record<string, any>[];
+        let localLights: Record<string, unknown>[];
 
         if (lV3) localLights = lightShowDiff.basicBeatmapEvents;
         else localLights = lightShowDiff._events;
@@ -475,7 +473,7 @@ export namespace Map {
      * @param output The output file for the difficulty.
      * @param properties The additional properties such as NJS and offset.
      */
-    export function initialize(input: string, output: string, properties: InitProperties): Record<string, any> {
+    export function initialize(input: string, output: string, properties: InitProperties): Record<string, unknown> {
         console.time('HeckLib ran in')
         const p = properties;
         const NJS = p.njs;
@@ -487,8 +485,8 @@ export namespace Map {
         const info = infoFile;
         isV3(`./${input}`);
         const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
-        infoFile._difficultyBeatmapSets.forEach((x: any) => {
-            x._difficultyBeatmaps.forEach((y: any) => {
+        infoFile._difficultyBeatmapSets.forEach((x: unknown) => {
+            x._difficultyBeatmaps.forEach((y: unknown) => {
                 if (y._settings) delete(y._settings)
                 if (y._requirements) delete(y._requirements)
                 if (y._suggestions) delete(y._suggestions)
@@ -499,9 +497,9 @@ export namespace Map {
         activeOutput = output;
 
         if (info._difficultyBeatmapSets) {
-            info._difficultyBeatmapSets.forEach((x: any) => {
+            info._difficultyBeatmapSets.forEach((x: unknown) => {
                 if (JSON.stringify(x).includes(output)) {
-                    x._difficultyBeatmaps.forEach((y: any) => {
+                    x._difficultyBeatmaps.forEach((y: unknown) => {
                         if (JSON.stringify(y).includes(output)) {
                             y._customData = {};
                         }
@@ -572,7 +570,7 @@ export namespace Map {
     /**
      * @param difficulty The difficulty that the map should be written to.
      */
-    export function finalize(difficulty: any, properties?: FinalizeProperties): void {
+    export function finalize(difficulty: unknown, properties?: FinalizeProperties): void {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
         if (properties) {
             const p = properties;
@@ -586,7 +584,7 @@ export namespace Map {
         }
         const jsonP = Math.pow(10, precision);
         const sortP = Math.pow(10, 2);
-        function deeperDaddy(obj: any) {
+        function deeperDaddy(obj: unknown) {
             if (obj) 
                 for (const key in obj) {
                     if (obj[key] == null) {
@@ -617,8 +615,8 @@ export namespace Map {
                 }
             }
             newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
-            newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
-            newDiff._events.sort((a: any, b: any) => a._time - b._time);
+            newDiff._obstacles.sort((a: unknown, b: unknown) => a._time - b._time);
+            newDiff._events.sort((a: unknown, b: unknown) => a._time - b._time);
 
             if (newDiff._customData._materials.length < 1) {
                 delete(difficulty._customData._materials)
@@ -636,8 +634,8 @@ export namespace Map {
             difficulty.customData.customEvents = customEventsToJSON();
             difficulty.customData.pointDefinitions = pointDefinitionsToV3JSON();
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
-            difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
-            difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
+            difficulty.obstacles.sort((a: unknown, b: unknown) => a.b - b.b);
+            difficulty.basicBeatmapEvents.sort((a: unknown, b: unknown) => a.b - b.b);
             if (difficulty.customData.materials && Object.keys(difficulty.customData.materials).length < 1) {
                 delete difficulty.customData.materials
             }
