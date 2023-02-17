@@ -25,24 +25,21 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > Visual Studio Code needs an extension to support Deno. You can find them by pressing `Ctrl + Shift + X` on your keyboard. This opens the extensions tab. Search `Deno` from the extensions. Install the first extension from the list, this should make Deno compatible with your VSC.
 
 ### Map Setup
-> Go to the <a href="https://github.com/Heck-Library/HeckLib/releases">releases</a> and download the latest `HeckLib.zip` file from there.
-> 
-> Once you have the latest `HeckLib.zip` file, extract it to your map directory.
-
-#
+> Copy or downlaod the `example.ts` file into your map directory (where your `Info.dat` lives etc.)
+> If necessary, cache the dependencies using `deno cache .\example.ts` 
 
 ## Scripting
 
 ### Editing
-> To edit the script, open your map folder in Visual Studio Code and start editing the `script.ts`. This file already contains the initialisation of the map.
+> To edit the script, open your map folder in Visual Studio Code and start editing the `example.ts`. This file already contains the initialisation of the map.
 >
 > If you need any help with it, ask me on Discord: `Jevk#0004`
 
 ### Running The Script
 
-> Run the `run.bat` file either in Visual Studio Code or just in the CMD window by double clicking on it. Every time you press any key in the HeckLib window, it will run the script and update the stats.
-> 
-> I highly recommend installing a batch runner extension for Visual Studio Code, it will make it much easier to run the script in the same window while working with the code.
+> Press F5 in VS Code, which will run the script with a debugger attached. It is highly recommended to learn how to use a debugger for a much better developer experience.
+> You can also run the script by going into the `Run and Debug` menu in VS Code and manually pressing run.
+> If you want to avoid VS Code altogether, you can use `deno run -A --no-check ./example.ts` as well.
 
 ***
 
