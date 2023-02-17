@@ -13,5 +13,12 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 
 // #endregion Noodle stuff above
 Map.finalize(difficulty, {
-    formatting: true
+    formatting: true,
+    showModdedStats: {
+        customEvents: true,
+        notes: true,
+        lights: true,
+        pointDefinitions: true,
+        walls: true
+    }
 });

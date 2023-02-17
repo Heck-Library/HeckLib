@@ -1,0 +1,23 @@
+{
+  "name": "hecklib",
+  "version": "1.0.0",
+  "description": "A library for easier Beat Saber mod charting using TypeScript.",
+  "main": "src/main.ts",
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heck-Library/HeckLib.git"
+  },
+  "keywords": [
+    "Beat",
+    "Saber"
+  ],
+  "author": "Jevk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Heck-Library/HeckLib/issues"
+  },
+  "homepage": "https://github.com/Heck-Library/HeckLib#readme"
+}
