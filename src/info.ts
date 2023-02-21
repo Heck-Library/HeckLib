@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { noteJump, enabledWall, energy, speed, effects } from "./types.ts";
 
 export const infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
@@ -30,9 +31,9 @@ export class Suggestion {
     return this;
   }
   private End() {
-    infoFile._difficultyBeatmapSets.forEach((x: unknown) => {
+    infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
-        x._difficultyBeatmaps.forEach((y: unknown) => {
+        x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
             if (!y._customData) y._customData = {};
             y._customData._suggestions = this.s;
@@ -54,9 +55,9 @@ export class Requirement {
   constructor(filename: string) {
     this.r = [];
     this.f = filename;
-    infoFile._difficultyBeatmapSets.forEach((x: unknown) => {
+    infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
-        x._difficultyBeatmaps.forEach((y: unknown) => {
+        x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
             if (!y._customData) y._customData = {};
           }
@@ -91,9 +92,9 @@ export class Requirement {
   }
 
   private End() {
-    infoFile._difficultyBeatmapSets.forEach((x: unknown) => {
+    infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
-        x._difficultyBeatmaps.forEach((y: unknown) => {
+        x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
             if (!y._customData) y._customData = {};
             y._customData._requirements = this.r;
@@ -560,9 +561,9 @@ export class Settings {
   //#endregion
 
   private End() {
-    infoFile._difficultyBeatmapSets.forEach((x: unknown) => {
+    infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
-        x._difficultyBeatmaps.forEach((y: unknown) => {
+        x._difficultyBeatmaps.forEach((y: any) => {
           if (y._beatmapFilename.includes(this.f)) {
             if (!y._customData) y._customData = {};
             if (!y._customData._settings) y._customData._settings = {};

@@ -1,26 +1,20 @@
-import { Note } from "./objects.ts";
-import { NOTE } from "./types.ts";
+// deno-lint-ignore-file prefer-const
+import {Note} from "./objects.ts";
+import {NOTE} from "./types.ts";
 
-export const __dirname = new URL(".", import.meta.url).pathname
-  .slice(1)
-  .replace(/\//g, "\\")
-  .replace(/src\\/g, "");
+export const __dirname = new URL(".", import.meta.url).pathname.slice(1).replace(/\//g, "\\").replace(/src\\/g, "");
 
-export function dupeNote(obj: NOTE): NOTE {
-  const o = JSON.parse(JSON.stringify(obj)).json;
-  const n: NOTE = new Note(
-    {
-      //Vanilla data
-      time: o.nD.time,
-      type: o.nD.type,
-      x: o.nD.x,
-      y: o.nD.y,
-      direction: o.nD.direction,
-    },
-    o.cD,
-    o.aD
-  );
-  return n;
+export function dupeNote(obj : NOTE): NOTE {
+    const o = JSON.parse(JSON.stringify(obj)).json;
+    const n: NOTE = new Note({
+        // Vanilla data
+        time: o.nD.time,
+        type: o.nD.type,
+        x: o.nD.x,
+        y: o.nD.y,
+        direction: o.nD.direction
+    }, o.cD, o.aD);
+    return n;
 }
 
 /**
@@ -31,14 +25,16 @@ export function dupeNote(obj: NOTE): NOTE {
  * @returns Interpolated value
  * @example lerp(5, 10, 0.5); returns 7.5
  */
-export function lerp(start: number, end: number, amount: number): number {
-  return (1 - amount) * start + amount * end;
+export function lerp(start : number, end : number, amount : number): number {
+    return(1 - amount) * start + amount * end;
 }
 
-export function isArr(x: unknown): boolean {
-  if (Array.isArray(x)) {
-    return true;
-  } else return false;
+export function isArr(x : unknown): boolean {
+    if (Array.isArray(x)) {
+        return true;
+    } else 
+        return false;
+    
 }
 
 /**
@@ -49,50 +45,59 @@ export function isArr(x: unknown): boolean {
  * @returns [R, G, B]
  */
 
-export function HSVtoRGB(
-  h: unknown,
-  s: number,
-  v: number
-): [number, number, number] {
-  let r: number,
-    g: number,
-    b: number,
-    i: number,
-    f: number,
-    p: number,
-    q: number,
-    t: number;
-  if (arguments.length === 1) {
-    (s = h.s), (v = h.v), (h = h.h);
-  }
-  i = Math.floor(h * 6);
-  f = h * 6 - i;
-  p = v * (1 - s);
-  q = v * (1 - f * s);
-  t = v * (1 - (1 - f) * s);
-  switch (i % 6) {
-    case 0:
-      (r = v), (g = t), (b = p);
-      break;
-    case 1:
-      (r = q), (g = v), (b = p);
-      break;
-    case 2:
-      (r = p), (g = v), (b = t);
-      break;
-    case 3:
-      (r = p), (g = q), (b = v);
-      break;
-    case 4:
-      (r = t), (g = p), (b = v);
-      break;
-    case 5:
-      (r = v), (g = p), (b = q);
-      break;
-    default:
-      throw new Error("Error in HSVtoRGB");
-  }
-  return [r, g, b];
+export function HSVtoRGB(h : number, s : number, v : number): [number, number, number] {
+    let r: number,
+        g: number,
+        b: number,
+        i: number,
+        f: number,
+        p: number,
+        q: number,
+        t: number;
+    if (arguments.length === 1) {
+        s = 1;
+        v = 1;
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0:
+            (r = v),
+            (g = t),
+            (b = p);
+            break;
+        case 1:
+            (r = q),
+            (g = v),
+            (b = p);
+            break;
+        case 2:
+            (r = p),
+            (g = v),
+            (b = t);
+            break;
+        case 3:
+            (r = p),
+            (g = q),
+            (b = v);
+            break;
+        case 4:
+            (r = t),
+            (g = p),
+            (b = v);
+            break;
+        case 5:
+            (r = v),
+            (g = p),
+            (b = q);
+            break;
+        default:
+            throw new Error("Error in HSVtoRGB");
+    }
+    return [r, g, b];
 }
 
 /**
@@ -103,10 +108,10 @@ export function HSVtoRGB(
  * @returns Random number
  */
 
-export function random(min: number, max: number, precision?: number): number {
-  let p = 10;
-  if (typeof precision !== "undefined" && precision !== null) {
-    p = Math.pow(p, precision);
-  }
-  return Math.round((Math.random() * (max - min + 1) + min) * p) / p;
+export function random(min : number, max : number, precision? : number): number {
+    let p = 10;
+    if (typeof precision !== "undefined" && precision !== null) {
+        p = Math.pow(p, precision);
+    }
+    return Math.round((Math.random() * (max - min + 1) + min) * p) / p;
 }

@@ -4,8 +4,8 @@ import { animateTrackData, Track, pathAnimData, parentTrackType, playerTrackType
 /**
  * Places an AnimateTrack event
  */
-export class AnimateTrack implements CUSTOMEVENT{
-    private json: {
+export class AnimateTrack {
+    json: {
         time: number
         type: string
         data: animateTrackData
@@ -35,7 +35,7 @@ export class AnimateTrack implements CUSTOMEVENT{
 }
 
 export class AssignPathAnimation {
-    private json: {
+    json: {
         time: number
         type: string
         data: pathAnimData
@@ -62,7 +62,7 @@ export class AssignPathAnimation {
 }
 
 export class AssignTrackParent {
-    private json: {
+    json: {
         time: number
         type: string
         data: parentTrackType
@@ -95,7 +95,7 @@ export class AssignTrackParent {
 
 
 export class AssignPlayerToTrack {
-    private json: {
+    json: {
         time: number
         type: "AssignPlayerToTrack"
         data: playerTrackType
@@ -126,7 +126,7 @@ export class AssignPlayerToTrack {
 }
 
 export class AnimateComponent {
-    private json: {
+    json: {
         time: number,
         type: "AnimateComponent",
         data: animComponentData

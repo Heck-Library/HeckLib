@@ -1,10 +1,6 @@
-import {
-  Map,
-  diffFile,
-  Difficulty,
-} from "https://raw.githubusercontent.com/Heck-Library/HeckLib/v1.2/src/mod.ts";
-const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
-const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
+import { Map, diffFile, Standard, Lawless } from './src/mod.ts';
+const INPUT: diffFile = Standard.ExpertPlus;
+const OUTPUT: diffFile = Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
     njs: 16,

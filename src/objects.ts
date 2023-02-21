@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { isArr } from "./general.ts";
 import { bombs, fakeWalls, fakeNotes, notes, V3, walls } from "./mapHandler.ts";
 import {
@@ -67,7 +68,7 @@ export function filter(
  * @param track The array of tracks or the name of the track that should be assigned.
  */
 export function track(obj: NOTE[] | WALL[], track: Track): void {
-  obj.forEach((x: Record<string, unknown>) => {
+  obj.forEach((x: Record<string, any>) => {
     const d = x.data;
     if (!d.track) {
       d.track = track;
@@ -322,14 +323,14 @@ export class Wall {
     return 0;
   }
 
-  set data(param: unknown) {
+  set data(param: customWallData) {
     this.json.cD = param;
   }
   get data(): customWallData {
     return this.json.cD;
   }
 
-  set anim(param: unknown) {
+  set anim(param: animationData) {
     this.json.aD = param;
   }
   get anim(): animationData {
