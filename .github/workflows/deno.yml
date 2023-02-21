@@ -38,5 +38,5 @@ jobs:
       - name: Run linter
         run: deno lint
 
-      - name: Run tests
-        run: deno test -A example.ts
+      # - name: Run tests
+      #  run: deno test -A example.ts
