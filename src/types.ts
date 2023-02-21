@@ -1,41 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
+import { customNoteData, customWallData, lineIndex, lineLayer, noteDir, noteType, Track, wallType } from "../consts/types/objects.ts";
+import { vec3, vec4 } from "../consts/types/vec.ts";
 import { Mod, Shader, Shape } from "./consts.ts";
-
-export type Track = string | string[];
-
-export type lineIndex = 0 | 1 | 2 | 3;
-export type lineLayer = 0 | 1 | 2;
-export type noteDir = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-export type noteType = 0 | 1 | 3;
-export type wallType = 0 | 1;
-
-export type vec1 = [x: number];
-export type vec2 = [x: number, y: number];
-export type vec3 = [x: number, y: number, z: number];
-export type vec4 = [r: number, g: number, b: number, a: number];
-
-export type vec1frame = [x: number, time: number, easing?: string];
-export type vec3frame = [
-    x: number,
-    y: number,
-    z: number,
-    time: number,
-    easing?: string,
-    spline?: "splineCatmullRom"
-];
-export type vec4frame = [
-    r: number,
-    g: number,
-    b: number,
-    a: number,
-    time: number,
-    easing?: string,
-    spline?: "splineCatmullRom"
-];
-
-export type vec1anim = string | vec1frame[] | vec1;
-export type vec3anim = string | vec3frame[] | vec3;
-export type vec4anim = string | vec4frame[] | vec4;
 
 enum Lawless {
     Easy = "EasyLawless.dat",
@@ -106,93 +72,9 @@ export type mat = {
     _shaderKeywords?: string[];
 };
 
-export type unknownAnimation = vec1anim | vec3anim | vec4anim;
 
-export type POINTDEFINITION = {
-    name: string;
-    points: vec1anim | vec3anim | vec4anim;
-};
+
 //#region Objects
-export type WALL = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    duration?: number;
-    width?: number;
-    height?: number;
-    data: customNoteData;
-    anim: animationData;
-};
-
-export type wallData = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    duration?: number;
-    width?: number;
-    height?: number;
-};
-
-export type customWallData = {
-    track?: Track;
-    color?: vec4;
-    position?: vec2;
-    rotation?: vec3;
-    localRotation?: vec3;
-    size?: vec2;
-    scale?: vec3;
-    njs?: number;
-    offset?: number;
-    fake?: boolean;
-    interactable?: boolean;
-};
-
-export type NOTE = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    type?: noteType;
-    direction?: noteDir;
-    data: customNoteData;
-    anim: animationData;
-};
-
-export type noteData = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    type?: noteType;
-    direction?: noteDir;
-};
-
-export type customNoteData = {
-    track?: Track;
-    color?: vec4;
-    position?: vec2;
-    rotation?: vec3;
-    localRotation?: vec3;
-    flip?: vec2;
-    scale?: vec3;
-    njs?: number;
-    offset?: number;
-    fake?: boolean;
-    interactable?: boolean;
-    disableSpawnEffect?: boolean;
-    disableNoteGravity?: boolean;
-    disableNoteLook?: boolean;
-};
-
-export type animationData = {
-    position?: vec3anim;
-    definitePosition?: vec3anim;
-    rotation?: vec3anim;
-    localRotation?: vec3anim;
-    scale?: vec3anim;
-    color?: vec4anim;
-    interactable?: vec1anim;
-    dissolve?: vec1anim;
-    dissolveArrow?: vec1anim;
-};
 //#endregion
 
 //#region Lights
@@ -250,78 +132,6 @@ export type lightCustomData = {
 //#endregion
 
 //#region CustomEvents
-export type parentTrackType = {
-    parentTrack: Track;
-    childrenTracks: string[];
-};
-
-export type playerTrackType = {
-    track: Track;
-};
-
-export type animateTrackData = {
-    track: Track;
-    duration: number;
-    easing?: string;
-    position?: vec3anim;
-    localPosition?: vec3anim;
-    rotation?: vec3anim;
-    localRotation?: vec3anim;
-    scale?: vec3anim;
-    color?: vec4anim;
-    dissolve?: vec1anim;
-    dissolveArrow?: vec1anim;
-    interactable?: vec1anim;
-    timeAnim?: vec1anim;
-};
-
-export type pathAnimData = {
-    track: Track;
-    easing?: string;
-    position?: vec3anim;
-    localPosition?: vec3anim;
-    definitePosition?: vec3anim;
-    rotation?: vec3anim;
-    localRotation?: vec3anim;
-    scale?: vec3anim;
-    color?: vec4anim;
-    dissolve?: vec1anim;
-    dissolveArrow?: vec1anim;
-    interactable?: vec1anim;
-};
-
-export type animComponentData = {
-    track: Track;
-    duration: number;
-    easing?: string;
-    BloomFogEnvironment?: {
-      attenuation?: vec1anim;
-      offset?: vec1anim;
-      startY?: vec1anim;
-      height?: vec1anim;
-    };
-    TubeBloomPrePassLight?: {
-      colorAlphaMultiplier?: vec1anim;
-      bloomFogIntensityMultiplier?: vec1anim;
-    };
-};
-
-export type fogTrackData = {
-    track: Track;
-};
-
-export type CUSTOMEVENT = {
-    json: {
-      time: number;
-      type: string;
-      data:
-        | fogTrackData
-        | animateTrackData
-        | pathAnimData
-        | playerTrackType
-        | parentTrackType;
-    };
-};
 //#endregion
 export type JsonModel = {
     position: vec3;

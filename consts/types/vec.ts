@@ -26,3 +26,5 @@ export type vec4frame = [
 export type vec1anim = string | vec1frame[] | vec1;
 export type vec3anim = string | vec3frame[] | vec3;
 export type vec4anim = string | vec4frame[] | vec4;
+
+export type unknownAnimation = vec1anim | vec3anim | vec4anim;
