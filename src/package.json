@@ -2,7 +2,7 @@
   "name": "hecklib",
   "version": "1.0.0",
   "description": "A library for easier Beat Saber mod charting using TypeScript.",
-  "main": "src/main.ts",
+  "main": "src/mod.ts",
   "directories": {
     "doc": "doc"
   },
