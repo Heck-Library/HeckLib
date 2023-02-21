@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Lawless, Standard, Lightshow, Mod, Shader, Shape } from "./consts.ts";
+import { Mod, Shader, Shape } from "./consts.ts";
 
 export type Track = string | string[];
 
@@ -37,6 +37,28 @@ export type vec1anim = string | vec1frame[] | vec1;
 export type vec3anim = string | vec3frame[] | vec3;
 export type vec4anim = string | vec4frame[] | vec4;
 
+enum Lawless {
+    Easy = "EasyLawless.dat",
+    Normal = "NormalLawless.dat",
+    Hard = "HardLawless.dat",
+    Expert = "ExpertLawless.dat",
+    ExpertPlus = "ExpertPlusLawless.dat"
+}
+enum Standard {
+    Easy = "EasyStandard.dat",
+    Normal = "NormalStandard.dat",
+    Hard = "HardStandard.dat",
+    Expert = "ExpertStandard.dat",
+    ExpertPlus = "ExpertPlusStandard.dat"
+}
+enum Lightshow {
+    Easy = "EasyLightshow.dat",
+    Normal = "NormalLightshow.dat",
+    Hard = "HardLightshow.dat",
+    Expert = "ExpertLightshow.dat",
+    ExpertPlus = "ExpertPlusLightshow.dat"
+}
+
 export type requirement = Mod.Chroma | Mod.Cinema | Mod.Mapping | Mod.Noodle;
 export type diffFile =
     | Lawless.Easy
@@ -44,11 +66,13 @@ export type diffFile =
     | Lawless.Hard
     | Lawless.Expert
     | Lawless.ExpertPlus
+
     | Standard.Easy
     | Standard.Normal
     | Standard.Hard
     | Standard.Expert
     | Standard.ExpertPlus
+    
     | Lightshow.Easy
     | Lightshow.Normal
     | Lightshow.Hard
