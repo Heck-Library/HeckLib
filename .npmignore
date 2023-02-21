@@ -1,4 +1,7 @@
 heckExporter.py
-README.md
 doc/
 models/
+*.dat
+Cinema.json
+example.ts
+*.zip
