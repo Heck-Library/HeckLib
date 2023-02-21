@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
 import { NOTE, Track, WALL } from "../consts/types/objects.ts";
-import { isArr } from "../src/general.ts";
 import { fakeNotes,notes,fakeWalls,walls } from "../src/mapHandler.ts";
 
 /**
@@ -51,8 +50,8 @@ export function filter(obj : NOTE[], start : number, end : number, type? : 0 | 1
                 d.track = track;
                 return;
             }
-            if (!isArr(d.track)) {
-                if (isArr(track)) {
+            if (!Array.isArray(d.track)) {
+                if (Array.isArray(track)) {
                     const a = [
                         ...track,
                         d.track
@@ -64,7 +63,7 @@ export function filter(obj : NOTE[], start : number, end : number, type? : 0 | 1
                 return;
             }
             const tracks = d.track;
-            if (isArr(track)) 
+            if (Array.isArray(track)) 
                 tracks.push(...track);
              else 
                 tracks.push(track);

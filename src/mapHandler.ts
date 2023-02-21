@@ -1,8 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
+import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation.ts";
+import { NOTE, WALL } from "../consts/types/objects.ts";
+import { unknownAnimation } from "../consts/types/vec.ts";
+import Note from "../objects/note.ts";
+import Wall from "../objects/wall.ts";
 import { infoFile } from "./info.ts";
 import { LightEvent } from "./lights.ts";
-import { Note, Wall } from "./objects.ts";
-import { unknownAnimation, CUSTOMEVENT, FinalizeProperties, InitProperties, LIGHT, NOTE, POINTDEFINITION, V2DIFF, V2JsonNote, WALL } from "./types.ts";
+import { FinalizeProperties, InitProperties, LIGHT, V2DIFF, V2JsonNote } from "./types.ts";
 
 export const pointDefinitions = ["NULL"];
 

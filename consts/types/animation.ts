@@ -1,5 +1,5 @@
-import { Track } from "./objects.ts";
-import { vec1anim,vec3anim,vec4anim } from "./vec.ts";
+import {Track} from "./objects.ts";
+import {vec1anim, vec3anim, vec4anim} from "./vec.ts";
 
 export type POINTDEFINITION = {
     name: string;
@@ -51,14 +51,14 @@ export type animComponentData = {
     duration: number;
     easing?: string;
     BloomFogEnvironment?: {
-      attenuation?: vec1anim;
-      offset?: vec1anim;
-      startY?: vec1anim;
-      height?: vec1anim;
+        attenuation?: vec1anim;
+        offset?: vec1anim;
+        startY?: vec1anim;
+        height?: vec1anim;
     };
     TubeBloomPrePassLight?: {
-      colorAlphaMultiplier?: vec1anim;
-      bloomFogIntensityMultiplier?: vec1anim;
+        colorAlphaMultiplier?: vec1anim;
+        bloomFogIntensityMultiplier?: vec1anim;
     };
 };
 
@@ -68,13 +68,8 @@ export type fogTrackData = {
 
 export type CUSTOMEVENT = {
     json: {
-      time: number;
-      type: string;
-      data:
-        | fogTrackData
-        | animateTrackData
-        | pathAnimData
-        | playerTrackType
-        | parentTrackType;
+        time: number;
+        type: string;
+        data: | fogTrackData | animateTrackData | pathAnimData | playerTrackType | parentTrackType;
     };
 };

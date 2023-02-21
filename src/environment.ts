@@ -1,9 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
+import { Track } from "../consts/types/objects.ts";
+import { vec3 } from "../consts/types/vec.ts";
 import { Shader, Shape } from "./consts.ts";
 import { environment, materialNames, materials, V3 } from "./mapHandler.ts";
-import { geoShape, Track, vec3, shaderType, mat } from "./types.ts";
+import { geoShape, shaderType, mat } from "./types.ts";
 
-export class Environment {
+export default class Environment {
   e: {
     _id?: string;
     _lookupMethod?: "Regex" | "Contains" | "Exact";

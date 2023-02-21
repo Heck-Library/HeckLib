@@ -1,10 +1,11 @@
 
-import { Environment, Material } from "./environment.ts"
-import { AnimateTrack } from "./events.ts";
-import { Track, vec4, WALL } from "./types.ts";
+import { WALL,Track } from "../consts/types/objects.ts";
+import { vec3,vec3anim,vec4 } from "../consts/types/vec.ts";
+import Wall from "../objects/wall.ts";
+import AnimateTrack from "../events/animateTrack.ts";
+import Environment, { Material } from "./environment.ts"
 import { walls } from "./mapHandler.ts";
-import { Wall } from "./objects.ts";
-import { geoShape, JsonModel, shaderType, vec3, vec3anim } from "./types.ts"
+import { geoShape, JsonModel, shaderType } from "./types.ts"
 
 export class ModelEnvironment {
     /**

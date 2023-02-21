@@ -1,15 +1,7 @@
+import { animateTrackData,pathAnimData,parentTrackType,playerTrackType,fogTrackData } from "../consts/types/animation.ts";
+import { Track } from "../consts/types/objects.ts";
+import { vec3anim,vec4anim,vec1anim } from "../consts/types/vec.ts";
 import {events} from "./mapHandler.ts";
-import {
-    parentTrackType,
-    animateTrackData,
-    pathAnimData,
-    playerTrackType,
-    Track,
-    vec1anim,
-    vec3anim,
-    vec4anim,
-    fogTrackData
-} from "./types.ts";
 
 // #region events
 // deno-lint-ignore no-namespace
