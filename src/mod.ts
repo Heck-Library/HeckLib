@@ -1,6 +1,5 @@
 export * from './consts.ts'
 export * from './types.ts'
-export * from './animation.ts'
 export * from './mapHandler.ts'
 export * from './info.ts'
 export * from './environment.ts'
