@@ -1,3 +1,5 @@
+import Mod from "./plugin.ts";
+
 enum Lawless {
     Easy = "EasyLawless.dat",
     Normal = "NormalLawless.dat",
@@ -19,6 +21,28 @@ enum Lightshow {
     Expert = "ExpertLightshow.dat",
     ExpertPlus = "ExpertPlusLightshow.dat"
 }
+
+export type requirement = Mod.Chroma | Mod.Cinema | Mod.Mapping | Mod.Noodle;
+export type diffFile =
+    | Lawless.Easy
+    | Lawless.Normal
+    | Lawless.Hard
+    | Lawless.Expert
+    | Lawless.ExpertPlus
+
+    | Standard.Easy
+    | Standard.Normal
+    | Standard.Hard
+    | Standard.Expert
+    | Standard.ExpertPlus
+    
+    | Lightshow.Easy
+    | Lightshow.Normal
+    | Lightshow.Hard
+    | Lightshow.Expert
+    | Lightshow.ExpertPlus;
+
+    
 export default {
     Lawless,
     Standard,

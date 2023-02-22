@@ -1,49 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
-import { customNoteData, customWallData, lineIndex, lineLayer, noteDir, noteType, Track, wallType } from "../consts/types/objects.ts";
+import { geoShape } from "../consts/types/environment.ts";
+import { customNoteData, customWallData, lineIndex, lineLayer, noteDir, noteType, wallType } from "../consts/types/objects.ts";
 import { vec3, vec4 } from "../consts/types/vec.ts";
-import { Mod, Shader, Shape } from "./consts.ts";
 
-enum Lawless {
-    Easy = "EasyLawless.dat",
-    Normal = "NormalLawless.dat",
-    Hard = "HardLawless.dat",
-    Expert = "ExpertLawless.dat",
-    ExpertPlus = "ExpertPlusLawless.dat"
-}
-enum Standard {
-    Easy = "EasyStandard.dat",
-    Normal = "NormalStandard.dat",
-    Hard = "HardStandard.dat",
-    Expert = "ExpertStandard.dat",
-    ExpertPlus = "ExpertPlusStandard.dat"
-}
-enum Lightshow {
-    Easy = "EasyLightshow.dat",
-    Normal = "NormalLightshow.dat",
-    Hard = "HardLightshow.dat",
-    Expert = "ExpertLightshow.dat",
-    ExpertPlus = "ExpertPlusLightshow.dat"
-}
-
-export type requirement = Mod.Chroma | Mod.Cinema | Mod.Mapping | Mod.Noodle;
-export type diffFile =
-    | Lawless.Easy
-    | Lawless.Normal
-    | Lawless.Hard
-    | Lawless.Expert
-    | Lawless.ExpertPlus
-
-    | Standard.Easy
-    | Standard.Normal
-    | Standard.Hard
-    | Standard.Expert
-    | Standard.ExpertPlus
-    
-    | Lightshow.Easy
-    | Lightshow.Normal
-    | Lightshow.Hard
-    | Lightshow.Expert
-    | Lightshow.ExpertPlus;
 
 export type noteJump = "Dynamic" | "Static";
 export type effects = "AllEffects" | "Strobefilter" | "NoEffects";
@@ -51,26 +10,6 @@ export type energy = "Bar" | "Battery";
 export type speed = "Normal" | "Faster" | "Slower" | "SuperFast";
 export type enabledWall = "All" | "FullHeightOnly" | "NoObstacles";
 
-export type geoShape =
-    | string
-    | Shape.Capsule
-    | Shape.Cube
-    | Shape.Cylinder
-    | Shape.Plane
-    | Shape.Quad
-    | Shape.Sphere
-    | Shape.Triangle;
-export type shaderType =
-    | string
-    | Shader.OpaqueLight
-    | Shader.TransparentLight
-    | Shader.Standard;
-export type mat = {
-    _color: vec3;
-    _shader: shaderType;
-    _track?: Track;
-    _shaderKeywords?: string[];
-};
 
 
 

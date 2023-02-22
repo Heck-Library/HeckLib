@@ -1,7 +1,7 @@
-import { Map, diffFile } from './src/mod.ts';
-import Difficulty from './consts/difficulty.ts';
+import { Map } from './src/mod.ts';
+import Difficulty, { diffFile } from './consts/difficulty.ts';
 
-const INPUT: diffFile = Difficulty.Standard.ExpertPlus
+const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
 const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
