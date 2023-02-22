@@ -10,7 +10,7 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 });
 // #region Noodle stuff below
 
-
+new PointDefinition()
 
 
 // #endregion Noodle stuff above
