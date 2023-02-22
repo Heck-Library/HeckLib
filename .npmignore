@@ -5,3 +5,5 @@ models/
 Cinema.json
 example.ts
 *.zip
+.vscode/
+.github/

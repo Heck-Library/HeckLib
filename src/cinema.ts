@@ -1,4 +1,5 @@
-import { vec3 } from "./types.ts"
+import { vec3 } from "../consts/types/vec.ts";
+
 
 export class Cinema {
     config: {
