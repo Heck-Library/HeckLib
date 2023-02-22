@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 import { noteJump, enabledWall, energy, speed, effects } from "./types.ts";
 
-export const infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+export let infoFile: Record<string, any>;
+
 
 /**
  * Adds suggestions to the map
@@ -31,6 +32,11 @@ export class Suggestion {
     return this;
   }
   private End() {
+    try {
+        infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+    } catch {
+        console.warn("Reading Info.dat failed");
+    }
     infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
@@ -92,6 +98,11 @@ export class Requirement {
   }
 
   private End() {
+    try {
+        infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+    } catch {
+        console.warn("Reading Info.dat failed");
+    }
     infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
@@ -561,6 +572,11 @@ export class Settings {
   //#endregion
 
   private End() {
+    try {
+        infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+    } catch {
+        console.warn("Reading Info.dat failed");
+    }
     infoFile._difficultyBeatmapSets.forEach((x: any) => {
       if (this.f.includes(x._beatmapCharacteristicName)) {
         x._difficultyBeatmaps.forEach((y: any) => {
