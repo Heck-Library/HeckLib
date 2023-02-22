@@ -1,7 +1,7 @@
 import { animationData, customWallData, lineIndex, lineLayer, wallData, wallType } from "../consts/types/objects.ts";
 import { walls } from "../src/mapHandler.ts";
 
-export class Wall {
+export default class Wall {
     /**
      * These only work with V2
      */

@@ -2,7 +2,7 @@ import { POINTDEFINITION } from "../consts/types/animation.ts";
 import { unknownAnimation } from "../consts/types/vec.ts";
 import { definitions,pointDefinitions } from "../src/mapHandler.ts";
 
-export class PointDefinition {
+export default class PointDefinition {
     private json: POINTDEFINITION;
     constructor(name: string, points: unknownAnimation) {
         this.json = {

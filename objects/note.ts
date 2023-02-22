@@ -9,7 +9,7 @@ import {
 } from "../consts/types/objects.ts";
 import {bombs, notes, V3} from "../src/mapHandler.ts";
 
-export class Note { /**
+export default class Note { /**
      * Arrow direction values.
      * @example Note.Direction.Down returns 1
      */

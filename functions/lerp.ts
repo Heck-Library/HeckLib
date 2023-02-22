@@ -8,6 +8,6 @@
  * @returns Interpolated value
  * @example lerp(5, 10, 0.5); returns 7.5
  */
-export function lerp(start : number, end : number, amount : number): number {
+export default function lerp(start : number, end : number, amount : number): number {
     return(1 - amount) * start + amount * end;
 }

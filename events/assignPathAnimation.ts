@@ -1,7 +1,7 @@
 import { pathAnimData } from "../consts/types/animation.ts";
 import { events } from "../src/mapHandler.ts";
 
-export class AssignPathAnimation {
+export default class AssignPathAnimation {
     json: {
         time: number
         type: string

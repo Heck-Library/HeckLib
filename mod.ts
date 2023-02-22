@@ -5,3 +5,4 @@ export * from './functions/mod.ts'
 export * from './objects/mod.ts';
 export * from './src/mod.ts';
 export * from './model/mod.ts';
+export * from './info/mod.ts';

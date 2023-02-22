@@ -1,4 +1,4 @@
-import { Mod } from "./plugin.ts";
+import Mod from "./plugin.ts";
 
 
 enum Lawless {
@@ -23,7 +23,7 @@ enum Lightshow {
     ExpertPlus = "ExpertPlusLightshow.dat"
 }
 
-export const Difficulty = {
+export default {
     Standard,
     Lawless,
     Lightshow

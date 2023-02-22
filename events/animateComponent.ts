@@ -1,7 +1,7 @@
 import { animComponentData } from "../consts/types/animation.ts";
 import { V3 } from "../src/mapHandler.ts";
 
-export class AnimateComponent {
+export default class AnimateComponent {
     json: {
         time: number,
         type: "AnimateComponent",

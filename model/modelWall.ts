@@ -1,7 +1,7 @@
 import { WALL,Track } from "../consts/types/objects.ts";
 import { vec3anim,vec4 } from "../consts/types/vec.ts";
 import { AnimateTrack } from "../events/animateTrack.ts";
-import { Wall } from "../objects/wall.ts";
+import Wall from "../objects/wall.ts";
 import { walls } from "../src/mapHandler.ts";
 import { JsonModel } from "../src/types.ts";
 

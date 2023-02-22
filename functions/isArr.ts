@@ -1,5 +1,5 @@
 
-export function isArr(x : unknown): boolean {
+export default function isArr(x : unknown): boolean {
     if (Array.isArray(x)) {
         return true;
     } else 

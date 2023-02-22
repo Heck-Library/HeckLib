@@ -2,7 +2,7 @@ import { playerTrackType } from "../consts/types/animation.ts";
 import { Track } from "../consts/types/objects.ts";
 import { events } from "../src/mapHandler.ts";
 
-export class AssignPlayerToTrack {
+export default class AssignPlayerToTrack {
     json: {
         time: number
         type: "AssignPlayerToTrack"

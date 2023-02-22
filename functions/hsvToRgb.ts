@@ -9,7 +9,7 @@
  * @param v Value
  * @returns [R, G, B]
  */
-export function HSVtoRGB(hue : number, saturation : number, value : number): [number, number, number] {
+export default function HSVtoRGB(hue : number, saturation : number, value : number): [number, number, number] {
     const h = hue;
     let s;
     let v;

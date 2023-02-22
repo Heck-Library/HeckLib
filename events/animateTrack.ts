@@ -1,7 +1,7 @@
 import { animateTrackData } from "../consts/types/animation.ts";
 import { events } from "../src/mapHandler.ts";
 
-export class AnimateTrack {
+export default class AnimateTrack {
     json: {
         time: number,
         type: "AnimateTrack",

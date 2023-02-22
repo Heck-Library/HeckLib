@@ -2,7 +2,7 @@ import { shaderType,geoShape } from "../consts/types/environment.ts";
 import { vec3 } from "../consts/types/vec.ts";
 import Environment,{ Material } from "../src/environment.ts";
 
-export class ModelEnvironment {
+export default class ModelEnvironment {
     /**
      * 
      * @param filePath File path of the model.json
