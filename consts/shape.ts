@@ -1,4 +1,4 @@
-enum Shape {
+export enum Shape {
     Sphere = "Sphere",
     Capsule = "Capsule",
     Cylinder = "Cylinder",
@@ -7,4 +7,3 @@ enum Shape {
     Quad = "Quad",
     Triangle = "Triangle",
 }
-export default Shape;

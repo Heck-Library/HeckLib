@@ -9,7 +9,7 @@
  * @param precision What decimal place to round to
  */
 
-export default function random(min : number, max : number, precision? : number): number {
+export function random(min : number, max : number, precision? : number): number {
     let p = 10;
     if (typeof precision !== "undefined" && precision !== null) {
         p = Math.pow(p, precision);

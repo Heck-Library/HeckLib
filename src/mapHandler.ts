@@ -2,8 +2,8 @@
 import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation.ts";
 import { NOTE, WALL } from "../consts/types/objects.ts";
 import { unknownAnimation } from "../consts/types/vec.ts";
-import Note from "../objects/note.ts";
-import Wall from "../objects/wall.ts";
+import { Note } from "../objects/note.ts";
+import { Wall } from "../objects/wall.ts";
 import { infoFile } from "./info.ts";
 import { LightEvent } from "./lights.ts";
 import { FinalizeProperties, InitProperties, LIGHT, V2DIFF, V2JsonNote } from "./types.ts";

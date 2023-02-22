@@ -1,7 +1,7 @@
 import { parentTrackType } from "../consts/types/animation.ts";
 import { events } from "../src/mapHandler.ts";
 
-export default class AssignTrackParent {
+export class AssignTrackParent {
     json: {
         time: number
         type: string

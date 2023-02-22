@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { NOTE, Track, WALL } from "../consts/types/objects.ts";
-import { fakeNotes,notes,fakeWalls,walls } from "../src/mapHandler.ts";
+import {NOTE, Track, WALL} from "../consts/types/objects.ts";
+import {fakeNotes, notes, fakeWalls, walls} from "../src/mapHandler.ts";
 
 /**
  * @param obj The objects to filter.
@@ -9,7 +9,7 @@ import { fakeNotes,notes,fakeWalls,walls } from "../src/mapHandler.ts";
  * @param type What the type to filter should be.
  * @returns The filtered objects.
  */
-export function filter(obj : WALL[], start : number, end : number, type? : 0 | 1): WALL[];
+export function filter(obj: WALL[], start: number, end: number, type ?: 0 | 1): WALL[];
 /**
    * @param obj The objects to filter.
    * @param start What the start beat to filter should be.
@@ -18,16 +18,18 @@ export function filter(obj : WALL[], start : number, end : number, type? : 0 | 1
    * @param direction What the direction to filter should be.
    * @returns The filtered objects.
    */
-export function filter(obj : NOTE[], start : number, end : number, type? : 0 | 1 | 3, direction? : number): NOTE[] {
+export function filter(obj: NOTE[], start: number, end: number, type ?: 0 | 1 | 3, direction ?:number): NOTE[] {
     if (obj == fakeNotes || obj == notes) {
         const f: NOTE[] = obj.filter((n : NOTE) => n.time >= start && n.time<= end);
       if (type && !direction) return f.filter((n: NOTE) => n.type == type);
         if (! type && direction) 
             return f.filter((n : NOTE) => n.direction == direction);
         
+
         if (type && direction) 
             return f.filter((n : NOTE) => n.direction == direction && n.type == type);
         
+
         return f;
     }
     if (obj == fakeWalls || obj == walls) {
@@ -60,6 +62,7 @@ export function filter(obj : NOTE[], start : number, end : number, type? : 0 | 1
                 } else 
                     d.track = [d.track, track];
                 
+
                 return;
             }
             const tracks = d.track;
@@ -68,5 +71,6 @@ export function filter(obj : NOTE[], start : number, end : number, type? : 0 | 1
              else 
                 tracks.push(track);
             
+
         });
     }

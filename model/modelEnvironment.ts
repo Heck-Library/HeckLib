@@ -1,6 +1,6 @@
+import { shaderType,geoShape } from "../consts/types/environment.ts";
 import { vec3 } from "../consts/types/vec.ts";
 import Environment,{ Material } from "../src/environment.ts";
-import { shaderType,geoShape } from "../src/types.ts";
 
 export class ModelEnvironment {
     /**

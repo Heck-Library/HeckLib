@@ -34,8 +34,8 @@ enum InOut {
     Back = "easeInOutBack",
     Bounce = "easeInOutBounce"
 }
-export const Step = "easeStep";
-export default {
+const Step = "easeStep";
+export const ease = {
     In,
     Out,
     InOut,

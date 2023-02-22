@@ -22,6 +22,12 @@ enum Lightshow {
     ExpertPlus = "ExpertPlusLightshow.dat"
 }
 
+export const Difficulty = {
+    Standard,
+    Lawless,
+    Lightshow
+}
+
 export type requirement = Mod.Chroma | Mod.Cinema | Mod.Mapping | Mod.Noodle;
 export type diffFile =
     | Lawless.Easy
@@ -41,10 +47,3 @@ export type diffFile =
     | Lightshow.Hard
     | Lightshow.Expert
     | Lightshow.ExpertPlus;
-
-    
-export default {
-    Lawless,
-    Standard,
-    Lightshow
-}
