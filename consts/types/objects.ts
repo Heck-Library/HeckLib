@@ -1,4 +1,4 @@
-import { vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "./vec.ts";
+import { vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "./vec";
 
 export type Track = string | string[];
 

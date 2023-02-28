@@ -1,4 +1,5 @@
-import { vec3 } from "../consts/types/vec.ts";
+import { writeFileSync } from "fs";
+import { vec3 } from "../consts/types/vec";
 
 
 export class Cinema {
@@ -176,7 +177,7 @@ export class Cinema {
         return this;
     }
     push() {
-        Deno.writeTextFileSync('cinema-video.json', JSON.stringify(this.config, null, 4));
+        writeFileSync('cinema-video.json', JSON.stringify(this.config, null, 4));
     }
     //#endregion
 } 

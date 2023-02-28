@@ -1,14 +1,15 @@
-import { WALL,Track } from "../consts/types/objects.ts";
-import { vec3anim,vec4 } from "../consts/types/vec.ts";
-import AnimateTrack from "../events/animateTrack.ts";
-import Wall from "../objects/wall.ts";
-import { walls } from "../src/mapHandler.ts";
-import { JsonModel } from "../src/types.ts";
+import { readFileSync } from "fs";
+import { WALL,Track } from "../consts/types/objects";
+import { vec3anim,vec4 } from "../consts/types/vec";
+import AnimateTrack from "../events/animateTrack";
+import Wall from "../objects/wall";
+import { walls } from "../src/mapHandler";
+import { JsonModel } from "../src/types";
 
 export default class ModelWall {
     walls: WALL[] = [];
     constructor(time: number, filePath: string) {
-        const model = JSON.parse(Deno.readTextFileSync(filePath))
+        const model = JSON.parse(readFileSync(filePath, 'utf-8'))
         model.forEach((x: JsonModel) => {
             const col = x.color;
             const s: [number, number, number] = x.scale;

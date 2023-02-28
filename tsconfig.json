@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "isolatedModules": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true
+    },
+    "ts-node": {
+        "swc": true
+    }
+}

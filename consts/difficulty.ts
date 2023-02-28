@@ -1,4 +1,4 @@
-import Mod from "./plugin.ts";
+import Mod from "./plugin";
 
 
 enum Lawless {

@@ -1,12 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
-import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation.ts";
-import { NOTE, WALL } from "../consts/types/objects.ts";
-import { unknownAnimation } from "../consts/types/vec.ts";
-import Note from "../objects/note.ts";
-import Wall from "../objects/wall.ts";
-import { infoFile } from "./info.ts";
-import { LightEvent } from "./lights.ts";
-import { FinalizeProperties, InitProperties, LIGHT, V2DIFF, V2JsonNote } from "./types.ts";
+import { readFileSync, writeFileSync } from "fs";
+import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation";
+import { NOTE, WALL } from "../consts/types/objects";
+import { unknownAnimation } from "../consts/types/vec";
+import Note from "../objects/note";
+import Wall from "../objects/wall";
+import { infoFile } from "./info";
+import { LightEvent } from "./lights";
+import { FinalizeProperties, InitProperties, LIGHT, V2DIFF, V2JsonNote } from "./types";
 
 export const pointDefinitions = ["NULL"];
 
@@ -440,7 +441,7 @@ function showStats(properties?: FinalizeProperties): statsType {
     }
     if (p.showVanillaStats) {
         const s = p.showVanillaStats;
-        const d = JSON.parse(Deno.readTextFileSync(activeInput));
+        const d = JSON.parse(readFileSync(activeInput, 'utf-8'));
         if (V3) {
             if (s.notes) vs.notes = d.colorNotes.length;
             if (s.bombs) vs.bombs = d.bombNotes.length;
@@ -459,7 +460,7 @@ export namespace Map {
     // TODO Lightshow importer 
     function lightshowImport(file: string) {
         let lV3 = false;
-        const lightShowDiff = JSON.parse(Deno.readTextFileSync(file))
+        const lightShowDiff = JSON.parse(readFileSync(file, 'utf-8'))
         if (lightShowDiff.version) lV3 = true;
         let localLights: Record<string, any>[];
 
@@ -469,7 +470,7 @@ export namespace Map {
         lights = JSONtoLights(localLights, lV3);
     }
     function isV3(diffName: string) {
-        const diff = JSON.parse(Deno.readTextFileSync(diffName));
+        const diff = JSON.parse(readFileSync(diffName, 'utf-8'));
 
         if (typeof diff._version !== 'undefined') V3 = false;
         if (typeof diff.version !== 'undefined') V3 = true;
@@ -493,7 +494,7 @@ export namespace Map {
         }
         const info = infoFile;
         isV3(`./${input}`);
-        const diff = JSON.parse(Deno.readTextFileSync(`./${input}`));
+        const diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
                 if (y._settings) delete(y._settings)
@@ -501,7 +502,7 @@ export namespace Map {
                 if (y._suggestions) delete(y._suggestions)
             })
         });
-        Deno.writeTextFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
+        writeFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
         activeInput = input;
         activeOutput = output;
 
@@ -634,7 +635,7 @@ export namespace Map {
             if (formatting == true) {
                 outputtedDiff = JSON.stringify(newDiff, null, 4)
             }
-            Deno.writeTextFileSync(activeOutput, outputtedDiff)
+            writeFileSync(activeOutput, outputtedDiff)
         }
         if (V3) {
             difficulty.colorNotes = notesToJSON();
@@ -654,7 +655,7 @@ export namespace Map {
                 outputtedDiff = JSON.stringify(difficulty, null, 4)
             }
             
-            Deno.writeTextFileSync(activeOutput, outputtedDiff)
+            writeFileSync(activeOutput, outputtedDiff)
         }
 
         const stats = showStats(properties);

@@ -1,5 +1,5 @@
-import { NOTE } from "../consts/types/objects.ts";
-import Note from "../objects/note.ts";
+import { NOTE } from "../consts/types/objects";
+import Note from "../objects/note";
 
 export default function dupeNote(obj : NOTE): NOTE {
     const o = JSON.parse(JSON.stringify(obj)).json;

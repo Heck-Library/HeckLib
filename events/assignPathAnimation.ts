@@ -1,5 +1,5 @@
-import { pathAnimData } from "../consts/types/animation.ts";
-import { events } from "../src/mapHandler.ts";
+import { pathAnimData } from "../consts/types/animation";
+import { events } from "../src/mapHandler";
 
 export default class AssignPathAnimation {
     json: {

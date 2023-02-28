@@ -1,7 +1,7 @@
-import { animateTrackData,pathAnimData,parentTrackType,playerTrackType,fogTrackData } from "../consts/types/animation.ts";
-import { Track } from "../consts/types/objects.ts";
-import { vec3anim,vec4anim,vec1anim } from "../consts/types/vec.ts";
-import {events} from "./mapHandler.ts";
+import { animateTrackData,pathAnimData,parentTrackType,playerTrackType,fogTrackData } from "../consts/types/animation";
+import { Track } from "../consts/types/objects";
+import { vec3anim,vec4anim,vec1anim } from "../consts/types/vec";
+import {events} from "./mapHandler";
 
 // #region events
 // deno-lint-ignore no-namespace
@@ -117,7 +117,7 @@ export namespace Builders {
         }
     }
     export class AnimateTrack extends BaseAnimEvent {
-        json : {
+        declare json : {
             time: number;
             type: string;
             data: animateTrackData;
@@ -155,7 +155,7 @@ export namespace Builders {
         }
     }
     export class PathAnimation extends BaseAnimEvent {
-        json : {
+        declare json : {
             time: number;
             type: string;
             data: pathAnimData;
@@ -180,7 +180,7 @@ export namespace Builders {
         }
     }
     export class TrackParent extends BaseEvent {
-        json : {
+        declare json : {
             time: number;
             type: string;
             data: parentTrackType;
@@ -210,7 +210,7 @@ export namespace Builders {
         }
     }
     export class PlayerTrack extends BaseEvent {
-        json : {
+        declare json : {
             time: number;
             type: string;
             data: playerTrackType;
@@ -231,7 +231,7 @@ export namespace Builders {
         }
     }
     export class AssignFogTrack extends BaseEvent {
-        json : {
+        declare json : {
             time: number;
             type: "AssignFogTrack";
             data: fogTrackData;

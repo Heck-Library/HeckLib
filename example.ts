@@ -1,6 +1,7 @@
-import { Map } from './src/mod.ts';
-import { diffFile } from './consts/difficulty.ts';
-import Difficulty from './consts/difficulty.ts';
+import { Map } from './src/mapHandler';
+import { diffFile } from './consts/difficulty';
+import Difficulty from './consts/difficulty';
+import AnimateTrack from './events/animateTrack';
 
 const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
 const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
@@ -10,6 +11,12 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
     offset: 0
 });
 // #region Noodle stuff below
+
+new AnimateTrack(0, {
+    track: "sfdfj",
+    duration: 0,
+}).push();
+
 
 
 

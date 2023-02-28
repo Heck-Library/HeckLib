@@ -1,5 +1,5 @@
-import { animationData, customWallData, lineIndex, lineLayer, wallData, wallType } from "../consts/types/objects.ts";
-import { walls } from "../src/mapHandler.ts";
+import { animationData, customWallData, lineIndex, lineLayer, wallData, wallType } from "../consts/types/objects";
+import { walls } from "../src/mapHandler";
 
 export default class Wall {
     /**

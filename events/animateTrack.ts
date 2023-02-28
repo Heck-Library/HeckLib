@@ -1,5 +1,5 @@
-import { animateTrackData } from "../consts/types/animation.ts";
-import { events } from "../src/mapHandler.ts";
+import { animateTrackData } from "../consts/types/animation";
+import { events } from "../src/mapHandler";
 
 export default class AnimateTrack {
     json: {

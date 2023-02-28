@@ -1,6 +1,7 @@
-import { shaderType,geoShape } from "../consts/types/environment.ts";
-import { vec3 } from "../consts/types/vec.ts";
-import Environment,{ Material } from "../src/environment.ts";
+import { shaderType,geoShape } from "../consts/types/environment";
+import { vec3 } from "../consts/types/vec";
+import Environment,{ Material } from "../src/environment";
+import { readFileSync } from "fs";
 
 export default class ModelEnvironment {
     /**
@@ -11,7 +12,7 @@ export default class ModelEnvironment {
      * @param color 
      */
     constructor(filePath: string, shader: shaderType, materialName: string, color: vec3) {
-        const model = JSON.parse(Deno.readTextFileSync(filePath))
+        const model = JSON.parse(readFileSync(filePath, 'utf-8'))
         let matNum = 1
         const objs = model.objects;
         const colors: vec3[] = []

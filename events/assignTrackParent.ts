@@ -1,5 +1,5 @@
-import { parentTrackType } from "../consts/types/animation.ts";
-import { events } from "../src/mapHandler.ts";
+import { parentTrackType } from "../consts/types/animation";
+import { events } from "../src/mapHandler";
 
 export default class AssignTrackParent {
     json: {

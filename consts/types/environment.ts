@@ -1,7 +1,7 @@
-import Shader from "../shader.ts";
-import Shape from "../shape.ts";
-import { Track } from "./objects.ts";
-import { vec3 } from "./vec.ts";
+import Shader from "../shader";
+import Shape from "../shape";
+import { Track } from "./objects";
+import { vec3 } from "./vec";
 
 export type geoShape =
     | string

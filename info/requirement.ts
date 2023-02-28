@@ -1,4 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
+import * as fs from 'fs'
 let infoFile: Record<string, any>;
 
 
@@ -21,7 +22,7 @@ export default class Requirement {
         });
       }
     });
-    Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
+    fs.writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
   }
   /**
    * Adds Noodle Extensions as a requirement to the map.
@@ -50,7 +51,7 @@ export default class Requirement {
 
   private End() {
     try {
-        infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+        infoFile = JSON.parse(fs.readFileSync("Info.dat", 'utf-8'));
     } catch {
         console.warn("Reading Info.dat failed");
     }
@@ -64,6 +65,6 @@ export default class Requirement {
         });
       }
     });
-    Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
+    fs.writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
   }
 }

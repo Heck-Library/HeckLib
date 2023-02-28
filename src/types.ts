@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-import { geoShape } from "../consts/types/environment.ts";
-import { customNoteData, customWallData, lineIndex, lineLayer, noteDir, noteType, wallType } from "../consts/types/objects.ts";
-import { vec3, vec4 } from "../consts/types/vec.ts";
+import { geoShape } from "../consts/types/environment";
+import { customNoteData, customWallData, lineIndex, lineLayer, noteDir, noteType, wallType } from "../consts/types/objects";
+import { vec3, vec4 } from "../consts/types/vec";
 
 
 export type noteJump = "Dynamic" | "Static";

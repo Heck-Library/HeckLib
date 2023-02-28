@@ -1,3 +1,3 @@
-export * from './requirement.ts';
-export * from './settings.ts';
-export * from './suggestion.ts';
+export * from './requirement';
+export * from './settings';
+export * from './suggestion';

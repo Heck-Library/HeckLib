@@ -1,3 +1,3 @@
-export * from './animation.ts';
-export * from './objects.ts';
-export * from './vec.ts';
+export * from './animation';
+export * from './objects';
+export * from './vec';

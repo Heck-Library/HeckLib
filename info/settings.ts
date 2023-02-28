@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { noteJump,effects,energy,enabledWall,speed } from "../src/types.ts";
+import { writeFileSync, readFileSync } from 'fs';
+import { noteJump,effects,energy,enabledWall,speed } from "../src/types";
 
 let infoFile: Record<string, any>;
 
@@ -463,7 +464,7 @@ export default class Settings {
 
     private End() {
         try {
-            infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+            infoFile = JSON.parse(readFileSync("Info.dat", "utf-8"));
         } catch {
             console.warn("Reading Info.dat failed");
         } infoFile._difficultyBeatmapSets.forEach((x : any) => {
@@ -482,5 +483,5 @@ export default class Settings {
             }
         });
     
-    Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
+    writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
 }}

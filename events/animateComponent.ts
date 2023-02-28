@@ -1,5 +1,5 @@
-import { animComponentData } from "../consts/types/animation.ts";
-import { V3 } from "../src/mapHandler.ts";
+import { animComponentData } from "../consts/types/animation";
+import { V3 } from "../src/mapHandler";
 
 export default class AnimateComponent {
     json: {

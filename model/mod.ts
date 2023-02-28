@@ -1,2 +1,2 @@
-export * from './modelEnvironment.ts';
-export * from './modelWall.ts';
+export * from './modelEnvironment';
+export * from './modelWall';

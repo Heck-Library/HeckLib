@@ -1,6 +1,6 @@
-import { playerTrackType } from "../consts/types/animation.ts";
-import { Track } from "../consts/types/objects.ts";
-import { events } from "../src/mapHandler.ts";
+import { playerTrackType } from "../consts/types/animation";
+import { Track } from "../consts/types/objects";
+import { events } from "../src/mapHandler";
 
 export default class AssignPlayerToTrack {
     json: {

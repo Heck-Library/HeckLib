@@ -1,4 +1,4 @@
-import { LIGHT, lightCustomData, lightData, lightType, lightValue } from "./types.ts"
+import { LIGHT, lightCustomData, lightData, lightType, lightValue } from "./types"
 
 export class LightEvent {
     static readonly Direction = {

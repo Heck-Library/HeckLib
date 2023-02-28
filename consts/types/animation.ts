@@ -1,5 +1,5 @@
-import {Track} from "./objects.ts";
-import {vec1anim, vec3anim, vec4anim} from "./vec.ts";
+import {Track} from "./objects";
+import {vec1anim, vec3anim, vec4anim} from "./vec";
 
 export type POINTDEFINITION = {
     name: string;

@@ -6,8 +6,8 @@ import {
     noteData,
     noteDir,
     noteType
-} from "../consts/types/objects.ts";
-import {bombs, notes, V3} from "../src/mapHandler.ts";
+} from "../consts/types/objects";
+import {bombs, notes, V3} from "../src/mapHandler";
 
 export default class Note { /**
      * Arrow direction values.

@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-
+import { readFileSync, writeFileSync } from 'fs'
 let infoFile: Record<string, any>;
 /**
  * Adds suggestions to the map
@@ -30,7 +30,7 @@ export default class Suggestion {
     }
     private End() {
       try {
-          infoFile = JSON.parse(Deno.readTextFileSync("Info.dat"));
+          infoFile = JSON.parse(readFileSync("Info.dat", 'utf-8'));
       } catch {
           console.warn("Reading Info.dat failed");
       }
@@ -44,6 +44,6 @@ export default class Suggestion {
           });
         }
       });
-      Deno.writeTextFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
+      writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
     }
   }

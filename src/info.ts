@@ -1,3 +1,4 @@
+import { readFileSync } from "fs";
 
 
-export const infoFile = JSON.parse(Deno.readTextFileSync('Info.dat'));
+export const infoFile = JSON.parse(readFileSync('Info.dat', 'utf-8'));
