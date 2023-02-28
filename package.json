@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Heck-Library/HeckLib/issues"
   },
-  "homepage": "https://github.com/Heck-Library/HeckLib#readme"
+  "homepage": "https://github.com/Heck-Library/HeckLib#readme",
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
