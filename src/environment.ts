@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import { Shader } from "../consts/shader.ts";
-import { Shape } from "../consts/shape.ts";
+import Shader from "../consts/shader.ts";
+import Shape from "../consts/shape.ts";
 import { geoShape,mat,shaderType } from "../consts/types/environment.ts";
 import { Track } from "../consts/types/objects.ts";
 import { vec3 } from "../consts/types/vec.ts";
