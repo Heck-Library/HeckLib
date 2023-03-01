@@ -1,6 +1,6 @@
 {
   "name": "hecklib",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A library for easier Beat Saber mod charting using TypeScript.",
   "main": "mod.ts",
   "directories": {
@@ -26,5 +26,13 @@
   "dependencies": {
     "@swc/core": "^1.3.37",
     "ts-node": "^10.9.1"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": "typescript",
+        "path": "./snippets/hecklib.json"
+      }
+    ]
   }
 }

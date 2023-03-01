@@ -1,0 +1,141 @@
+{
+    "PointDefinition": {
+        "scope": "typescript",
+        "prefix": "pointDef",
+        "body": [
+            "new PointDefinition(\"${1:name}\", [",
+            "    $0",
+            "]).push();"
+        ],
+        "description": "Creates the structure for a PointDefinition."
+    },
+
+    "AnimateTrack": {
+        "scope": "typescript",
+        "prefix": "animTrack",
+        "body": [
+            "new AnimateTrack(${1:time}, {",
+            "    track: \"${2}\",",
+            "    duration: ${3},",
+            "    $0",
+            "}).push();"
+        ],
+        "description": "Adds the structure for an AnimateTrack event"
+    },
+    "AssignPathAnimation": {
+        "scope": "typescript",
+        "prefix": "pathAnim",
+        "body": [
+            "new AssignPathAnimation(${1:time}, {",
+            "    track: \"${2}\",",
+            "    ${3}",
+            "}).push();"
+        ],
+        "description": "Adds the structure for an AssignPathAnimation event"
+    },
+    "TrackParent": {
+        "scope": "typescript",
+        "prefix": "trackParent",
+        "body": [
+            "new AssignTrackParent(${1:time}, {",
+            "    parentTrack: \"${2}\"",
+            "    childrenTracks: [\"${3}\"]",
+            "}).push()"
+        ],
+        "description": "Adds the structure for an AssignTrackParent event"
+    },
+    "PlayerTrack": {
+        "scope": "typescript",
+        "prefix": "playerTrack",
+        "body": "new AssignPlayerToTrack(0, \"$0\").push();",
+        "description": "Adds the structure for an AssignPlayerToTrack event"
+    },
+    "FogTrack": {
+        "scope": "typescript",
+        "prefix": "fogTrack",
+        "body": "new AssignFogTrack(0, \"$0\").push();"
+    },
+
+    "Note": {
+        "scope": "typescript",
+        "prefix": "note",
+        "body": [
+            "new Note({",
+            "    //Vanilla data",
+            "    time: ${1:time}",
+            "}, {",
+            "    //Custom data",
+            "    ",
+            "}, {",
+            "    //Animation data",
+            "    ",
+            "}).push();"
+        ],
+        "description": "Adds the structure for a note"
+    },
+    "Wall": {
+        "scope": "typescript",
+        "prefix": "wall",
+        "body": [
+            "new Wall({",
+            "    //Vanilla data",
+            "    time: ${1:time}",
+            "}, {",
+            "    //Custom data",
+            "    ",
+            "}, {",
+            "    //Animation data",
+            "    ",
+            "}).push();"
+        ],
+        "description": "Adds the structure for a wall"
+    },
+    "NoteTrack": {
+        "scope": "typescript",
+        "prefix": "noteTrack",
+        "body": "track(filter(notes, ${1:startTime}, ${2:endTime}), ${3:tracks});",
+        "description": "Creates the function for adding tracks to notes between two time values."
+    },
+    "WallTrack": {
+        "scope": "typescript",
+        "prefix": "wallTrack",
+        "body": "track(filter(walls, ${1:startTime}, ${2:endTime}), ${3:tracks});",
+        "description": "Creates the function for adding tracks to notes between two time values."
+    },
+    "FilterNotes": {
+        "scope": "typescript",
+        "prefix": "filterNotes",
+        "body": "filter(notes, ${1:startTime}, ${2:endTime});",
+        "description": "Creates the function for filtering notes between two times."
+    },
+    "FilterWalls": {
+        "scope": "typescript",
+        "prefix": "filterWalls",
+        "body": "filter(walls, ${1:startTime}, ${2:endTime});",
+        "description": "Creates the function for filtering walls between two times."
+    },
+    "ForEachNote": {
+        "scope": "typescript",
+        "prefix": "forEachNote",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}).forEach((n: NOTE) => {",
+            "    const d = n.data;",
+            "    const a = n.anim;",
+            "    $0",
+            "});"
+        ],
+        "description": "Creates a forEach loop for filtered notes."
+    },
+    "ForEachWall": {
+        "scope": "typescript",
+        "prefix": "forEachWall",
+        "body": [
+            "filter(walls, ${1:startTime}, ${2:endTime}).forEach((w: WALL) => {",
+            "    const d = w.data;",
+            "    const a = w.anim;",
+            "    $0",
+            "});"
+        ],
+        "description": "Creates a forEach loop for filtered walls."
+    }
+}
