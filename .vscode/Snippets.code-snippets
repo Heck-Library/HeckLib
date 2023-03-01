@@ -2,7 +2,11 @@
     "PointDefinition": {
         "scope": "typescript",
         "prefix": "pointDef",
-        "body": "new PointDefinition(\"NAME\", [$0]).push();",
+        "body": [
+            "new PointDefinition(\"${1:name}\", [",
+            "    $0",
+            "]).push();"
+        ],
         "description": "Creates the structure for a PointDefinition."
     },
 
@@ -10,10 +14,10 @@
         "scope": "typescript",
         "prefix": "animTrack",
         "body": [
-            "new AnimateTrack(0$0, {",
-            "    track: \"\",",
-            "    duration: 0,",
-            "    ",
+            "new AnimateTrack(${1:time}, {",
+            "    track: \"${2}\",",
+            "    duration: ${3},",
+            "    $0",
             "}).push();"
         ],
         "description": "Adds the structure for an AnimateTrack event"
@@ -22,9 +26,9 @@
         "scope": "typescript",
         "prefix": "pathAnim",
         "body": [
-            "new AssignPathAnimation(0$0, {",
-            "    track: \"\",",
-            "    ",
+            "new AssignPathAnimation(${1:time}, {",
+            "    track: \"${2}\",",
+            "    ${3}",
             "}).push();"
         ],
         "description": "Adds the structure for an AssignPathAnimation event"
@@ -33,9 +37,9 @@
         "scope": "typescript",
         "prefix": "trackParent",
         "body": [
-            "new AssignTrackParent(0$0, {",
-            "    parentTrack: \"\"",
-            "    childrenTracks: [\"\"]",
+            "new AssignTrackParent(${1:time}, {",
+            "    parentTrack: \"${2}\"",
+            "    childrenTracks: [\"${3}\"]",
             "}).push()"
         ],
         "description": "Adds the structure for an AssignTrackParent event"
@@ -58,7 +62,7 @@
         "body": [
             "new Note({",
             "    //Vanilla data",
-            "    time: 0$0,",
+            "    time: ${1:time}",
             "}, {",
             "    //Custom data",
             "    ",
@@ -75,7 +79,7 @@
         "body": [
             "new Wall({",
             "    //Vanilla data",
-            "    time: 0$0",
+            "    time: ${1:time}",
             "}, {",
             "    //Custom data",
             "    ",
@@ -89,35 +93,35 @@
     "NoteTrack": {
         "scope": "typescript",
         "prefix": "noteTrack",
-        "body": "track(filter(notes, 0, 4$0), \"\");",
+        "body": "track(filter(notes, ${1:startTime}, ${2:endTime}), ${3:tracks});",
         "description": "Creates the function for adding tracks to notes between two time values."
     },
     "WallTrack": {
         "scope": "typescript",
         "prefix": "wallTrack",
-        "body": "track(filter(walls, 0, 4$0), \"\");",
+        "body": "track(filter(walls, ${1:startTime}, ${2:endTime}), ${3:tracks});",
         "description": "Creates the function for adding tracks to notes between two time values."
     },
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
-        "body": "filter(notes, 0, 4$0);",
+        "body": "filter(notes, ${1:startTime}, ${2:endTime});",
         "description": "Creates the function for filtering notes between two times."
     },
     "FilterWalls": {
         "scope": "typescript",
         "prefix": "filterWalls",
-        "body": "filter(walls, 0, 4$0);",
+        "body": "filter(walls, ${1:startTime}, ${2:endTime});",
         "description": "Creates the function for filtering walls between two times."
     },
     "ForEachNote": {
         "scope": "typescript",
         "prefix": "forEachNote",
         "body": [
-            "filter(notes, 0, 4$0).forEach((n: NOTE) => {",
+            "filter(notes, ${1:startTime}, ${2:endTime}).forEach((n: NOTE) => {",
             "    const d = n.data;",
             "    const a = n.anim;",
-            "    ",
+            "    $0",
             "});"
         ],
         "description": "Creates a forEach loop for filtered notes."
@@ -126,10 +130,10 @@
         "scope": "typescript",
         "prefix": "forEachWall",
         "body": [
-            "filter(walls, 0, 4$0).forEach((w: WALL) => {",
+            "filter(walls, ${1:startTime}, ${2:endTime}).forEach((w: WALL) => {",
             "    const d = w.data;",
             "    const a = w.anim;",
-            "    ",
+            "    $0",
             "});"
         ],
         "description": "Creates a forEach loop for filtered walls."
