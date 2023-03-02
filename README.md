@@ -5,16 +5,18 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 
 # Setup
 
-## Visual Studio Code
+## Installation
 
-### Installation
+### Visual Studio Code
 > You need to have <a href="https://code.visualstudio.com/">VSC</a> installed on your PC, you can install it from <a href="https://code.visualstudio.com/">here.</a>
 > 
 > Just follow the installation and after it's installed open it up.
 
+### Library
+> To install the library initialiser, run `npm i -g hecklib` in the terminal. After this, you should be able to initialise the map files.
+
 ### Map Setup
-> Copy or downlaod the `example.ts` file into your map directory (where your `Info.dat` lives etc.)
-> Then, either copy the repo to your map folder or run `npm i hecklib` in the terminal.
+> To setup the map, open the map folder in a terminal and just run the `hecklib` command. This should copy all the necessary files for HeckLib in your map folder. 
 
 ## Scripting
 
