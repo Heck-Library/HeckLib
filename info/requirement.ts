@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import * as fs from 'fs'
-let infoFile: Record<string, any>;
+let infoFile: Record<string, any> = JSON.parse(fs.readFileSync('Info.dat', 'utf-8'));
 
 
 /**
