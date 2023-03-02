@@ -1,8 +1,0 @@
-heckExporter.py
-doc/
-models/
-*.dat
-Cinema.json
-example.ts
-*.zip
-.github/
