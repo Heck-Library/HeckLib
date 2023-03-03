@@ -1,15 +1,16 @@
 import { playerTrackType } from "../consts/types/animation";
 import { Track } from "../consts/types/objects";
-import { events } from "../src/mapHandler";
+import BaseEvent from "./baseEvent";
 
-export default class AssignPlayerToTrack {
-    json: {
+export default class AssignPlayerToTrack extends BaseEvent{
+    declare json: {
         time: number
         type: "AssignPlayerToTrack"
         data: playerTrackType
     }
 
     constructor(time: number, track: Track) {
+        super()
         this.json = {
             time: time,
             type: "AssignPlayerToTrack",
@@ -17,18 +18,5 @@ export default class AssignPlayerToTrack {
                 track: track
             }
         }
-    }
-
-    set time(time: number) { this.json.time = time; }
-    get time(): number { return this.json.time; }
-
-    get type(): string { return this.json.type; }
-
-    set data(data: playerTrackType) { this.json.data = data; }
-    get data(): playerTrackType { return this.json.data; }
-
-    push() {
-        events.push(this)
-        return this;
     }
 }

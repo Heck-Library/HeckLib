@@ -1,13 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import { readFileSync, writeFileSync } from "fs";
 import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation";
-import { NOTE, WALL } from "../consts/types/objects";
+import { NOTE, WALL, customNoteData, lineIndex, lineLayer, noteDir, noteType } from "../consts/types/objects";
 import { unknownAnimation } from "../consts/types/vec";
 import Note from "../objects/note";
 import Wall from "../objects/wall";
-import { infoFile } from "./info";
-import { LightEvent } from "./lights";
-import { FinalizeProperties, InitProperties, LIGHT, V2DIFF, V2JsonNote } from "./types";
+import LightEvent from "../objects/lights";
+import { LIGHT } from "../consts/types/lights/LIGHT";
+import { infoFile } from "../consts/info";
 
 export const pointDefinitions = ["NULL"];
 
@@ -31,6 +31,74 @@ export let activeLightshow: string;
 export let V3: boolean;
 
 let formatting = false
+type V2JsonNote = {
+    _time: number;
+    _lineIndex: lineIndex;
+    _lineLayer: lineLayer;
+    _type: noteType;
+    _cutDirection: noteDir;
+    _customData?: customNoteData;
+};
+
+type V2DIFF = {
+    _version: "2.2.0";
+    _notes: V2JsonNote[];
+    _obstacles: Record<string, unknown>[];
+    _events: Record<string, unknown>[];
+    _waypoints: Record<string, unknown>[];
+    _customData: {
+        _time?: number;
+        _environment: Record<string, unknown>[];
+        _customEvents: Record<string, unknown>[];
+        _bookmarks: Record<string, unknown>[];
+        _pointDefinitions: Record<string, unknown>[];
+        _materials: Record<string, any>;
+    };
+};
+type InitProperties = {
+    /**
+     * Sets the NJS of all notes
+     */
+    njs: number;
+    /**
+     * Sets the offset of all notes
+     */
+    offset: number;
+    /**
+     * Imports the lightshow from another difficulty.
+     */
+    lightshow?: string;
+};
+type FinalizeProperties = {
+    translateToV3?: boolean;
+    translateToV2?: boolean;
+    /**
+     * Formats and indents the file.
+     * SIGNIFICANTLY INCREASES FILESIZE, DISABLE BEFORE FINAL RUN
+     */
+    formatting?: boolean;
+    /**
+     * showVanillaStats is VERY performance heavy and will slow down your script
+     */
+    showVanillaStats?: {
+        notes?: boolean;
+        walls?: boolean;
+        bombs?: boolean;
+        lights?: boolean;
+    };
+    /**
+     * showModdedStats is VERY performance heavy and will slow down your script
+     */
+    showModdedStats?: {
+        notes?: boolean;
+        walls?: boolean;
+        bombs?: boolean;
+        lights?: boolean;
+        customEvents?: boolean;
+        pointDefinitions?: boolean;
+        showEnvironmentStats?: boolean;
+    };
+};
 
 function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): WALL[] {
     const wallArr: WALL[] = [];
@@ -484,6 +552,20 @@ export namespace Map {
         for(let i = 0; i <= 100; i++) {
             console.log("")
         }
+        infoFile._difficultyBeatmapSets.forEach((x : any) => {
+            if (Object.keys(x).includes('_beatmapCharacteristicName')) {
+                x._difficultyBeatmaps.forEach((y : any) => {
+                    if (y._beatmapFilename.includes(output)) {
+                        if (!y._customData) 
+                            y._customData = {};
+                        
+                        y._customData._suggestions = undefined;
+                        y._customData._requirements = undefined;
+                    }
+                });
+            }
+        });
+        writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
         console.time('HeckLib ran in')
         const p = properties;
         const NJS = p.njs;

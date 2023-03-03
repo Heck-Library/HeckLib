@@ -1,8 +1,7 @@
 import { writeFileSync } from "fs";
 import { vec3 } from "../consts/types/vec";
 
-
-export class Cinema {
+export default class Cinema {
     config: {
         videoUrl: string
         title?: string

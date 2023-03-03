@@ -5,7 +5,7 @@ import {events} from "./mapHandler";
 
 // #region events
 // deno-lint-ignore no-namespace
-export namespace Builders {
+namespace Builders {
     class BaseEvent {
         json : {
             time: number;
@@ -252,4 +252,7 @@ export namespace Builders {
         }
     }
 }
+
+export default Builders;
+
 // #endregion

@@ -1,6 +1,7 @@
 import { shaderType,geoShape } from "../consts/types/environment";
 import { vec3 } from "../consts/types/vec";
-import Environment,{ Material } from "../src/environment";
+import Material from "../environment/material";
+import Environment from "../environment/environment";
 import { readFileSync } from "fs";
 
 export default class ModelEnvironment {

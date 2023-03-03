@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { writeFileSync, readFileSync } from 'fs';
-import { noteJump,effects,energy,enabledWall,speed } from "../src/types";
+import { noteJump,effects,energy,enabledWall,speed } from "../consts/types/playerOptions";
 
 let infoFile: Record<string, any>;
 

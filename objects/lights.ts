@@ -1,6 +1,10 @@
-import { LIGHT, lightCustomData, lightData, lightType, lightValue } from "./types"
+import { lightType } from "../consts/types/lights/lightType";
+import { lightValue } from "../consts/types/lights/lightValue";
+import { LIGHT } from "../consts/types/lights/LIGHT";
+import { lightData } from "../consts/types/lights/lightData";
+import { lightCustomData } from "../consts/types/lights/lightCustomData";
 
-export class LightEvent {
+export default class LightEvent {
     static readonly Direction = {
         CCW: 0,
         CW: 1
