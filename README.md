@@ -27,6 +27,9 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > 
 > Run `hecklib i` in your terminal to install HeckLib for your map.
 
+### Updating HeckLib
+> Run `hecklib u` in your terminal to update all HeckLib files to the most recent version.
+
 ## Scripting
 
 ### Editing
