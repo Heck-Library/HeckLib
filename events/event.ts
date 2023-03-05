@@ -6,7 +6,7 @@ import AssignPlayerToTrack from './assignPlayerToTrack';
 import AssignTrackParent from './assignTrackParent';
 import Builders from './builder';
 
-const CustomEvent = {
+const Event = {
     AnimateComponent,
     AnimateTrack,
     AssignFogTrack,
@@ -15,4 +15,4 @@ const CustomEvent = {
     AssignTrackParent,
     Builders
 };
-export default CustomEvent;
+export default Event;
