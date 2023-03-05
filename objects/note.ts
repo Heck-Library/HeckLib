@@ -7,7 +7,7 @@ import {
     noteDir,
     noteType
 } from "../consts/types/objects";
-import {bombs, notes, V3} from "../src/mapHandler";
+import {bombs, notes, V3} from "../map/mapHandler";
 
 export default class Note { /**
      * Arrow direction values.

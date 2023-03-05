@@ -1,4 +1,4 @@
-import { Map } from './src/mapHandler';
+import { Map } from './map/mapHandler';
 import { diffFile } from './consts/difficulty';
 import Difficulty from './consts/difficulty';
 

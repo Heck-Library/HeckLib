@@ -1,2 +1,2 @@
-export * from './mapHandler'
+export * from '../map/mapHandler'
 export * from './builder'

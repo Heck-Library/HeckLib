@@ -3,7 +3,7 @@ import Shader from "../consts/shader";
 import { shaderType } from "../consts/types/environment";
 import { Track } from "../consts/types/objects";
 import { vec3 } from "../consts/types/vec";
-import { materialNames, materials, V3 } from "../src/mapHandler";
+import { materialNames, materials, V3 } from "../map/mapHandler";
 
 export default class Material {
   stuff: Record<string, any>;

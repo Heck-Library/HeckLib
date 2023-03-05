@@ -3,7 +3,7 @@ import { WALL,Track } from "../consts/types/objects";
 import { vec3anim,vec4 } from "../consts/types/vec";
 import AnimateTrack from "../events/animateTrack";
 import Wall from "../objects/wall";
-import { walls } from "../src/mapHandler";
+import { walls } from "../map/mapHandler";
 import { JsonModel } from "../consts/types/JsonModel";
 
 export default class ModelWall {

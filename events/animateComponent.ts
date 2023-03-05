@@ -1,5 +1,5 @@
 import { animComponentData } from "../consts/types/animation";
-import { V3 } from "../src/mapHandler";
+import { V3 } from "../map/mapHandler";
 import BaseEvent from "./baseEvent";
 
 export default class AnimateComponent extends BaseEvent {
