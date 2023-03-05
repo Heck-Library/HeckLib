@@ -7,7 +7,13 @@ export type POINTDEFINITION = {
 };
 
 export type parentTrackType = {
+    /**
+     * The children will be assigned to this track.
+     */
     parentTrack: Track;
+    /**
+     * These tracks will be assigned under the parent track.
+     */
     childrenTracks: string[];
 };
 
@@ -16,34 +22,108 @@ export type playerTrackType = {
 };
 
 export type animateTrackData = {
+    /**
+     * The track called for the animation.
+     */
     track: Track;
+    /**
+     * Duration of the animation in beats.
+     */
     duration: number;
+    /**
+     * The easing used for the animation.
+     */
     easing?: string;
+    /**
+     * The position animation.
+     */
     position?: vec3anim;
+    /**
+     * The local position animation.
+     */
     localPosition?: vec3anim;
+    /**
+     * The rotation animation.
+     */
     rotation?: vec3anim;
+    /**
+     * The local rotation animation.
+     */
     localRotation?: vec3anim;
+    /**
+     * The scale animation.
+     */
     scale?: vec3anim;
+    /**
+     * The color animation.
+     */
     color?: vec4anim;
+    /**
+     * The dissolve animation.
+     */
     dissolve?: vec1anim;
+    /**
+     * The dissolve arrow animation.
+     */
     dissolveArrow?: vec1anim;
+    /**
+     * The interactable animation.
+     */
     interactable?: vec1anim;
+    /**
+     * The time animation.
+     */
     timeAnim?: vec1anim;
 };
 
 export type pathAnimData = {
+    /**
+     * The track called for the animation.
+     */
     track: Track;
+    /**
+     * The easing used for the animation.
+     */
     easing?: string;
+    /**
+     * The position animation.
+     */
     position?: vec3anim;
-    localPosition?: vec3anim;
+    /**
+     * The definite position animation.
+     */
     definitePosition?: vec3anim;
+    /**
+     * The rotation animation.
+     */
     rotation?: vec3anim;
+    /**
+     * The local rotation animation.
+     */
     localRotation?: vec3anim;
+    /**
+     * The scale animation.
+     */
     scale?: vec3anim;
+    /**
+     * The color animation.
+     */
     color?: vec4anim;
+    /**
+     * The dissolve animation.
+     */
     dissolve?: vec1anim;
+    /**
+     * The dissolve arrow animation.
+     */
     dissolveArrow?: vec1anim;
+    /**
+     * The interactable animation.
+     */
     interactable?: vec1anim;
+    /**
+     * The time animation.
+     */
 };
 
 export type animComponentData = {
