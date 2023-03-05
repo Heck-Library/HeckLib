@@ -7,7 +7,19 @@ export default class AssignTrackParent extends BaseEvent{
         type: "AssignTrackParent"
         data: parentTrackType
     }
-    
+    /**
+     * Creates an AssignTrackParent event.
+     * ```ts
+     * new AssignTrackParent(0, {
+     *     parentTrack: "parent",
+     *     childrenTrack: [
+     *         "track1",
+     *         "track2",
+     *         "track3"
+     *     ]
+     * }).push();
+     * ```
+     */
     constructor(time: number, eventData: parentTrackType) {
         super()
         this.json = {

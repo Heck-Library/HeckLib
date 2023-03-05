@@ -8,7 +8,12 @@ export default class AssignPlayerToTrack extends BaseEvent{
         type: "AssignPlayerToTrack"
         data: playerTrackType
     }
-
+    /**
+     * Creates an AssignPlayerToTrack event.
+     * ```ts
+     * new AssignPlayerToTrack(0, "playerTrack").push();
+     * ```
+     */
     constructor(time: number, track: Track) {
         super()
         this.json = {
