@@ -12,22 +12,65 @@ import { infoFile } from "../consts/info";
 export const pointDefinitions = ["NULL"];
 
 export let environment: any[];
+/**
+ * Array that contains all the notes in the map.
+ */
 export let notes: NOTE[];
+/**
+ * Array that contains all the bombs in the map.
+ * DOES NOT WORK WITH V2!
+ */
 export let bombs: any[];
+/**
+ * Array that contains all the walls in the map.
+ */
 export let walls: WALL[];
+/**
+ * Array that contains all the custom events in the map.
+ */
 export let events: CUSTOMEVENT[];
+/**
+ * Object that contains all the materials in the map.
+ */
 export let materials: any = {};
+/**
+ * Array that contains all the geometry objects in the map.
+ */
 export let geometry: any[];
+/**
+ * Array that contains all the point definitions in the map.
+ */
 export const definitions: POINTDEFINITION[] = [];
+/**
+ * Array that contains all the light events in the map.
+ */
 export let lights: LIGHT[] = [];
+/**
+ * Array that contains all the fake notes in the map.
+ * DOES NOT WORK IN V2!
+ */
 export let fakeNotes: any[];
+/**
+ * Array that contains all the fake walls in the map.
+ * DOES NOT WORK IN V2!
+ */
 export let fakeWalls: any[];
+/**
+ * Array that contains all the fake bombs in the map.
+ * DOES NOT WORK IN V2!
+ */
 export let fakeBombs: any[];
+/**
+ * Array that contains all the material names used in the map.
+ */
 export const materialNames: string[] = [];
 
 export let activeInput: string;
 export let activeOutput: string;
 export let activeLightshow: string;
+/**
+ * A boolean variable that indicates whether the map is V2 or V3.
+ */
 export let V3: boolean;
 
 let formatting = false
@@ -523,7 +566,6 @@ function showStats(properties?: FinalizeProperties): statsType {
     };
 }
 
-// deno-lint-ignore no-namespace
 export namespace Map {
     // TODO Lightshow importer 
     function lightshowImport(file: string) {
@@ -547,6 +589,11 @@ export namespace Map {
      * @param input The input file for the difficulty.
      * @param output The output file for the difficulty.
      * @param properties The additional properties such as NJS and offset.
+     * ```ts
+     * const diff = Map.initialize(INPUT, OUTPUT, {
+     *     njs: 18,
+     *     offset: 0
+     * });
      */
     export function initialize(input: string, output: string, properties: InitProperties): Record<string, any> {
         for(let i = 0; i <= 100; i++) {
@@ -661,6 +708,17 @@ export namespace Map {
     
     /**
      * @param difficulty The difficulty that the map should be written to.
+     * @param properties Miscellaneous properties for the script, such as how it's exported.
+     * Map.finalize(difficulty, {
+     *     formatting: true,
+     *     showModdedStats: {
+     *         customEvents: true,
+     *         notes: true,
+     *         lights: true,
+     *         pointDefinitions: true,
+     *         walls: true
+     *     }
+     * });
      */
     export function finalize(difficulty: any, properties?: FinalizeProperties): void {
         const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
