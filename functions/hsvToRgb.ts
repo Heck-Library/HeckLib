@@ -11,15 +11,12 @@
  */
 export default function HSVtoRGB(hue : number, saturation : number, value : number): [number, number, number] {
     const h = hue;
-    let s;
-    let v;
+    let s = 1;
+    let v = 1;
     let r: number,
         g: number,
         b: number;
-    if (arguments.length === 1) {
-        s = 1;
-        v = 1;
-    } else {
+    if (arguments.length !== 1) {
         s = saturation;
         v = value;
     }
