@@ -5,32 +5,34 @@ import { Track } from "../consts/types/objects";
 import { vec3 } from "../consts/types/vec";
 import { environment, V3 } from "../map/mapHandler";
 
-export default class Environment {
-    e: {
-        _id?: string;
-        _lookupMethod?: "Regex" | "Contains" | "Exact";
-        _duplicate?: number;
-        _active?: boolean;
-        _scale?: vec3;
-        _position?: vec3;
-        _localPosition?: vec3;
-        _rotation?: vec3;
-        _localRotation?: vec3;
-        _lightID?: number;
+interface IEnvironment {
+    _id?: string;
+    _lookupMethod?: "Regex" | "Contains" | "Exact";
+    _duplicate?: number;
+    _active?: boolean;
+    _scale?: vec3;
+    _position?: vec3;
+    _localPosition?: vec3;
+    _rotation?: vec3;
+    _localRotation?: vec3;
+    _lightID?: number;
+    _track?: Track;
+    _geometry?: {
+        _type: geoShape;
+        _material: string | mat;
+        _collision?: boolean;
         _track?: Track;
-        _geometry?: {
-            _type: geoShape;
-            _material: string | mat;
-            _collision?: boolean;
-            _track?: Track;
-        };
     };
+}
+
+export default class Environment {
+    e: IEnvironment;
 
     constructor() {
         this.e = {};
     }
     regex(x: string | RegExp) {
-        let id;
+        let id: string;
         if (typeof x !== "string") {
             id = x.toString().replaceAll("/", "");
         } else {

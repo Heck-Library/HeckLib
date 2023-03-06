@@ -4,73 +4,80 @@ import { noteJump,effects,energy,enabledWall,speed } from "../consts/types/playe
 
 let infoFile: Record<string, any>;
 
+interface ISettings {
+    _playerOptions: {
+        _leftHanded?: boolean;
+        _playerHeight?: number;
+        _automaticPlayerHeight?: boolean;
+        _sfxVolume?: number;
+        _reduceDebris?: boolean;
+        _noTextsAndHuds?: boolean;
+        _noFailEffects?: boolean;
+        _advancedHud?: boolean;
+        _autoRestart?: boolean;
+        _saberTrailIntensity?: number;
+        _noteJumpDurationTypeSettings?: noteJump;
+        _noteJumpFixedDuration?: number;
+        _noteJumpStartBeatOffset?: number;
+        _hideNoteSpawnEffect?: boolean;
+        _adaptiveSfx?: number;
+        _environmentEffectsFilterDefaultPreset?: effects;
+        _environmentEffectsFilterExpertPlusPreset?: effects;
+    };
+    _modifiers: {
+        _energyType?: energy;
+        _noFailOn0Energy?: boolean;
+        _instaFail?: boolean;
+        _failOnSaberClash?: boolean;
+        _enabledObstacleType?: enabledWall;
+        _fastNotes?: boolean;
+        _strictAngles?: boolean;
+        _disappearingArrows?: boolean;
+        _ghostNotes?: boolean;
+        _noBombs?: boolean;
+        _songSpeed?: speed;
+        _noArrows?: boolean;
+        _proMode?: boolean;
+        _zenMode?: boolean;
+        _smallCubes?: boolean;
+    };
+    _environments: {
+        _overrideEnvironments?: boolean;
+    };
+    _colors: {
+        _overrideDefaultColors?: boolean;
+    };
+    _graphics: {
+        _mirrorGraphicsSettings?: 0 | 1 | 2 | 3;
+        _mainEffectGraphicsSettings?: 0 | 1;
+        _smokeGraphicsSettings?: 0 | 1;
+        _burnMarkTrailsEnabled?: boolean;
+        _screenDisplacementEffectsEnabled?: boolean;
+        _maxShockwaveParticles?: 0 | 1 | 2;
+    };
+    _chroma: {
+        _disableChromaEvents?: boolean;
+        _disableEnvironmentEnhancements?: boolean;
+        _disableNoteColoring?: boolean;
+        _forceZenModeWalls?: boolean;
+    };
+    _countersPlus: {
+        _mainEnabled?: boolean;
+    };
+}
+
 /**
  * Settings setter properties
  */
 export default class Settings {
-    s : {
-        _playerOptions: {
-            _leftHanded?: boolean;
-            _playerHeight?: number;
-            _automaticPlayerHeight?: boolean;
-            _sfxVolume?: number;
-            _reduceDebris?: boolean;
-            _noTextsAndHuds?: boolean;
-            _noFailEffects?: boolean;
-            _advancedHud?: boolean;
-            _autoRestart?: boolean;
-            _saberTrailIntensity?: number;
-            _noteJumpDurationTypeSettings?: noteJump;
-            _noteJumpFixedDuration?: number;
-            _noteJumpStartBeatOffset?: number;
-            _hideNoteSpawnEffect?: boolean;
-            _adaptiveSfx?: number;
-            _environmentEffectsFilterDefaultPreset?: effects;
-            _environmentEffectsFilterExpertPlusPreset?: effects;
-        };
-        _modifiers: {
-            _energyType?: energy;
-            _noFailOn0Energy?: boolean;
-            _instaFail?: boolean;
-            _failOnSaberClash?: boolean;
-            _enabledObstacleType?: enabledWall;
-            _fastNotes?: boolean;
-            _strictAngles?: boolean;
-            _disappearingArrows?: boolean;
-            _ghostNotes?: boolean;
-            _noBombs?: boolean;
-            _songSpeed?: speed;
-            _noArrows?: boolean;
-            _proMode?: boolean;
-            _zenMode?: boolean;
-            _smallCubes?: boolean;
-        };
-        _environments: {
-            _overrideEnvironments?: boolean;
-        };
-        _colors: {
-            _overrideDefaultColors?: boolean;
-        };
-        _graphics: {
-            _mirrorGraphicsSettings?: 0 | 1 | 2 | 3;
-            _mainEffectGraphicsSettings?: 0 | 1;
-            _smokeGraphicsSettings?: 0 | 1;
-            _burnMarkTrailsEnabled?: boolean;
-            _screenDisplacementEffectsEnabled?: boolean;
-            _maxShockwaveParticles?: 0 | 1 | 2;
-        };
-        _chroma: {
-            _disableChromaEvents?: boolean;
-            _disableEnvironmentEnhancements?: boolean;
-            _disableNoteColoring?: boolean;
-            _forceZenModeWalls?: boolean;
-        };
-        _countersPlus: {
-            _mainEnabled?: boolean;
-        };
-    };
-    f : string;
+    private s : ISettings;
+    private f : string;
 
+    /**
+     * Sets the recommended settings for the player to use for the map.
+     * This makes the settings prompt screen known as the "Settings setter" appear.
+     * @param filename Set this as your OUTPUT difficulty name
+     */
     constructor(filename : string) {
         this.s = {
             _playerOptions: {},

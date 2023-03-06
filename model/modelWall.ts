@@ -7,7 +7,7 @@ import { walls } from "../map/mapHandler";
 import { JsonModel } from "../consts/types/JsonModel";
 
 export default class ModelWall {
-    walls: WALL[] = [];
+    private walls: WALL[] = [];
     constructor(time: number, filePath: string) {
         const model = JSON.parse(readFileSync(filePath, 'utf-8'))
         model.forEach((x: JsonModel) => {
