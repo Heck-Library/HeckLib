@@ -3,13 +3,13 @@ import * as fs from 'fs'
 import { infoFile } from '../consts/info';
 
 
-/**
- * Adds requirements to the map
- */
 export default class Requirement {
-    r : string[];
-    f : string;
-
+    private r : string[];
+    private f : string;
+    /**
+     * Sets the required mods for the map.
+     * @param filename Set this as your OUTPUT difficulty name.
+     */
     constructor(filename : string) {
         this.r = [];
         this.f = filename;

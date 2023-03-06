@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import {readFileSync, writeFileSync} from 'fs'
+import { writeFileSync} from 'fs'
 import {infoFile} from '../consts/info';
-/**
- * Adds suggestions to the map
- */
 export default class Suggestion {
-    s : string[];
-    f : string;
+    private s : string[];
+    private f : string;
+    /**
+     * Adds suggestions to the map
+     */
 
     constructor(filename : string) {
         this.s = [];
