@@ -7,11 +7,12 @@ const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
     njs: 16,
-    offset: 0
+    offset: 0,
+    format: 'V2'
 });
 // #region Noodle stuff below
 
-
+console.log(difficulty)
 
 
 // #endregion Noodle stuff above

@@ -1,13 +1,15 @@
 // deno-lint-ignore-file no-explicit-any
 import { readFileSync, writeFileSync } from "fs";
 import { CUSTOMEVENT, POINTDEFINITION } from "../consts/types/animation";
-import { NOTE, WALL, customNoteData, lineIndex, lineLayer, noteDir, noteType } from "../consts/types/objects";
+import { NOTE, WALL, customNoteData, lineIndex, lineLayer, noteDir, noteType, BOMB } from "../consts/types/objects";
 import { unknownAnimation } from "../consts/types/vec";
 import Note from "../objects/note";
 import Wall from "../objects/wall";
 import LightEvent from "../objects/lights";
 import { LIGHT } from "../consts/types/lights/light";
 import { infoFile } from "../consts/info";
+import { IV3Map } from "./IV3Map";
+import { IV2Map } from "./IV2Map";
 
 export const pointDefinitions = ["NULL"];
 
@@ -20,7 +22,7 @@ export let notes: NOTE[];
  * Array that contains all the bombs in the map.
  * DOES NOT WORK WITH V2!
  */
-export let bombs: any[];
+export let bombs: BOMB[];
 /**
  * Array that contains all the walls in the map.
  */
@@ -111,6 +113,12 @@ type InitProperties = {
      * Imports the lightshow from another difficulty.
      */
     lightshow?: string;
+    /**
+     * Whether the map should export as V2 or V3
+     * This will enable V3 features even in V2 maps
+     * WARNING: Will export as selected format
+     */
+    format?: "V2"|"V3";
 };
 type FinalizeProperties = {
     translateToV3?: boolean;
@@ -142,6 +150,7 @@ type FinalizeProperties = {
         showEnvironmentStats?: boolean;
     };
 };
+
 
 function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): WALL[] {
     const wallArr: WALL[] = [];
@@ -585,6 +594,63 @@ export namespace Map {
         if (typeof diff._version !== 'undefined') V3 = false;
         if (typeof diff.version !== 'undefined') V3 = true;
     }
+    function V3toV2(diff: IV3Map) {
+        const v2Diff: IV2Map = {
+            _version: "2.2.0",
+            _notes: [],
+            _obstacles: [],
+            _events: [],
+            _waypoints: [],
+            _customData: {}
+        }
+        diff.colorNotes.forEach(n => {
+            const note = {
+                _time: n.b,
+                _lineIndex: n.x,
+                _lineLayer: n.y,
+                _type: n.c,
+                _cutDirection: n.d,
+                _customData: {}
+            };
+            v2Diff._notes.push(note)
+        });
+        diff.bombNotes.forEach(n => {
+            const bomb = {
+                _time: n.b,
+                _lineIndex: n.x,
+                _lineLayer: n.y,
+                _type: 3,
+                _cutDirection: 0,
+                _customData: {}
+            };
+            v2Diff._notes.push(bomb)
+        });
+        diff.obstacles.forEach(w => {
+            let wallType = 0;
+            if (w.y > 0) wallType = 1;
+            const wall = {
+                _time: w.b,
+                _lineIndex: w.x,
+                _type: wallType,
+                _duration: w.d,
+                _width: w.w,
+                _customData: {}
+            };
+            v2Diff._obstacles.push(wall)
+        });
+        diff.basicBeatmapEvents.forEach(l => {
+            let floatValue = 1.0;
+            if (l.f) floatValue = l.f;
+            const light = {
+                _time: l.b,
+                _type: l.et,
+                _value: l.i,
+                _floatValue: floatValue,
+                _customData: {}
+            };
+            v2Diff._obstacles.push(light)
+        });
+    }
     /**
      * @param input The input file for the difficulty.
      * @param output The output file for the difficulty.
@@ -622,8 +688,23 @@ export namespace Map {
             lightshowImport(`./${p.lightshow}`)
         }
         const info = infoFile;
+        let translate = false;
         isV3(`./${input}`);
-        const diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
+        if (properties.format) {
+            translate = true;
+            switch (properties.format) {
+                case "V2":
+                    V3 = false;
+                    break;
+                case "V3":
+                    V3 = true;
+                    break;
+            }
+        }
+        let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
+        if (translate) {
+            if (diff._version) diff = V3toV2(diff);
+        }
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
                 if (y._settings) delete(y._settings)
@@ -646,8 +727,7 @@ export namespace Map {
                 }
             })
         }
-    
-    
+
         if (!V3) {
             notes = JSONtoNotes(diff._notes, NJS, offset);
             walls = JSONtoWalls(diff._obstacles, NJS, offset);
@@ -725,12 +805,6 @@ export namespace Map {
         if (properties) {
             const p = properties;
             if (p.formatting) formatting = true;
-            if (p.translateToV3) {
-                V3 = true;
-            }
-            if (p.translateToV2) {
-                V3 = false;
-            }
         }
         const jsonP = Math.pow(10, precision);
         const sortP = Math.pow(10, 2);

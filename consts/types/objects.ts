@@ -50,6 +50,13 @@ export type NOTE = {
     data: customNoteData;
     anim: animationData;
 };
+export type BOMB = {
+    time: number;
+    x?: lineIndex;
+    y?: lineLayer;
+    data: customNoteData;
+    anim: animationData;
+};
 
 export type noteData = {
     time: number;
