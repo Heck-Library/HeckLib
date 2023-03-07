@@ -6,7 +6,7 @@ import { unknownAnimation } from "../consts/types/vec";
 import Note from "../objects/note";
 import Wall from "../objects/wall";
 import LightEvent from "../objects/lights";
-import { LIGHT } from "../consts/types/lights/LIGHT";
+import { LIGHT } from "../consts/types/lights/light";
 import { infoFile } from "../consts/info";
 
 export const pointDefinitions = ["NULL"];

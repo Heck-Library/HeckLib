@@ -1,15 +1,15 @@
 import { lightType } from "../consts/types/lights/lightType";
 import { lightValue } from "../consts/types/lights/lightValue";
-import { LIGHT } from "../consts/types/lights/LIGHT";
+import { LIGHT } from "../consts/types/lights/light";
 import { lightData } from "../consts/types/lights/lightData";
 import { lightCustomData } from "../consts/types/lights/lightCustomData";
 
 export default class LightEvent {
-    static readonly Direction = {
+    static readonly Direction: Record<string, 0 | 1> = {
         CCW: 0,
         CW: 1
     }
-    static readonly Type = {
+    static readonly Type: Record<string, lightType> = {
         BackLasers: 0,
         RingLights: 1,
         LRotatingLasers: 2,
@@ -33,7 +33,7 @@ export default class LightEvent {
         GagaOLTowerHeight: 18,
         GagaORTowerHeight: 18
     }
-    static readonly Value = {
+    static readonly Value: Record<string, lightValue> = {
         Off: 0,
         BOn: 1,
         BFlash: 2,
