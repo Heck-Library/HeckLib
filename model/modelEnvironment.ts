@@ -1,4 +1,4 @@
-import { shaderType,geoShape } from "../consts/types/environment";
+import { shaderType,geoShape } from "../consts/types/environment/environment";
 import { vec3 } from "../consts/types/vec";
 import Material from "../environment/material";
 import Environment from "../environment/environment";

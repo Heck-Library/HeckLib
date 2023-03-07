@@ -1,7 +1,7 @@
-import Shader from "../shader";
-import Shape from "../shape";
-import { Track } from "./objects";
-import { vec3 } from "./vec";
+import Shader from "../../shader";
+import Shape from "../../shape";
+import { Track } from "../objects";
+import { vec3 } from "../vec";
 
 export type geoShape =
     | string

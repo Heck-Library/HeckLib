@@ -1,10 +1,17 @@
 import { readFileSync } from "fs";
 import { WALL,Track } from "../consts/types/objects";
-import { vec3anim,vec4 } from "../consts/types/vec";
+import { vec3, vec3anim,vec4 } from "../consts/types/vec";
 import AnimateTrack from "../events/animateTrack";
 import Wall from "../objects/wall";
 import { walls } from "../map/mapHandler";
-import { JsonModel } from "../consts/types/JsonModel";
+import { geoShape } from "../consts/types/environment/environment";
+type JsonModel = {
+    position: vec3;
+    rotation: vec3;
+    scale: vec3;
+    shape: geoShape;
+    color: vec4;
+};
 
 export default class ModelWall {
     private walls: WALL[] = [];
