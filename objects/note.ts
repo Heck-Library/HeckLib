@@ -11,7 +11,7 @@ import {bombs, notes, V3} from "../map/mapHandler";
 
 export default class Note { /**
      * Arrow direction values.
-     * @example Note.Direction.Down returns 1
+     * @example `Note.Direction.Down` returns `1`
      */
     static Direction : Record < string,
     noteDir > = {
@@ -25,8 +25,13 @@ export default class Note { /**
         DownR: 7,
         Dot: 8
     };
-    static Type : Record < string,
-    noteType > = {
+    /**
+     * Note type/color values.
+     * It is recommended to memorise these values
+     * for the sake of more compact script.
+     * @example `Note.Type.Red` returns `0`.
+     */
+    static Type : Record < string, noteType > = {
         Red: 0,
         Blue: 1,
         /**
@@ -39,7 +44,25 @@ export default class Note { /**
         cD: customNoteData;
         aD: animationData;
     };
-    constructor(noteData : noteData, customData? : customNoteData, animatinoData? : animationData) {
+    /**
+     * Creates a new note as a class object
+     * ```ts
+     * new Note({
+     *     time: 69
+     * }, {
+     *     scale: [2, 2, 2]
+     * }, {
+     *     definitePosition: [
+     *         [0, -10, 10, 0],
+     *         [0, 7, 12, 1, ease.Out.Cubic]
+     *     ]
+     * }).push();
+     * ```
+     * @param noteData All the vanilla data for the note
+     * @param customData All the custom data of the note, such as `color`
+     * @param animationData All the animation data of the note, such as `dissolve`
+     */
+    constructor(noteData : noteData, customData? : customNoteData, animationData? : animationData) {
         this.json = {
             nD: noteData,
             cD: {},
@@ -48,8 +71,8 @@ export default class Note { /**
         if (customData) 
             this.json.cD = customData;
         
-        if (animatinoData) 
-            this.json.aD = animatinoData;
+        if (animationData) 
+            this.json.aD = animationData;
         
 
         if (!noteData.time) 
@@ -176,7 +199,6 @@ export default class Note { /**
 
     /**
      * Pushes the note to the map as a class.
-     * @returns Note
      */
     push() {
         if (V3 && this.type == 3) {
