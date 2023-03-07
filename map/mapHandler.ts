@@ -601,7 +601,13 @@ export namespace Map {
             _obstacles: [],
             _events: [],
             _waypoints: [],
-            _customData: {}
+            _customData: {
+                _bookmarks: [],
+                _customEvents: [],
+                _environment: [],
+                _pointDefinitions: [],
+                _materials: {}
+            }
         }
         diff.colorNotes.forEach(n => {
             const note = {
@@ -650,6 +656,30 @@ export namespace Map {
             };
             v2Diff._obstacles.push(light)
         });
+        if (diff.customData) {
+            const d = diff.customData;
+            if (d.customEvents) {
+                d.customEvents.forEach(e => {
+                    let strEvent = JSON.stringify(e);
+                    strEvent = strEvent
+                    .replace('"b":', '"time":')
+                    .replace('"t":', '"type":')
+                    .replace('"d":', '"data":')
+                    .replace('"offsetPosition":', '"position":')
+                    .replace('"offsetWorldRotation":', '"rotation":')
+                    .replace(/"(.+)":/g, '"_$1":')
+                    v2Diff._customData._customEvents.push(JSON.parse(strEvent))
+                })
+            }
+            if (d.environment) {
+                d.environment.forEach(e => {
+                    let strEnv = JSON.stringify(e);
+                    strEnv = strEnv.replace(/"(.+)":/g, '"_$1":')
+                    v2Diff._customData._environment.push(JSON.parse(strEnv))
+                })
+            }
+        }
+        return v2Diff;
     }
     /**
      * @param input The input file for the difficulty.
@@ -703,7 +733,7 @@ export namespace Map {
         }
         let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
         if (translate) {
-            if (diff._version) diff = V3toV2(diff);
+            if (properties.format == "V2") diff = V3toV2(diff);
         }
         infoFile._difficultyBeatmapSets.forEach((x: any) => {
             x._difficultyBeatmaps.forEach((y: any) => {
@@ -739,10 +769,10 @@ export namespace Map {
         
             const customData = diff._customData;
 
-            customData._customEvents = [];
-            customData._pointDefinitions = [];
-            customData._environment = [];
-            customData._materials = {};
+            if (!customData._customEvents) customData._customEvents = [];
+            if (!customData._pointDefinitions) customData._pointDefinitions = [];
+            if (!customData._environment) customData._environment = [];
+            if (!customData._materials) customData._materials = {};
         
             events = diff._customData._customEvents;
             environment = customData._environment;

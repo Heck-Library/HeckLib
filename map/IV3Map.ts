@@ -1,4 +1,4 @@
-import { BOMB, NOTE, WALL } from "../consts/mod";
+import { BOMB, NOTE, vec1anim, vec3anim, vec4anim, WALL } from "../consts/mod";
 import { LIGHT } from "../consts/types/lights/light";
 
 type BPMEVENT = {
@@ -28,4 +28,11 @@ export interface IV3Map {
     lightTranslationEventBoxGroups: Record<string, any>[], // Introduced in version 3.2.0
     basicEventTypesWithKeywords: {},
     useNormalEventsAsCompatibleEvents: false,
+    customData?: {
+        bookmarks?: Record<string, any>[],
+        pointDefinitions?: Record<string, vec1anim|vec3anim|vec4anim>,
+        customEvents?: Record<string,any>[],
+        environment?: Record<string, any>[],
+        materials?: Record<string, any>
+    }
 }

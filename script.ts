@@ -12,7 +12,7 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 });
 // #region Noodle stuff below
 
-console.log(difficulty)
+
 
 
 // #endregion Noodle stuff above
