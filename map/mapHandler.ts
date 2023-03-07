@@ -312,7 +312,7 @@ function wallsToJSON(): Record<string, any>[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":')
         }
         wallJSON = JSON.parse(stringified);
-        if (V3 && Object.keys(wallJSON.customData).includes("fake")) {
+        if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;
             delete walls[walls.indexOf(w)];
             fakeWalls.push(wallJSON)
