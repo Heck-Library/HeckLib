@@ -6,9 +6,8 @@ const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
 const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
 
 const difficulty = Map.initialize(INPUT, OUTPUT, {
-    njs: 16,
-    offset: 0,
-    format: 'V2'
+    njs: 18,
+    offset: 0
 });
 // #region Noodle stuff below
 

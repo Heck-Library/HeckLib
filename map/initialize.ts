@@ -444,14 +444,14 @@ export function initialize(input: string, output: string, properties: InitProper
 
         const customData = diff.customData;
 
-        customData.customEvents = [];
-        customData.pointDefinitions = {};
-        customData.environment = [];
-        customData.materials = {};
+        if (!customData.customEvents) customData.customEvents = [];
+        if (!customData.pointDefinitions) customData.pointDefinitions = [];
+        if (!customData.environment) customData.environment = [];
+        if (!customData.materials) customData.materials = {};
 
         //(output, JSON.stringify(diff, null, 4));
 
-        events = diff.customData.customEvents;
+        events = customData.customEvents;
         environment = customData.environment;
         materials = customData.materials;
         fakeNotes = customData.fakeColorNotes;

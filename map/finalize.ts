@@ -158,7 +158,7 @@ function notesToJSON(): V2JsonNote[] {
 
 function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = []
-    events.forEach((e: CUSTOMEVENT) => {
+    if (events) events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
             b: e.json.time,
             t: e.json.type,
