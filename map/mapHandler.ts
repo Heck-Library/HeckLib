@@ -667,14 +667,14 @@ export namespace Map {
                     .replace('"d":', '"data":')
                     .replace('"offsetPosition":', '"position":')
                     .replace('"offsetWorldRotation":', '"rotation":')
-                    .replace(/"(.+)":/g, '"_$1":')
+                    .replace(/"(\w+)":/g, '"_$1":')
                     v2Diff._customData._customEvents.push(JSON.parse(strEvent))
                 })
             }
             if (d.environment) {
                 d.environment.forEach(e => {
                     let strEnv = JSON.stringify(e);
-                    strEnv = strEnv.replace(/"(.+)":/g, '"_$1":')
+                    strEnv = strEnv.replace(/"(\w+)":/g, '"_$1":')
                     v2Diff._customData._environment.push(JSON.parse(strEnv))
                 })
             }
@@ -863,7 +863,7 @@ export namespace Map {
                 _customData: {
                     _bookmarks: [],
                     _customEvents: customEventsToJSON(),
-                    _environment: [],
+                    _environment: environment,
                     _pointDefinitions: pointDefinitionsToV2JSON(),
                     _materials: {}
                 }
