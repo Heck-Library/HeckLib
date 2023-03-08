@@ -1,7 +1,7 @@
 import { animateTrackData,pathAnimData,parentTrackType,playerTrackType,fogTrackData } from "../consts/types/animation";
 import { Track } from "../consts/types/objects";
 import { vec3anim,vec4anim,vec1anim } from "../consts/types/vec";
-import {events} from "../map/mapHandler";
+import {events} from "../map/initialize";
 
 // #region events
 // deno-lint-ignore no-namespace

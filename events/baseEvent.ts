@@ -1,5 +1,5 @@
 import { animComponentData, animateTrackData, fogTrackData, parentTrackType, pathAnimData, playerTrackType } from "../consts/types/animation";
-import { events } from "../map/mapHandler";
+import { events } from "../map/initialize";
 
 export default class BaseEvent {
     json: {

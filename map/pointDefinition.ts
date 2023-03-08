@@ -1,6 +1,6 @@
 import { POINTDEFINITION } from "../consts/types/animation";
 import { unknownAnimation } from "../consts/types/vec";
-import { definitions,pointDefinitions } from "./mapHandler";
+import { definitions,pointDefinitions } from "./initialize";
 
 export default class PointDefinition {
     private json: POINTDEFINITION;

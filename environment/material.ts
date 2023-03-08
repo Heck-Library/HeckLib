@@ -3,7 +3,7 @@ import Shader from "../consts/shader";
 import { shaderType } from "../consts/types/environment/environment";
 import { Track } from "../consts/types/objects";
 import { vec3 } from "../consts/types/vec";
-import { materialNames, materials, V3 } from "../map/mapHandler";
+import { materialNames, materials, V3 } from "../map/initialize";
 
 interface IMaterial {
     _color: vec3;

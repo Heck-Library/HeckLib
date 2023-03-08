@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import {NOTE, WALL} from "../consts/types/objects";
-import {fakeNotes, notes, fakeWalls, walls} from "../map/mapHandler";
+import {fakeNotes, notes, fakeWalls, walls} from "../map/initialize";
 
 /**
  * @param obj The objects to filter.

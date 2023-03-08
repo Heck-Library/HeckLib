@@ -3,7 +3,7 @@ import { WALL,Track } from "../consts/types/objects";
 import { vec3, vec3anim,vec4 } from "../consts/types/vec";
 import AnimateTrack from "../events/animateTrack";
 import Wall from "../objects/wall";
-import { walls } from "../map/mapHandler";
+import { walls } from "../map/initialize";
 import { geoShape } from "../consts/types/environment/environment";
 type JsonModel = {
     position: vec3;

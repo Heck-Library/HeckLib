@@ -1,6 +1,6 @@
-import { Map } from './map/mapHandler';
 import { diffFile } from './consts/difficulty';
 import Difficulty from './consts/difficulty';
+import Map from './map/mod';
 
 const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
 const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
@@ -11,7 +11,6 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
     format: 'V2'
 });
 // #region Noodle stuff below
-
 
 
 

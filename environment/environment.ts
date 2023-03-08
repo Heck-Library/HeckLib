@@ -3,7 +3,7 @@ import Shape from "../consts/shape";
 import { geoShape, mat } from "../consts/types/environment/environment";
 import { Track } from "../consts/types/objects";
 import { vec3 } from "../consts/types/vec";
-import { environment, V3 } from "../map/mapHandler";
+import { environment, V3 } from "../map/initialize";
 
 interface IEnvironment {
     _id?: string;
