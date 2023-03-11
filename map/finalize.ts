@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
-import { WALL, NOTE, CUSTOMEVENT, unknownAnimation, POINTDEFINITION, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
+import { WALL, NOTE, CUSTOMEVENT, unknownAnimation, POINTDEFINITION, lineIndex, lineLayer, noteType, noteDir, customNoteData, CHAIN } from "../consts/mod";
 import { LIGHT } from "../consts/types/lights/light";
-import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events } from "./initialize";
+import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, chains } from "./initialize";
 
 
 type V2DIFF = {
@@ -20,6 +20,7 @@ type V2DIFF = {
     };
 };
 type FinalizeProperties = {
+    sortObjects?: boolean;
     translateToV3?: boolean;
     translateToV2?: boolean;
     /**
@@ -160,9 +161,9 @@ function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = []
     if (events) events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
-            b: e.json.time,
-            t: e.json.type,
-            d: e.json.data
+            b: e.b,
+            t: e.t,
+            d: e.d
         }
         let stringified = JSON.stringify(eventJSON)
         if (!V3) {
@@ -202,6 +203,34 @@ function lightsToJSON(): Record<string, any>[] {
     return lightArr;
 }
 
+function chainsToJSON(): Record<string, any>[] {
+    const chainArr: any[] = [];
+    chains.forEach((c: CHAIN) => {
+        let chainJSON: Record<string, any> = {
+            b: c.time,
+            x: c.x,
+            y: c.y,
+            c: c.color,
+            d: c.direction,
+            tb: c.endTime,
+            tx: c.endX,
+            ty: c.endY,
+            sc: c.segments,
+            s: c.squish,
+            customData: {
+                ...c.data,
+                animation: {
+                    ...c.anim
+                }
+            }
+        }
+        if (V3 && chainJSON.customData && Object.keys(chainJSON.customData).includes("fake")) {
+            delete chainJSON.customData.fake;
+            fakeNotes.push(chainJSON)
+        } else chainArr.push(chainJSON)
+    });
+    return chainArr;
+}
 type JSONDefV2 = { _name: string, _points: unknownAnimation };
 type JSONDefV3 = Record<string, unknownAnimation>;
 function pointDefinitionsToV3JSON(): Record<string, JSONDefV3> {
@@ -405,9 +434,11 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
                 _materials: {}
             }
         }
-        newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
-        newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
-        newDiff._events.sort((a: any, b: any) => a._time - b._time);
+        if (properties.sortObjects) {
+            newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
+            newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
+            newDiff._events.sort((a: any, b: any) => a._time - b._time);
+        }
 
         if (newDiff._customData._materials.length < 1) {
             delete (difficulty._customData._materials)
@@ -420,13 +451,17 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
     }
     if (V3) {
         difficulty.colorNotes = notesToJSON();
+        difficulty.burstSliders = chainsToJSON();
         difficulty.obstacles = wallsToJSON();
         difficulty.basicBeatmapEvents = lightsToJSON();
         difficulty.customData.customEvents = customEventsToJSON();
         difficulty.customData.pointDefinitions = pointDefinitionsToV3JSON();
-        difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
-        difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
-        difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
+        if (properties.sortObjects) {
+            difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
+            difficulty.burstSliders.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
+            difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
+            difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
+        }
         if (difficulty.customData.materials && Object.keys(difficulty.customData.materials).length < 1) {
             delete difficulty.customData.materials
         }

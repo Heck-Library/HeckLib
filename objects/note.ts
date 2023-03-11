@@ -3,11 +3,17 @@ import {
     customNoteData,
     lineIndex,
     lineLayer,
-    noteData,
     noteDir,
     noteType
 } from "../consts/types/objects";
 import {bombs, notes, V3} from "../map/initialize";
+type noteData = {
+    time: number;
+    x?: lineIndex;
+    y?: lineLayer;
+    type?: noteType;
+    direction?: noteDir;
+};
 
 export default class Note { /**
      * Arrow direction values.

@@ -1,5 +1,14 @@
-import { animationData, customWallData, lineIndex, lineLayer, wallData, wallType } from "../consts/types/objects";
+import { animationData, customWallData, lineIndex, lineLayer } from "../consts/types/objects";
 import { walls } from "../map/initialize";
+type wallType = 0 | 1;
+type wallData = {
+    time: number;
+    x?: lineIndex;
+    y?: lineLayer;
+    duration?: number;
+    width?: number;
+    height?: number;
+};
 
 export default class Wall {
     /**

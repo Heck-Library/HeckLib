@@ -6,7 +6,6 @@ export type lineIndex = 0 | 1 | 2 | 3;
 export type lineLayer = 0 | 1 | 2;
 export type noteDir = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type noteType = 0 | 1 | 3;
-export type wallType = 0 | 1;
 export type WALL = {
     time: number;
     x?: lineIndex;
@@ -16,15 +15,6 @@ export type WALL = {
     height?: number;
     data: customNoteData;
     anim: animationData;
-};
-
-export type wallData = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    duration?: number;
-    width?: number;
-    height?: number;
 };
 
 export type customWallData = {
@@ -50,20 +40,43 @@ export type NOTE = {
     data: customNoteData;
     anim: animationData;
 };
+export type CHAIN = {
+    time: number;
+    x?: number;
+    y?: number;
+    color?: 0 | 1;
+    direction?: 0|1|2|3|4|5|6|7;
+    endTime: number;
+    endX?: number;
+    endY?: number;
+    segments?: number;
+    squish?: number;
+    data: customNoteData;
+    anim: animationData;
+}
+export type ARC = {
+    time: number;
+    x?: number;
+    y?: number;
+    color?: 0 | 1;
+    direction?: 0|1|2|3|4|5|6|7;
+    multiplier?: number;
+    endTime: number;
+    endX?: number;
+    endY?: number;
+    endDirection?: 0|1|2|3|4|5|6|7;
+    endMultiplier?: number;
+    segments?: number;
+    anchor?: 0 | 1 | 2;
+    data: customNoteData;
+    anim: animationData;
+}
 export type BOMB = {
     time: number;
     x?: lineIndex;
     y?: lineLayer;
     data: customNoteData;
     anim: animationData;
-};
-
-export type noteData = {
-    time: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    type?: noteType;
-    direction?: noteDir;
 };
 
 export type customNoteData = {

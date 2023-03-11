@@ -147,6 +147,9 @@ export type fogTrackData = {
 };
 
 export type CUSTOMEVENT = {
+    b?: number;
+    t?: string;
+    d?: fogTrackData | animateTrackData | pathAnimData | playerTrackType | parentTrackType;
     json: {
         time: number;
         type: string;

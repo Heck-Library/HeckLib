@@ -1,12 +1,20 @@
 import { readFileSync, writeFileSync } from "fs";
 import { infoFile } from "../consts/info";
-import { BOMB, CUSTOMEVENT, NOTE, POINTDEFINITION, WALL } from "../consts/mod";
-import { LIGHT } from "../consts/types/lights/light";
+import { ARC, BOMB, CHAIN, CUSTOMEVENT, NOTE, POINTDEFINITION, WALL } from "../consts/mod";
 import LightEvent from "../objects/lights";
 import Note from "../objects/note";
 import Wall from "../objects/wall";
 import { IV2Map } from "./IV2Map";
 import { IV3Map } from "./IV3Map";
+import { LIGHT } from "../consts/types/lights/light";
+import Chain from "../objects/chain";
+import AnimateTrack from "../events/animateTrack";
+import AssignPathAnimation from "../events/assignPathAnimation";
+import AssignPlayerToTrack from "../events/assignPlayerToTrack";
+import AssignTrackParent from "../events/assignTrackParent";
+import AnimateComponent from "../events/animateComponent";
+import AssignFogTrack from "../events/assignFogTrack";
+import Arc from "../objects/arc";
 
 export const pointDefinitions = ["NULL"];
 
@@ -15,6 +23,21 @@ export let environment: any[];
  * Array that contains all the notes in the map.
  */
 export let notes: NOTE[];
+/**
+ * Array that contains all the arcs.
+ * DOES NOT WORK WITH V2!
+ */
+export let arcs: ARC[];
+/**
+ * Array that contains all the burst sliders or chains in the map.
+ * DOES NOT WORK WITH V2!
+ */
+export let chains: CHAIN[];
+/**
+ * Array that contains all the fake burst sliders or chains in the map.
+ * DOES NOT WORK WITH V2!
+ */
+export let fakeChains: CHAIN[];
 /**
  * Array that contains all the bombs in the map.
  * DOES NOT WORK WITH V2!
@@ -166,6 +189,52 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
     return noteArr;
 }
 
+function JSONtoChains(chainInput: Record<string, any>[], NJS: number, offset: number): CHAIN[] {
+    const chainArr: CHAIN[] = [];
+    chainInput.forEach((c: Record<string, any>) => {
+        chainArr.push(new Chain({
+            time: c.b,
+            x: c.x,
+            y: c.y,
+            color: c.c,
+            direction: c.d,
+            endTime: c.tb,
+            endX: c.tx,
+            endY: c.ty,
+            segments: c.sc,
+            squish: c.s
+        }, {
+            njs: NJS,
+            offset: offset
+        }))
+    });
+    return chainArr;
+}
+
+function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number): ARC[] {
+    const arcArr: ARC[] = [];
+    arcInput.forEach((c: Record<string, any>) => {
+        arcArr.push(new Arc({
+            time: c.b,
+            x: c.x,
+            y: c.y,
+            color: c.c,
+            direction: c.d,
+            multiplier: c.mu,
+            endTime: c.tb,
+            endX: c.tx,
+            endY: c.ty,
+            endMultiplier: c.tmu,
+            segments: c.sc,
+            anchor: c.m
+        }, {
+            njs: NJS,
+            offset: offset
+        }))
+    });
+    return arcArr;
+}
+
 function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIGHT[] {
     const lightArr: LIGHT[] = [];
     if (lightsV3) {
@@ -221,6 +290,79 @@ function JSONtoLights(lightInput: Record<string, any>[], lightsV3: boolean): LIG
     }
     return lightArr;
 }
+
+function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
+    const eventArr: CUSTOMEVENT[] = [];
+    if (!V3) {
+        eventInput.forEach((e: Record<string, any>) => {
+            const f = JSON.parse(
+                JSON.stringify(e)
+                .replace(/"_(\w+)":/g,'"_$1":')
+            );
+            switch(f.t) {
+                case "AnimateTrack":
+                    if (!e._data._track) f.data.track = "NULL";
+                    if (!e._data._duration) f.data.duration = 1;
+                    eventArr.push(new AnimateTrack(f.time, f.data));
+                    break;
+                case "AssignPathAnimation":
+                    if (!e._data._track) f.data.track = "NULL";
+                    eventArr.push(new AssignPathAnimation(f.time, f.data));
+                    break;
+                case "AssignPlayerToTrack":
+                    if (!e._data._track) f.data.track = "NULL";
+                    eventArr.push(new AssignPlayerToTrack(f.time, f.data.track));
+                    break;
+                case "AssignTrackParent":
+                    eventArr.push(new AssignTrackParent(f.time, f.data))
+                    break;
+                case "AnimateComponent":
+                    if (!e._data._track) f.data.track = "NULL";
+                    if (!e._data._duration) f.data.duration = 1;
+                    eventArr.push(new AnimateComponent(f.time, f.data))
+                    break;
+                case "AssignFogTrack":
+                    if (!e._data._track) f.data.track = "NULL";
+                    eventArr.push(new AssignFogTrack(f.time, f.data.track))
+                    break;
+            }
+        })
+    }
+    if (V3) {
+        eventInput.forEach((e: Record<string, any>) => {
+            const f = JSON.parse(
+                JSON.stringify(e)
+                .replace('"offsetPosition":','"position":')
+                .replace('"offsetWorldRotation":','"rotation":')
+            );
+            switch(f.t) {
+                case "AnimateTrack":
+                    if (!e.d.track) f.d.track = "NULL";
+                    if (!e.d.duration) f.d.duration = 1;
+                    eventArr.push(new AnimateTrack(f.b, f.d));
+                    break;
+                case "AssignPathAnimation":
+                    if (!e.d.track) f.d.track = "NULL";
+                    eventArr.push(new AssignPathAnimation(f.b, f.d));
+                    break;
+                case "AssignPlayerToTrack":
+                    if (!e.d.track) f.d.track = "NULL";
+                    eventArr.push(new AssignPlayerToTrack(f.b, f.d.track));
+                    break;
+                case "AssignTrackParent":
+                    eventArr.push(new AssignTrackParent(f.b, f.d))
+                    break;
+                case "AnimateComponent":
+                    if (!e.d.track) f.d.track = "NULL";
+                    if (!e.d.duration) f.d.duration = 1;
+                    eventArr.push(new AnimateComponent(f.b, f.d))
+                    break;
+            }
+        })
+    }
+    return eventArr
+}
+
 // TODO Lightshow importer 
 function lightshowImport(file: string) {
     let lV3 = false;
@@ -415,6 +557,7 @@ export function initialize(input: string, output: string, properties: InitProper
         const customData = diff._customData;
 
         if (!customData._customEvents) customData._customEvents = [];
+        else JSONtoCustomEvents(diff._customData._customEvents);
         if (!customData._pointDefinitions) customData._pointDefinitions = [];
         if (!customData._environment) customData._environment = [];
         if (!customData._materials) customData._materials = {};
@@ -426,6 +569,8 @@ export function initialize(input: string, output: string, properties: InitProper
     else if (V3) {
         notes = JSONtoNotes(diff.colorNotes, NJS, offset);
         walls = JSONtoWalls(diff.obstacles, NJS, offset);
+        chains = JSONtoChains(diff.burstSliders, NJS, offset);
+        arcs = JSONtoArcs(diff.sliders, NJS, offset);
         bombs = diff.bombNotes;
         if (!p.lightshow) lights = JSONtoLights(diff.basicBeatmapEvents, V3);
 
@@ -434,6 +579,9 @@ export function initialize(input: string, output: string, properties: InitProper
         }
         if (!diff.customData.fakeColorNotes) {
             diff.customData.fakeColorNotes = [];
+        } else JSONtoCustomEvents(diff.customData.customEvents)
+        if (!diff.customData.fakeBurstSliders) {
+            diff.customData.fakeBurstSliders = [];
         }
         if (!diff.customData.fakeObstacles) {
             diff.customData.fakeObstacles = [];
