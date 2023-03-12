@@ -6,6 +6,6 @@
         "skipDefaultLibCheck": true
     },
     "ts-node": {
-        "swc": true
+        "typeCheck": false
     }
 }
