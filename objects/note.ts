@@ -11,6 +11,7 @@ type noteData = {
     time: number;
     x?: lineIndex;
     y?: lineLayer;
+    angle?: number;
     type?: noteType;
     direction?: noteDir;
 };
@@ -30,14 +31,22 @@ enum Direction {
 enum Type {
     Red = 0,
     Blue = 1,
+    /**
+     * Won't work in V3 due to bombs belonging to a separate array.
+     */
     Bomb = 3
 }
 
 export default class Note {
-
+    /**
+     * Contains all possible note directions.
+     */
     static readonly Direction = Direction;
+    /**
+     * Contains all possible note types.
+     */
     static readonly Type = Type;
-    
+
     private json : {
         nD: noteData;
         cD: customNoteData;
@@ -67,27 +76,15 @@ export default class Note {
             cD: {},
             aD: {}
         };
-        if (customData) 
-            this.json.cD = customData;
+        if (customData) this.json.cD = customData;
+        if (animationData) this.json.aD = animationData;
         
-        if (animationData) 
-            this.json.aD = animationData;
-        
-
-        if (!noteData.time) 
-            this.json.nD.time = 0;
-        
-        if (!noteData.type) 
-            this.json.nD.type = 0;
-        
-        if (!noteData.direction) 
-            this.json.nD.direction = 0;
-        
-        if (!noteData.x) 
-            this.json.nD.x = 0;
-        
-        if (!noteData.y) 
-            this.json.nD.y = 0;
+        if (!noteData.time) this.json.nD.time = 0;
+        if (!noteData.type) this.json.nD.type = 0;
+        if (!noteData.angle) this.json.nD.angle = 0;
+        if (!noteData.direction) this.json.nD.direction = 0;
+        if (!noteData.x) this.json.nD.x = 0;
+        if (!noteData.y) this.json.nD.y = 0;
         
     }
 
@@ -151,6 +148,12 @@ export default class Note {
             return this.json.nD.y;
         
         return 0;
+    }
+    set angle(angle : number) {
+        this.json.nD.angle = angle;
+    }
+    get angle(): number {
+        return this.json.nD.angle;
     }
 
     /**

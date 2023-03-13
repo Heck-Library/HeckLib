@@ -35,6 +35,7 @@ export type NOTE = {
     time: number;
     x?: lineIndex;
     y?: lineLayer;
+    angle?: number;
     type?: noteType;
     direction?: noteDir;
     data: customNoteData;

@@ -119,6 +119,7 @@ function notesToJSON(): V2JsonNote[] {
             b: n.time,
             c: n.type,
             d: n.direction,
+            a: n.angle,
             x: n.x,
             y: n.y,
             customData: {
@@ -146,6 +147,7 @@ function notesToJSON(): V2JsonNote[] {
                 .replace('"d":', '"cutDirection":')
                 .replace('"x":', '"lineIndex":')
                 .replace('"y":', '"lineLayer":')
+                .replace(/"a":\d+,/g, '')
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":')
         }
         noteJSON = JSON.parse(stringified)

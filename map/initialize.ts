@@ -162,6 +162,7 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
                 time: n.b,
                 x: n.x,
                 y: n.y,
+                angle: n.a,
                 type: n.c,
                 direction: n.d
             }, {
@@ -468,6 +469,106 @@ function V3toV2(diff: IV3Map) {
     }
     return v2Diff;
 }
+function V2toV3(diff: IV2Map) {
+    const v3Diff: IV3Map = {
+        version: "3.2.0",
+        bpmEvents: [],
+        rotationEvents: [],
+        colorNotes: [],
+        bombNotes: [],
+        obstacles: [],
+        sliders: [],
+        burstSliders: [],
+        waypoints: [],
+        basicBeatmapEvents: [],
+        colorBoostBeatmapEvents: [],
+        lightColorEventBoxGroups: [],
+        lightRotationEventBoxGroups: [],
+        lightTranslationEventBoxGroups: [],
+        basicEventTypesWithKeywords: {},
+        useNormalEventsAsCompatibleEvents: false,
+        customData: {
+            bookmarks: [],
+            customEvents: [],
+            environment: [],
+            pointDefinitions: {},
+            materials: {}
+        }
+    }
+    diff._notes.forEach(n => {
+        if (n._type == 3) {
+            const bomb = {
+                b: n._time,
+                x: n._lineIndex,
+                y: n._lineIndex,
+                customData: {}
+            }
+            v3Diff.bombNotes.push(bomb)
+        } else {
+            const note = {
+                b: n._time,
+                x: n._lineIndex,
+                y: n._lineLayer,
+                a: 0,
+                c: n._type,
+                d: n._cutDirection,
+                customData: {}
+            };
+            v3Diff.colorNotes.push(note)
+        }
+    });
+    diff._obstacles.forEach(w => {
+        const wall = {
+            b: w._time,
+            x: w._lineIndex,
+            y: w._type,
+            d: w._duration,
+            w: w._width,
+            h: 3 - w._type,
+            customData: {}
+        };
+        v3Diff.obstacles.push(wall)
+    });
+    /*
+    TODO Make the lightshow converter
+    diff._events.forEach(l => {
+        let floatValue = 1.0;
+        if (l.f) floatValue = l.f;
+        const light = {
+            _time: l.b,
+            _type: l.et,
+            _value: l.i,
+            _floatValue: floatValue,
+            _customData: {}
+        };
+        v2Diff._obstacles.push(light)
+    });*/
+    v3Diff.basicBeatmapEvents = [];
+    if (diff._customData) {
+        const d = diff._customData;
+        if (d._customEvents) {
+            d._customEvents.forEach(e => {
+                let strEvent = JSON.stringify(e);
+                strEvent = strEvent
+                    .replace('"_time":', '"b":')
+                    .replace('"_type":', '"t":')
+                    .replace('"_data":', '"d":')
+                    .replace('"_position":', '"offsetPosition":')
+                    .replace('"_rotation":', '"offsetWorldRotation":')
+                    .replace(/"_(\w+)":/g, '"$1":')
+                v3Diff.customData.customEvents.push(JSON.parse(strEvent))
+            })
+        }
+        if (d.environment) {
+            d.environment.forEach(e => {
+                let strEnv = JSON.stringify(e);
+                strEnv = strEnv.replace(/"_(\w+)":/g, '"$1":')
+                v3Diff.customData.environment.push(JSON.parse(strEnv))
+            })
+        }
+    }
+    return v3Diff;
+}
 /**
  * @param input The input file for the difficulty.
  * @param output The output file for the difficulty.
@@ -521,6 +622,7 @@ export function initialize(input: string, output: string, properties: InitProper
     let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
     if (translate) {
         if (properties.format == "V2") diff = V3toV2(diff);
+        if (properties.format == "V3") diff = V2toV3(diff);
     }
     infoFile._difficultyBeatmapSets.forEach((x: any) => {
         x._difficultyBeatmaps.forEach((y: any) => {
