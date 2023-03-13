@@ -8,7 +8,7 @@ type chainData = {
     y?: number,
     color?: 0 | 1;
     direction?: direction,
-    endTime: number,
+    endTime?: number,
     endX?: number,
     endY?: number,
     segments?: number,
@@ -48,6 +48,7 @@ export default class Chain {
         if (!d.direction) c.direction = 0;
         if (!d.endX) c.endX = 0;
         if (!d.endY) c.endY = 0;
+        if (!d.endTime) c.endTime = d.time + 0.25;
         if (!d.segments) c.segments = 2;
         if (!d.squish) c.squish = 0.5;
         if (!d.x) c.x = 0;

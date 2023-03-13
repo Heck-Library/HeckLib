@@ -15,36 +15,29 @@ type noteData = {
     direction?: noteDir;
 };
 
-export default class Note { /**
-     * Arrow direction values.
-     * @example `Note.Direction.Down` returns `1`
-     */
-    static Direction : Record < string,
-    noteDir > = {
-        Up: 0,
-        Down: 1,
-        Left: 2,
-        Right: 3,
-        UpL: 4,
-        UpR: 5,
-        DownL: 6,
-        DownR: 7,
-        Dot: 8
-    };
-    /**
-     * Note type/color values.
-     * It is recommended to memorise these values
-     * for the sake of more compact script.
-     * @example `Note.Type.Red` returns `0`.
-     */
-    static Type : Record < string, noteType > = {
-        Red: 0,
-        Blue: 1,
-        /**
-       * Bomb type is a V2 only feature
-       */
-        Bomb: 3
-    };
+enum Direction {
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3,
+    UpL = 4,
+    UpR = 5,
+    DownL = 6,
+    DownR = 7,
+    Dot = 8
+}
+
+enum Type {
+    Red = 0,
+    Blue = 1,
+    Bomb = 3
+}
+
+export default class Note {
+
+    static readonly Direction = Direction;
+    static readonly Type = Type;
+    
     private json : {
         nD: noteData;
         cD: customNoteData;
