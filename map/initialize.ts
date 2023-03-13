@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 import { infoFile } from "../consts/info";
-import { ARC, BOMB, CHAIN, CUSTOMEVENT, NOTE, POINTDEFINITION, WALL } from "../consts/mod";
+import { ARC, BOMB, CHAIN, CUSTOMEVENT, NOTE, POINTDEFINITION, WALL, vec1anim, vec3anim, vec4anim } from "../consts/mod";
 import LightEvent from "../objects/lights";
 import Note from "../objects/note";
 import Wall from "../objects/wall";
@@ -15,6 +15,7 @@ import AssignTrackParent from "../events/assignTrackParent";
 import AnimateComponent from "../events/animateComponent";
 import AssignFogTrack from "../events/assignFogTrack";
 import Arc from "../objects/arc";
+import PointDefinition from "./pointDefinition";
 
 export const pointDefinitions = ["NULL"];
 
@@ -364,6 +365,18 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
     return eventArr
 }
 
+function JSONtoPointDefs(pointDefInput: Record<string, vec1anim|vec3anim|vec4anim>|{_name:string,_points:vec1anim|vec3anim|vec4anim}[]) {
+    if (!V3 && Array.isArray(pointDefInput)){
+        pointDefInput.forEach(p => {
+            new PointDefinition(p._name, p._points).push();
+        })
+    } else if (V3) {
+        Object.keys(pointDefInput).forEach(p => {
+            new PointDefinition(p, pointDefInput[p]).push();
+        })
+    }
+}
+
 // TODO Lightshow importer 
 function lightshowImport(file: string) {
     let lV3 = false;
@@ -559,11 +572,19 @@ function V2toV3(diff: IV2Map) {
                 v3Diff.customData.customEvents.push(JSON.parse(strEvent))
             })
         }
-        if (d.environment) {
-            d.environment.forEach(e => {
+        if (d._environment) {
+            d._environment.forEach(e => {
                 let strEnv = JSON.stringify(e);
                 strEnv = strEnv.replace(/"_(\w+)":/g, '"$1":')
                 v3Diff.customData.environment.push(JSON.parse(strEnv))
+            })
+        }
+        if (d._pointDefinitions) {
+            d._pointDefinitions.forEach((p: {_name: string, _points: vec1anim|vec3anim|vec4anim}) => {
+                const pd = {
+                    [p._name]: p._points
+                };
+                Object.assign(v3Diff.customData.pointDefinitions, pd)
             })
         }
     }
@@ -609,12 +630,13 @@ export function initialize(input: string, output: string, properties: InitProper
     let translate = false;
     isV3(`./${input}`);
     if (properties.format) {
-        translate = true;
         switch (properties.format) {
             case "V2":
+                if (V3) translate = true;
                 V3 = false;
                 break;
             case "V3":
+                if (!V3) translate = true;
                 V3 = true;
                 break;
         }
@@ -661,6 +683,7 @@ export function initialize(input: string, output: string, properties: InitProper
         if (!customData._customEvents) customData._customEvents = [];
         else JSONtoCustomEvents(diff._customData._customEvents);
         if (!customData._pointDefinitions) customData._pointDefinitions = [];
+        else JSONtoPointDefs(diff._customData._pointDefinitions);
         if (!customData._environment) customData._environment = [];
         if (!customData._materials) customData._materials = {};
 
@@ -695,7 +718,7 @@ export function initialize(input: string, output: string, properties: InitProper
         const customData = diff.customData;
 
         if (!customData.customEvents) customData.customEvents = [];
-        if (!customData.pointDefinitions) customData.pointDefinitions = [];
+        if (!customData.pointDefinitions) customData.pointDefinitions = [];else JSONtoPointDefs(diff.customData.pointDefinitions);
         if (!customData.environment) customData.environment = [];
         if (!customData.materials) customData.materials = {};
 
