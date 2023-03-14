@@ -1,5 +1,5 @@
 import {Track} from "./objects";
-import {vec1anim, vec3anim, vec4anim} from "./vec";
+import {vec1anim, vec3, vec3anim, vec4anim} from "./vec";
 
 export type POINTDEFINITION = {
     name: string;
@@ -20,6 +20,18 @@ export type parentTrackType = {
 export type playerTrackType = {
     track: Track;
 };
+
+export type property = {
+    name: string,
+    type: 'Texture'|'Float'|'Color'|'Integer',
+    value: any
+}
+export type matPropertyData = {
+    asset?: string,
+    duration?: number,
+    easing?: string,
+    properties?: property[]
+}
 
 export type animateTrackData = {
     /**
@@ -146,13 +158,47 @@ export type fogTrackData = {
     track: Track;
 };
 
+export type ppData = {
+    asset: string,
+    priority?: number,
+    pass?: number,
+    target?: string,
+    duration?: number,
+    easing?: string,
+    properties: property[]
+}
+
+export type cullMaskData = {
+    name: string,
+    track: string,
+    whitelist?: boolean
+}
+
+export type renderTextData = {
+    name: string,
+    xRatio: number,
+    yRatio: number,
+    width: number,
+    height: number
+}
+
+export type instPrefabData = {
+    asset: string,
+    id?: string,
+    track?: string,
+    position?: vec3,
+    localPosition?: vec3,
+    rotation?: vec3,
+    localRotation?: vec3,
+    scale?: vec3
+}
+
+export type destroyPrefabData = {
+    id: string
+}
+
 export type CUSTOMEVENT = {
-    b?: number;
-    t?: string;
-    d?: fogTrackData | animateTrackData | pathAnimData | playerTrackType | parentTrackType;
-    json: {
-        time: number;
-        type: string;
-        data: | fogTrackData | animateTrackData | pathAnimData | playerTrackType | parentTrackType;
-    };
+    time: number;
+    type: string;
+    data: | destroyPrefabData | instPrefabData | cullMaskData | renderTextData | ppData | matPropertyData | fogTrackData | animateTrackData | pathAnimData | playerTrackType | parentTrackType;
 };

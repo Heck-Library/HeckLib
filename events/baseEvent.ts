@@ -1,11 +1,11 @@
-import { animComponentData, animateTrackData, fogTrackData, parentTrackType, pathAnimData, playerTrackType } from "../consts/types/animation";
+import { animComponentData, animateTrackData, fogTrackData, parentTrackType, pathAnimData, playerTrackType, matPropertyData, ppData } from "../consts/types/animation";
 import { events } from "../map/initialize";
 
-export default class BaseEvent {
+export default abstract class BaseEvent {
     json: {
         time: number;
         type: string;
-        data: fogTrackData | animateTrackData | pathAnimData | parentTrackType | playerTrackType | animComponentData;
+        data: any;
     };
 
     //#region getters and setters
@@ -14,8 +14,8 @@ export default class BaseEvent {
 
     get type(): string { return this.json.type; }
 
-    set data(data: fogTrackData | animateTrackData | pathAnimData | parentTrackType | playerTrackType | animComponentData) { this.json.data = data; }
-    get data(): fogTrackData | animateTrackData | pathAnimData | parentTrackType | playerTrackType | animComponentData { return this.json.data; }
+    set data(data: ppData | matPropertyData | fogTrackData | animateTrackData | pathAnimData | parentTrackType | playerTrackType | animComponentData) { this.json.data = data; }
+    get data(): ppData | matPropertyData | fogTrackData | animateTrackData | pathAnimData | parentTrackType | playerTrackType | animComponentData { return this.json.data; }
 
     push() {
         events.push(this);

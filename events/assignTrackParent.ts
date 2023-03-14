@@ -1,8 +1,8 @@
 import { parentTrackType } from "../consts/types/animation";
-import BaseEvent from "./baseEvent";
+import { events } from "../map/initialize";
 
-export default class AssignTrackParent extends BaseEvent{
-    declare json: {
+export default class AssignTrackParent{
+    private json: {
         time: number
         type: "AssignTrackParent"
         data: parentTrackType
@@ -21,11 +21,22 @@ export default class AssignTrackParent extends BaseEvent{
      * ```
      */
     constructor(time: number, eventData: parentTrackType) {
-        super()
         this.json = {
             time: time,
             type: "AssignTrackParent",
             data: eventData
         }
+    }
+    set time(time: number) { this.json.time = time; }
+    get time(): number { return this.json.time; }
+
+    get type(): string { return this.json.type; }
+
+    set data(data: parentTrackType) { this.json.data = data; }
+    get data(): parentTrackType { return this.json.data; }
+    
+    push() {
+        events.push(this);
+        return this;
     }
 }

@@ -6,7 +6,7 @@ import {events} from "../map/initialize";
 // #region events
 // deno-lint-ignore no-namespace
 namespace Builders {
-    class BaseEvent {
+    abstract class BaseEvent {
         json : {
             time: number;
             type: string;

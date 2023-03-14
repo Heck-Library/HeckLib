@@ -163,9 +163,9 @@ function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = []
     if (events) events.forEach((e: CUSTOMEVENT) => {
         const eventJSON: Record<string, any> = {
-            b: e.b,
-            t: e.t,
-            d: e.d
+            b: e.time,
+            t: e.type,
+            d: e.data
         }
         let stringified = JSON.stringify(eventJSON)
         if (!V3) {
