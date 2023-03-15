@@ -7,15 +7,16 @@ export function JSONtoLights(lightInput: Record<string, any>[]): LIGHT[] {
     if (V3) {
         lightInput.forEach((l: Record<string, any>) => {
             l = JSON.parse(JSON.stringify(l).replace(/"_(\w+)":/g,'"$1":').replace(/"lockPosition":/g,'"lockRotation":'))
-            if (!l.customData.lightGradient) {
-                const light: LIGHT = new LightEvent({
-                    time: l.b,
-                    type: l.et,
-                    value: l.i,
-                    float: l.f
-                }, l.customData);
-                lightArr.push(light);
+            if (l.customData && l.customData.lightGradient) {
+                delete l.customData.lightGradient;
             }
+            const light: LIGHT = new LightEvent({
+                time: l.b,
+                type: l.et,
+                value: l.i,
+                float: l.f
+            }, l.customData);
+            lightArr.push(light);
         });
     } else {
         lightInput.forEach((l: Record<string, any>) => {
