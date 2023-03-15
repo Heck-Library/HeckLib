@@ -10,6 +10,17 @@
         "description": "Creates the structure for a PointDefinition."
     },
 
+    "AnimateComponent": {
+        "scope": "typescript",
+        "prefix": "animComponent",
+        "body": [
+            "new AnimateComponent(${1:time}, {",
+            "    track: \"${2}\"",
+            "    duration: ${3}",
+            "    $0",
+            "}).push();"
+        ]
+    },
     "AnimateTrack": {
         "scope": "typescript",
         "prefix": "animTrack",
@@ -56,6 +67,40 @@
         "body": "new AssignFogTrack(0, \"$0\").push();"
     },
 
+    "Arc": {
+        "scope": "typescript",
+        "prefix": "arc",
+        "body": [
+            "new Arc({",
+            "    // Arc data",
+            "    time: ${1}",
+            "    endTime: ${2}",
+            "}, {",
+            "    // Custom data",
+            "    ",
+            "}, {",
+            "    // Animation data",
+            "    ",
+            "}).push();"
+        ]
+    },
+    "Chain": {
+        "scope": "typescript",
+        "prefix": "chain",
+        "body": [
+            "new Chain({",
+            "    // Chain data",
+            "    time: ${1}",
+            "    endTime: ${2}",
+            "}, {",
+            "    // Custom data",
+            "    ",
+            "}, {",
+            "    // Animation data",
+            "    ",
+            "}).push();"
+        ]
+    },
     "Note": {
         "scope": "typescript",
         "prefix": "note",
@@ -90,6 +135,7 @@
         ],
         "description": "Adds the structure for a wall"
     },
+
     "NoteTrack": {
         "scope": "typescript",
         "prefix": "noteTrack",
@@ -102,6 +148,19 @@
         "body": "track(filter(walls, ${1:startTime}, ${2:endTime}), ${3:tracks});",
         "description": "Creates the function for adding tracks to notes between two time values."
     },
+    "ArcTrack": {
+        "scope": "typescript",
+        "prefix": "arcTrack",
+        "body": "track(filter(arcs, ${1:startTime}, ${2:endTime}), ${3:tracks});",
+        "description": "Creates the function for adding tracks to arcs between two time values."
+    },
+    "ChainTrack": {
+        "scope": "typescript",
+        "prefix": "chainTrack",
+        "body": "track(filter(chains, ${1:startTime}, ${2:endTime}), ${3:tracks});",
+        "description": "Creates the function for adding tracks to chains between two time values."
+    },
+
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
@@ -114,13 +173,24 @@
         "body": "filter(walls, ${1:startTime}, ${2:endTime});",
         "description": "Creates the function for filtering walls between two times."
     },
+    "FilterArcs": {
+        "scope": "typescript",
+        "prefix": "filterArcs",
+        "body": "filter(arcs, ${1:startTime}, ${2:endTime});",
+        "description": "Creates the function for filtering arcs between two times."
+    },
+    "FilterChains": {
+        "scope": "typescript",
+        "prefix": "filterChains",
+        "body": "filter(chains, ${1:startTime}, ${2:endTime});",
+        "description": "Creates the function for filtering chains between two times."
+    },
+
     "ForEachNote": {
         "scope": "typescript",
         "prefix": "forEachNote",
         "body": [
             "filter(notes, ${1:startTime}, ${2:endTime}).forEach((n: NOTE) => {",
-            "    const d = n.data;",
-            "    const a = n.anim;",
             "    $0",
             "});"
         ],
@@ -131,11 +201,27 @@
         "prefix": "forEachWall",
         "body": [
             "filter(walls, ${1:startTime}, ${2:endTime}).forEach((w: WALL) => {",
-            "    const d = w.data;",
-            "    const a = w.anim;",
             "    $0",
             "});"
         ],
         "description": "Creates a forEach loop for filtered walls."
+    },
+    "ForEachArc": {
+        "scope": "typescript",
+        "prefix": "forEachArc",
+        "body": [
+            "filter(arcs, ${1:startTime}, ${2:endTime}).forEach((a: ARC) => {",
+            "    $0",
+            "});"
+        ]
+    },
+    "ForEachChain": {
+        "scope": "typescript",
+        "prefix": "forEachChain",
+        "body": [
+            "filter(chains, ${1:startTime}, ${2:endTime}).forEach((c: CHAIN) => {",
+            "    $0",
+            "});"
+        ]
     }
 }
