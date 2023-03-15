@@ -161,6 +161,25 @@
         "description": "Creates the function for adding tracks to chains between two time values."
     },
 
+    "FilterNotesDirection": {
+        "scope": "typescript",
+        "prefix": "filterNotesDirection",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    direction: Note.Direction.$0",
+            "});"
+        ]
+    },
+    "FilterNotesType": {
+        "scope": "typescript",
+        "prefix": "filterNotesDirection",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    type: Note.Type.$0",
+            "});"
+        ]
+    },
+
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
