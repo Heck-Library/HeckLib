@@ -1,7 +1,14 @@
 import { readFileSync, writeFileSync } from "fs";
-import { WALL, NOTE, CUSTOMEVENT, unknownAnimation, POINTDEFINITION, lineIndex, lineLayer, noteType, noteDir, customNoteData, CHAIN } from "../consts/mod";
-import { LIGHT } from "../consts/types/lights/light";
-import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, chains } from "./initialize";
+import { WALL, NOTE, unknownAnimation, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
+import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events } from "./initialize";
+import { wallsToJSON } from "./converters/wallsToJSON";
+import { notesToJSON } from "./converters/notesToJSON";
+import { customEventsToJSON } from "./converters/customEventsToJSON";
+import { lightsToJSON } from "./converters/lightsToJSON";
+import { chainsToJSON } from "./converters/chainsToJSON";
+import { pointDefinitionsToV3JSON } from "./converters/pointDefinitionsToV3JSON";
+import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
+import { statsType } from "../consts/types/statsType";
 
 
 type V2DIFF = {
@@ -51,58 +58,8 @@ type FinalizeProperties = {
     };
 };
 
-function wallsToJSON(): Record<string, any>[] {
-    const wallArr: any[] = [];
-    walls.forEach((w: WALL) => {
-        let wallJSON: Record<string, any> = {
-            b: w.time,
-            x: w.x,
-            y: w.y,
-            d: w.duration,
-            w: w.width,
-            h: w.height,
-            customData: {
-                ...w.data,
-                animation: {
-                    ...w.anim
-                }
-            }
-        }
-        if (Object.keys(wallJSON.customData.animation).length < 1) delete wallJSON.customData.animation;
-        if (Object.keys(wallJSON.customData).length < 1) delete wallJSON.customData;
-        let stringified = JSON.stringify(wallJSON)
-            .replace('"njs"', '"noteJumpMovementSpeed"')
-            .replace('"offset"', '"noteJumpStartBeatOffset"')
-        if (V3) {
-            stringified = stringified
-                .replace('"position"', '"coordinates"')
-                .replace('"rotation"', '"worldRotation"')
-                .replace('"interactable":false', '"uninteractable":true')
-                .replace('"disableSpawnEffect":true', '"spawnEffect":false')
-        } else {
-            stringified = stringified
-                .replace('"b":', '"time":')
-                .replace('"x":', '"lineIndex":')
-                .replace(/"y":(\d)/, '"type":$1')
-                .replace('"d":', '"duration":')
-                .replace('"w":', '"width":')
-                .replace(/"h":\d+,/, '')
-                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
-        }
-        wallJSON = JSON.parse(stringified);
-        if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
-            delete wallJSON.customData.fake;
-            delete walls[walls.indexOf(w)];
-            fakeWalls.push(wallJSON)
-        } else {
-            wallArr.push(wallJSON);
-        }
-    });
-    return wallArr;
-}
-
 let formatting = false
-type V2JsonNote = {
+export type V2JsonNote = {
     _time: number;
     _lineIndex: lineIndex;
     _lineLayer: lineLayer;
@@ -112,172 +69,7 @@ type V2JsonNote = {
 };
 
 
-function notesToJSON(): V2JsonNote[] {
-    const noteArr: any[] = []
-    notes.forEach((n: NOTE) => {
-        let noteJSON: Record<string, any> = {
-            b: n.time,
-            c: n.type,
-            d: n.direction,
-            a: n.angle,
-            x: n.x,
-            y: n.y,
-            customData: {
-                ...n.data,
-                animation: {
-                    ...n.anim
-                }
-            }
-        }
-        if (Object.keys(noteJSON.customData.animation).length < 1) delete noteJSON.customData.animation;
-        if (Object.keys(noteJSON.customData).length < 1) delete noteJSON.customData
-        let stringified = JSON.stringify(noteJSON)
-            .replace('"njs"', '"noteJumpMovementSpeed"')
-            .replace('"offset"', '"noteJumpStartBeatOffset"')
-        if (V3) {
-            stringified = stringified
-                .replace('"position"', '"coordinates"')
-                .replace('"rotation"', '"worldRotation"')
-                .replace('"interactable":false', '"uninteractable":true')
-                .replace('"disableSpawnEffect":true', '"spawnEffect":false')
-        } else {
-            stringified = stringified
-                .replace('"b":', '"time":')
-                .replace('"c":', '"type":')
-                .replace('"d":', '"cutDirection":')
-                .replace('"x":', '"lineIndex":')
-                .replace('"y":', '"lineLayer":')
-                .replace(/"a":\d+,/g, '')
-                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
-        }
-        noteJSON = JSON.parse(stringified)
-        if (V3 && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
-            delete noteJSON.customData.fake;
-            fakeNotes.push(noteJSON)
-        } else noteArr.push(noteJSON)
-    })
-    return noteArr
-}
 
-function customEventsToJSON(): Record<string, any>[] {
-    const eventArr: any[] = []
-    if (events) events.forEach((e: CUSTOMEVENT) => {
-        const eventJSON: Record<string, any> = {
-            b: e.time,
-            t: e.type,
-            d: e.data
-        }
-        let stringified = JSON.stringify(eventJSON)
-        if (!V3) {
-            stringified = stringified
-                .replace('"b":', '"time":')
-                .replace('"t":', '"type":')
-                .replace('"d":', '"data":')
-                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
-        }
-        eventArr.push(JSON.parse(stringified))
-    });
-    return eventArr;
-}
-
-function lightsToJSON(): Record<string, any>[] {
-    const lightArr: any[] = [];
-    lights.forEach((l: LIGHT) => {
-        const lightJSON: Record<string, any> = {
-            b: l.time,
-            et: l.type,
-            i: l.value,
-        }
-        if (l.float) lightJSON.f = l.float;
-        if (l.data && Object.keys(l.data).length > 0) lightJSON.customData = l.data
-        let stringified = JSON.stringify(lightJSON);
-        if (!V3) {
-            stringified = stringified
-                .replace('"b":', '"time":')
-                .replace('"et":', '"type":')
-                .replace('"i":', '"value":')
-                .replace('"f":', '"floatValue":')
-                .replace('"lockRotation":', '"lockPosition":')
-                .replace(/"([^_][\w\d]+)":/g, '"_$1":')
-        }
-        lightArr.push(JSON.parse(stringified));
-    })
-    return lightArr;
-}
-
-function chainsToJSON(): Record<string, any>[] {
-    const chainArr: any[] = [];
-    chains.forEach((c: CHAIN) => {
-        let chainJSON: Record<string, any> = {
-            b: c.time,
-            x: c.x,
-            y: c.y,
-            c: c.color,
-            d: c.direction,
-            tb: c.endTime,
-            tx: c.endX,
-            ty: c.endY,
-            sc: c.segments,
-            s: c.squish,
-            customData: {
-                ...c.data,
-                animation: {
-                    ...c.anim
-                }
-            }
-        }
-        if (V3 && chainJSON.customData && Object.keys(chainJSON.customData).includes("fake")) {
-            delete chainJSON.customData.fake;
-            fakeNotes.push(chainJSON)
-        } else chainArr.push(chainJSON)
-    });
-    return chainArr;
-}
-type JSONDefV2 = { _name: string, _points: unknownAnimation };
-type JSONDefV3 = Record<string, unknownAnimation>;
-function pointDefinitionsToV3JSON(): Record<string, JSONDefV3> {
-    const defCollection: Record<string, JSONDefV3> = {};
-    definitions.forEach((d: POINTDEFINITION) => {
-        const definition = { [d.name]: d.points }
-        Object.assign(defCollection, definition);
-    })
-    return defCollection;
-}
-
-function pointDefinitionsToV2JSON(): JSONDefV2[] {
-    const defArr: JSONDefV2[] = [];
-    definitions.forEach((d: POINTDEFINITION) => {
-        defArr.push({ _name: d.name, _points: d.points });
-    })
-    return defArr;
-}
-
-type statsType = {
-    moddedStats: {
-        notes: number,
-        fakeNotes: number,
-        walls: number,
-        fakeWalls: number,
-        bombs: number,
-        fakeBombs: number,
-        lights: number,
-        customEvents: {
-            animTrack: number,
-            pathAnim: number,
-            trackParent: number,
-            playerTrack: number,
-            fogTrack: number
-        },
-        pointDefinitions: number,
-        environments: number
-    },
-    vanillaStats: {
-        notes: number,
-        walls: number,
-        bombs: number,
-        lights: number
-    }
-};
 
 function showStats(properties?: FinalizeProperties): statsType {
     const vs = {
@@ -406,20 +198,20 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
     }
     const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
-    function deeperDaddy(obj: any) {
+    function deeperDaddy({ obj }: { obj: any; }): void {
         if (obj)
             for (const key in obj) {
                 if (obj[key] == null) {
                     delete obj[key];
                 } else if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
-                    deeperDaddy(obj[key]);
+                    deeperDaddy({ obj: obj[key] });
                 } else if (typeof obj[key] == "number") {
                     obj[key] = (Math.round((obj[key] + Number.EPSILON) * jsonP) / jsonP);
                 }
             }
 
     }
-    deeperDaddy(difficulty)
+    deeperDaddy({ obj: difficulty })
 
     if (!V3) {
         const newDiff: V2DIFF = {
