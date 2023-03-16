@@ -36,7 +36,28 @@ type NoteFilters = {
      * Filters by the vertical position of the object.
      */
     y?: lineLayer;
+};
+type ArcFilters = {
+    type?: 0 | 1;
+    x?: lineIndex;
+    y?: lineLayer;
+    tailX?: lineIndex;
+    tailY?: lineLayer;
 }
+type WallFilters = {
+    /**
+     * Filters by the type of the object, such as `Note.Red`
+     */
+    type?: noteType;
+    /**
+     * Filters by the horizontal position of the object.
+     */
+    x?: lineIndex;
+    /**
+     * Filters by the vertical position of the object.
+     */
+    y?: lineLayer;
+};
 
 /**
  * Returns filtered objects between two time values.
@@ -72,9 +93,9 @@ type NoteFilters = {
  * > - `fakeNotes`
  * > - `fakeWalls`
  */
-export default function filter (obj: CHAIN[], start: number, end: number, filters?: NoteFilters): CHAIN[];
-export default function filter (obj: ARC[], start: number, end: number, filters?: NoteFilters): ARC[];
-export default function filter (obj: WALL[], start: number, end: number, filters?: NoteFilters): WALL[];
+export default function filter (obj: CHAIN[], start: number, end: number, filters?: ArcFilters): CHAIN[];
+export default function filter (obj: ARC[], start: number, end: number, filters?: ArcFilters): ARC[];
+export default function filter (obj: WALL[], start: number, end: number, filters?: WallFilters): WALL[];
 export default function filter (obj: NOTE[], start: number, end: number, filters?: NoteFilters): NOTE[] {
     let objects = obj.filter(o => o.time >= start && o.time <= end);
     if (filters) {
