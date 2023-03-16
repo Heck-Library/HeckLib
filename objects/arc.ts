@@ -41,10 +41,14 @@ export default class Arc {
     }
     private json: IArc
     constructor(arcData: arcData, customData?: customNoteData, animationData?: animationData) {
+        let cData = {};
+        let aData = {};
+        if (customData) cData = customData;
+        if (animationData) aData = animationData;
         this.json = {
             a: arcData,
-            cD: customData,
-            aD: animationData
+            cD: cData,
+            aD: aData
         };
         const c = this.json.a;
         const d = arcData;

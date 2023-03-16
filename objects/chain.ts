@@ -33,10 +33,14 @@ export default class Chain {
     }
     private json: IChain
     constructor(chainData: chainData, customData?: customNoteData, animationData?: animationData) {
+        let cData = {};
+        let aData = {};
+        if (customData) cData = customData;
+        if (animationData) aData = animationData;
         this.json = {
             c: chainData,
-            cD: customData,
-            aD: animationData
+            cD: cData,
+            aD: aData
         };
         const c = this.json.c;
         const d = chainData;
