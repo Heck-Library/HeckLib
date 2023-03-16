@@ -6,7 +6,7 @@ type chainData = {
     time: number,
     x?: number,
     y?: number,
-    color?: 0 | 1;
+    type?: 0 | 1;
     direction?: direction,
     endTime?: number,
     endX?: number,
@@ -48,7 +48,7 @@ export default class Chain {
         if (customData) this.json.cD = customData;
         if (animationData) this.json.aD = animationData;
 
-        if (!d.color) c.color = 0;
+        if (!d.type) c.type = 0;
         if (!d.direction) c.direction = 0;
         if (!d.endX) c.endX = 0;
         if (!d.endY) c.endY = 0;
@@ -60,8 +60,8 @@ export default class Chain {
 
         return this;
     }
-    set color(color: 0 | 1) { this.json.c.color = color; }
-    get color(): 0 | 1 { return this.json.c.color; }
+    set type(type: 0 | 1) { this.json.c.type = type; }
+    get type(): 0 | 1 { return this.json.c.type; }
 
     set direction(direction: direction) { this.json.c.direction = direction; }
     get direction(): direction { return this.json.c.direction; }

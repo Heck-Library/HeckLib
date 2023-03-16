@@ -8,7 +8,7 @@ export function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset:
             time: c.b,
             x: c.x,
             y: c.y,
-            color: c.c,
+            type: c.c,
             direction: c.d,
             multiplier: c.mu,
             endTime: c.tb,

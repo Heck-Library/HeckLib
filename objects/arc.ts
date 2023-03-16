@@ -6,7 +6,7 @@ type arcData = {
     time: number,
     x?: number,
     y?: number,
-    color?: 0 | 1;
+    type?: 0 | 1;
     direction?: direction,
     multiplier?: number,
     endTime: number,
@@ -56,7 +56,7 @@ export default class Arc {
         if (customData) this.json.cD = customData;
         if (animationData) this.json.aD = animationData;
 
-        if (!d.color) c.color = 0;
+        if (!d.type) c.type = 0;
         if (!d.direction) c.direction = 0;
         if (!d.multiplier) c.multiplier = 1;
         if (!d.endX) c.endX = 0;
@@ -70,8 +70,8 @@ export default class Arc {
 
         return this;
     }
-    set color(color: 0 | 1) { this.json.a.color = color; }
-    get color(): 0 | 1 { return this.json.a.color; }
+    set type(type: 0 | 1) { this.json.a.type = type; }
+    get type(): 0 | 1 { return this.json.a.type; }
 
     set direction(direction: direction) { this.json.a.direction = direction; }
     get direction(): direction { return this.json.a.direction; }

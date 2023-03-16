@@ -8,7 +8,7 @@ export function JSONtoChains(chainInput: Record<string, any>[], NJS: number, off
             time: c.b,
             x: c.x,
             y: c.y,
-            color: c.c,
+            type: c.c,
             direction: c.d,
             endTime: c.tb,
             endX: c.tx,
