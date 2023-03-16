@@ -9,7 +9,7 @@ import { chainsToJSON } from "./converters/chainsToJSON";
 import { pointDefinitionsToV3JSON } from "./converters/pointDefinitionsToV3JSON";
 import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
 import { statsType } from "../consts/types/statsType";
-
+import { arcsToJSON } from "./converters/arcsToJSON";
 
 type V2DIFF = {
     _version: "2.2.0";
@@ -246,6 +246,7 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
     if (V3) {
         difficulty.colorNotes = notesToJSON();
         difficulty.burstSliders = chainsToJSON();
+        difficulty.sliders = arcsToJSON();
         difficulty.obstacles = wallsToJSON();
         difficulty.basicBeatmapEvents = lightsToJSON();
         difficulty.customData.customEvents = customEventsToJSON();
