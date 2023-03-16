@@ -24,9 +24,9 @@ export function chainsToJSON(): Record<string, any>[] {
         };
         chainJSON = JSON.parse(JSON.stringify(chainJSON)
             .replace('"njs":', '"noteJumpMovementSpeed":')
-            .replace('"offset":', '"noteJumpStartBeatOffset"')
-            .replace('"position"', '"coordinates"')
-            .replace('"rotation"', '"worldRotation"')
+            .replace('"offset":', '"noteJumpStartBeatOffset":')
+            .replace('"position":', '"coordinates":')
+            .replace('"rotation":', '"worldRotation":')
             .replace('"interactable":false', '"uninteractable":true')
             .replace('"disableSpawnEffect":true', '"spawnEffect":false'))
         if (V3 && chainJSON.customData && Object.keys(chainJSON.customData).includes("fake")) {
