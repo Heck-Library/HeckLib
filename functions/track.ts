@@ -1,4 +1,4 @@
-import { NOTE, Track, WALL } from "../consts/types/objects";
+import { ARC, CHAIN, NOTE, Track, WALL } from "../consts/types/objects";
 
 /**
     * Assign a track to notes or walls.
@@ -6,7 +6,7 @@ import { NOTE, Track, WALL } from "../consts/types/objects";
     * @param track The array of tracks or the name of the track that should be assigned.
 */
 
-export default function track(obj: NOTE[] | WALL[], track: Track): void {
+export default function track(obj: NOTE[] | WALL[] | ARC[] | CHAIN[], track: Track): void {
     obj.forEach((x: Record<string, any>) => {
         const d = x.data;
         if (!d.track) {

@@ -72,8 +72,8 @@ type NoteFilters = {
  * > - `fakeNotes`
  * > - `fakeWalls`
  */
-export default function filter (obj: CHAIN[], start: number, end: number): CHAIN[];
-export default function filter (obj: ARC[], start: number, end: number): ARC[];
+export default function filter (obj: CHAIN[], start: number, end: number, filters?: NoteFilters): CHAIN[];
+export default function filter (obj: ARC[], start: number, end: number, filters?: NoteFilters): ARC[];
 export default function filter (obj: WALL[], start: number, end: number, filters?: NoteFilters): WALL[];
 export default function filter (obj: NOTE[], start: number, end: number, filters?: NoteFilters): NOTE[] {
     let objects = obj.filter(o => o.time >= start && o.time <= end);
