@@ -82,6 +82,9 @@ export default class Arc {
     set endMultiplier(endMultiplier: number) { this.json.a.endMultiplier = endMultiplier; }
     get endMultiplier(): number { return this.json.a.endMultiplier; }
 
+    set endDirection(endDirection: direction) { this.json.a.endDirection = endDirection; }
+    get endDirection(): direction { return this.json.a.endDirection; }
+
     set endTime(endTime: number) { if (endTime < this.json.a.time) throw new Error("endTime cannot be smaller than time."); this.json.a.endTime = endTime; }
     get endTime(): number { return this.json.a.endTime; }
 
