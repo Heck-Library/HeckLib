@@ -45,7 +45,7 @@ export type CHAIN = {
     time: number;
     x?: number;
     y?: number;
-    color?: 0 | 1;
+    type?: 0 | 1;
     direction?: noteDir;
     endTime?: number;
     endX?: number;
@@ -59,7 +59,7 @@ export type ARC = {
     time: number;
     x?: number;
     y?: number;
-    color?: 0 | 1;
+    type?: 0 | 1;
     direction?: noteDir;
     multiplier?: number;
     endTime?: number;

@@ -8,7 +8,7 @@ export function arcsToJSON(): Record<string, any>[] {
             b: a.time,
             x: a.x,
             y: a.y,
-            c: a.color,
+            c: a.type,
             d: a.direction,
             mu: a.multiplier,
             tb: a.endTime,
