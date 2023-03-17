@@ -76,6 +76,12 @@ export default class Arc {
     set direction(direction: direction) { this.json.a.direction = direction; }
     get direction(): direction { return this.json.a.direction; }
 
+    set multiplier(multiplier: number) { this.json.a.multiplier = multiplier; }
+    get multiplier(): number { return this.json.a.multiplier; }
+
+    set endMultiplier(endMultiplier: number) { this.json.a.endMultiplier = endMultiplier; }
+    get endMultiplier(): number { return this.json.a.endMultiplier; }
+
     set endTime(endTime: number) { if (endTime < this.json.a.time) throw new Error("endTime cannot be smaller than time."); this.json.a.endTime = endTime; }
     get endTime(): number { return this.json.a.endTime; }
 
