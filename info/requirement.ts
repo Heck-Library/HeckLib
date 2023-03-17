@@ -50,6 +50,11 @@ export default class Requirement {
         this.End();
         return this;
     }
+    custom(requirement: string) {
+        this.r.push(requirement);
+        this.End();
+        return this;
+    }
 
     private End() {
         infoFile._difficultyBeatmapSets.forEach((x : any) => {
