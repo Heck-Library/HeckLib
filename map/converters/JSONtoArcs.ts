@@ -14,6 +14,7 @@ export function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset:
             endTime: c.tb,
             endX: c.tx,
             endY: c.ty,
+            endDirection: c.tc,
             endMultiplier: c.tmu,
             segments: c.sc,
             anchor: c.m
