@@ -96,14 +96,15 @@ type WallFilters = {
 export default function filter (obj: CHAIN[], start: number, end: number, filters?: ArcFilters): CHAIN[];
 export default function filter (obj: ARC[], start: number, end: number, filters?: ArcFilters): ARC[];
 export default function filter (obj: WALL[], start: number, end: number, filters?: WallFilters): WALL[];
-export default function filter (obj: NOTE[], start: number, end: number, filters?: NoteFilters): NOTE[] {
-    let objects = obj.filter(o => o.time >= start && o.time <= end);
+export default function filter (obj: NOTE[], start: number, end: number, filters?: NoteFilters): NOTE[]; 
+export default function filter (obj: any, start: number, end: number, filters?: NoteFilters) {
+    let objects = obj.filter((o: { time: number; }) => o.time >= start && o.time <= end);
     if (filters) {
         const f = filters;
-        if (typeof f.direction === 'number') objects = objects.filter(o => o.direction === f.direction);
-        if (typeof f.type === 'number') objects = objects.filter(o => o.type === f.type);
-        if (typeof f.x === 'number') objects = objects.filter(o => o.x === f.x);
-        if (typeof f.y === 'number') objects = objects.filter(o => o.y === f.y);
+        if (typeof f.direction === 'number') objects = objects.filter((o: { direction: number; }) => o.direction === f.direction);
+        if (typeof f.type === 'number') objects = objects.filter((o: { type: number; }) => o.type === f.type);
+        if (typeof f.x === 'number') objects = objects.filter((o: { x: number; }) => o.x === f.x);
+        if (typeof f.y === 'number') objects = objects.filter((o: { y: number; }) => o.y === f.y);
     }
     return objects;
 }
