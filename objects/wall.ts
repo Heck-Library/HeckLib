@@ -40,7 +40,7 @@ export default class Wall {
             this.json.wD.time = 0;
         
         if (!wallData.duration) 
-            this.json.wD.duration = 1;
+            this.json.wD.duration = 0.01;
         
         if (!wallData.width) 
             this.json.wD.width = 1;

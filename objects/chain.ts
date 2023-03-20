@@ -48,7 +48,7 @@ export default class Chain {
         if (customData) this.json.cD = customData;
         if (animationData) this.json.aD = animationData;
 
-        if (!d.type) c.type = 1;
+        if (!d.type) c.type = 0;
         if (!d.direction) c.direction = 0;
         if (!d.endX) c.endX = 0;
         if (!d.endY) c.endY = 0;
