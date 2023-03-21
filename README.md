@@ -19,10 +19,14 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > Git is used to install the library from github automatically using the CLI for hecklib. The installation for Windows can be found <a href="https://git-scm.com/download/win">here</a>. Install that and you should be good to install the library itself. 
 
 ### Library
-> To install the library initialiser, run `npm i -g hecklib` in the Visual Studio Code terminal (Top bar > Terminal > New Terminal). You can also do this in cmd or any other terminal. After this, you should be able to initialise the map files.
+> To install the library initialiser, run `npm i -g hecklib` in the Visual Studio Code **GIT BASH** terminal (Top bar > Terminal > New Terminal).
+> 
+> Once installed, check that it works by running `hecklib` in the Git Bash terminal. If it doesn't work, try adding `npx` before the command.
+> 
+> To install all the dependencies for HeckLib, run `hecklib f`. This installs everything HeckLib needs to run, it should only be needed once per device.
 
 ## Map Setup
-> To setup the map, open the map folder in Visual Studio Code and just run the `hecklib` command in the terminal. This should show you the subcommands for it.
+> To setup the map, open the map folder in Visual Studio Code and just run the `hecklib i` command in the terminal.
 > The subcommands are `init` and `update`. `init` is used to initialise a HeckLib project to the current directory. `update` is used to update the files for an already existing HeckLib project without overwriting the `script.ts` file.
 > 
 > Run `hecklib i` in your terminal to install HeckLib for your map.
@@ -38,14 +42,7 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > If you need any help with it, ask me on Discord: `Jevk#0004`
 
 ## Running The Script
-
-### Recommended Way
-> To automatically run the script upon every save, you can install nodemon. To install nodemon, run `npm i -g nodemon` in your terminal. After this, you should be able to run `nodemon script.ts`. It should now automatically run every time the file is saved.
-
-### Alternative Way
-> You can also just run the script manually every time by typing `ts-node script.ts` in the terminal.
-> 
-> The second alternative way is pressing `F5` every time you want to run the script. (Note: This can break sometimes)
+> To run the script, run `hecklib script.ts`. This will make HeckLib run every time you save your script.
 
 ***
 
