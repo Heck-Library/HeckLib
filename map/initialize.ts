@@ -82,7 +82,7 @@ export let fakeBombs: any[];
  * Array that contains all the material names used in the map.
  */
 export const materialNames: string[] = [];
-
+export let MAPPROPERTIES: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number };
 export let activeInput: string;
 export let activeOutput: string;
 export let activeLightshow: string;
@@ -324,6 +324,28 @@ function V2toV3(diff: IV2Map) {
     }
     return v3Diff;
 }
+function getJumps() {
+    const _startHalfJumpDurationInBeats = 4;
+    const _maxHalfJumpDistance = 18;
+    const _startBPM = MAPPROPERTIES.bpm; //INSERT BPM HERE -  -  -  -  -  -  -  -  -  -  -  -  -
+    const bpm = MAPPROPERTIES.bpm; //AND HERE -  -  -  -  -  -  -  -  -  -  -  -  -
+    const _startNoteJumpMovementSpeed = MAPPROPERTIES.njs; //NJS -  -  -  -  -  -  -  -  -  -  -  -  -
+    const _noteJumpStartBeatOffset = MAPPROPERTIES.offset; //OFFSET -  -  -  -  -  -  -  -  -  -  -  -  -
+  
+    let _noteJumpMovementSpeed = (_startNoteJumpMovementSpeed * bpm) / _startBPM;
+    let num = 60 / bpm;
+    let num2 = _startHalfJumpDurationInBeats;
+    while (_noteJumpMovementSpeed * num * num2 > _maxHalfJumpDistance) {
+      num2 /= 2;
+    }
+    num2 += _noteJumpStartBeatOffset;
+    if (num2 < 1) {
+      num2 = 1;
+    }
+    const _jumpDuration = num * num2 * 2;
+    const _jumpDistance = _noteJumpMovementSpeed * _jumpDuration;
+    return { half: num2, dist: _jumpDistance };
+}
 /**
  * @param input The input file for the difficulty.
  * @param output The output file for the difficulty.
@@ -356,6 +378,15 @@ export function initialize(input: string, output: string, properties: InitProper
     const p = properties;
     const NJS = p.njs;
     const offset = p.offset;
+    MAPPROPERTIES = {
+        njs: p.njs,
+        offset: p.offset,
+        bpm: infoFile._beatsPerMinute,
+        halfJumpDuration: 0,
+        jumpDistance: 0
+    };
+    MAPPROPERTIES.halfJumpDuration = getJumps().half;
+    MAPPROPERTIES.jumpDistance = getJumps().dist;
     if (p.lightshow) {
         lights.length = 0;
         lightshowImport(`./${p.lightshow}`)

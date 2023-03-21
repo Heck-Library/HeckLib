@@ -1,5 +1,6 @@
 import { vec3, vec4 } from "../consts/mod";
 import AnimateTrack from "../events/animateTrack";
+import { MAPPROPERTIES } from "../map/initialize";
 import Wall from "../objects/wall";
 
 // CREDITS TO REDDEK FOR HELPING ME WITH THIS
@@ -27,7 +28,7 @@ export default function polygon(parameters: polygonParams) {
         let sy = p.position[0] + Math.sin(radians) * p.radius - (p.h / 2);
         new Wall({
             //Vanilla data
-            time: p.time
+            time: p.time + MAPPROPERTIES.halfJumpDuration
         }, {
             //Custom data
             interactable: false,
