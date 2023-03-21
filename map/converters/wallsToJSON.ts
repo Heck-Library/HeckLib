@@ -27,7 +27,6 @@ export function wallsToJSON(): Record<string, any>[] {
             .replace('"offset"', '"noteJumpStartBeatOffset"');
         if (V3) {
             stringified = stringified
-                .replace('"position"', '"coordinates"')
                 .replace('"rotation"', '"worldRotation"')
                 .replace('"interactable":false', '"uninteractable":true')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
@@ -42,6 +41,13 @@ export function wallsToJSON(): Record<string, any>[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         wallJSON = JSON.parse(stringified);
+        let wallAnim = wallJSON.customData.animation;
+        if (wallAnim) {
+            wallJSON.customData.animation = JSON.parse(JSON.stringify(wallAnim).replace(/"position":/g, '"offsetPosition":'))
+        }
+        if (wallJSON.customData) {
+            wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":'))
+        }
         if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;
             delete walls[walls.indexOf(w)];

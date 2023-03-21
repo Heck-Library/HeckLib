@@ -133,9 +133,6 @@ export type pathAnimData = {
      * The interactable animation.
      */
     interactable?: vec1anim;
-    /**
-     * The time animation.
-     */
 };
 
 export type animComponentData = {

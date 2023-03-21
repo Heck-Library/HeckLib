@@ -13,6 +13,7 @@ export function customEventsToJSON(): Record<string, any>[] {
             let stringified = JSON.stringify(eventJSON);
             if (!V3) {
                 stringified = stringified
+                    .replace('"position":', '"offsetPosition":')
                     .replace('"b":', '"time":')
                     .replace('"t":', '"type":')
                     .replace('"d":', '"data":')

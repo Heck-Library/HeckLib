@@ -28,7 +28,6 @@ export function notesToJSON(): V2JsonNote[] {
             .replace('"offset"', '"noteJumpStartBeatOffset"');
         if (V3) {
             stringified = stringified
-                .replace('"position"', '"coordinates"')
                 .replace('"rotation"', '"worldRotation"')
                 .replace('"interactable":false', '"uninteractable":true')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
@@ -43,6 +42,10 @@ export function notesToJSON(): V2JsonNote[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         noteJSON = JSON.parse(stringified);
+        let noteAnim = noteJSON.customData.animation;
+        if (noteAnim) {
+            noteJSON.customData.animation = JSON.parse(JSON.stringify(noteAnim).replace(/"position":/g, '"offsetPosition":'))
+        }
         if (V3 && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
             delete noteJSON.customData.fake;
             fakeNotes.push(noteJSON);
