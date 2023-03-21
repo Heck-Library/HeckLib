@@ -67,7 +67,6 @@ export type ARC = {
     endY?: number;
     endDirection?: noteDir;
     endMultiplier?: number;
-    segments?: number;
     anchor?: 0 | 1 | 2;
     data: customNoteData;
     anim: animationData;

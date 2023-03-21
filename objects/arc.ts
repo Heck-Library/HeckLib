@@ -14,7 +14,6 @@ type arcData = {
     endY?: number,
     endDirection?: direction,
     endMultiplier?: number,
-    segments?: number,
     anchor?: 0 | 1 | 2,
 }
 interface IArc {
@@ -61,9 +60,8 @@ export default class Arc {
         if (!d.multiplier) c.multiplier = 1;
         if (!d.endX) c.endX = 0;
         if (!d.endY) c.endY = 0;
-        if (!d.endDirection) c.endMultiplier = 0;
+        if (!d.endDirection) c.endDirection = 0;
         if (!d.endMultiplier) c.endMultiplier = 1;
-        if (!d.segments) c.segments = 2;
         if (!d.anchor) c.anchor = 0;
         if (!d.x) c.x = 0;
         if (!d.y) c.y = 0;
@@ -93,9 +91,6 @@ export default class Arc {
 
     set endY(endY: number) { this.json.a.endY = endY; }
     get endY(): number { return this.json.a.endY; }
-
-    set segments(segments: number) { this.json.a.segments = segments; }
-    get segments(): number { return this.json.a.segments; }
 
     set anchor(anchor: 0 | 1 | 2) { this.json.a.anchor = anchor; }
     get anchor(): 0 | 1 | 2 { return this.json.a.anchor; }
