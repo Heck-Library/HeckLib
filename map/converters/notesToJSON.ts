@@ -28,7 +28,6 @@ export function notesToJSON(): V2JsonNote[] {
             .replace('"offset"', '"noteJumpStartBeatOffset"');
         if (V3) {
             stringified = stringified
-                .replace('"rotation"', '"worldRotation"')
                 .replace('"interactable":false', '"uninteractable":true')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
         } else {
@@ -42,9 +41,17 @@ export function notesToJSON(): V2JsonNote[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         noteJSON = JSON.parse(stringified);
-        let noteAnim = noteJSON.customData.animation;
-        if (noteAnim) {
-            noteJSON.customData.animation = JSON.parse(JSON.stringify(noteAnim).replace(/"position":/g, '"offsetPosition":'))
+        if (V3) {
+            if (noteJSON.customData.animation) {
+                noteJSON.customData.animation = JSON.parse(JSON.stringify(noteJSON.customData.animation)
+                .replace(/"position":/g, '"offsetPosition":')
+                .replace(/"rotation":/g, '"offsetWorldRotation":'))
+            }
+            if (noteJSON.customData) {
+                noteJSON.customData = JSON.parse(JSON.stringify(noteJSON.customData)
+                .replace(/"position":/g, '"coordinates":')
+                .replace(/"rotation":/g, '"worldRotation":'))
+            }
         }
         if (V3 && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
             delete noteJSON.customData.fake;

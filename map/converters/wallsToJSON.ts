@@ -41,12 +41,13 @@ export function wallsToJSON(): Record<string, any>[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         wallJSON = JSON.parse(stringified);
-        let wallAnim = wallJSON.customData.animation;
-        if (wallAnim) {
-            wallJSON.customData.animation = JSON.parse(JSON.stringify(wallAnim).replace(/"position":/g, '"offsetPosition":'))
-        }
-        if (wallJSON.customData) {
-            wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":'))
+        if (V3) {
+            if (wallJSON.customData.animation) {
+                wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation).replace(/"position":/g, '"offsetPosition":'))
+            }
+            if (wallJSON.customData) {
+                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":'))
+            }
         }
         if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;
