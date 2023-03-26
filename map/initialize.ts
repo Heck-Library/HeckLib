@@ -82,7 +82,13 @@ export let fakeBombs: any[];
  * Array that contains all the material names used in the map.
  */
 export const materialNames: string[] = [];
-export let MAPPROPERTIES: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number };
+export const MAPPROPERTIES: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
+    njs: 16,
+    offset: 0,
+    bpm: 120,
+    halfJumpDuration: 2,
+    jumpDistance: 24
+};
 export let activeInput: string;
 export let activeOutput: string;
 export let activeLightshow: string;
@@ -378,13 +384,9 @@ export function initialize(input: string, output: string, properties: InitProper
     const p = properties;
     const NJS = p.njs;
     const offset = p.offset;
-    MAPPROPERTIES = {
-        njs: p.njs,
-        offset: p.offset,
-        bpm: infoFile._beatsPerMinute,
-        halfJumpDuration: 0,
-        jumpDistance: 0
-    };
+    MAPPROPERTIES.njs = p.njs;
+    MAPPROPERTIES.offset = p.offset;
+    MAPPROPERTIES.bpm = infoFile._beatsPerMinute;
     MAPPROPERTIES.halfJumpDuration = getJumps().half;
     MAPPROPERTIES.jumpDistance = getJumps().dist;
     if (p.lightshow) {

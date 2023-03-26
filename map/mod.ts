@@ -1,9 +1,12 @@
-import {initialize} from './initialize';
+import {initialize, MAPPROPERTIES} from './initialize';
 import {finalize} from './finalize';
+
+const properties = MAPPROPERTIES;
 
 const Map = {
     initialize,
-    finalize
+    finalize,
+    properties
 }
 
 export default Map;
