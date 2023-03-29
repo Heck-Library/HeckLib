@@ -5,9 +5,11 @@ import { Track } from "../consts/types/objects";
 import { vec3 } from "../consts/types/vec";
 import { environment, V3 } from "../map/initialize";
 
+export type LookupMethod = "Exact" | "Regex" | "Contains" | "StartsWith" | "EndsWith";
+
 interface IEnvironment {
     _id?: string;
-    _lookupMethod?: "Regex" | "Contains" | "Exact";
+    _lookupMethod?: LookupMethod;
     _duplicate?: number;
     _active?: boolean;
     _scale?: vec3;
