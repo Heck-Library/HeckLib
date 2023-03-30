@@ -45,6 +45,8 @@ export default class Environment {
         let id: string;
         if (typeof x !== "string") {
             id = x.toString().replace(/(^\/|\/$)/g, "");
+        } else {
+            id = x;
         }
         this.environment._id = id;
         this.environment._lookupMethod = "Regex";
