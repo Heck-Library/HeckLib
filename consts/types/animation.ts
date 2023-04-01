@@ -15,6 +15,7 @@ export type parentTrackType = {
      * These tracks will be assigned under the parent track.
      */
     childrenTracks: string[];
+    worldPositionStays: boolean;
 };
 
 export type playerTrackType = {
