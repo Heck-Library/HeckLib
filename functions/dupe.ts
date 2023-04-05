@@ -1,14 +1,16 @@
-import { NOTE } from "../consts/types/objects";
-import Note from "../objects/note";
+import { ARC, BOMB, CHAIN, NOTE, WALL } from "../consts/types/objects";
 
-export default function dupe(obj : NOTE): NOTE {
-    const o = JSON.parse(JSON.stringify(obj))
-    const n: NOTE = new Note({
-        time: o.json.nD.time,
-        type: o.json.nD.type,
-        x: o.json.nD.x,
-        y: o.json.nD.y,
-        direction: o.json.nD.direction
-    }, o.json.cD, o.json.aD);
-    return n;
+/**
+ * Duplicates an object to a new class instead of referencing the old one.
+ * 
+ * You can use this to duplicate notes and give them a separate animation from the original one for example.
+ * ```ts
+ * const duplicatedNote = dupe(note);
+ * ```
+ * @param obj Object to be duplicated
+ * @returns Duplicate of the object
+ */
+export default function dupe(obj : NOTE | WALL | BOMB | ARC | CHAIN): NOTE | WALL | BOMB | ARC | CHAIN {
+    const copy = Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+    return copy;
 }
