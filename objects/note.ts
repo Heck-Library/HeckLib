@@ -8,11 +8,29 @@ import {
 } from "../consts/types/objects";
 import {bombs, notes, V3} from "../map/initialize";
 type noteData = {
+    /**
+     * Beat timing of the note
+     */
     time: number;
+    /**
+     * The horizontal index position of the note
+     */
     x?: lineIndex;
+    /**
+     * The vertical row index of the note
+     */
     y?: lineLayer;
+    /**
+     * Angle offset of the note in degrees
+     */
     angle?: number;
+    /**
+     * Type of the note (Red, Blue, Bomb)
+     */
     type?: noteType;
+    /**
+     * Cut direction of the note
+     */
     direction?: noteDir;
 };
 
@@ -29,7 +47,13 @@ enum Direction {
 }
 
 enum Type {
+    /**
+     * Red note type
+     */
     Red = 0,
+    /**
+     * Blue note type
+     */
     Blue = 1,
     /**
      * Won't work in V3 due to bombs belonging to a separate array.
