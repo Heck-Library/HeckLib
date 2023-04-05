@@ -2,7 +2,13 @@ import {Track} from "./objects";
 import {vec1anim, vec3, vec3anim, vec4anim} from "./vec";
 
 export type POINTDEFINITION = {
+    /**
+     * Name of the point definition
+     */
     name: string;
+    /**
+     * Animation of the point definition
+     */
     points: vec1anim | vec3anim | vec4anim;
 };
 
@@ -15,10 +21,16 @@ export type parentTrackType = {
      * These tracks will be assigned under the parent track.
      */
     childrenTracks: string[];
+    /**
+     * ngl, I have no fucking clue...
+     */
     worldPositionStays: boolean;
 };
 
 export type playerTrackType = {
+    /**
+     * The track where the player is assigned to
+     */
     track: Track;
 };
 
@@ -86,7 +98,7 @@ export type animateTrackData = {
     /**
      * The time animation.
      */
-    timeAnim?: vec1anim;
+    time?: vec1anim;
 };
 
 export type pathAnimData = {
@@ -137,8 +149,17 @@ export type pathAnimData = {
 };
 
 export type animComponentData = {
+    /**
+     * The track to be controlled
+     */
     track: Track;
+    /**
+     * Duration of the event in beats
+     */
     duration: number;
+    /**
+     * Easing used for the event
+     */
     easing?: string;
     BloomFogEnvironment?: {
         attenuation?: vec1anim;
