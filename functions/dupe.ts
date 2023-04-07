@@ -10,7 +10,11 @@ import { ARC, BOMB, CHAIN, NOTE, WALL } from "../consts/types/objects";
  * @param obj Object to be duplicated
  * @returns Duplicate of the object
  */
-export default function dupe(obj : NOTE | WALL | BOMB | ARC | CHAIN): NOTE | WALL | BOMB | ARC | CHAIN {
-    const copy = Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-    return copy;
+export default function dupe(obj : CHAIN) : CHAIN;
+export default function dupe(obj : BOMB) : BOMB;
+export default function dupe(obj : WALL) : WALL;
+export default function dupe(obj : NOTE): NOTE;
+export default function dupe(obj : ARC) : ARC;
+export default function dupe(obj : object) {
+    return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
 }
