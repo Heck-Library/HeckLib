@@ -99,6 +99,22 @@ export type animateTrackData = {
      * The time animation.
      */
     time?: vec1anim;
+    /**
+     * The fog's startY value.
+     */
+    startY?: vec1anim;
+    /**
+     * Fog attenuation.
+     */
+    attenuation?: vec1anim;
+    /**
+     * Fog offset
+     */
+    offset?: vec1anim;
+    /**
+     * Fog height
+     */
+    height?: vec1anim;
 };
 
 export type pathAnimData = {
