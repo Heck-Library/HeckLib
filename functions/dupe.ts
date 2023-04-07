@@ -16,5 +16,6 @@ export default function dupe(obj : WALL) : WALL;
 export default function dupe(obj : NOTE): NOTE;
 export default function dupe(obj : ARC) : ARC;
 export default function dupe(obj : object) {
-    return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+    const newObject = Object.assign(Object.create(Object.getPrototypeOf(obj)), JSON.parse(JSON.stringify(obj)));
+    return newObject
 }
