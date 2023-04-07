@@ -24,7 +24,7 @@ export type parentTrackType = {
     /**
      * ngl, I have no fucking clue...
      */
-    worldPositionStays: boolean;
+    worldPositionStays?: boolean;
 };
 
 export type playerTrackType = {
