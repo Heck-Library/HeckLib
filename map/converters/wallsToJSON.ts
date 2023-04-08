@@ -46,7 +46,7 @@ export function wallsToJSON(): Record<string, any>[] {
                 wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation).replace(/"position":/g, '"offsetPosition":'))
             }
             if (wallJSON.customData) {
-                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":'))
+                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":').replace(/"scale":/g, '"size":'))
             }
         }
         if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
