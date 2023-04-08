@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import { WALL, NOTE, unknownAnimation, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
+import { WALL, NOTE, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
 import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events } from "./initialize";
 import { wallsToJSON } from "./converters/wallsToJSON";
 import { notesToJSON } from "./converters/notesToJSON";
