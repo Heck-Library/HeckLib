@@ -185,7 +185,7 @@ export default class ParticleTunnel {
             new PointDefinition(`PTWallDis${this.time}`, [
                 [0, 0],
                 [1, this.fadeInTime/this.duration, ease.Out.Sine],
-                [1, this.duration - this.fadeOutTime / this.duration],
+                [1, (this.duration - this.fadeOutTime) / this.duration],
                 [0, 1, ease.In.Sine]
             ]).push();
         }

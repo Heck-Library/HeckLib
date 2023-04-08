@@ -29,6 +29,7 @@ export function notesToJSON(): V2JsonNote[] {
         if (V3) {
             stringified = stringified
                 .replace('"interactable":false', '"uninteractable":true')
+                .replace('"interactable":true', '"uninteractable":false')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
         } else {
             stringified = stringified

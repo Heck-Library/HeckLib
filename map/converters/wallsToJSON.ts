@@ -27,8 +27,8 @@ export function wallsToJSON(): Record<string, any>[] {
             .replace('"offset"', '"noteJumpStartBeatOffset"');
         if (V3) {
             stringified = stringified
-                .replace('"rotation"', '"worldRotation"')
                 .replace('"interactable":false', '"uninteractable":true')
+                .replace('"interactable":true', '"uninteractable":false')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
         } else {
             stringified = stringified
@@ -43,10 +43,15 @@ export function wallsToJSON(): Record<string, any>[] {
         wallJSON = JSON.parse(stringified);
         if (V3) {
             if (wallJSON.customData.animation) {
-                wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation).replace(/"position":/g, '"offsetPosition":'))
+                wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation)
+                .replace(/"position":/g, '"offsetPosition":')
+                .replace(/"rotation":/g, '"offsetWorldRotation":'))
             }
             if (wallJSON.customData) {
-                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData).replace(/"position":/g, '"coordinates":').replace(/"scale":/g, '"size":'))
+                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData)
+                .replace(/"position":/g, '"coordinates":')
+                .replace(/"rotation":/g, '"worldRotation":')
+                .replace(/"scale":/g, '"size":'))
             }
         }
         if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
