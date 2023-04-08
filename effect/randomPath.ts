@@ -7,29 +7,68 @@ import { notes, pointDefinitions } from "../map/initialize";
 import PointDefinition from "../map/pointDefinition";
 
 type RandomPathProperties = {
-    time: number;
-    duration: number;
+    /**
+     * Start time of the effect
+     */
+    start: number;
+    /**
+     * End time of the effect
+     */
+    end: number;
+    /**
+     * Track to set for all the notes selected
+     */
     track?: Track;
+    /**
+     * Offset to apply for all notes selected
+     */
     offset?: number;
 }
 
 export default class RandomPath {
-    time: number;
-    duration: number;
+    /**
+     * Start time of the effect
+     */
+    start: number;
+    /**
+     * End time of the effect
+     */
+    end: number;
+    /**
+     * Track to set for all the notes selected
+     */
     track?: Track;
+    /**
+     * Offset to apply for all notes selected
+     */
     offset: number;
 
+    /**
+     * Randomizes the path of all notes between the two time values: `start` and `end`.
+     * 
+     * ```ts
+     * new Effect.RandomPath({
+     *     start: 69,   // The effect's start beat
+     *     end: 727,    // The effect's ending beat
+     *     track: "foo",// The track applied to all selected notes
+     *     offset: 2    // The offset applied to all selected notes
+     * }).push();       // Pushes the effect to the map
+     * ```
+     */
     constructor(properties: RandomPathProperties) {
         const p = properties;
 
-        this.time = p.time;
-        this.duration = p.duration;
+        this.start = p.start;
+        this.end = p.end;
         this.offset = 2;
 
         if (p.track) this.track = p.track;
         if (p.offset) this.offset = p.offset;
     }
     
+    /**
+     * Pushes the effect to the map.
+     */
     push() : void {
         if (!pointDefinitions.includes("randPos1")) {
             new PointDefinition("randDissolve", [
@@ -47,7 +86,7 @@ export default class RandomPath {
                 ]).push();
             }
         }
-        const f = filter(notes, this.time, this.time + this.duration)
+        const f = filter(notes, this.start, this.start + this.end)
         f.forEach((n: NOTE) => {
             const d = n.data;
             const a = n.anim;

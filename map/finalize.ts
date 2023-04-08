@@ -198,20 +198,20 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
     }
     const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
-    function deeperDaddy({ obj }: { obj: any; }): void {
+    function deeperDaddy(obj: any): void {
         if (obj)
             for (const key in obj) {
                 if (obj[key] == null) {
                     delete obj[key];
                 } else if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
-                    deeperDaddy({ obj: obj[key] });
+                    deeperDaddy(obj[key]);
                 } else if (typeof obj[key] == "number") {
                     obj[key] = (Math.round((obj[key] + Number.EPSILON) * jsonP) / jsonP);
                 }
             }
 
     }
-    deeperDaddy({ obj: difficulty })
+    deeperDaddy(difficulty)
 
     if (!V3) {
         const newDiff: V2DIFF = {
