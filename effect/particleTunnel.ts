@@ -107,12 +107,12 @@ export default class ParticleTunnel {
     density: number;
     /**
      * How fast should the particles fade in
-     * Default: 0.25
+     * Default: 1
      */
     fadeInTime: number;
     /**
      * How fast should the particles fade out
-     * Default: 0.25
+     * Default: 1
      */
     fadeOutTime: number;
     /**
@@ -133,7 +133,15 @@ export default class ParticleTunnel {
 
     /**
      * Makes a "tunnel" of particles.
-     * @param properties Properties for the particle tunnel
+     * 
+     * Example:
+     * ```ts
+     * new Effect.ParticleTunnel({
+     *     time: 18, // The beat the particles spawn on
+     *     duration: 16, // How long the particles should last
+     *     fadeInTime: 2 // The particles will spawn in 2 beats
+     * }).push();
+     * ```
      */
     constructor(properties: particleTunnelProperties) {
         const p = properties
@@ -145,8 +153,8 @@ export default class ParticleTunnel {
         this.distance = 25;
         this.noise = 0;
         this.density = 10;
-        this.fadeInTime = 0.25;
-        this.fadeOutTime = 0.25;
+        this.fadeInTime = 1;
+        this.fadeOutTime = 1;
         this.particleSize = 0.1;
         this.color = [1, 1, 1, 1];
 
@@ -212,8 +220,8 @@ export default class ParticleTunnel {
             }
             new Wall({
                 //Vanilla data
-                time: i,
-                duration: 4,
+                time: Math.round(i * 1000)/1000,
+                duration: 8,
             }, {
                 //Custom data
                 track: track,
