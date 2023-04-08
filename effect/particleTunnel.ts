@@ -232,7 +232,7 @@ export default class ParticleTunnel {
                 scale: [this.particleSize, this.particleSize, this.particleSize],
             }, {
                 //Animation data
-                definitePosition: [0, random(this.radius, this.spread), this.distance],
+                definitePosition: [0, random(this.radius, this.spread), random(-1, this.distance)],
                 dissolve: `PTWallDis${this.time}`,
                 rotation: [
                     [0, 0, random(-180, 180), 0],
