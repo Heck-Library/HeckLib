@@ -6,7 +6,7 @@ import polygon from './polygon';
 import random from './random';
 import track from './track';
 
-const functions = {
+const Functions = {
     dupeNote,
     filter,
     hsvToRgb,
@@ -16,4 +16,4 @@ const functions = {
     track
 }
 
-export default functions;
+export default Functions;

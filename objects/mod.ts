@@ -5,7 +5,7 @@ import Note from './note';
 import Wall from './wall';
 import Light from './lights';
 
-const object = {
+const Object = {
     Arc,
     Chain,
     Note,
@@ -13,4 +13,4 @@ const object = {
     Light
 }
 
-export default object;
+export default Object;
