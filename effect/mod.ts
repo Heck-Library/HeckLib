@@ -2,6 +2,7 @@ import ParticleTunnel from "./particleTunnel";
 import RandomPath from "./randomPath";
 import MovePath from "./movePath";
 import NoteTrail from "./noteTrail";
+import Distortion from "./distortion";
 
 /**
  * A module that has multiple premade customizable effects that are very commonly seen in maps.
@@ -11,12 +12,8 @@ import NoteTrail from "./noteTrail";
  * All the effects included are
  * 
  * ---
- * #### `ParticleTunnel`
- * Creates a hollow cylinder made out of small cubes around the player.
- * 
- * ---
- * #### `RandomPath`
- * Randomizes the path of all notes between `start` and `end`.
+ * #### `Distortion`
+ * Distorts the game using floating point errors.
  * 
  * ---
  * #### `MovePath`
@@ -25,12 +22,21 @@ import NoteTrail from "./noteTrail";
  * ---
  * #### `NoteTrail`
  * Creates a trail behind each individual note that can be customized.
+ * 
+ * ---
+ * #### `ParticleTunnel`
+ * Creates a hollow cylinder made out of small cubes around the player.
+ * 
+ * ---
+ * #### `RandomPath`
+ * Randomizes the path of all notes between `start` and `end`.
  */
 const Effect = {
-    ParticleTunnel,
-    RandomPath,
+    Distortion,
     MovePath,
-    NoteTrail
+    NoteTrail,
+    ParticleTunnel,
+    RandomPath
 }
 
 export default Effect;

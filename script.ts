@@ -21,7 +21,7 @@ Map.finalize(difficulty, {
         customEvents: true,
         notes: true,
         lights: true,
+        walls: true,
         pointDefinitions: true,
-        walls: true
     }
 });
