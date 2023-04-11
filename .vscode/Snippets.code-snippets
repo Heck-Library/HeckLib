@@ -51,7 +51,7 @@
             "new AssignTrackParent(${1:time}, {",
             "    parentTrack: \"${2}\"",
             "    childrenTracks: [\"${3}\"]",
-            "}).push()"
+            "}).push();"
         ],
         "description": "Adds the structure for an AssignTrackParent event"
     },
@@ -73,8 +73,9 @@
         "body": [
             "new Arc({",
             "    // Arc data",
-            "    time: ${1}",
+            "    time: ${1},",
             "    endTime: ${2}",
+            "    $0",
             "}, {",
             "    // Custom data",
             "    ",
@@ -92,6 +93,7 @@
             "    // Chain data",
             "    time: ${1}",
             "    endTime: ${2}",
+            "    $0",
             "}, {",
             "    // Custom data",
             "    ",
@@ -108,6 +110,7 @@
             "new Note({",
             "    //Vanilla data",
             "    time: ${1:time}",
+            "    $0",
             "}, {",
             "    //Custom data",
             "    ",
@@ -125,6 +128,7 @@
             "new Wall({",
             "    //Vanilla data",
             "    time: ${1:time}",
+            "    $0",
             "}, {",
             "    //Custom data",
             "    ",
@@ -161,6 +165,8 @@
         "description": "Creates the function for adding tracks to chains between two time values."
     },
 
+    //#region Filter Notes
+
     "FilterNotesDirection": {
         "scope": "typescript",
         "prefix": "filterNotesDirection",
@@ -172,26 +178,87 @@
     },
     "FilterNotesType": {
         "scope": "typescript",
-        "prefix": "filterNotesDirection",
+        "prefix": "filterNotesType",
         "body": [
             "filter(notes, ${1:startTime}, ${2:endTime}, {",
             "    type: Note.Type.$0",
             "});"
         ]
     },
-
+    "FilterNotesX": {
+        "scope": "typescript",
+        "prefix": "filterNotesX",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    x: $0",
+            "});"
+        ]
+    },
+    "FilterNotesY": {
+        "scope": "typescript",
+        "prefix": "filterNotesY",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    y: $0",
+            "});"
+        ]
+    },
+    "FilterNotesXY": {
+        "scope": "typescript",
+        "prefix": "filterNotesXY",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    x: ${3},",
+            "    y: $0",
+            "});"
+        ]
+    },
     "FilterNotes": {
         "scope": "typescript",
         "prefix": "filterNotes",
         "body": "filter(notes, ${1:startTime}, ${2:endTime});",
         "description": "Creates the function for filtering notes between two times."
     },
+
+    // #endregion
+
+    // #region Filter Walls
     "FilterWalls": {
         "scope": "typescript",
         "prefix": "filterWalls",
         "body": "filter(walls, ${1:startTime}, ${2:endTime});",
         "description": "Creates the function for filtering walls between two times."
     },
+    "FilterWallsDuration": {
+        "scope": "typescript",
+        "prefix": "filterWallsDuration",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    duration: $0",
+            "});"
+        ]
+    },
+    "FilterWallsX": {
+        "scope": "typescript",
+        "prefix": "filterWallsX",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    x: $0",
+            "});"
+        ]
+    },
+    "FilterWallsY": {
+        "scope": "typescript",
+        "prefix": "filterWallsY",
+        "body": [
+            "filter(notes, ${1:startTime}, ${2:endTime}, {",
+            "    y: $0",
+            "});"
+        ]
+    },
+
+    // #endregion
+    
     "FilterArcs": {
         "scope": "typescript",
         "prefix": "filterArcs",
