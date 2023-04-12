@@ -46,7 +46,7 @@ type ArcFilters = {
 }
 type WallFilters = {
     /**
-     * Filters by the type of the object, such as `Note.Red`
+     * Filters by the type of the object, such as `Wall.Crouch`
      */
     type?: noteType;
     /**

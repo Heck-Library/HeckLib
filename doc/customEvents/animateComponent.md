@@ -33,6 +33,6 @@ new AnimateComponent(time: number, {
 ### Type explanation
 
 - If there's a `?` after a property name, it means that the property is optional.
-- `Track` : `string | string[]`
-- `vec1` : `[number]`
-- `vec1anim` : `vec1 | vec1[]`
+- [`Track`](../types/track.md) : `string | string[]`
+- [`vec1`](../types/vec1.md) : `[number]`
+- [`vec1anim`](../types/vec1anim.md) : [`vec1`](../types/vec1.md) | [`vec1frame[]`](../types/vec1frame.md)
