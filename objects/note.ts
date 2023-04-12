@@ -94,7 +94,12 @@ export default class Note {
      * @param customData All the custom data of the note, such as `color`
      * @param animationData All the animation data of the note, such as `dissolve`
      */
-    constructor(noteData : noteData, customData? : customNoteData, animationData? : animationData) {
+    constructor(noteData : noteData | number, customData? : customNoteData, animationData? : animationData) {
+        if (typeof noteData === "number") {
+            noteData = {
+                time: noteData
+            };
+        }
         this.json = {
             nD: noteData,
             cD: {},
