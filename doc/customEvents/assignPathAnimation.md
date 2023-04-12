@@ -22,25 +22,30 @@ new AssignPathAnimation(time: number, {
 
 ### Properties
 
-- [`track`](../types/track.md) : The track to be controlled.
-- [`easing`](../enums/easings.md) : The easing of the animation. If not specified, it will use the default easing (linear).
-- [`position`](../animations/position.md) : The position of the object.
-- [`definitePosition`](../animations/definitePosition.md) : The definite position of the object.
-- [`rotation`](../animations/rotation.md) : The rotation of the object.
-- [`localRotation`](../animations/localRotation.md) : The local rotation of the object.
-- [`scale`](../animations/scale.md) : The scale of the object.
-- [`color`](../animations/color.md) : The color of the object.
-- [`dissolve`](../animations/dissolve.md) : The dissolve value of the object.
-- [`dissolveArrow`](../animations/dissolveArrow.md) : The dissolve value of the arrow.
-- [`interactable`](../animations/interactable.md) : Whether the object is interactable or not.
+| Property                                                  | Type                                  | Description
+|-----------------------------------------------------------|---------------------------------------|-------------
+| [`track`](../types/track.md)                              | [`Track`](../types/track.md)          | The track to be controlled.
+| [`easing`](../enums/easings.md)                           | `string`                              | The easing of the animation. If not specified, it will use the default easing (linear).
+| [`position`](../animations/position.md)                   | [`vec3anim`](../types/vec3anim.md)    | The position of the object.
+| [`definitePosition`](../animations/definitePosition.md)   | [`vec3anim`](../types/vec3anim.md)    | The definite position of the object.
+| [`rotation`](../animations/rotation.md)                   | [`vec3anim`](../types/vec3anim.md)    | The rotation of the object.
+| [`localRotation`](../animations/localRotation.md)         | [`vec3anim`](../types/vec3anim.md)    | The local rotation of the object.
+| [`scale`](../animations/scale.md)                         | [`vec3anim`](../types/vec3anim.md)    | The scale of the object.
+| [`color`](../animations/color.md)                         | [`vec4anim`](../types/vec4anim.md)    | The color of the object.
+| [`dissolve`](../animations/dissolve.md)                   | [`vec1anim`](../types/vec1anim.md)    | The dissolve value of the object.
+| [`dissolveArrow`](../animations/dissolveArrow.md)         | [`vec1anim`](../types/vec1anim.md)    | The dissolve value of the arrow.
+| [`interactable`](../animations/interactable.md)           | [`vec1anim`](../types/vec1anim.md)    | Whether the object is interactable or not.
 
-### Type explanation
+### Example
 
-- If there's a `?` after a property name, it means that the property is optional.
-- <a href="../types/track.md">Track</a> : `string | string[]`
-- <a href="../types/vec1.md">vec1</a> : `[number]`
-- <a href="../types/vec1anim.md">vec1anim</a> : `vec1 | vec1[]`
-- <a href="../types/vec3.md">vec3</a> : `[number, number, number]`
-- <a href="../types/vec3anim.md">vec3anim</a> : `vec3 | vec3[]`
-- <a href="../types/vec4.md">vec4</a> : `[number, number, number, number]`
-- <a href="../types/vec4anim.md">vec4anim</a> : `vec4 | vec4[]`
+The example below will make every note on `"exampleTrack"` start their path with a 5 unit offset on the Y axis, and then move to their original position with a circular easing.
+
+```ts
+new AssignPathAnimation(0, {
+    track: "exampleTrack",
+    position: [
+        [0, 5, 0, 0],
+        [0, 0, 0, 0.45, ease.Out.Circ]
+    ]
+}).push();
+```
