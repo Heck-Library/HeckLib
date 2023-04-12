@@ -20,7 +20,7 @@ new AssignPathAnimation(time: number, {
 }).push();
 ```
 
-### Property explanation
+### Properties
 
 - [`track`](../types/track.md) : The track to be controlled.
 - [`easing`](../enums/easings.md) : The easing of the animation. If not specified, it will use the default easing (linear).

@@ -30,9 +30,12 @@ new AnimateComponent(time: number, {
 }).push();
 ```
 
-### Type explanation
-
-- If there's a `?` after a property name, it means that the property is optional.
-- [`Track`](../types/track.md) : `string | string[]`
-- [`vec1`](../types/vec1.md) : `[number]`
-- [`vec1anim`](../types/vec1anim.md) : [`vec1`](../types/vec1.md) | [`vec1frame[]`](../types/vec1frame.md)
+### Properties
+| Property                                                          | Type                                                              | Description |
+|-------------------------------------------------------------------|-------------------------------------------------------------------|-------------|
+| [`track`](../types/track.md)                                      | [`Track`](../types/track.md)                                      | The track to be controlled.
+| `duration`                                                        | `number`                                                          | The duration of the animation in beats.
+| [`easing`](../enums/easings.md)                                   | `string`                                                          | The easing of the animation. If not specified, it will use the default easing (linear).
+| [`ILightWithId`](../components/ilightwithid.md)                   | `{lightID: number, type: number}`                                 | The `ILightWithId` component.
+| [`BloomFogEnvironment`](../components/bloomfogenvironment.md)     | [`BloomFogEnvironment`](../components/bloomfogenvironment.md)     | The `BloomFogEnvironment` component.
+| [`TubeBloomPrePassLight`](../components/tubebloomprepasslight.md) | [`TubeBloomPrePassLight`](../components/tubebloomprepasslight.md) | The `TubeBloomPrePassLight` component.

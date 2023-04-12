@@ -22,14 +22,14 @@ new Note({
 Only the `time` parameter is actually required and if a number is specified instead, it will automatically be converted to a `Note` object.
 
 ### Parameters
-
-- If there's a `?` after a property name, it means that the property is optional.
-- `time` - The time in beats when the note should spawn. This is the only required parameter and can be provided individually.
-- [`type`](../enums/note.md#note-type) - The type of note to spawn. This can be either `Note.Type.Red` or `Note.Type.Blue`. The default value is `Note.Type.Red`.
-- [`direction`](../enums/note.md#note-direction) - The direction of the note. This can be any of the values in [`Note.Direction`](../enums/note.md#note-direction). The default value is `Note.Direction.Down`.
-- `x` - The x position of the note. This is a number value between 0 and 3. The default value is `0`.
-- `y` - The y position of the note. This is a number value between 0 and 2. The default value is `0`.
-- `angle` - The angle of the note. This is a numerical value between 0 and 360. The default value is `0`. It is an offset angle to the note's cut direction.
+| Property      | Type                                                          | Description
+| ------------- | ------------------------------------------------------------- | ---
+| `time`        | `number`                                                      | The time in beats when the note should spawn. This is the only required parameter and can be provided individually. **(Required)**
+| `type`        | [`Note.Type.[VALUE]`](../enums/note.md#note-type)             | The type of note to spawn. This can be either `Note.Type.Red` or `Note.Type.Blue`. The default value is `Note.Type.Red`.
+| `direction`   | [`Note.Direction.[VALUE]`](../enums/note.md#note-direction)   | The direction of the note. The default value is `Note.Direction.Down`.
+| `x`           | 0 - 3                                                         | The x position of the note. The default value is `0`.
+| `y`           | 0 - 2                                                         | The y position of the note. The default value is `0`.
+| `angle`       | 0 - 360                                                       | The angle offset of the note. The default value is `0`.
 
 ```ts
 new Note(0).push();
@@ -62,21 +62,23 @@ new Note(69, {
 ### Parameters
 
 All of these parameters are completely optional and can be used to add custom data to the note.
-- [`track`](../properties/track.md) - The track that the note should be assigned to. This can be any `string` value or an array of `string` values.
-- [`color`](../properties/color.md) - The color of the note. This can be any [`vec4`](../types/vec4.md) value.
-- [`position`](../properties/position.md) - The position of the note. This can be any [`vec2`](../types/vec2.md) value.
-- [`rotation`](../properties/rotation.md) - The rotation of the note. This can be any [`vec3`](../types/vec3.md) value.
-- [`localRotation`](../properties/localRotation.md) - The local rotation of the note. This can be any [`vec3`](../types/vec3.md) value.
-- [`flip`](../properties/flip.md) - The flip of the note. This can be any [`vec2`](../types/vec2.md) value.
-- [`scale`](../properties/scale.md) - The scale of the note. This can be any [`vec3`](../types/vec3.md) value.
-- [`njs`](../properties/njs.md) - The note jump speed of the note. This can be any `number` value.
-- [`offset`](../properties/offset.md) - The offset of the note. This can be any `number` value.
-- [`fake`](../properties/fake.md) - Whether or not the note is fake. This can be any `boolean` value.
-- [`interactable`](../properties/interactable.md) - Whether or not the note is interactable. This can be any `boolean` value.
-- [`disableNoteGravity`](../properties/disableNoteGravity.md) - Whether or not the note's gravity should be disabled. This can be any `boolean` value.
-- [`disableNoteLook`](../properties/disableNoteLook.md) - Whether or not the note's look should be disabled. This can be any `boolean` value.
-- [`disableSpawnEffect`](../properties/disableSpawnEffect.md) - Whether or not the note's spawn effect should be disabled. This can be any `boolean` value.
 
+| Property                                                      | Type                                                          | Description
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ---
+| [`track`](../properties/track.md)                             | [`Track`](../types/track.md "string or string[]")             | The track that the note should be assigned to.
+| [`color`](../properties/color.md)                             | [`vec4`](../types/vec4.md "[number, number, number, number]") | The color of the note.
+| [`position`](../properties/position.md)                       | [`vec2`](../types/vec2.md "[number, number]")                 | The position of the note.
+| [`rotation`](../properties/rotation.md)                       | [`vec3`](../types/vec3.md "[number, number, number]")         | The rotation of the note.
+| [`localRotation`](../properties/localRotation.md)             | [`vec3`](../types/vec3.md "[number, number, number]")         | The local rotation of the note.
+| [`flip`](../properties/flip.md)                               | [`vec2`](../types/vec2.md "[number, number]")                 | The flip of the note.
+| [`scale`](../properties/scale.md)                             | [`vec3`](../types/vec3.md "[number, number, number]")         | The scale of the note.
+| [`njs`](../properties/njs.md)                                 | `number`                                                      | The note jump speed of the note.
+| [`offset`](../properties/offset.md)                           | `number`                                                      | The offset of the note.
+| [`fake`](../properties/fake.md)                               | `boolean`                                                     | Whether or not the note is fake.
+| [`interactable`](../properties/interactable.md)               | `boolean`                                                     | Whether or not the note is interactable.
+| [`disableNoteGravity`](../properties/disableNoteGravity.md)   | `boolean`                                                     | Whether or not the note should have the jump up animation.
+| [`disableNoteLook`](../properties/disableNoteLook.md)         | `boolean`                                                     | Whether or not the note should face the player constantly.
+| [`disableSpawnEffect`](../properties/disableSpawnEffect.md)   | `boolean`                                                     | Whether or not the note should have the spawn effect.
 
 ---
 ## Animation Data
@@ -100,20 +102,22 @@ new Note(69, {}, {
 ### Parameters
 
 All of these parameters are completely optional and can be used to add custom animation data to the note.
-- [`position`](../animations/position.md) - The position of the note. This can be any [`vec3anim`](../types/vec3anim.md) value.
-- [`definitePosition`](../animations/definitePosition.md) - The definite position of the note. This can be any [`vec3anim`](../types/vec3anim.md) value.
-- [`rotation`](../animations/rotation.md) - The rotation of the note. This can be any [`vec3anim`](../types/vec3anim.md) value.
-- [`localRotation`](../animations/localRotation.md) - The local rotation of the note. This can be any [`vec3anim`](../types/vec3anim.md) value.
-- [`scale`](../animations/scale.md) - The scale of the note. This can be any [`vec3anim`](../types/vec3anim.md) value.
-- [`color`](../animations/color.md) - The color of the note. This can be any [`vec4anim`](../types/vec4anim.md) value.
-- [`interactable`](../animations/interactable.md) - Whether or not the note is interactable. This can be any [`vec1anim`](../types/vec1anim.md) value.
-- [`dissolve`](../animations/dissolve.md) - The dissolve of the note. This can be any [`vec1anim`](../types/vec1anim.md) value.
-- [`dissolveArrow`](../animations/dissolveArrow.md) - The dissolve arrow of the note. This can be any [`vec1anim`](../types/vec1anim.md) value.
+| Property                                                  | Type                                  | Description
+| --------------------------------------------------------- | ------------------------------------- | ---
+| [`position`](../animations/position.md)                   | [`vec3anim`](../types/vec3anim.md)    | The position of the note.
+| [`definitePosition`](../animations/definitePosition.md)   | [`vec3anim`](../types/vec3anim.md)    | The definite position of the note.
+| [`rotation`](../animations/rotation.md)                   | [`vec3anim`](../types/vec3anim.md)    | The rotation of the note relative to the world origin.
+| [`localRotation`](../animations/localRotation.md)         | [`vec3anim`](../types/vec3anim.md)    | The rotation of the note relative to the note itself.
+| [`scale`](../animations/scale.md)                         | [`vec3anim`](../types/vec3anim.md)    | The scale of the note.
+| [`color`](../animations/color.md)                         | [`vec4anim`](../types/vec4anim.md)    | The color of the note.
+| [`interactable`](../animations/interactable.md)           | [`vec1anim`](../types/vec1anim.md)    | Whether or not the note is interactable.
+| [`dissolve`](../animations/dissolve.md)                   | [`vec1anim`](../types/vec1anim.md)    | The dissolve of the note.
+| [`dissolveArrow`](../animations/dissolveArrow.md)         | [`vec1anim`](../types/vec1anim.md)    | The dissolve of the note's arrow.
 
 ---
 ## Getters and Setters
 
-You can also use the getters and setters to handle data inside the note.
+You can also use the getters and setters to handle data inside the note. 
 
 ```ts
 const note = new Note(69);
@@ -153,7 +157,7 @@ note.anim = {
 
 A quicker way to not override all animations is just to set `note.data` to a variable and then set the animations to that variable. However, it is recommended to only use variables inside of a `forEach` loop.
 ```ts
-filter(notes, 0, 10).forEach((n: NOTE) => {
+filter(notes, 0, 10).forEach((note: NOTE) => {
     const d = note.data;
     const a = note.anim;
 
