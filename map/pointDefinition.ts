@@ -25,7 +25,11 @@ export default class PointDefinition {
         return this.json.points;
     }
 
-    push() {
+    push() : void {
+        if (pointDefinitions.includes(this.json.name)) {
+            console.warn("PointDefinition with name " + this.json.name + " already exists. Skipping push.");
+            return;
+        }
         definitions.push(this);
         pointDefinitions.push(this.json.name);
     }
