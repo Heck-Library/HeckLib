@@ -28,9 +28,9 @@ new AnimateTrack(time: number, {
 
 ### Property explanation
 
-- `track` : The track to be controlled.
+- [`track`](../types/track.md) : The track to be controlled.
 - `duration` : The duration of the animation in beats.
-- `easing` : The easing of the animation. If not specified, it will use the default easing (linear).
+- [`easing`](../enums/easings.md) : The easing of the animation. If not specified, it will use the default easing (linear).
 - [`position`](../animations/position.md) : The position of the object.
 - [`localPosition`](../animations/localPosition.md) : The local position of the object.
 - [`rotation`](../animations/rotation.md) : The rotation of the object.
@@ -52,3 +52,24 @@ new AnimateTrack(time: number, {
 - <a href="../types/vec3anim.md">vec3anim</a> : `vec3 | vec3[]`
 - <a href="../types/vec4.md">vec4</a> : `[number, number, number, number]`
 - <a href="../types/vec4anim.md">vec4anim</a> : `vec4 | vec4[]`
+
+## Getters and Setters
+
+You can also use getters and setters to handle data in customevents. This can be done by having a variable that is equal to the event you want to get data from. For example:
+
+```ts
+const a = new AnimateTrack();
+a.data.track = "track";
+a.data.duration = 1;
+a.data.scale = [
+    [2, 2, 2, 0],
+    [1, 1, 1, 1]
+];
+a.push();
+```
+
+Getting data from an event would work in a similar manner. For example:
+
+```ts
+console.log(a.data.duration); // 1  
+```

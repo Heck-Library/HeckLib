@@ -20,6 +20,20 @@ new AssignPathAnimation(time: number, {
 }).push();
 ```
 
+### Property explanation
+
+- [`track`](../types/track.md) : The track to be controlled.
+- [`easing`](../enums/easings.md) : The easing of the animation. If not specified, it will use the default easing (linear).
+- [`position`](../animations/position.md) : The position of the object.
+- [`definitePosition`](../animations/definitePosition.md) : The definite position of the object.
+- [`rotation`](../animations/rotation.md) : The rotation of the object.
+- [`localRotation`](../animations/localRotation.md) : The local rotation of the object.
+- [`scale`](../animations/scale.md) : The scale of the object.
+- [`color`](../animations/color.md) : The color of the object.
+- [`dissolve`](../animations/dissolve.md) : The dissolve value of the object.
+- [`dissolveArrow`](../animations/dissolveArrow.md) : The dissolve value of the arrow.
+- [`interactable`](../animations/interactable.md) : Whether the object is interactable or not.
+
 ### Type explanation
 
 - If there's a `?` after a property name, it means that the property is optional.
