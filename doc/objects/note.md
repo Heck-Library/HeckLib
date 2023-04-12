@@ -2,7 +2,7 @@
 
 ## Explanation
 
-The `Note` class is used to create notes. Notes are the objects that the player must hit to score points. Notes are created by calling the constructor in the [`Note`](../functions/addNote.md) class. The constructor takes in parameters that are used to create the note.
+The `Note` class is used to create notes. Notes are the objects that the player must hit to score points. Notes are created by calling the constructor in the `Note` class. The constructor takes in parameters that are used to create the note.
 
 ## Usage
 
