@@ -1,3 +1,6 @@
-# Suggestion
-
-Description of the feature and what it's used for.
+---
+name: Suggestion
+description: Have a suggestion? Leave it here!
+title: "[Suggestion]: "
+labels: ["suggestion"]
+---
