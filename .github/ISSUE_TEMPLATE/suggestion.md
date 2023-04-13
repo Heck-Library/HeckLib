@@ -1,6 +1,6 @@
 ---
 name: Suggestion
-description: Have a suggestion? Leave it here!
+about: Have a suggestion? Leave it here!
 title: "[Suggestion]: "
 labels: ["suggestion"]
 assignees: ''
