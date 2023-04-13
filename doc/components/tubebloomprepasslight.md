@@ -1,7 +1,5 @@
 # Tube Bloom Pre Pass Light
 
-## Description
-
 No clue...
 
 ## Properties

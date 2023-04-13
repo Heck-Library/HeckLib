@@ -1,5 +1,7 @@
 # AssignPathAnimation
 
+Assigns an animation for the objects' lifetime instead of simultaneous duration. This is useful for creating animations for objects with individual timings. For example, you can make notes dissolve in upon spawning instead of all at once. 
+
 ## Usage
 
 ### Event Format

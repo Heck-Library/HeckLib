@@ -1,7 +1,5 @@
 # Lerp
 
-## Description
-
 Lerp is a function that linearly interpolates between two values using a weight value. The weight is a value between 0 and 1. If the weight is 0, the function will return the first value. If the weight is 1, the function will return the second value. If the weight is 0.5, the function will return the average of the two values.
 
 ## Usage

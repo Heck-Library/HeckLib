@@ -1,7 +1,5 @@
 # HSV to RGB
 
-## Explanation
-
 This function takes in a HSV color and converts it to RGB. The format of the HSV color is `[h, s, v]`, where `h` is the hue, `s` is the saturation and `v` is the value. The format of the RGB color is `[r, g, b]`, where `r`, `g` and `b` are numbers between 0 and 1.
 
 ## Usage

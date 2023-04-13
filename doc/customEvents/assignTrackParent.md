@@ -1,7 +1,5 @@
 # Assign Track Parent
 
-## Description
-
 Assigns multiple tracks under one parent that can be controlled using [`AnimateTrack` events](./animateTrack.md).
 
 ## Usage

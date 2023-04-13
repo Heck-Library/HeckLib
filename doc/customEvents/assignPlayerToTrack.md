@@ -1,7 +1,5 @@
 # Assign Player To Track
 
-## Description
-
 Assigns a player to a track that can be controlled using [`AnimateTrack` events](./animateTrack.md).
 
 ## Usage

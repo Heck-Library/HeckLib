@@ -1,7 +1,5 @@
 # Bloom Fog Environment
 
-## Description
-
 The `BloomFogEnvironment` component is used to control the fog.
 
 ## Properties

@@ -1,7 +1,5 @@
 # Random
 
-## Description
-
 Returns a random number between `min` and `max` values with an optional decimal precision which defaults to 1.
 
 ## Usage

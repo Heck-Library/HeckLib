@@ -1,7 +1,5 @@
 # AnimateComponent
 
-## Explanation
-
 Class that creates a new `AnimateComponent` event. For simultaneously controlling the components on a specified `track`.
 
 ## Usage

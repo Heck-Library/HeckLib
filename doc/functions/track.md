@@ -1,7 +1,5 @@
 # Track
 
-## Explanation
-
 The track function can be used to handle tracks for objects. If you want to assign multiple objects to a track individually, the `track` function will handle this for you without overwriting the existing tracks, if there are any.
 
 ## Usage

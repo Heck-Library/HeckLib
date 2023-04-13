@@ -1,7 +1,5 @@
 # Filter
 
-## Description
-
 Filters and returns an array of objects, such as notes, walls, or bombs, based on given conditions. This is useful for getting a specific note, wall, or bomb, or for getting all notes, walls, or bombs of a certain type. Think of it as a selection tool.
 
 ## Syntax

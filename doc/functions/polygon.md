@@ -1,7 +1,5 @@
 # Polygon
 
-## Description
-
 Generates a polygon out of walls based on the given parameters.
 
 ## Usage

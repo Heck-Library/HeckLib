@@ -1,7 +1,5 @@
 # Duplication
 
-## Description
-
 Returns a duplicate of the object passed in. Use this to create a copy of an object that can be modified without affecting the original.
 
 ## Usage

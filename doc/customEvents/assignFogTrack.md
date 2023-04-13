@@ -2,8 +2,6 @@
 
 Note: Will only work in V2. Does not work in V3.
 
-## Description
-
 Assigns a track to the fog that can be controlled using [`AnimateTrack` events](./animateTrack.md).
 
 ## Usage
