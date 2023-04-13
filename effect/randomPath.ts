@@ -6,23 +6,23 @@ import track from "../functions/track";
 import { notes, pointDefinitions } from "../map/initialize";
 import PointDefinition from "../map/pointDefinition";
 
-type RandomPathProperties = {
-    /**
-     * Start time of the effect
-     */
+/**
+ * Properties for the RandomPath effect
+ * ```ts
+ * start: number;       // Start time of the effect
+ * end: number;         // End time of the effect
+ * track?: Track;       // Track to set for all the notes selected
+ * offset?: number;     // Offset to apply for all notes selected
+ * opaqueBy?: number;   // The point of time where the notes will appear opaque (0 - 1)
+ * ```
+ * @interface RandomPathProperties
+ */
+interface RandomPathProperties {
     start: number;
-    /**
-     * End time of the effect
-     */
     end: number;
-    /**
-     * Track to set for all the notes selected
-     */
     track?: Track;
-    /**
-     * Offset to apply for all notes selected
-     */
     offset?: number;
+    opaqueBy?: number;
 }
 
 export default class RandomPath {
@@ -42,6 +42,10 @@ export default class RandomPath {
      * Offset to apply for all notes selected
      */
     offset: number;
+    /**
+     * The point of time where the notes will appear opaque (0 - 1)
+     */
+    opaqueBy?: number;
 
     /**
      * Randomizes the path of all notes between the two time values: `start` and `end`.
@@ -52,6 +56,7 @@ export default class RandomPath {
      *     end: 727,    // The effect's ending beat
      *     track: "foo",// The track applied to all selected notes
      *     offset: 2    // The offset applied to all selected notes
+     *     opaqueBy: 0.5// The point of time where the notes will appear opaque (0 - 1)
      * }).push();       // Pushes the effect to the map
      * ```
      */
@@ -61,9 +66,11 @@ export default class RandomPath {
         this.start = p.start;
         this.end = p.end;
         this.offset = 2;
+        this.opaqueBy = 0.125;
 
         if (p.track) this.track = p.track;
         if (p.offset) this.offset = p.offset;
+        if (p.opaqueBy) this.opaqueBy = p.opaqueBy;
     }
     
     /**
@@ -71,9 +78,9 @@ export default class RandomPath {
      */
     push() : void {
         if (!pointDefinitions.includes("randPos1")) {
-            new PointDefinition("randDissolve", [
+            new PointDefinition(`rDisOpBy${this.opaqueBy}`, [
                 [0, 0],
-                [1, 0.125, ease.Out.Cubic]
+                [1, this.opaqueBy, ease.Out.Cubic]
             ]).push();
             for (let i = 1; i <= 20; i++) {
                 new PointDefinition(`randPos${i}`, [
