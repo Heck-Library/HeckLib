@@ -1,19 +1,25 @@
 import ease from "../consts/ease";
+import Environment from "../environment/environment";
 import AnimateTrack from "../events/animateTrack";
 import AssignPlayerToTrack from "../events/assignPlayerToTrack";
+import AssignTrackParent from "../events/assignTrackParent";
+import filter from "../functions/filter";
+import track from "../functions/track";
+import { V3, arcs, bombs, chains, notes, walls } from "../map/initialize";
 
+let firstDistortion = true;
+
+/**
+ * Properties for the Distortion effect
+ * ```ts
+ * start: number;      // The start time of the distortion
+ * end: number;        // The end time of the distortion
+ * intensity: number;  // The intensity of the distortion
+ * ```
+ */
 interface IDistortion {
-    /**
-     * The start time of the distortion
-     */
     start: number;
-    /**
-     * The end time of the distortion
-     */
     end: number;
-    /**
-     * The intensity of the distortion
-     */
     intensity: number;
 }
 
@@ -36,13 +42,32 @@ export default class Distortion {
         this.options = properties;
     }
     
-    public push() {
+    public push() : void {
         const { start, end, intensity } = this.options;
-        const track = `distortionFrom${start}to${end}`;
-        const i = intensity * 10000;
-        new AssignPlayerToTrack(start, track).push();
+        const distTrack = `distortionFrom${start}to${end}`;
+        const i = Math.pow(10, intensity + 3);
+        new AssignPlayerToTrack(start, distTrack).push();
+        track(filter(notes, start, end + 4), distTrack);
+        track(filter(walls, start, end + 4), distTrack);
+        if (V3) {
+            track(filter(bombs, start, end + 4), distTrack);
+            track(filter(arcs, start, end + 4), distTrack);
+            track(filter(chains, start, end + 4), distTrack);
+        }
+        if (firstDistortion) {
+            new Environment()
+                .regex(/(GameCore|Environment|.*)/g)
+                .track(`DistortionEnvironment`)
+                .push();
+            new AssignTrackParent(start, {
+                parentTrack: "distEnvParent",
+                childrenTracks: [`DistortionEnvironment`],
+                worldPositionStays: true,
+            }).push();
+            firstDistortion = false;
+        }
         new AnimateTrack(start, {
-            track: track,
+            track: [distTrack, "distEnvParent"],
             duration: end - start,
             position: [
                 [i, i, i, 0],
