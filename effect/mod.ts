@@ -2,7 +2,7 @@ import ParticleTunnel from "./particleTunnel";
 import RandomPath from "./randomPath";
 import MovePath from "./movePath";
 import NoteTrail from "./noteTrail";
-import Distortion from "./distortion";
+import GlitchDistortion from "./glitchDistortion";
 
 /**
  * A module that has multiple premade customizable effects that are very commonly seen in maps.
@@ -32,7 +32,7 @@ import Distortion from "./distortion";
  * Randomizes the path of all notes between `start` and `end`.
  */
 const Effect = {
-    Distortion,
+    GlitchDistortion,
     MovePath,
     NoteTrail,
     ParticleTunnel,
