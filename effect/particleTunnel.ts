@@ -1,71 +1,42 @@
 import ease from "../consts/ease";
 import { Track, vec4 } from "../consts/mod";
 import AnimateTrack from "../events/animateTrack";
+import HSVtoRGB from "../functions/hsvToRgb";
 import random from "../functions/random";
+import RGBtoHSV from "../functions/rgbToHsv";
 import { pointDefinitions } from "../map/initialize";
 import PointDefinition from "../map/pointDefinition";
 import Wall from "../objects/wall";
 
-type particleTunnelProperties = {
-    /**
-     * The starting time of the particles
-     * Default: undefined
-     */
-    time: number;
-    /**
-     * The duration of the tunnel
-     * Default: undefined
-     */
-    duration: number;
-    /**
-     * Distance of the closest particles to the player
-     * Default: 10
-     */
+/**
+ * Properties for the ParticleTunnel effect
+ * ```ts
+ * start: number;          // The starting time of the particles
+ * end: number;            // The ending time of the tunnel
+ * radius?: number;        // Distance of the closest particles to the player
+ * spread?: number;        // Perimeter width of the particle tunnel
+ * distance?: number;      // How far in the z axis do the particles reach
+ * noise?: number;         // Noise to the colors
+ * density?: number;       // How densely are the particles generated (higher = more particles)
+ * fadeInTime?: number;    // How fast should the particles fade in
+ * fadeOutTime?: number;   // How fast should the particles fade out
+ * particleSize?: number;  // How big the particles should be
+ * track?: Track;          // The track the particles should be set on
+ * color?: vec4;           // The base color of the particles
+ * ```
+ */
+interface particleTunnelProperties {
+    start: number;
+    end: number;
     radius?: number;
-    /**
-     * Perimeter width of the particle tunnel
-     * Default: 5
-     */
     spread?: number;
-    /**
-     * How far in the z axis do the particles reach
-     * Default: 25
-     */
     distance?: number;
-    /**
-     * Noise to the colors
-     * Default: 0
-     */
     noise?: number;
-    /**
-     * How densely are the particles generated (higher = more particles)
-     * Default: 10
-     */
     density?: number;
-    /**
-     * How fast should the particles fade in
-     * Default: 0.25
-     */
     fadeInTime?: number;
-    /**
-     * How fast should the particles fade out
-     * Default: 0.25
-     */
     fadeOutTime?: number;
-    /**
-     * How big the particles should be
-     * Default: 0.1
-     */
     particleSize?: number;
-    /**
-     * The track the particles should be set on
-     * Default: undefined
-     */
     track?: Track;
-    /**
-     * The base color of the particles
-     * Default: [1, 1, 1, 1]
-     */
     color?: vec4;
 }
 
@@ -74,12 +45,12 @@ export default class ParticleTunnel {
      * The starting time of the particles
      * Default: undefined
      */
-    time: number;
+    start: number;
     /**
-     * The duration of the tunnel
+     * The end time of the tunnel
      * Default: undefined
      */
-    duration: number;
+    end: number;
     /**
      * Distance of the closest particles to the player
      * Default: 10
@@ -131,6 +102,8 @@ export default class ParticleTunnel {
      */
     color: vec4;
 
+    private duration: number;
+
     /**
      * Makes a "tunnel" of particles.
      * 
@@ -146,8 +119,8 @@ export default class ParticleTunnel {
     constructor(properties: particleTunnelProperties) {
         const p = properties
 
-        this.time = p.time;
-        this.duration = p.duration;
+        this.start = p.start;
+        this.end = p.end;
         this.radius = 10;
         this.spread = 5;
         this.distance = 25;
@@ -157,6 +130,7 @@ export default class ParticleTunnel {
         this.fadeOutTime = 1;
         this.particleSize = 0.1;
         this.color = [1, 1, 1, 1];
+        this.duration = p.end - p.start;
 
         if (p.radius) this.radius = p.radius
         if (p.spread) this.spread = p.spread
@@ -181,20 +155,20 @@ export default class ParticleTunnel {
             if (Array.isArray(this.track)) this.track = ["ParticleTunnelTrack", ...this.track]
             else track = ["ParticleTunnelTrack", this.track];
         }
-        if (!pointDefinitions.includes(`PTWallDis${this.time}`)) {
-            new PointDefinition(`PTWallDis${this.time}`, [
+        if (!pointDefinitions.includes(`PTWallDis${this.start}`)) {
+            new PointDefinition(`PTWallDis${this.start}`, [
                 [0, 0],
                 [1, this.fadeInTime/this.duration, ease.Out.Sine],
                 [1, (this.duration - this.fadeOutTime) / this.duration],
                 [0, 1, ease.In.Sine]
             ]).push();
         }
-        new AnimateTrack(this.time - 16, {
+        new AnimateTrack(this.start - 16, {
             track: track,
             duration: 0,
             dissolve: [0]
         }).push();
-        new AnimateTrack(this.time, {
+        new AnimateTrack(this.start, {
             track: track,
             duration: this.fadeInTime,
             dissolve: [
@@ -202,7 +176,7 @@ export default class ParticleTunnel {
                 [1, 1, ease.Out.Sine]
             ]
         }).push();
-        new AnimateTrack(this.time + this.duration, {
+        new AnimateTrack(this.end, {
             track: track,
             duration: this.fadeOutTime,
             dissolve: [
@@ -210,13 +184,12 @@ export default class ParticleTunnel {
                 [0, 1, ease.In.Sine]
             ]
         }).push();
-        for (let i = this.time - 4; i <= this.time + this.duration + 4; i += 1/this.density) {
+        for (let i = this.start - 4; i <= this.end + 4; i += 1/this.density) {
             let wallCol: vec4 = this.color;
             if (this.noise > 0) {
-                for (let i = 0; i <= 3; i++) {
-                    const currentCol = this.color[i];
-                    wallCol[i] = currentCol + random(-this.noise / 255, this.noise / 255, 3);
-                }
+                const hsvColor = RGBtoHSV(this.color[0], this.color[1], this.color[2]);
+                hsvColor[0] += random(-this.noise / 255, this.noise / 255);
+                wallCol = [...HSVtoRGB(...hsvColor), this.color[3]];
             }
             new Wall({
                 //Vanilla data
@@ -229,15 +202,16 @@ export default class ParticleTunnel {
                 interactable: false,
                 color: wallCol,
                 rotation: [0, 0, random(-180, 180)],
-                scale: [this.particleSize, this.particleSize, this.particleSize],
+                scale: [this.particleSize / 12, this.particleSize / 12, this.particleSize / 12],
             }, {
                 //Animation data
                 definitePosition: [0, random(this.radius, this.spread), random(-1, this.distance)],
-                dissolve: `PTWallDis${this.time}`,
+                dissolve: `PTWallDis${this.start}`,
                 rotation: [
                     [0, 0, random(-180, 180), 0],
                     [0, 0, 0, 1]
                 ],
+                scale: [12, 12, 12]
             }).push();
         }
     }
