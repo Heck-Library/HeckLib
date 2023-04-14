@@ -23,7 +23,12 @@ export default class Wall {
         cD: customWallData;
         aD: animationData;
     };
-    constructor(wallData : wallData, customData? : customWallData, animationData? : animationData) {
+    constructor(wallData : wallData | number, customData? : customWallData, animationData? : animationData) {
+        if (typeof wallData === "number") {
+            wallData = {
+                time: wallData
+            }
+        }
         this.json = {
             wD: wallData,
             cD: {},
