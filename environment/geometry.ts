@@ -1,8 +1,7 @@
-import { Track } from "../consts/types/objects";
-import { vec3 } from "../consts/types/vec";
-import { environment, V3 } from "../map/initialize";
+import { vec3, Track } from "../consts/mod";
+import { geoShape, mat } from "../consts/types/environment/environment";
+import { environment } from "../map/initialize";
 
-export type LookupMethod = "Exact" | "Regex" | "Contains" | "StartsWith" | "EndsWith";
 
 interface IILightWithId {
     lightID: number;
@@ -20,41 +19,20 @@ interface ITubeBloom {
     colorAlphaMultiplier?: number;
     bloomFogIntensityMultiplier?: number;
 }
-
 interface IComponents {
     ILightWithId?: IILightWithId,
     BloomFogEnvironment?: IFog,
     TubeBloomPrePassLight?: ITubeBloom
 }
 
-export interface IEnvironment {
-    id?: string | RegExp;
-    lookupMethod?: LookupMethod;
-    components?: IComponents;
-    duplicate?: number;
-    active?: boolean;
-    scale?: vec3;
-    position?: vec3;
-    localPosition?: vec3;
-    rotation?: vec3;
-    localRotation?: vec3;
-    lightID?: number;
-    track?: Track;
+interface IGeometry {
+    shape: geoShape;
+    material: string | mat;
+    collision?: boolean;
 }
 
-export default class Environment implements IEnvironment {
-    static readonly Method: Record<string, LookupMethod> = {
-        Exact: "Exact",
-        Regex: "Regex",
-        Contains: "Contains",
-        StartsWith: "StartsWith",
-        EndsWith: "EndsWith"
-    }
-
-    id?: string | RegExp;
-    lookupMethod?: LookupMethod;
+interface IGeoEnvironment {
     components?: IComponents;
-    duplicate?: number;
     active?: boolean;
     scale?: vec3;
     position?: vec3;
@@ -63,25 +41,47 @@ export default class Environment implements IEnvironment {
     localRotation?: vec3;
     lightID?: number;
     track?: Track;
-    constructor(properties?: IEnvironment) {
-        this.id = undefined;
-        this.lookupMethod = undefined;
+    geometry: IGeometry;
+}
+
+export default class Geometry implements IGeoEnvironment {
+
+    static readonly Shape: Record<string, geoShape> = {
+        Capsule: "Capsule",
+        Cube: "Cube",
+        Sphere: "Sphere",
+        Cylinder: "Cylinder",
+        Plane: "Plane",
+        Quad: "Quad",
+        Triangle: "Triangle",
+    }
+
+    components?: IComponents;
+    active?: boolean;
+    scale?: vec3;
+    position?: vec3;
+    localPosition?: vec3;
+    rotation?: vec3;
+    localRotation?: vec3;
+    lightID?: number;
+    track?: Track;
+    geometry: IGeometry;
+
+    constructor(properties?: IGeoEnvironment) {
+
         this.components = undefined;
-        this.duplicate = undefined;
         this.active = undefined;
         this.scale = undefined;
         this.position = undefined;
         this.localPosition = undefined;
-        this.rotation = undefined;
+        this.rotation = undefined;  
         this.localRotation = undefined;
         this.lightID = undefined;
         this.track = undefined;
+        this.geometry = undefined;
 
         if (typeof properties !== 'undefined') {
-            this.id = properties.id;
-            this.lookupMethod = properties.lookupMethod;
             this.components = properties.components;
-            this.duplicate = properties.duplicate;
             this.active = properties.active;
             this.scale = properties.scale;
             this.position = properties.position;
@@ -90,18 +90,11 @@ export default class Environment implements IEnvironment {
             this.localRotation = properties.localRotation;
             this.lightID = properties.lightID;
             this.track = properties.track;
+            this.geometry = properties.geometry;
         }
-
-        return this;
     }
 
     push() : void {
-        if (typeof this.id !== 'string' && typeof this.id !== 'undefined') {
-            this.id = this.id.toString().replace(/(^\/|\/$)/g, "");
-        }
         environment.push(this);
     }
 }
-
-
-

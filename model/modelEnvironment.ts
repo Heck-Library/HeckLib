@@ -4,6 +4,7 @@ import Material from "../environment/material";
 import Environment from "../environment/environment";
 import { readFileSync } from "fs";
 import { Euler, Vector3 } from "three";
+import Geometry from "../environment/geometry";
 
 function vecFromRot(vecRot: vec3, length: number) {
     const degreesToRad = Math.PI / 180;
@@ -30,14 +31,15 @@ export default function ModelEnvironment(filePath: string, shader: shaderType, m
         x.position[1] += offset[1]
         x.position[2] += offset[2]
 
-        new Environment()
-            .geometry()
-            .shape(x.shape)
-            .material(materialName)
-            .pos(x.position)
-            .rot(x.rotation)
-            .scale(x.scale)
-            .push();
+        new Geometry({
+            geometry: {
+                material: materialName,
+                shape: x.shape,
+            },
+            position: x.position,
+            rotation: x.rotation,
+            scale: x.scale,
+        }).push();
         colors.forEach((x: vec3) => {
             let matName = materialName
             if (x.length > 1) matName = `${materialName + matNum}`

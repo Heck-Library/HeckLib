@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 import { WALL, NOTE, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
-import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events } from "./initialize";
+import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, materials } from "./initialize";
 import { wallsToJSON } from "./converters/wallsToJSON";
 import { notesToJSON } from "./converters/notesToJSON";
 import { customEventsToJSON } from "./converters/customEventsToJSON";
@@ -10,6 +10,7 @@ import { pointDefinitionsToV3JSON } from "./converters/pointDefinitionsToV3JSON"
 import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
 import { statsType } from "../consts/types/statsType";
 import { arcsToJSON } from "./converters/arcsToJSON";
+import environmentToJSON from "./converters/environmentToJSON";
 
 type V2DIFF = {
     _version: "2.2.0";
@@ -19,7 +20,7 @@ type V2DIFF = {
     _waypoints: Record<string, unknown>[];
     _customData: {
         _time?: number;
-        _environment: Record<string, unknown>[];
+        _environment: Record<string, any>[];
         _customEvents: Record<string, unknown>[];
         _bookmarks: Record<string, unknown>[];
         _pointDefinitions: Record<string, unknown>[];
@@ -214,6 +215,7 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
     deeperDaddy(difficulty)
 
     if (!V3) {
+        environmentToJSON()
         const newDiff: V2DIFF = {
             _version: "2.2.0",
             _notes: notesToJSON(),
@@ -223,9 +225,9 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
             _customData: {
                 _bookmarks: [],
                 _customEvents: customEventsToJSON(),
-                _environment: environment,
+                _environment: environmentToJSON(),
                 _pointDefinitions: pointDefinitionsToV2JSON(),
-                _materials: {}
+                _materials: materials
             }
         }
         if (properties.sortObjects) {
@@ -250,6 +252,7 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
         difficulty.obstacles = wallsToJSON();
         difficulty.basicBeatmapEvents = lightsToJSON();
         difficulty.customData.customEvents = customEventsToJSON();
+        difficulty.customData.environment = environmentToJSON();
         difficulty.customData.pointDefinitions = pointDefinitionsToV3JSON();
         if (properties.sortObjects) {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));

@@ -1,5 +1,6 @@
 import { diffFile } from './consts/difficulty';
 import Difficulty from './consts/difficulty';
+import Environment from './environment/environment';
 import Map from './map/mod';
 
 const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
@@ -11,8 +12,9 @@ const difficulty = Map.initialize(INPUT, OUTPUT, {
 });
 // #region Noodle stuff below
 
-
-
+new Environment({
+    id: "NoodleEnvironment",
+}).push();
 
 // #endregion Noodle stuff above
 Map.finalize(difficulty, {

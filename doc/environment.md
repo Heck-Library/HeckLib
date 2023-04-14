@@ -3,7 +3,7 @@ Environment enhancements are fully a chroma feature and are implemented to HeckL
 
 Objects can be manipulated using environment enhancements using the Environment class.
 ```ts
-new Environment()
+new Environment();
 ```
 This will create a new environment enhancement object. This can be used to manipulate objects or create geometry.
 > ## General properties

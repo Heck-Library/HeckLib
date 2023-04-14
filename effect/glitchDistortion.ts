@@ -55,10 +55,10 @@ export default class Distortion {
             track(filter(chains, start, end + 4), distTrack);
         }
         if (firstDistortion) {
-            new Environment()
-                .regex(/(GameCore|Environment|.*)/g)
-                .track(`DistortionEnvironment`)
-                .push();
+            new Environment({
+                id: /Gamecore|Environment|.*/,
+                track: "DistortionEnvironment"
+            }).push();
             new AssignTrackParent(start, {
                 parentTrack: "distEnvParent",
                 childrenTracks: [`DistortionEnvironment`],
