@@ -2,9 +2,16 @@ import IPlayerTrackData from "../interfaces/events/eventData/IPlayerTrackData";
 import MyBaseEvent from "./baseEvent";
 
 export default class AssignPlayerToTrack extends MyBaseEvent {
-    public readonly type: string;
+    public readonly type: string = "AssignPlayerToTrack";
 
+    /**
+     * Creates a new AssignPlayerToTrack event.
+     */
     constructor();
+    /**
+     * Creates a new AssignPlayerToTrack event.
+     * @param time The time of the event.
+     */
     constructor(time: number);
     constructor(time: number | string);
     constructor(time: number, data: IPlayerTrackData | string);
@@ -18,6 +25,6 @@ export default class AssignPlayerToTrack extends MyBaseEvent {
         }
 
         super(time, data);
-        this.type = "AssignPlayerTrack";
+        this.type = "AssignPlayerToTrack";
     }
 }

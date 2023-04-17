@@ -2,7 +2,7 @@ import IPathAnimData from "../interfaces/events/eventData/IPathAnimData";
 import MyBaseEvent from "./baseEvent";
 
 export default class AssignPathAnimation extends MyBaseEvent {
-    public readonly type: string;
+    public readonly type: string = "AssignPathAnimation";
 
     constructor();
     constructor(time: number);

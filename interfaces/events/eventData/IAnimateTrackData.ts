@@ -17,6 +17,7 @@ export default interface IAnimateTrackData {
      * The position animation.
      */
     position?: vec3anim;
+    offsetPosition?: vec3anim;
     /**
      * The local position animation.
      */
@@ -25,6 +26,7 @@ export default interface IAnimateTrackData {
      * The rotation animation.
      */
     rotation?: vec3anim;
+    offsetWorldRotation?: vec3anim;
     /**
      * The local rotation animation.
      */

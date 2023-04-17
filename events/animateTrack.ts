@@ -2,7 +2,7 @@ import IAnimateTrackData from "../interfaces/events/eventData/IAnimateTrackData"
 import MyBaseEvent from "./baseEvent";
 
 export default class AnimateTrack extends MyBaseEvent {
-    public readonly type: string;
+    public readonly type: string = "AnimateTrack";
 
     constructor();
     constructor(time: number);
@@ -15,6 +15,7 @@ export default class AnimateTrack extends MyBaseEvent {
         };
 
         super(time, data);
+
         this.type = "AnimateTrack";
     }
 }

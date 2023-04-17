@@ -117,7 +117,7 @@ export let V3: boolean;
 function isV3(diffName: string) : void {
     const difficulty = JSON.parse(readFileSync(diffName, 'utf-8'));
 
-    if (typeof difficulty._version === "undefined") V3 = false;
+    if (typeof difficulty._version !== "undefined") V3 = false;
     else V3 = true;
 }
 

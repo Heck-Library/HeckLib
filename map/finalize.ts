@@ -138,7 +138,7 @@ function showStats(properties?: FinalizeProperties): IStatsType {
                 ms.fakeNotes = fakeNotes.length;
             } else {
                 notes.forEach((n: INote) => {
-                    if (n.data.fake) ms.fakeNotes++
+                    if (n.customData.fake) ms.fakeNotes++
                     else ms.notes++
                 })
             }
@@ -154,17 +154,17 @@ function showStats(properties?: FinalizeProperties): IStatsType {
                 })
             }
         }
-        if (s.bombs) {
-            if (V3) {
-                ms.bombs = bombs.length;
-                ms.fakeBombs = fakeBombs.length;
-            } else {
-                bombs.forEach((n: INote) => {
-                    if (n.data.fake) ms.fakeBombs++;
-                    else ms.bombs++;
-                })
-            }
-        }
+        // if (s.bombs) {
+        //     if (V3) {
+        //         ms.bombs = bombs.length;
+        //         ms.fakeBombs = fakeBombs.length;
+        //     } else {
+        //         bombs.forEach((n: INote) => {
+        //             if (n.customData.fake) ms.fakeBombs++;
+        //             else ms.bombs++;
+        //         })
+        //     }
+        // }
         if (s.lights) ms.lights = lightEvents.length;
         if (s.customEvents) {
             events.forEach((e: Record<string, any>) => {

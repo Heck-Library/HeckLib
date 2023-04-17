@@ -4,7 +4,7 @@ import { V3, notes, fakeNotes } from "../initialize";
 
 export function notesToJSON(): V2JsonNote[] {
     const noteArr: any[] = [];
-    notes.forEach((n: INote) => {
+    if (notes) notes.forEach((n: INote) => {
         let noteJSON: Record<string, any> = {
             b: n.time,
             c: n.type,
@@ -13,9 +13,9 @@ export function notesToJSON(): V2JsonNote[] {
             x: n.x,
             y: n.y,
             customData: {
-                ...n.data,
+                ...n.customData,
                 animation: {
-                    ...n.anim
+                    ...n.animation
                 }
             }
         };
@@ -29,7 +29,7 @@ export function notesToJSON(): V2JsonNote[] {
         if (V3) {
             stringified = stringified
                 .replace('"interactable":false', '"uninteractable":true')
-                .replace('"interactable":true', '"uninteractable":false')
+                .replace(/"interactable":true,?/, '')
                 .replace('"disableSpawnEffect":true', '"spawnEffect":false');
         } else {
             stringified = stringified
@@ -43,12 +43,12 @@ export function notesToJSON(): V2JsonNote[] {
         }
         noteJSON = JSON.parse(stringified);
         if (V3) {
-            if (noteJSON.customData.animation) {
-                noteJSON.customData.animation = JSON.parse(JSON.stringify(noteJSON.customData.animation)
-                .replace(/"position":/g, '"offsetPosition":')
-                .replace(/"rotation":/g, '"offsetWorldRotation":'))
-            }
             if (noteJSON.customData) {
+                if (noteJSON.customData.animation) {
+                    noteJSON.customData.animation = JSON.parse(JSON.stringify(noteJSON.customData.animation)
+                    .replace(/"position":/g, '"offsetPosition":')
+                    .replace(/"rotation":/g, '"offsetWorldRotation":'))
+                }
                 noteJSON.customData = JSON.parse(JSON.stringify(noteJSON.customData)
                 .replace(/"position":/g, '"coordinates":')
                 .replace(/"rotation":/g, '"worldRotation":'))

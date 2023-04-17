@@ -12,6 +12,6 @@ export default interface INote {
     y?: lineLayer;
     angle?: number;
     direction?: cutDirection;
-    data: ICustomData;
-    anim: IObjectAnimation;
+    customData: ICustomData;
+    animation: IObjectAnimation;
 }

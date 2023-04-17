@@ -2,24 +2,38 @@ import IParentTrackData from "../interfaces/events/eventData/IParentTrackData";
 import MyBaseEvent from "./baseEvent";
 
 export default class AssignTrackParent extends MyBaseEvent {
-    public readonly type: string;
+    public readonly type: string = "AssignTrackParent";
 
-    constructor();
-    constructor(time: IParentTrackData)
-    constructor(time: number);
-    constructor(time: number, data: IParentTrackData);
-    constructor(time?: number | IParentTrackData, data?: IParentTrackData) {
-        if (typeof time === 'undefined') time = 0;
-        if (typeof time !== 'number' && typeof time !== 'undefined') {
-            data = time;
-            time = 0;
+    /**
+     * Creates a new AssignTrackParent event.
+     * @param time The time of the event.
+     * @param parent The parent track.
+     * @param children The children tracks.
+     * ```ts
+     * new AssignTrackParent(0, "foo", ["bar", "baz"]).push();
+     * ```
+     */
+    constructor(time: number, parent: string, children: string[]);
+    /**
+     * Creates a new AssignTrackParent event.
+     * @param time The time of the event.
+     * @param parent The track parent parameters.
+     * ```ts
+     * new AssignTrackParent(0, {
+     *     parentTrack: "foo",
+     *     childrenTracks: ["bar", "baz"],
+     * }).push();
+     * ```
+     */
+    constructor(time: number, parent: IParentTrackData); 
+    constructor(time: number, parent: string | IParentTrackData, children?: string[]) {
+        if (typeof parent === 'string') {
+            parent = {
+                parentTrack: parent,
+                childrenTracks: children || []
+            }
         }
-        if (typeof data === 'undefined') data = {
-            parentTrack: "",
-            childrenTracks: []
-        } || time;
-
-        super(time, data);
+        super(time, parent);
         this.type = "AssignTrackParent";
     }
 }

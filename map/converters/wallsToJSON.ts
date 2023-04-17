@@ -43,12 +43,12 @@ export function wallsToJSON(): Record<string, any>[] {
         }
         wallJSON = JSON.parse(stringified);
         if (V3) {
-            if (wallJSON.customData.animation) {
-                wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation)
-                .replace(/"position":/g, '"offsetPosition":')
-                .replace(/"rotation":/g, '"offsetWorldRotation":'))
-            }
             if (wallJSON.customData) {
+                if (wallJSON.customData.animation) {
+                    wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation)
+                    .replace(/"position":/g, '"offsetPosition":')
+                    .replace(/"rotation":/g, '"offsetWorldRotation":'))
+                }
                 wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData)
                 .replace(/"position":/g, '"coordinates":')
                 .replace(/"rotation":/g, '"worldRotation":')

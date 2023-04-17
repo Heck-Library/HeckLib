@@ -6,17 +6,28 @@ import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 import noteType from "../types/noteType";
+import v3customData from "../interfaces/json/v3/v3customData";
+import v3objectAnimation from "../interfaces/json/v3/v3objectAnimation";
 
-type noteProperties = {
+interface noteProperties {
     time: number;
     x?: lineIndex;
     y?: lineLayer;
     type?: noteType;
     direction?: cutDirection;
     angle?: number;
-    data?: ICustomData;
-    anim?: IObjectAnimation;
+    customData?: ICustomData;
+    animation?: IObjectAnimation;
 };
+
+interface v3noteProperties {
+    b: number;
+    x?: lineIndex;
+    y?: lineLayer;
+    d?: cutDirection;
+    c?: 0 | 1;
+    a?: number;
+}
 
 enum DIRECTION {
     UP = 0,
@@ -58,6 +69,10 @@ enum LINE_LAYER {
     TOP = 2
 }
 
+function isOfV3(object: any): object is v3noteProperties {
+    return object.b !== undefined;
+}
+
 export default class Note implements INote {
 
     public static readonly TYPE = TYPE;
@@ -74,24 +89,40 @@ export default class Note implements INote {
     public type: noteType;
     public angle: number;
     public direction: cutDirection;
-    public data: ICustomData;
-    public anim: IObjectAnimation;
+    public customData: ICustomData;
+    public animation: IObjectAnimation;
 
     constructor();
     constructor(note: number);
+    constructor(note: v3noteProperties);
+    constructor(note: v3noteProperties, data: v3customData);
+    constructor(note: v3noteProperties, data: v3customData, anim: v3objectAnimation);
     constructor(note: noteProperties);
     constructor(note: noteProperties, data: ICustomData);
     constructor(note: noteProperties, data: ICustomData, anim: IObjectAnimation);
-    constructor(note?: noteProperties | number) {
+    constructor(note?: noteProperties | v3noteProperties | number, data?: ICustomData | v3customData, anim?: IObjectAnimation | v3objectAnimation) {
         this.time = 0;
         this.x = 0;
         this.y = 0;
         this.type = 0;
         this.direction = 0;
         this.angle = 0;
-        this.data = {};
-        this.anim = {};
+        this.customData = {};
+        this.animation = {};
         if (note) {
+            if (isOfV3(note)) {
+                const { b, x, y, d, c, a } = note;
+                if (b) this.time = b;
+                if (x) this.x = x;
+                if (y) this.y = y;
+                if (d) this.direction = d;
+                if (c) this.type = c;
+                if (a) this.angle = a;
+                if (data) this.customData = data;
+                if (anim) this.animation = anim;
+
+                return this;
+            }
             if (typeof note === "number") {
                 this.time = note;
                 return this;
@@ -102,8 +133,8 @@ export default class Note implements INote {
             if (note.angle) this.angle = note.angle;
             if (note.type) this.type = note.type;
             if (note.direction) this.direction = note.direction;
-            if (note.data) this.data = note.data;
-            if (note.anim) this.anim = note.anim;
+            if (note.customData) this.customData = note.customData;
+            if (note.animation) this.animation = note.animation;
         }
         return this;
     }
