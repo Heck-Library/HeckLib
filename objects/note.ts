@@ -75,30 +75,254 @@ function isOfV3(object: any): object is v3noteProperties {
 
 export default class Note implements INote {
 
+    /**
+     * The note type enum.
+     * 
+     * Use this if you can't remember the types.
+     * ```ts
+     * Note.TYPE.RED; // 0
+     * Note.TYPE.BLUE; // 1
+     * Note.TYPE.BOMB; // 3
+     * ```
+     */
     public static readonly TYPE = TYPE;
     
+    /**
+     * The note direction enum.
+     * 
+     * Use this if you can't remember the directions.
+     * ```ts
+     * Note.DIRECTION.UP; // 0
+     * Note.DIRECTION.DOWN; // 1
+     * Note.DIRECTION.LEFT; // 2
+     * Note.DIRECTION.RIGHT; // 3
+     * Note.DIRECTION.UP_LEFT; // 4
+     * Note.DIRECTION.UP_RIGHT; // 5
+     * Note.DIRECTION.DOWN_LEFT; // 6
+     * Note.DIRECTION.DOWN_RIGHT; // 7
+     * Note.DIRECTION.DOT; // 8
+     * ```
+     */
     public static readonly DIRECTION = DIRECTION;
 
+    /**
+     * The line index enum.
+     * 
+     * Use this if you can't remember the line indexes.
+     * ```ts
+     * Note.LINE_INDEX.LEFT; // 0
+     * Note.LINE_INDEX.LEFT_MIDDLE; // 1
+     * Note.LINE_INDEX.RIGHT_MIDDLE; // 2
+     * Note.LINE_INDEX.RIGHT; // 3
+     * ```
+     */
     public static readonly LINE_INDEX = LINE_INDEX;
 
+    /**
+     * The line layer enum.
+     * 
+     * Use this if you can't remember the line layers.
+     * ```ts
+     * Note.LINE_LAYER.BOTTOM; // 0
+     * Note.LINE_LAYER.MIDDLE; // 1
+     * Note.LINE_LAYER.TOP; // 2
+     * ```
+     */
     public static readonly LINE_LAYER = LINE_LAYER;
 
     public time: number;
+    /**
+     * The line index of the note.
+     * 
+     * - Left: 0
+     * - Left Middle: 1
+     * - Right Middle: 2
+     * - Right: 3
+     * 
+     * You can also use the enumerator in the Note class.
+     */
     public x: lineIndex;
+    /**
+     * The line layer of the note.
+     * 
+     * - Bottom: 0
+     * - Middle: 1
+     * - Top: 2
+     * 
+     * You can also use the enumerator in the Note class.
+     */
     public y: lineLayer;
+    /**
+     * The type of the note.
+     * 
+     * - Red: 0
+     * - Blue: 1
+     * - Bomb: 3
+     * 
+     * You can also use the enumerator in the Note class.
+    */
     public type: noteType;
+    /**
+     * The angle offset of the note in degrees.
+     */
     public angle: number;
+    /**
+     * The cut direction of the note.
+     * 
+     * - Up: 0
+     * - Down: 1
+     * - Left: 2
+     * - Right: 3
+     * - Up Left: 4
+     * - Up Right: 5
+     * - Down Left: 6
+     * - Down Right: 7
+     * - Dot: 8
+     * 
+     * You can also use the enumerator in the Note class.
+     */
     public direction: cutDirection;
+    /**
+     * The custom data of the note.
+     */
     public customData: ICustomData;
+    /**
+     * The animation of the note.
+     */
     public animation: IObjectAnimation;
 
+    /**
+     * Creates a new note with default values.
+     * ```ts
+     * new Note();
+     * ```
+     */
     constructor();
+    /**
+     * Creates a new note with the given time.
+     * @param note The time of the note.
+     * ```ts
+     * new Note(0);
+     * ```
+     */
     constructor(note: number);
+    /**
+     * Creates a new note with v3 formatted properties.
+     * ```ts
+     * new Note({
+     *     b: number,
+     *     x: lineIndex,
+     *     y: lineLayer,
+     *     d: cutDirection,
+     *     c: 0 | 1,
+     *     a: number;
+     * });
+     * ```
+     */
     constructor(note: v3noteProperties);
+    /**
+     * Creates a new note with v3 formatted properties and custom data.
+     * ```ts
+     * new Note({
+     *     b: 0, // All the vanilla stuff here
+     * }, {
+     *     track: string | string[],
+     *     coordinates: vec2,
+     *     worldRotation: vec3,
+     *     localRotation: vec3,
+     *     scale: vec3,
+     *     flip: vec2,
+     *     color: vec4,
+     *     njs: number,
+     *     offset: number,
+     *     disableNoteGravity: boolean,
+     *     disableNoteLook: boolean,
+     *     disableSpawnEffect: boolean,
+     *     uninteractable: boolean,
+     *     fake: boolean
+     * });
+     * ```
+     */
     constructor(note: v3noteProperties, data: v3customData);
+    /**
+     * Creates a new note with v3 formatted properties, custom data, and animation.
+     * ```ts
+     * new Note({
+     *     b: 0, // All the vanilla stuff here
+     * }, {
+     *     track: string | string[] // All the custom data here
+     * }, {
+     *     offsetPosition: vec3anim,
+     *     offsetWorldRotation: vec3anim,
+     *     dissolve: vec1anim,
+     *     dissolveArrow: vec1anim,
+     *     interactable: vec1anim,
+     *     localRotation: vec3anim,
+     *     scale: vec3anim,
+     *     color: vec4anim,
+     *     definitePosition: vec3anim
+     * });
+     * ```
+     */
     constructor(note: v3noteProperties, data: v3customData, anim: v3objectAnimation);
+    /**
+     * Creates a new note with the given properties.
+     * ```ts
+     * new Note({
+     *     time: number,
+     *     x: lineIndex,
+     *     y: lineLayer,
+     *     type: noteType,
+     *     direction: cutDirection,
+     *     angle: number,
+     * });
+     * ```
+     */
     constructor(note: noteProperties);
+    /**
+     * Creates a new note with the given properties and custom data.
+     * ```ts
+     * new Note({
+     *     time: number // Vanilla properties here
+     * }, {
+     *     track: string | string[],
+     *     coordinates: vec2,
+     *     worldRotation: vec3,
+     *     localRotation: vec3,
+     *     scale: vec3,
+     *     flip: vec2,
+     *     color: vec4,
+     *     njs: number,
+     *     offset: number,
+     *     disableNoteGravity: boolean,
+     *     disableNoteLook: boolean,
+     *     disableSpawnEffect: boolean,
+     *     interactable: boolean,
+     *     fake: boolean
+     * });
+     * ```
+     */
     constructor(note: noteProperties, data: ICustomData);
+    /**
+     * Creates a new note with the given properties, custom data, and animation.
+     * ```ts
+     * new Note({
+     *     time: number // Vanilla properties here
+     * }, {
+     *     track: string | string[], // Custom data here
+     * }, {
+     *     position: vec3anim,
+     *     rotation: vec3anim,
+     *     dissolve: vec1anim,
+     *     dissolveArrow: vec1anim,
+     *     interactable: vec1anim,
+     *     localRotation: vec3anim,
+     *     scale: vec3anim,
+     *     color: vec4anim,
+     *     definitePosition: vec3anim
+     * });
+     * ```
+     */
     constructor(note: noteProperties, data: ICustomData, anim: IObjectAnimation);
     constructor(note?: noteProperties | v3noteProperties | number, data?: ICustomData | v3customData, anim?: IObjectAnimation | v3objectAnimation) {
         this.time = 0;
