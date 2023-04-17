@@ -1,29 +1,18 @@
-import { diffFile } from './consts/difficulty';
-import Difficulty from './consts/difficulty';
-import Environment from './environment/environment';
-import Map from './map/mod';
+import { Difficulty, initialize } from "./map/initialize";
+import { finalize } from "./map/finalize";
 
-const INPUT: diffFile = Difficulty.Standard.ExpertPlus;
-const OUTPUT: diffFile = Difficulty.Lawless.ExpertPlus;
+const INPUT = Difficulty.EXPERT_PLUS_STANDARD;
+const OUTPUT = Difficulty.EXPERT_PLUS_LAWLESS;
 
-const difficulty = Map.initialize(INPUT, OUTPUT, {
-    njs: 18,
-    offset: 0
-});
-// #region Noodle stuff below
+const DIFFICULTY = initialize(INPUT, OUTPUT);
 
-new Environment({
-    id: "NoodleEnvironment",
-}).push();
+// #region MAP SCRIPT
 
-// #endregion Noodle stuff above
-Map.finalize(difficulty, {
-    formatting: true,
-    showModdedStats: {
-        customEvents: true,
-        notes: true,
-        lights: true,
-        walls: true,
-        pointDefinitions: true,
-    }
+
+
+
+// #endregion MAP SCRIPT
+
+finalize(DIFFICULTY, {
+    formatting: false
 });

@@ -1,9 +1,9 @@
-import { CHAIN } from "../../consts/mod";
-import { V3, fakeNotes, chains } from "../initialize";
+import IChain from "../../interfaces/objects/chain";
+import { V3, fakeNotes, chains, fakeChains } from "../initialize";
 
 export function chainsToJSON(): Record<string, any>[] {
     const chainArr: any[] = [];
-    chains.forEach((c: CHAIN) => {
+    chains.forEach((c: IChain) => {
         let chainJSON: Record<string, any> = {
             b: c.time,
             x: c.x,
@@ -31,7 +31,7 @@ export function chainsToJSON(): Record<string, any>[] {
             .replace('"disableSpawnEffect":true', '"spawnEffect":false'))
         if (V3 && chainJSON.customData && Object.keys(chainJSON.customData).includes("fake")) {
             delete chainJSON.customData.fake;
-            fakeNotes.push(chainJSON);
+            fakeChains.push(chainJSON);
         } else
             chainArr.push(chainJSON);
     });

@@ -1,10 +1,11 @@
-import { POINTDEFINITION, unknownAnimation } from "../../consts/mod";
-import { definitions } from "../initialize";
-type JSONDefV2 = { _name: string, _points: unknownAnimation };
+import { unknownAnim } from "../../types/vectors";
+import { pointDefinitions } from "../initialize";
+
+type JSONDefV2 = { _name: string, _points: unknownAnim };
 export function pointDefinitionsToV2JSON(): JSONDefV2[] {
     const defArr: JSONDefV2[] = [];
-    definitions.forEach((d: POINTDEFINITION) => {
-        defArr.push({ _name: d.name, _points: d.points });
-    });
+    for (const def in Object.keys(pointDefinitions)) {
+        defArr.push( { _name: def, _points: pointDefinitions[def] });
+    }
     return defArr;
 }

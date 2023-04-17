@@ -1,12 +1,17 @@
-import { ARC, BOMB, CHAIN, NOTE, Track, WALL } from "../consts/types/objects";
+
+
+import IArc from "../interfaces/objects/arc";
+import IBomb from "../interfaces/objects/bomb";
+import IChain from "../interfaces/objects/chain";
+import INote from "../interfaces/objects/note";
+import IWall from "../interfaces/objects/wall";
 
 /**
     * Assign a track to notes or walls.
     * @param obj The array of objects that the track should be assigned to.
     * @param track The array of tracks or the name of the track that should be assigned.
 */
-
-export default function track(obj: NOTE[] | WALL[] | ARC[] | CHAIN[] | BOMB[], track: Track): void {
+export default function track(obj: INote[] | IWall[] | IArc[] | IChain[] | IBomb[], track: string | string[]): void {
     obj.forEach((x: Record<string, any>) => {
         const d = x.data;
         if (!d.track) {

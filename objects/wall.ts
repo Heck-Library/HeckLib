@@ -1,142 +1,81 @@
-import { animationData, customWallData, lineIndex, lineLayer } from "../consts/types/objects";
+import IObjectAnimation from "../interfaces/customData/animationData";
+import ICustomData from "../interfaces/customData/customData";
+import IWall from "../interfaces/objects/wall";
 import { walls } from "../map/initialize";
-type wallType = 0 | 1;
-type wallData = {
+import lineIndex from "../types/lineIndex";
+import lineLayer from "../types/lineLayer";
+
+type wallProperties = {
     time: number;
     x?: lineIndex;
     y?: lineLayer;
     duration?: number;
     width?: number;
     height?: number;
+    data?: ICustomData;
+    anim?: IObjectAnimation;
 };
 
-export default class Wall {
-    /**
-     * These only work with V2
-     */
-    static Type : Record <string, wallType> = {
-        Full: 0,
-        Crouch: 1
-    };
-    private json : {
-        wD: wallData;
-        cD: customWallData;
-        aD: animationData;
-    };
-    constructor(wallData : wallData | number, customData? : customWallData, animationData? : animationData) {
-        if (typeof wallData === "number") {
-            wallData = {
-                time: wallData
+enum LINE_INDEX {
+    LEFT = 0,
+    LEFT_MIDDLE = 1,
+    RIGHT_MIDDLE = 2,
+    RIGHT = 3
+}
+
+enum LINE_LAYER {
+    BOTTOM = 0,
+    MIDDLE = 1,
+    TOP = 2
+}
+
+export default class Wall implements IWall {
+
+    public static readonly LINE_INDEX = LINE_INDEX;
+
+    public static readonly LINE_LAYER = LINE_LAYER;
+
+    time: number;
+    x: lineIndex;
+    y: lineLayer;
+    duration: number;
+    width: number;
+    height: number;
+    data: ICustomData;
+    anim: IObjectAnimation;
+
+    constructor();
+    constructor(wall: number);
+    constructor(wall: wallProperties);
+    constructor(wall: wallProperties, data: ICustomData);
+    constructor(wall: wallProperties, data: ICustomData, anim: IObjectAnimation);
+    constructor(wall?: wallProperties | number) {
+        this.time = 0;
+        this.x = 0;
+        this.y = 0;
+        this.duration = 0;
+        this.width = 0;
+        this.height = 0;
+        this.data = {};
+        this.anim = {};
+        if (wall) {
+            if (typeof wall === "number") {
+                this.time = wall;
+                return this;
             }
+            if (wall.time) this.time = wall.time;
+            if (wall.x) this.x = wall.x;
+            if (wall.y) this.y = wall.y;
+            if (wall.duration) this.duration = wall.duration;
+            if (wall.width) this.width = wall.width;
+            if (wall.height) this.height = wall.height;
+            if (wall.data) this.data = wall.data;
+            if (wall.anim) this.anim = wall.anim;
         }
-        this.json = {
-            wD: wallData,
-            cD: {},
-            aD: {}
-        };
-        if (customData) 
-            this.json.cD = customData;
-        
-        if (animationData) 
-            this.json.aD = animationData;
-        
-
-        if (!wallData.time) 
-            this.json.wD.time = 0;
-        
-        if (!wallData.duration) 
-            this.json.wD.duration = 0.01;
-        
-        if (!wallData.width) 
-            this.json.wD.width = 1;
-        
-        if (!wallData.height) 
-            this.json.wD.height = 1;
-        
-        if (!wallData.x) 
-            this.json.wD.x = 0;
-        
-        if (!wallData.y) 
-            this.json.wD.y = 0;
-        
-
         return this;
     }
 
-    // #region getters and setters
-    set time(time : number) {
-        this.json.wD.time = time;
-    }
-    get time(): number {
-        return this.json.wD.time;
-    }
-
-    set duration(duration : number) {
-        this.json.wD.duration = duration;
-    }
-    get duration(): number {
-        if (this.json.wD.duration) 
-            return this.json.wD.duration;
-        
-        return 0;
-    }
-
-    set width(width : number) {
-        this.json.wD.width = width;
-    }
-    get width(): number {
-        if (this.json.wD.width) 
-            return this.json.wD.width;
-        
-        return 0;
-    }
-
-    set height(height : number) {
-        this.json.wD.height = height;
-    }
-    get height(): number {
-        if (this.json.wD.height) 
-            return this.json.wD.height;
-        
-        return 0;
-    }
-
-    set x(x : lineIndex) {
-        this.json.wD.x = x;
-    }
-    get x(): lineIndex {
-        if (this.json.wD.x) 
-            return this.json.wD.x;
-        
-        return 0;
-    }
-
-    set y(y : lineLayer) {
-        this.json.wD.y = y;
-    }
-    get y(): lineLayer {
-        if (this.json.wD.y) 
-            return this.json.wD.y;
-        
-        return 0;
-    }
-
-    set data(param : customWallData) {
-        this.json.cD = param;
-    }
-    get data(): customWallData {
-        return this.json.cD;
-    }
-
-    set anim(param : animationData) {
-        this.json.aD = param;
-    }
-    get anim(): animationData {
-        return this.json.aD;
-    }
-    // #endregion
-    push() {
+    push() : void {
         walls.push(this);
-        return this;
     }
 }

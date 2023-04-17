@@ -1,11 +1,12 @@
-import { WALL } from "../../consts/mod";
+
+import IWall from "../../interfaces/objects/wall";
 import Wall from "../../objects/wall";
 import { V3 } from "../initialize";
 
-export function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): WALL[] {
-    const wallArr: WALL[] = [];
+export function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): IWall[] {
+    const wallArr: IWall[] = [];
     if (V3) {
-        wallInput.forEach((w: Record<string, any>) => {
+        if (wallInput) wallInput.forEach((w: Record<string, any>) => {
             wallArr.push(new Wall({
                 //Vanilla data
                 time: w.b,
@@ -21,7 +22,7 @@ export function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offse
             }));
         });
     } else {
-        wallInput.forEach((w: Record<string, any>) => {
+        if (wallInput) wallInput.forEach((w: Record<string, any>) => {
             wallArr.push(new Wall({
                 //Vanilla data
                 time: w._time,

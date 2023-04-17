@@ -1,41 +1,19 @@
-import { pathAnimData } from "../consts/types/animation";
-import { events } from "../map/initialize";
+import IPathAnimData from "../interfaces/events/eventData/IPathAnimData";
+import MyBaseEvent from "./baseEvent";
 
-export default class AssignPathAnimation {
-    private json: {
-        time: number
-        type: "AssignPathAnimation"
-        data: pathAnimData
-    };
-    /**
-     * Creates an AssignPathAnimation event.
-     * ```ts
-     * new AssignPathAnimation(0, {
-     *     track: "foo",
-     *     dissolve: [
-     *         [1, 0],
-     *         [0, 0.5, ease.Out.Circ]
-     *     ]
-     * }).push();
-     * ```
-     */
-    constructor(time: number, eventData: pathAnimData) {
-        this.json = {
-            time: time,
-            type: "AssignPathAnimation",
-            data: eventData
-        }
-    }
-    set time(time: number) { this.json.time = time; }
-    get time(): number { return this.json.time; }
+export default class AssignPathAnimation extends MyBaseEvent {
+    public readonly type: string;
 
-    get type(): string { return this.json.type; }
+    constructor();
+    constructor(time: number);
+    constructor(time: number, data: IPathAnimData);
+    constructor(time?: number, data?: IPathAnimData) {
+        if (typeof time === 'undefined') time = 0;
+        if (typeof data === 'undefined') data = {
+            track: "foo",
+        };
 
-    set data(data: pathAnimData) { this.json.data = data; }
-    get data(): pathAnimData { return this.json.data; }
-    
-    push() {
-        events.push(this);
-        return this;
+        super(time, data);
+        this.type = "AssignPathAnimation";
     }
 }

@@ -1,10 +1,10 @@
-import { CUSTOMEVENT } from "../../consts/mod";
+import ICustomEvent from "../../interfaces/events/eventData/ICustomEvent";
 import { V3, events } from "../initialize";
 
 export function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = [];
     if (events)
-        events.forEach((e: CUSTOMEVENT) => {
+        events.forEach((e: ICustomEvent) => {
             const eventJSON: Record<string, any> = {
                 b: e.time,
                 t: e.type,

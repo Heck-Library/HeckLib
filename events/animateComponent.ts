@@ -1,30 +1,20 @@
-import { animComponentData } from "../consts/types/animation";
-import { events, V3 } from "../map/initialize";
+import IAnimComponentData from "../interfaces/events/eventData/IAnimComponentData";
+import MyBaseEvent from "./baseEvent";
 
-export default class AnimateComponent {
-    private json: {
-        time: number,
-        type: "AnimateComponent",
-        data: animComponentData
-    }
-    constructor(time: number, eventData: animComponentData) {
-        if (!V3) throw new Error('AnimateComponent is a V3 feature');
-        this.json = {
-            time: time,
-            type: "AnimateComponent",
-            data: eventData
-        }
-    }
-    set time(time: number) { this.json.time = time; }
-    get time(): number { return this.json.time; }
+export default class AnimateComponent extends MyBaseEvent {
+    public readonly type: string;
 
-    get type(): string { return this.json.type; }
+    constructor();
+    constructor(time: number);
+    constructor(time: number, data: IAnimComponentData);
+    constructor(time?: number, data?: IAnimComponentData) {
+        if (typeof time === 'undefined') time = 0;
+        if (typeof data === 'undefined') data = {
+            track: "",
+            duration: 1
+        };
 
-    set data(data: animComponentData) { this.json.data = data; }
-    get data(): animComponentData { return this.json.data; }
-    
-    push() {
-        events.push(this);
-        return this;
+        super(time, data);
+        this.type = "AnimateComponent";
     }
 }

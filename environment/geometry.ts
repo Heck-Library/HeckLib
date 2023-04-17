@@ -1,100 +1,59 @@
-import { vec3, Track } from "../consts/mod";
-import { geoShape, mat } from "../consts/types/environment/environment";
-import { environment } from "../map/initialize";
+import IComponents from "../interfaces/components/components";
+import IGeometryEnvironment from "../interfaces/environment/geometry";
+import IGeometryProperties from "../interfaces/environment/geometryProperties";
+import { geometry } from "../map/initialize";
+import { vec3 } from "../types/vectors";
 
-
-interface IILightWithId {
-    lightID: number;
-    type: number;
+enum SHAPE {
+    CUBE = "Cube",
+    SPHERE = "Sphere",
+    CYLINDER = "Cylinder",
+    CAPSULE = "Capsule",
+    PLANE = "Plane",
+    QUAD = "Quad",
+    TRIANGLE = "Triangle"
 }
 
-interface IFog {
-    attenuation?: number;
-    offset?: number;
-    startY?: number;
-    height?: number;
-}
+export default class Geometry implements IGeometryEnvironment {
 
-interface ITubeBloom {
-    colorAlphaMultiplier?: number;
-    bloomFogIntensityMultiplier?: number;
-}
-interface IComponents {
-    ILightWithId?: IILightWithId,
-    BloomFogEnvironment?: IFog,
-    TubeBloomPrePassLight?: ITubeBloom
-}
+    public static readonly SHAPE = SHAPE;
 
-interface IGeometry {
-    shape: geoShape;
-    material: string | mat;
-    collision?: boolean;
-}
+    public components?: IComponents;
+    public active?: boolean;
+    public scale?: vec3;
+    public position?: vec3;
+    public localPosition?: vec3;
+    public rotation?: vec3;
+    public localRotation?: vec3;
+    public lightID?: number;
+    public track?: string | string[];
+    public geometry: IGeometryProperties;
 
-interface IGeoEnvironment {
-    components?: IComponents;
-    active?: boolean;
-    scale?: vec3;
-    position?: vec3;
-    localPosition?: vec3;
-    rotation?: vec3;
-    localRotation?: vec3;
-    lightID?: number;
-    track?: Track;
-    geometry: IGeometry;
-}
+    constructor();
+    constructor(geometry: IGeometryEnvironment);
+    constructor(geometry?: IGeometryEnvironment) {
+        const { components, active, scale, position, localPosition, rotation, localRotation, lightID, track, geometry: geometryProperties } = geometry || {};
 
-export default class Geometry implements IGeoEnvironment {
+        this.geometry = {
+            shape: Geometry.SHAPE.CUBE,
+            material: ''
+        };
 
-    static readonly Shape: Record<string, geoShape> = {
-        Capsule: "Capsule",
-        Cube: "Cube",
-        Sphere: "Sphere",
-        Cylinder: "Cylinder",
-        Plane: "Plane",
-        Quad: "Quad",
-        Triangle: "Triangle",
-    }
-
-    components?: IComponents;
-    active?: boolean;
-    scale?: vec3;
-    position?: vec3;
-    localPosition?: vec3;
-    rotation?: vec3;
-    localRotation?: vec3;
-    lightID?: number;
-    track?: Track;
-    geometry: IGeometry;
-
-    constructor(properties?: IGeoEnvironment) {
-
-        this.components = undefined;
-        this.active = undefined;
-        this.scale = undefined;
-        this.position = undefined;
-        this.localPosition = undefined;
-        this.rotation = undefined;  
-        this.localRotation = undefined;
-        this.lightID = undefined;
-        this.track = undefined;
-        this.geometry = undefined;
-
-        if (typeof properties !== 'undefined') {
-            this.components = properties.components;
-            this.active = properties.active;
-            this.scale = properties.scale;
-            this.position = properties.position;
-            this.localPosition = properties.localPosition;
-            this.rotation = properties.rotation;
-            this.localRotation = properties.localRotation;
-            this.lightID = properties.lightID;
-            this.track = properties.track;
-            this.geometry = properties.geometry;
+        if (typeof geometry !== 'undefined') {
+            if (components) this.components = components;
+            if (active) this.active = active;
+            if (scale) this.scale = scale;
+            if (position) this.position = position;
+            if (localPosition) this.localPosition = localPosition;
+            if (rotation) this.rotation = rotation;
+            if (localRotation) this.localRotation = localRotation;
+            if (lightID) this.lightID = lightID;
+            if (track) this.track = track;
+            if (geometryProperties) this.geometry = geometryProperties;
         }
     }
 
     push() : void {
-        environment.push(this);
+        geometry.push(this);
     }
 }

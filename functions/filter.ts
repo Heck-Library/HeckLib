@@ -1,6 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import {ARC, CHAIN, NOTE, WALL, lineIndex, lineLayer, noteDir, noteType} from "../consts/types/objects";
-import {fakeNotes, notes, fakeWalls, walls} from "../map/initialize";
+import IArc from "../interfaces/objects/arc";
+import IChain from "../interfaces/objects/chain";
+import INote from "../interfaces/objects/note";
+import IWall from "../interfaces/objects/wall";
+import cutDirection from "../types/cutDirection";
+import lineIndex from "../types/lineIndex";
+import lineLayer from "../types/lineLayer";
+import noteType from "../types/noteType";
 
 /**
  * @param obj The objects to filter.
@@ -27,7 +33,7 @@ type NoteFilters = {
     /**
      * Filters by the cut direction of the object, such as `Note.Dot`
      */
-    direction?: noteDir;
+    direction?: cutDirection;
     /**
      * Filters by the horizontal position of the object.
      */
@@ -93,10 +99,10 @@ type WallFilters = {
  * > - `fakeNotes`
  * > - `fakeWalls`
  */
-export default function filter (obj: CHAIN[], start: number, end: number, filters?: ArcFilters): CHAIN[];
-export default function filter (obj: ARC[], start: number, end: number, filters?: ArcFilters): ARC[];
-export default function filter (obj: WALL[], start: number, end: number, filters?: WallFilters): WALL[];
-export default function filter (obj: NOTE[], start: number, end: number, filters?: NoteFilters): NOTE[]; 
+export default function filter (obj: IChain[], start: number, end: number, filters?: ArcFilters): IChain[];
+export default function filter (obj: IArc[], start: number, end: number, filters?: ArcFilters): IArc[];
+export default function filter (obj: IWall[], start: number, end: number, filters?: WallFilters): IWall[];
+export default function filter (obj: INote[], start: number, end: number, filters?: NoteFilters): INote[]; 
 export default function filter (obj: any, start: number, end: number, filters?: NoteFilters) {
     let objects = obj.filter((o: { time: number; }) => o.time >= start && o.time <= end);
     if (filters) {

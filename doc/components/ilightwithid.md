@@ -1,3 +1,0 @@
-# ILightWithId
-
-WIP

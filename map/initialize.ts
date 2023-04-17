@@ -1,99 +1,97 @@
+import IEnvironment from "../interfaces/environment/environment";
+import IGeometryEnvironment from "../interfaces/environment/geometry";
+import ILightEvent from "../interfaces/environment/lightEvent";
+import IMaterial from "../interfaces/environment/material";
+import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
+import IInfo from "../interfaces/info/info";
+import IArc from "../interfaces/objects/arc";
+import IBomb from "../interfaces/objects/bomb";
+import IChain from "../interfaces/objects/chain";
+import INote from "../interfaces/objects/note";
+import IWall from "../interfaces/objects/wall";
+import IMapV2 from "../interfaces/v2map";
+import IMapV3 from "../interfaces/v3map";
+import { unknownAnim, vec1anim, vec3anim, vec4anim } from "../types/vectors";
 import { readFileSync, writeFileSync } from "fs";
-import { infoFile } from "../consts/info";
-import { ARC, BOMB, CHAIN, CUSTOMEVENT, NOTE, POINTDEFINITION, WALL, vec1anim, vec3anim, vec4anim } from "../consts/mod";
-import { IV2Map } from "./IV2Map";
-import { IV3Map } from "./IV3Map";
-import { LIGHT } from "../consts/types/lights/light";
+import { JSONtoNotes } from "./converters/JSONtoNotes";
+import { JSONtoWalls } from "./converters/JSONtoWalls";
 import { JSONtoLights } from "./converters/JSONtoLights";
 import { JSONtoCustomEvents } from "./converters/JSONtoCustomEvents";
 import { JSONtoPointDefs } from "./converters/JSONtoPointDefs";
-import { JSONtoArcs } from "./converters/JSONtoArcs";
 import { JSONtoChains } from "./converters/JSONtoChains";
-import { JSONtoNotes } from "./converters/JSONtoNotes";
-import { JSONtoWalls } from "./converters/JSONtoWalls";
+import { JSONtoArcs } from "./converters/JSONtoArcs";
+import { JSONtoBombs } from "./converters/JSONtoBombs";
 
-export const pointDefinitions = ["NULL"];
+export const pointDefinitions: Record<string, unknownAnim> = {};
+export const definitionNames: string[] = [];
 
-export let environment: any[];
-/**
- * Array that contains all the notes in the map.
- */
-export let notes: NOTE[];
-/**
- * Array that contains all the arcs.
- * DOES NOT WORK WITH V2!
- */
-export let arcs: ARC[];
-/**
- * Array that contains all the burst sliders or chains in the map.
- * DOES NOT WORK WITH V2!
- */
-export let chains: CHAIN[];
-/**
- * Array that contains all the fake burst sliders or chains in the map.
- * DOES NOT WORK WITH V2!
- */
-export let fakeChains: CHAIN[];
-/**
- * Array that contains all the bombs in the map.
- * DOES NOT WORK WITH V2!
- */
-export let bombs: BOMB[];
-/**
- * Array that contains all the walls in the map.
- */
-export let walls: WALL[];
-/**
- * Array that contains all the custom events in the map.
- */
-export let events: CUSTOMEVENT[];
-/**
- * Object that contains all the materials in the map.
- */
-export let materials: any = {};
-/**
- * Array that contains all the geometry objects in the map.
- */
-export let geometry: any[];
-/**
- * Array that contains all the point definitions in the map.
- */
-export const definitions: POINTDEFINITION[] = [];
-/**
- * Array that contains all the light events in the map.
- */
-export let lights: LIGHT[] = [];
-/**
- * Array that contains all the fake notes in the map.
- * DOES NOT WORK IN V2!
- */
-export let fakeNotes: any[];
-/**
- * Array that contains all the fake walls in the map.
- * DOES NOT WORK IN V2!
- */
-export let fakeWalls: any[];
-/**
- * Array that contains all the fake bombs in the map.
- * DOES NOT WORK IN V2!
- */
-export let fakeBombs: any[];
-/**
- * Array that contains all the material names used in the map.
- */
+export let events: ICustomEvent[] = [];
+
+export let notes: INote[] = [];
+export let arcs: IArc[] = [];
+export let chains: IChain[] = [];
+export let bombs: IBomb[] = [];
+export let walls: IWall[] = [];
+
+export let fakeNotes: Record<string, any>[] = [];
+export let fakeArcs: Record<string, any>[] = [];
+export let fakeChains: Record<string, any>[] = [];
+export let fakeBombs: Record<string, any>[] = [];
+export let fakeWalls: Record<string, any>[] = [];
+
+export let lightEvents: ILightEvent[] = [];
+
+export let environment: IEnvironment[] = [];
+export let materials: Record<string, IMaterial> = {};
+export let geometry: IGeometryEnvironment[] = [];
 export const materialNames: string[] = [];
-export const MAPPROPERTIES: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
+
+export const infoFile: IInfo = JSON.parse(readFileSync("./Info.dat", "utf-8").replace(/"_(\w+)":/g, '"$1":'));
+
+export const MAPDATA: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
     njs: 16,
     offset: 0,
     bpm: 120,
     halfJumpDuration: 2,
     jumpDistance: 24
 };
+
 export let activeInput: string;
 export let activeOutput: string;
-export let activeLightshow: string;
 
-type InitProperties = {
+export enum Difficulty {
+    EXPERT_PLUS_STANDARD = "ExpertPlusStandard.dat",
+    EXPERT_PLUS_NO_ARROWS = "ExpertPlusNoArrows.dat",
+    EXPERT_PLUS_LIGHTSHOW = "ExpertPlusLightshow.dat",
+    EXPERT_PLUS_LAWLESS = "ExpertPlusLawless.dat",
+    EXPERT_PLUS_ONE_SABER = "ExpertPlusOneSaber.dat",
+
+    EXPERT_STANDARD = "ExpertStandard.dat",
+    EXPERT_NO_ARROWS = "ExpertNoArrows.dat",
+    EXPERT_LIGHTSHOW = "ExpertLightshow.dat",
+    EXPERT_LAWLESS = "ExpertLawless.dat",
+    EXPERT_ONE_SABER = "ExpertOneSaber.dat",
+
+    HARD_STANDARD = "HardStandard.dat",
+    HARD_NO_ARROWS = "HardNoArrows.dat",
+    HARD_LIGHTSHOW = "HardLightshow.dat",
+    HARD_LAWLESS = "HardLawless.dat",
+    HARD_ONE_SABER = "HardOneSaber.dat",
+
+    NORMAL_STANDARD = "NormalStandard.dat",
+    NORMAL_NO_ARROWS = "NormalNoArrows.dat",
+    NORMAL_LIGHTSHOW = "NormalLightshow.dat",
+    NORMAL_LAWLESS = "NormalLawless.dat",
+    NORMAL_ONE_SABER = "NormalOneSaber.dat",
+
+    EASY_STANDARD = "EasyStandard.dat",
+    EASY_NO_ARROWS = "EasyNoArrows.dat",
+    EASY_LIGHTSHOW = "EasyLightshow.dat",
+    EASY_LAWLESS = "EasyLawless.dat",
+    EASY_ONE_SABER = "EasyOneSaber.dat"
+}
+
+interface IInitParams {
     /**
      * Sets the NJS of all notes
      */
@@ -112,231 +110,24 @@ type InitProperties = {
      * WARNING: Will export as selected format
      */
     format?: "V2"|"V3";
-};
-/**
- * A boolean variable that indicates whether the map is V2 or V3.
- */
+}
+
 export let V3: boolean;
 
-// TODO Lightshow importer
-function lightshowImport(file: string) {
-    let lV3 = false;
-    const lightShowDiff = JSON.parse(readFileSync(file, 'utf-8'))
-    if (lightShowDiff.version) lV3 = true;
-    let localLights: Record<string, any>[];
+function isV3(diffName: string) : void {
+    const difficulty = JSON.parse(readFileSync(diffName, 'utf-8'));
 
-    if (lV3) localLights = lightShowDiff.basicBeatmapEvents;
-    else localLights = lightShowDiff._events;
+    if (typeof difficulty._version === "undefined") V3 = false;
+    else V3 = true;
+}
 
-    lights = JSONtoLights(localLights);
-}
-function isV3(diffName: string) {
-    const diff = JSON.parse(readFileSync(diffName, 'utf-8'));
-
-    if (typeof diff._version !== 'undefined') V3 = false;
-    if (typeof diff.version !== 'undefined') V3 = true;
-}
-function V3toV2(diff: IV3Map) {
-    const v2Diff: IV2Map = {
-        _version: "2.2.0",
-        _notes: [],
-        _obstacles: [],
-        _events: [],
-        _waypoints: [],
-        _customData: {
-            _bookmarks: [],
-            _customEvents: [],
-            _environment: [],
-            _pointDefinitions: [],
-            _materials: {}
-        }
-    }
-    diff.colorNotes.forEach(n => {
-        const note = {
-            _time: n.b,
-            _lineIndex: n.x,
-            _lineLayer: n.y,
-            _type: n.c,
-            _cutDirection: n.d,
-            _customData: {}
-        };
-        v2Diff._notes.push(note)
-    });
-    diff.bombNotes.forEach(n => {
-        const bomb = {
-            _time: n.b,
-            _lineIndex: n.x,
-            _lineLayer: n.y,
-            _type: 3,
-            _cutDirection: 0,
-            _customData: {}
-        };
-        v2Diff._notes.push(bomb)
-    });
-    diff.obstacles.forEach(w => {
-        let wallType = 0;
-        if (w.y > 0) wallType = 1;
-        const wall = {
-            _time: w.b,
-            _lineIndex: w.x,
-            _type: wallType,
-            _duration: w.d,
-            _width: w.w,
-            _customData: {}
-        };
-        v2Diff._obstacles.push(wall)
-    });
-    diff.basicBeatmapEvents.forEach(l => {
-        let floatValue = 1.0;
-        if (l.f) floatValue = l.f;
-        const light = {
-            _time: l.b,
-            _type: l.et,
-            _value: l.i,
-            _floatValue: floatValue,
-            _customData: {}
-        };
-        v2Diff._obstacles.push(light)
-    });
-    if (diff.customData) {
-        const d = diff.customData;
-        if (d.customEvents) {
-            d.customEvents.forEach(e => {
-                let strEvent = JSON.stringify(e);
-                strEvent = strEvent
-                    .replace('"b":', '"time":')
-                    .replace('"t":', '"type":')
-                    .replace('"d":', '"data":')
-                    .replace('"offsetPosition":', '"position":')
-                    .replace('"offsetWorldRotation":', '"rotation":')
-                    .replace(/"(\w+)":/g, '"_$1":')
-                v2Diff._customData._customEvents.push(JSON.parse(strEvent))
-            })
-        }
-        if (d.environment) {
-            d.environment.forEach(e => {
-                let strEnv = JSON.stringify(e);
-                strEnv = strEnv.replace(/"(\w+)":/g, '"_$1":')
-                v2Diff._customData._environment.push(JSON.parse(strEnv))
-            })
-        }
-    }
-    return v2Diff;
-}
-function V2toV3(diff: IV2Map) {
-    const v3Diff: IV3Map = {
-        version: "3.2.0",
-        bpmEvents: [],
-        rotationEvents: [],
-        colorNotes: [],
-        bombNotes: [],
-        obstacles: [],
-        sliders: [],
-        burstSliders: [],
-        waypoints: [],
-        basicBeatmapEvents: [],
-        colorBoostBeatmapEvents: [],
-        lightColorEventBoxGroups: [],
-        lightRotationEventBoxGroups: [],
-        lightTranslationEventBoxGroups: [],
-        basicEventTypesWithKeywords: {},
-        useNormalEventsAsCompatibleEvents: false,
-        customData: {
-            bookmarks: [],
-            customEvents: [],
-            environment: [],
-            pointDefinitions: {},
-            materials: {}
-        }
-    }
-    diff._notes.forEach(n => {
-        if (n._type == 3) {
-            const bomb = {
-                b: n._time,
-                x: n._lineIndex,
-                y: n._lineIndex,
-                customData: {}
-            }
-            v3Diff.bombNotes.push(bomb)
-        } else {
-            const note = {
-                b: n._time,
-                x: n._lineIndex,
-                y: n._lineLayer,
-                a: 0,
-                c: n._type,
-                d: n._cutDirection,
-                customData: {}
-            };
-            v3Diff.colorNotes.push(note)
-        }
-    });
-    diff._obstacles.forEach(w => {
-        const wall = {
-            b: w._time,
-            x: w._lineIndex,
-            y: w._type,
-            d: w._duration,
-            w: w._width,
-            h: 3 - w._type,
-            customData: {}
-        };
-        v3Diff.obstacles.push(wall)
-    });
-    diff._events.forEach(l => {
-        let floatValue = 1.0;
-        if (l._floatValue) floatValue = l._floatValue;
-        const light = {
-            b: l._time,
-            et: l._type,
-            i: l._value,
-            f: floatValue,
-            customData: {
-                ...l._customData
-            }
-        };
-        v3Diff.basicBeatmapEvents.push(light)
-    });
-    if (diff._customData) {
-        const d = diff._customData;
-        if (d._customEvents) {
-            d._customEvents.forEach(e => {
-                let strEvent = JSON.stringify(e);
-                strEvent = strEvent
-                    .replace('"_time":', '"b":')
-                    .replace('"_type":', '"t":')
-                    .replace('"_data":', '"d":')
-                    .replace('"_position":', '"offsetPosition":')
-                    .replace('"_rotation":', '"offsetWorldRotation":')
-                    .replace(/"_(\w+)":/g, '"$1":')
-                v3Diff.customData.customEvents.push(JSON.parse(strEvent));
-            })
-        }
-        if (d._environment) {
-            d._environment.forEach(e => {
-                let strEnv = JSON.stringify(e);
-                strEnv = strEnv.replace(/"_(\w+)":/g, '"$1":')
-                v3Diff.customData.environment.push(JSON.parse(strEnv))
-            })
-        }
-        if (d._pointDefinitions) {
-            d._pointDefinitions.forEach((p: {_name: string, _points: vec1anim|vec3anim|vec4anim}) => {
-                const pd = {
-                    [p._name]: p._points
-                };
-                Object.assign(v3Diff.customData.pointDefinitions, pd)
-            })
-        }
-    }
-    return v3Diff;
-}
 function getJumps() {
     const _startHalfJumpDurationInBeats = 4;
     const _maxHalfJumpDistance = 18;
-    const _startBPM = MAPPROPERTIES.bpm; //INSERT BPM HERE -  -  -  -  -  -  -  -  -  -  -  -  -
-    const bpm = MAPPROPERTIES.bpm; //AND HERE -  -  -  -  -  -  -  -  -  -  -  -  -
-    const _startNoteJumpMovementSpeed = MAPPROPERTIES.njs; //NJS -  -  -  -  -  -  -  -  -  -  -  -  -
-    const _noteJumpStartBeatOffset = MAPPROPERTIES.offset; //OFFSET -  -  -  -  -  -  -  -  -  -  -  -  -
+    const _startBPM = MAPDATA.bpm; //INSERT BPM HERE -  -  -  -  -  -  -  -  -  -  -  -  -
+    const bpm = MAPDATA.bpm; //AND HERE -  -  -  -  -  -  -  -  -  -  -  -  -
+    const _startNoteJumpMovementSpeed = MAPDATA.njs; //NJS -  -  -  -  -  -  -  -  -  -  -  -  -
+    const _noteJumpStartBeatOffset = MAPDATA.offset; //OFFSET -  -  -  -  -  -  -  -  -  -  -  -  -
   
     let _noteJumpMovementSpeed = (_startNoteJumpMovementSpeed * bpm) / _startBPM;
     let num = 60 / bpm;
@@ -352,94 +143,60 @@ function getJumps() {
     const _jumpDistance = _noteJumpMovementSpeed * _jumpDuration;
     return { half: num2, dist: _jumpDistance };
 }
-/**
- * @param input The input file for the difficulty.
- * @param output The output file for the difficulty.
- * @param properties The additional properties such as NJS and offset.
- * ```ts
- * const diff = Map.initialize(INPUT, OUTPUT, {
- *     njs: 18,
- *     offset: 0
- * });
- */
-export function initialize(input: string, output: string, properties: InitProperties): Record<string, any> {
-    for (let i = 0; i <= 100; i++) {
-        console.log("")
-    }
-    infoFile._difficultyBeatmapSets.forEach((x: any) => {
-        if (Object.keys(x).includes('_beatmapCharacteristicName')) {
-            x._difficultyBeatmaps.forEach((y: any) => {
-                if (y._beatmapFilename.includes(output)) {
-                    if (!y._customData)
-                        y._customData = {};
 
-                    y._customData._suggestions = undefined;
-                    y._customData._requirements = undefined;
+export function initialize(input: string, output: string, properties?: IInitParams) {
+    infoFile.difficultyBeatmapSets.forEach((set) => {
+        set.difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty.beatmapFilename.includes(output)) {
+                if (!difficulty.customData) difficulty.customData = {};
+            }
+        });
+    });
+    writeFileSync("./Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
+    console.time('HeckLib ran in');
+
+    const p = properties || { njs: 16, offset: 0 };
+    const NJS = p.njs;
+    const offset = p.offset;
+    const jumps = getJumps();
+    MAPDATA.njs = p.njs;
+    MAPDATA.offset = p.offset;
+    MAPDATA.bpm = infoFile.beatsPerMinute;
+    MAPDATA.halfJumpDuration = jumps.half;
+    MAPDATA.jumpDistance = jumps.dist;
+
+    if (p.lightshow) {
+        lightEvents.length = 0;
+    }
+
+    isV3(`./${input}`);
+    let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
+    infoFile.difficultyBeatmapSets.forEach((set) => {
+        set.difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty.customData?.settings) delete difficulty.customData.settings;
+            if (difficulty.customData?.requirements) delete difficulty.customData.requirements;
+            if (difficulty.customData?.suggestions) delete difficulty.customData.suggestions;
+        });
+    });
+    writeFileSync("./Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
+
+    activeInput = input;
+    activeOutput = output;
+
+    infoFile.difficultyBeatmapSets.forEach((set) => {
+        if (JSON.stringify(set).includes(output)) {
+            set.difficultyBeatmaps.forEach((difficulty) => {
+                if (JSON.stringify(difficulty).includes(output)) {
+                    difficulty.customData = {};
                 }
             });
         }
     });
-    writeFileSync("Info.dat", JSON.stringify(infoFile, null, 4));
-    console.time('HeckLib ran in')
-    const p = properties;
-    const NJS = p.njs;
-    const offset = p.offset;
-    MAPPROPERTIES.njs = p.njs;
-    MAPPROPERTIES.offset = p.offset;
-    MAPPROPERTIES.bpm = infoFile._beatsPerMinute;
-    MAPPROPERTIES.halfJumpDuration = getJumps().half;
-    MAPPROPERTIES.jumpDistance = getJumps().dist;
-    if (p.lightshow) {
-        lights.length = 0;
-        lightshowImport(`./${p.lightshow}`)
-    }
-    const info = infoFile;
-    let translate = false;
-    isV3(`./${input}`);
-    if (properties.format) {
-        switch (properties.format) {
-            case "V2":
-                if (V3) translate = true;
-                V3 = false;
-                break;
-            case "V3":
-                if (!V3) translate = true;
-                V3 = true;
-                break;
-        }
-    }
-    let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
-    if (translate) {
-        if (properties.format == "V2") diff = V3toV2(diff);
-        if (properties.format == "V3") diff = V2toV3(diff);
-    }
-    infoFile._difficultyBeatmapSets.forEach((x: any) => {
-        x._difficultyBeatmaps.forEach((y: any) => {
-            if (y._settings) delete (y._settings)
-            if (y._requirements) delete (y._requirements)
-            if (y._suggestions) delete (y._suggestions)
-        })
-    });
-    writeFileSync('Info.dat', JSON.stringify(infoFile, null, 4))
-    activeInput = input;
-    activeOutput = output;
-
-    if (info._difficultyBeatmapSets) {
-        info._difficultyBeatmapSets.forEach((x: any) => {
-            if (JSON.stringify(x).includes(output)) {
-                x._difficultyBeatmaps.forEach((y: any) => {
-                    if (JSON.stringify(y).includes(output)) {
-                        y._customData = {};
-                    }
-                })
-            }
-        })
-    }
 
     if (!V3) {
         notes = JSONtoNotes(diff._notes, NJS, offset);
         walls = JSONtoWalls(diff._obstacles, NJS, offset);
-        if (!p.lightshow) lights = JSONtoLights(diff._events);
+        if (!p.lightshow) lightEvents = JSONtoLights(diff._events);
 
         if (!diff._customData) {
             diff._customData = {};
@@ -463,8 +220,8 @@ export function initialize(input: string, output: string, properties: InitProper
         walls = JSONtoWalls(diff.obstacles, NJS, offset);
         chains = JSONtoChains(diff.burstSliders, NJS, offset);
         arcs = JSONtoArcs(diff.sliders, NJS, offset);
-        bombs = diff.bombNotes;
-        lights = JSONtoLights(diff.basicBeatmapEvents);
+        bombs = JSONtoBombs(diff.bombNotes, NJS, offset);
+        lightEvents = JSONtoLights(diff.basicBeatmapEvents);
 
         if (!diff.customData) {
             diff.customData = {};
@@ -486,8 +243,8 @@ export function initialize(input: string, output: string, properties: InitProper
 
         if (!customData.customEvents) customData.customEvents = [];
         else customData.customEvents = JSONtoCustomEvents(diff.customData.customEvents)
-        if (!customData.pointDefinitions) customData.pointDefinitions = [];
-        else JSONtoPointDefs(diff.customData.pointDefinitions);
+        if (!customData.pointDefinitions) customData.pointDefinitions = {};
+        else diff.customData.pointDefinitions;
         if (!customData.environment) customData.environment = [];
         if (!customData.materials) customData.materials = {};
 

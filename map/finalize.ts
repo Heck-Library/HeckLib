@@ -1,16 +1,19 @@
 import { readFileSync, writeFileSync } from "fs";
-import { WALL, NOTE, lineIndex, lineLayer, noteType, noteDir, customNoteData } from "../consts/mod";
-import { walls, V3, fakeWalls, notes, fakeNotes, lights, definitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, materials } from "./initialize";
+import { walls, V3, fakeWalls, notes, fakeNotes, lightEvents, pointDefinitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, materials } from "./initialize";
 import { wallsToJSON } from "./converters/wallsToJSON";
 import { notesToJSON } from "./converters/notesToJSON";
 import { customEventsToJSON } from "./converters/customEventsToJSON";
 import { lightsToJSON } from "./converters/lightsToJSON";
 import { chainsToJSON } from "./converters/chainsToJSON";
-import { pointDefinitionsToV3JSON } from "./converters/pointDefinitionsToV3JSON";
 import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
-import { statsType } from "../consts/types/statsType";
 import { arcsToJSON } from "./converters/arcsToJSON";
 import environmentToJSON from "./converters/environmentToJSON";
+import lineIndex from "../types/lineIndex";
+import lineLayer from "../types/lineLayer";
+import noteType from "../types/noteType";
+import cutDirection from "../types/cutDirection";
+import INote from "../interfaces/objects/note";
+import IWall from "../interfaces/objects/wall";
 
 type V2DIFF = {
     _version: "2.2.0";
@@ -65,14 +68,39 @@ export type V2JsonNote = {
     _lineIndex: lineIndex;
     _lineLayer: lineLayer;
     _type: noteType;
-    _cutDirection: noteDir;
-    _customData?: customNoteData;
+    _cutDirection: cutDirection;
+    _customData?: any;
 };
 
 
+interface IStatsType {
+    moddedStats: {
+        notes: number;
+        fakeNotes: number;
+        walls: number;
+        fakeWalls: number;
+        bombs: number;
+        fakeBombs: number;
+        lights: number;
+        customEvents: {
+            animTrack: number;
+            pathAnim: number;
+            trackParent: number;
+            playerTrack: number;
+            fogTrack: number;
+        };
+        pointDefinitions: number;
+        environments: number;
+    };
+    vanillaStats: {
+        notes: number;
+        walls: number;
+        bombs: number;
+        lights: number;
+    };
+};
 
-
-function showStats(properties?: FinalizeProperties): statsType {
+function showStats(properties?: FinalizeProperties): IStatsType {
     const vs = {
         notes: 0,
         walls: 0,
@@ -109,7 +137,7 @@ function showStats(properties?: FinalizeProperties): statsType {
                 ms.notes = notes.length;
                 ms.fakeNotes = fakeNotes.length;
             } else {
-                notes.forEach((n: NOTE) => {
+                notes.forEach((n: INote) => {
                     if (n.data.fake) ms.fakeNotes++
                     else ms.notes++
                 })
@@ -120,7 +148,7 @@ function showStats(properties?: FinalizeProperties): statsType {
                 ms.walls = walls.length;
                 ms.fakeWalls = fakeWalls.length;
             } else {
-                walls.forEach((w: WALL) => {
+                walls.forEach((w: IWall) => {
                     if (w.data.fake) ms.fakeWalls++;
                     else ms.walls++;
                 })
@@ -131,13 +159,13 @@ function showStats(properties?: FinalizeProperties): statsType {
                 ms.bombs = bombs.length;
                 ms.fakeBombs = fakeBombs.length;
             } else {
-                bombs.forEach((n: NOTE) => {
+                bombs.forEach((n: INote) => {
                     if (n.data.fake) ms.fakeBombs++;
                     else ms.bombs++;
                 })
             }
         }
-        if (s.lights) ms.lights = lights.length;
+        if (s.lights) ms.lights = lightEvents.length;
         if (s.customEvents) {
             events.forEach((e: Record<string, any>) => {
                 switch (e.type) {
@@ -159,7 +187,7 @@ function showStats(properties?: FinalizeProperties): statsType {
                 }
             });
         }
-        if (s.pointDefinitions) ms.pointDefinitions = definitions.length;
+        if (s.pointDefinitions) ms.pointDefinitions = Object.keys(pointDefinitions).length;
         if (s.showEnvironmentStats) ms.environments = environment.length;
     }
     if (p.showVanillaStats) {
@@ -230,7 +258,7 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
                 _materials: materials
             }
         }
-        if (properties.sortObjects) {
+        if (properties && properties.sortObjects) {
             newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
             newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
             newDiff._events.sort((a: any, b: any) => a._time - b._time);
@@ -253,8 +281,8 @@ export function finalize(difficulty: any, properties?: FinalizeProperties): void
         difficulty.basicBeatmapEvents = lightsToJSON();
         difficulty.customData.customEvents = customEventsToJSON();
         difficulty.customData.environment = environmentToJSON();
-        difficulty.customData.pointDefinitions = pointDefinitionsToV3JSON();
-        if (properties.sortObjects) {
+        difficulty.customData.pointDefinitions = pointDefinitions;
+        if (properties && properties.sortObjects) {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.burstSliders.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);

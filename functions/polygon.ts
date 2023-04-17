@@ -1,10 +1,24 @@
-import { vec3, vec4 } from "../consts/mod";
 import AnimateTrack from "../events/animateTrack";
-import { MAPPROPERTIES } from "../map/initialize";
+import { MAPDATA } from "../map/initialize";
 import Wall from "../objects/wall";
+import { vec3, vec4 } from "../types/vectors";
 
 // CREDITS TO REDDEK FOR HELPING ME WITH THIS
-type polygonParams = {
+/**
+ * Polygon parameters
+ * @param time - The time the polygon is created
+ * @param track - The track the polygon is created on
+ * @param duration - The duration of the polygon
+ * @param radius - The radius of the polygon
+ * @param amount - The amount of sides the polygon has
+ * @param h - The height of the polygon
+ * @param l - The length of the polygon
+ * @param position - The position of the polygon
+ * @param rotations - The amount of rotations the polygon has
+ * @param dissolveTime - The time the polygon dissolves
+ * @param color - The color of the polygon
+ */
+interface IPolygonParams {
     time: number;
     track: string;
     duration: number;
@@ -17,7 +31,23 @@ type polygonParams = {
     dissolveTime?: number;
     color: vec4;
 }
-export default function polygon(parameters: polygonParams) {
+/**
+ * Creates a polygon
+```ts
+polygon({
+    time: 0,
+    track: "track1",
+    duration: 4,
+    radius: 5,
+    amount: 3,
+    h: 1,
+    l: 1,
+    position: [0, 0, 0], 
+    color: [1, 1, 1, 1]
+});
+```
+ */
+export default function polygon(parameters: IPolygonParams): void {
     const p = parameters;
     for (let i = 0; i < p.amount; i++) {
         let angle = Math.PI * 2 / p.amount;
@@ -28,7 +58,7 @@ export default function polygon(parameters: polygonParams) {
         let sy = p.position[0] + Math.sin(radians) * p.radius - (p.h / 2);
         new Wall({
             //Vanilla data
-            time: p.time + MAPPROPERTIES.halfJumpDuration
+            time: p.time + MAPDATA.halfJumpDuration
         }, {
             //Custom data
             interactable: false,

@@ -1,16 +1,17 @@
-import LightEvent from "../../objects/lights";
-import { LIGHT } from "../../consts/types/lights/light";
+
+import Light from "../../events/lightEvent";
+import ILightEvent from "../../interfaces/environment/lightEvent";
 import { V3 } from "../initialize";
 
-export function JSONtoLights(lightInput: Record<string, any>[]): LIGHT[] {
-    const lightArr: LIGHT[] = [];
+export function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
+    const lightArr: ILightEvent[] = [];
     if (V3) {
-        lightInput.forEach((l: Record<string, any>) => {
+        if (lightInput) lightInput.forEach((l: Record<string, any>) => {
             l = JSON.parse(JSON.stringify(l).replace(/"_(\w+)":/g,'"$1":').replace(/"lockPosition":/g,'"lockRotation":'))
             if (l.customData && l.customData.lightGradient) {
                 delete l.customData.lightGradient;
             }
-            const light: LIGHT = new LightEvent({
+            const light: ILightEvent = new Light({
                 time: l.b,
                 type: l.et,
                 value: l.i,
@@ -19,8 +20,8 @@ export function JSONtoLights(lightInput: Record<string, any>[]): LIGHT[] {
             lightArr.push(light);
         });
     } else {
-        lightInput.forEach((l: Record<string, any>) => {
-            const light: LIGHT = new LightEvent({
+        if (lightInput) lightInput.forEach((l: Record<string, any>) => {
+            const light: ILightEvent = new Light({
                 time: l._time,
                 type: l._type,
                 value: l._value,

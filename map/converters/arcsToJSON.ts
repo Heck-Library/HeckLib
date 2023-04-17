@@ -1,9 +1,8 @@
-import { ARC } from "../../consts/mod";
 import { arcs } from "../initialize";
 
 export function arcsToJSON(): Record<string, any>[] {
     const arcArr: any[] = [];
-    arcs.forEach((a: ARC) => {
+    arcs.forEach(a => {
         let arcJSON: Record<string, any> = {
             b: a.time,
             x: a.x,

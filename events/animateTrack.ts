@@ -1,38 +1,20 @@
-import { animateTrackData } from "../consts/types/animation";
-import { events } from "../map/initialize";
-export default class AnimateTrack {
-    private json: { time: number; type: string; data: any;};
-    /**
-     * Creates an AnimateTrack event.
-     * ```ts
-     * new AnimateTrack(0, {
-     *     track: "foo",
-     *     duration: 1,
-     *     dissolve: [
-     *         [1, 0],
-     *         [0, 1]
-     *     ]
-     * }).push();
-     * ```
-     */
-    constructor(time: number, eventData: animateTrackData) {
-        this.json = {
-            time: time,
-            type: "AnimateTrack",
-            data: eventData
-        }
-        return this;
-    }
-    set time(time: number) { this.json.time = time; }
-    get time(): number { return this.json.time; }
+import IAnimateTrackData from "../interfaces/events/eventData/IAnimateTrackData";
+import MyBaseEvent from "./baseEvent";
 
-    get type(): string { return this.json.type; }
+export default class AnimateTrack extends MyBaseEvent {
+    public readonly type: string;
 
-    set data(data: animateTrackData) { this.json.data = data; }
-    get data(): animateTrackData { return this.json.data; }
-    
-    push() {
-        events.push(this);
-        return this;
+    constructor();
+    constructor(time: number);
+    constructor(time: number, data: IAnimateTrackData);
+    constructor(time?: number, data?: IAnimateTrackData) {
+        if (typeof time === 'undefined') time = 0;
+        if (typeof data === 'undefined') data = {
+            track: "",
+            duration: 1
+        };
+
+        super(time, data);
+        this.type = "AnimateTrack";
     }
 }

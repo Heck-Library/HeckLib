@@ -1,14 +1,15 @@
-import { CUSTOMEVENT } from "../../consts/mod";
-import AnimateTrack from "../../events/animateTrack";
-import AssignPathAnimation from "../../events/assignPathAnimation";
-import AssignPlayerToTrack from "../../events/assignPlayerToTrack";
-import AssignTrackParent from "../../events/assignTrackParent";
+
 import AnimateComponent from "../../events/animateComponent";
+import AnimateTrack from "../../events/animateTrack";
 import AssignFogTrack from "../../events/assignFogTrack";
+import AssignPathAnimation from "../../events/assignPathAnimation";
+import AssignPlayerToTrack from "../../events/assignPlayerTrack";
+import AssignTrackParent from "../../events/assignTrackParent";
+import ICustomEvent from "../../interfaces/events/eventData/ICustomEvent";
 import { V3 } from "../initialize";
 
 export function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
-    const eventArr: CUSTOMEVENT[] = [];
+    const eventArr: ICustomEvent[] = [];
     if (!V3) {
         eventInput.forEach((e: Record<string, any>) => {
             const f = JSON.parse(

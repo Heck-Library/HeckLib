@@ -1,5 +1,4 @@
-import { vec3 } from "../consts/mod";
-
+import { vec3 } from "../types/vectors";
 
 export default function RGBtoHSV(r: number, g: number, b: number) : vec3 {
     r /= 255, g /= 255, b /= 255;
@@ -17,6 +16,7 @@ export default function RGBtoHSV(r: number, g: number, b: number) : vec3 {
             case r: h = (g - b) / d + (g < b ? 6 : 0); break;
             case g: h = (b - r) / d + 2; break;
             case b: h = (r - g) / d + 4; break;
+            default: throw new Error("Error in RGBtoHSV");
         }
 
         h /= 6;

@@ -1,11 +1,11 @@
-import { NOTE } from "../../consts/mod";
+import INote from "../../interfaces/objects/note";
 import Note from "../../objects/note";
 import { V3 } from "../initialize";
 
-export function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): NOTE[] {
-    const noteArr: NOTE[] = [];
+export function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): INote[] {
+    const noteArr: INote[] = [];
     if (V3) {
-        noteInput.forEach((n: Record<string, any>) => {
+        if (noteInput) noteInput.forEach((n: Record<string, any>) => {
             noteArr.push(new Note({
                 //Vanilla data
                 time: n.b,
@@ -21,7 +21,7 @@ export function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offse
             }));
         });
     } else {
-        noteInput.forEach((n: Record<string, any>) => {
+        if (noteInput) noteInput.forEach((n: Record<string, any>) => {
             noteArr.push(new Note({
                 //Vanilla data
                 time: n._time,

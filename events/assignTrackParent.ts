@@ -1,42 +1,25 @@
-import { parentTrackType } from "../consts/types/animation";
-import { events } from "../map/initialize";
+import IParentTrackData from "../interfaces/events/eventData/IParentTrackData";
+import MyBaseEvent from "./baseEvent";
 
-export default class AssignTrackParent{
-    private json: {
-        time: number
-        type: "AssignTrackParent"
-        data: parentTrackType
-    }
-    /**
-     * Creates an AssignTrackParent event.
-     * ```ts
-     * new AssignTrackParent(0, {
-     *     parentTrack: "parent",
-     *     childrenTrack: [
-     *         "track1",
-     *         "track2",
-     *         "track3"
-     *     ]
-     * }).push();
-     * ```
-     */
-    constructor(time: number, eventData: parentTrackType) {
-        this.json = {
-            time: time,
-            type: "AssignTrackParent",
-            data: eventData
+export default class AssignTrackParent extends MyBaseEvent {
+    public readonly type: string;
+
+    constructor();
+    constructor(time: IParentTrackData)
+    constructor(time: number);
+    constructor(time: number, data: IParentTrackData);
+    constructor(time?: number | IParentTrackData, data?: IParentTrackData) {
+        if (typeof time === 'undefined') time = 0;
+        if (typeof time !== 'number' && typeof time !== 'undefined') {
+            data = time;
+            time = 0;
         }
-    }
-    set time(time: number) { this.json.time = time; }
-    get time(): number { return this.json.time; }
+        if (typeof data === 'undefined') data = {
+            parentTrack: "",
+            childrenTracks: []
+        } || time;
 
-    get type(): string { return this.json.type; }
-
-    set data(data: parentTrackType) { this.json.data = data; }
-    get data(): parentTrackType { return this.json.data; }
-    
-    push() {
-        events.push(this);
-        return this;
+        super(time, data);
+        this.type = "AssignTrackParent";
     }
 }

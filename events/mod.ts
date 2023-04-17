@@ -1,10 +1,10 @@
-import AnimateComponent from './animateComponent';
-import AnimateTrack from './animateTrack';
-import AssignFogTrack from './assignFogTrack';
-import AssignPathAnimation from './assignPathAnimation';
-import AssignPlayerToTrack from './assignPlayerToTrack';
-import AssignTrackParent from './assignTrackParent';
-import Builders from './builder';
+import AnimateComponent from "./animateComponent";
+import AnimateTrack from "./animateTrack";
+import AssignFogTrack from "./assignFogTrack";
+import AssignPathAnimation from "./assignPathAnimation";
+import AssignPlayerToTrack from "./assignPlayerTrack";
+import AssignTrackParent from "./assignTrackParent";
+import Light from "./lightEvent";
 
 const Event = {
     AnimateComponent,
@@ -13,6 +13,7 @@ const Event = {
     AssignPathAnimation,
     AssignPlayerToTrack,
     AssignTrackParent,
-    Builders
-};
+    Light
+}
+
 export default Event;

@@ -1,9 +1,10 @@
-import { LIGHT } from "../../consts/types/lights/light";
-import { V3, lights } from "../initialize";
+
+import ILightEvent from "../../interfaces/environment/lightEvent";
+import { V3, lightEvents } from "../initialize";
 
 export function lightsToJSON(): Record<string, any>[] {
     const lightArr: any[] = [];
-    lights.forEach((l: LIGHT) => {
+    lightEvents.forEach((l: ILightEvent) => {
         const lightJSON: Record<string, any> = {
             b: l.time,
             et: l.type,

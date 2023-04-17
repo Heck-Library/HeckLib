@@ -1,9 +1,10 @@
-import { WALL } from "../../consts/mod";
+
+import IWall from "../../interfaces/objects/wall";
 import { walls, V3, fakeWalls } from "../initialize";
 
 export function wallsToJSON(): Record<string, any>[] {
     const wallArr: any[] = [];
-    walls.forEach((w: WALL) => {
+    walls.forEach((w: IWall) => {
         let wallJSON: Record<string, any> = {
             b: w.time,
             x: w.x,

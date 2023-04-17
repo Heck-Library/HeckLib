@@ -1,8 +1,8 @@
-import { CHAIN } from "../../consts/mod";
+import IChain from "../../interfaces/objects/chain";
 import Chain from "../../objects/chain";
 
-export function JSONtoChains(chainInput: Record<string, any>[], NJS: number, offset: number): CHAIN[] {
-    const chainArr: CHAIN[] = [];
+export function JSONtoChains(chainInput: Record<string, any>[], NJS: number, offset: number): IChain[] {
+    const chainArr: IChain[] = [];
     chainInput.forEach((c: Record<string, any>) => {
         chainArr.push(new Chain({
             time: c.b,

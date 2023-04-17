@@ -1,10 +1,10 @@
-import { NOTE } from "../../consts/mod";
+import V2JsonNote from "../../interfaces/objects/json/v2/v2jsonNote";
+import INote from "../../interfaces/objects/note";
 import { V3, notes, fakeNotes } from "../initialize";
-import { V2JsonNote } from "../finalize";
 
 export function notesToJSON(): V2JsonNote[] {
     const noteArr: any[] = [];
-    notes.forEach((n: NOTE) => {
+    notes.forEach((n: INote) => {
         let noteJSON: Record<string, any> = {
             b: n.time,
             c: n.type,

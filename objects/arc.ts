@@ -1,117 +1,140 @@
-import { animationData, customNoteData } from "../consts/mod";
+import IObjectAnimation from "../interfaces/customData/animationData";
+import ICustomData from "../interfaces/customData/customData";
+import IArc from "../interfaces/objects/arc";
 import { arcs } from "../map/initialize";
+import cutDirection from "../types/cutDirection";
+import lineIndex from "../types/lineIndex";
+import lineLayer from "../types/lineLayer";
 
-type direction = 0|1|2|3|4|5|6|7;
-type arcData = {
-    time: number,
-    x?: number,
-    y?: number,
+type arcProperties = {
+    time: number;
+    x?: lineIndex;
+    y?: lineLayer;
     type?: 0 | 1;
-    direction?: direction,
-    multiplier?: number,
-    endTime: number,
-    endX?: number,
-    endY?: number,
-    endDirection?: direction,
-    endMultiplier?: number,
-    anchor?: 0 | 1 | 2,
-}
-interface IArc {
-    a: arcData,
-    cD: customNoteData,
-    aD: animationData
+    direction?: cutDirection;
+    multiplier?: number;
+    endTime: number;
+    endX?: lineIndex;
+    endY?: lineLayer;
+    endDirection?: cutDirection;
+    endMultiplier?: number;
+    anchor?: 0 | 1 | 2;
+    data?: ICustomData;
+    anim?: IObjectAnimation;
 }
 
-export default class Arc {
-    static Anchor : Record <string, 0 | 1 | 2> = {
-        Straight: 0,
-        CW: 1,
-        CCW: 2
-    }
-    static Direction : Record <string, direction> = {
-        Up: 0,
-        Down: 1,
-        Left: 2,
-        Right: 3,
-        UpLeft: 4,
-        UpRight: 5,
-        DownLeft: 6,
-        DownRight: 7	
-    }
-    private json: IArc
-    constructor(arcData: arcData, customData?: customNoteData, animationData?: animationData) {
-        let cData = {};
-        let aData = {};
-        if (customData) cData = customData;
-        if (animationData) aData = animationData;
-        this.json = {
-            a: arcData,
-            cD: cData,
-            aD: aData
-        };
-        const c = this.json.a;
-        const d = arcData;
+enum DIRECTION {
+    UP = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3,
+    UP_LEFT = 4,
+    UP_RIGHT = 5,
+    DOWN_LEFT = 6,
+    DOWN_RIGHT = 7,
+    DOT = 8
+}
 
-        if (customData) this.json.cD = customData;
-        if (animationData) this.json.aD = animationData;
+enum TYPE {
+    RED = 0,
+    BLUE = 1
+}
 
-        if (!d.type) c.type = 0;
-        if (!d.direction) c.direction = 0;
-        if (!d.multiplier) c.multiplier = 1;
-        if (!d.endX) c.endX = 0;
-        if (!d.endY) c.endY = 0;
-        if (!d.endDirection) c.endDirection = 0;
-        if (!d.endMultiplier) c.endMultiplier = 1;
-        if (!d.anchor) c.anchor = 0;
-        if (!d.x) c.x = 0;
-        if (!d.y) c.y = 0;
+enum ANCHOR {
+    STRAIGHT = 0,
+    CW = 1,
+    CCW = 2
+}
+
+enum LINE_INDEX {
+    LEFT = 0,
+    LEFT_MIDDLE = 1,
+    RIGHT_MIDDLE = 2,
+    RIGHT = 3
+}
+
+enum LINE_LAYER {
+    BOTTOM = 0,
+    MIDDLE = 1,
+    TOP = 2
+}
+
+export default class Arc implements IArc {
+
+    public static readonly DIRECTION = DIRECTION;
+
+    public static readonly TYPE = TYPE;
+
+    public static readonly ANCHOR = ANCHOR;
+
+    public static readonly LINE_INDEX = LINE_INDEX;
+
+    public static readonly LINE_LAYER = LINE_LAYER;
+
+    time: number;
+    x: lineIndex;
+    y: lineLayer;
+    type: 0 | 1;
+    direction: cutDirection;
+    multiplier: number;
+    endTime: number;
+    endX: lineIndex;
+    endY: lineLayer;
+    endDirection: cutDirection;
+    endMultiplier: number;
+    anchor: 0 | 1 | 2;
+    data: ICustomData;
+    anim: IObjectAnimation;
+
+    constructor();
+    constructor(arc: number);
+    constructor(arc: arcProperties);
+    constructor(arc: arcProperties, data: ICustomData);
+    constructor(arc: arcProperties, data: ICustomData, anim: IObjectAnimation);
+    constructor(arc?: arcProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
+        this.time = 0;
+        this.x = 0;
+        this.y = 0;
+        this.type = 0;
+        this.direction = 0;
+        this.multiplier = 1;
+        this.endTime = 0;
+        this.endX = 0;
+        this.endY = 0;
+        this.endDirection = 0;
+        this.endMultiplier = 1;
+        this.anchor = 0;
+        this.data = {};
+        this.anim = {};	
+        
+        if (arc) {
+            if (typeof arc === "number") {
+                this.time = arc;
+                return this;
+            }
+            if (arc.time) this.time = arc.time;
+            if (arc.x) this.x = arc.x;
+            if (arc.y) this.y = arc.y;
+            if (arc.type) this.type = arc.type;
+            if (arc.direction) this.direction = arc.direction;
+            if (arc.multiplier) this.multiplier = arc.multiplier;
+            if (arc.endTime) this.endTime = arc.endTime;
+            if (arc.endX) this.endX = arc.endX;
+            if (arc.endY) this.endY = arc.endY;
+            if (arc.endDirection) this.endDirection = arc.endDirection;
+            if (arc.endMultiplier) this.endMultiplier = arc.endMultiplier;
+            if (arc.anchor) this.anchor = arc.anchor;
+            if (arc.data) this.data = arc.data;
+            if (arc.anim) this.anim = arc.anim;
+        }
+
+        if (data) this.data = data;
+        if (anim) this.anim = anim;
 
         return this;
     }
-    set type(type: 0 | 1) { this.json.a.type = type; }
-    get type(): 0 | 1 { return this.json.a.type; }
 
-    set direction(direction: direction) { this.json.a.direction = direction; }
-    get direction(): direction { return this.json.a.direction; }
-
-    set multiplier(multiplier: number) { this.json.a.multiplier = multiplier; }
-    get multiplier(): number { return this.json.a.multiplier; }
-
-    set endMultiplier(endMultiplier: number) { this.json.a.endMultiplier = endMultiplier; }
-    get endMultiplier(): number { return this.json.a.endMultiplier; }
-
-    set endDirection(endDirection: direction) { this.json.a.endDirection = endDirection; }
-    get endDirection(): direction { return this.json.a.endDirection; }
-
-    set endTime(endTime: number) { if (endTime < this.json.a.time) throw new Error("endTime cannot be smaller than time."); this.json.a.endTime = endTime; }
-    get endTime(): number { return this.json.a.endTime; }
-
-    set endX(endX: number) { this.json.a.endX = endX; }
-    get endX(): number { return this.json.a.endX; }
-
-    set endY(endY: number) { this.json.a.endY = endY; }
-    get endY(): number { return this.json.a.endY; }
-
-    set anchor(anchor: 0 | 1 | 2) { this.json.a.anchor = anchor; }
-    get anchor(): 0 | 1 | 2 { return this.json.a.anchor; }
-
-    set x(x: number) { this.json.a.x = x; }
-    get x(): number { return this.json.a.x; }
-
-    set y(y: number) { this.json.a.y = y; }
-    get y(): number { return this.json.a.y; }
-    
-    set time(time: number) { this.json.a.time = time; }
-    get time(): number { return this.json.a.time; }
-
-    set data(data: customNoteData) { this.json.cD = data; }
-    get data(): customNoteData { return this.json.cD; }
-    
-    set anim(anim: animationData) { this.json.aD = anim; }
-    get anim(): animationData { return this.json.aD; }
-
-    push() {
+    push() : void {
         arcs.push(this);
-        return this;
     }
 }
