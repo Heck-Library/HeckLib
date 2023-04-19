@@ -1,4 +1,4 @@
 
 export default interface IDestroyPrefabData {
-    id: string;
+    id: string | string[];
 }

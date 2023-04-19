@@ -3,7 +3,7 @@ import lineIndex from "../../types/lineIndex";
 import lineLayer from "../../types/lineLayer";
 import noteType from "../../types/noteType";
 import IObjectAnimation from "../customData/animationData";
-import ICustomData from "../customData/customData";
+import ICustomData from "../customData/customNoteData";
 
 export default interface INote {
     time: number;

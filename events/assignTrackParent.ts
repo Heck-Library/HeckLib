@@ -3,6 +3,7 @@ import MyBaseEvent from "./baseEvent";
 
 export default class AssignTrackParent extends MyBaseEvent {
     public readonly type: string = "AssignTrackParent";
+    declare data: IParentTrackData;
 
     /**
      * Creates a new AssignTrackParent event.

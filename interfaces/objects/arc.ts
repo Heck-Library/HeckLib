@@ -2,7 +2,7 @@ import cutDirection from "../../types/cutDirection";
 import lineIndex from "../../types/lineIndex";
 import lineLayer from "../../types/lineLayer";
 import IObjectAnimation from "../customData/animationData";
-import ICustomData from "../customData/customData";
+import ICustomData from "../customData/customNoteData";
 
 export default interface IArc {
     time: number;

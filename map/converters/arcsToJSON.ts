@@ -27,6 +27,7 @@ export function arcsToJSON(): Record<string, any>[] {
             .replace('"njs":', '"noteJumpMovementSpeed":')
             .replace('"offset":', '"noteJumpStartBeatOffset":')
             .replace('"position":', '"coordinates":')
+            .replace('"tailPosition":', '"tailCoordinates":')
             .replace('"rotation":', '"worldRotation":')
             .replace('"interactable":false', '"uninteractable":true')
             .replace('"disableSpawnEffect":true', '"spawnEffect":false')

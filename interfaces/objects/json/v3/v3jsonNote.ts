@@ -1,7 +1,7 @@
 import cutDirection from "../../../../types/cutDirection";
 import lineIndex from "../../../../types/lineIndex";
 import lineLayer from "../../../../types/lineLayer";
-import ICustomData from "../../../customData/customData";
+import ICustomData from "../../../customData/customNoteData";
 
 interface V3JsonNote {
     b: number;

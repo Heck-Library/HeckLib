@@ -80,10 +80,10 @@ export default class Light implements ILightEvent {
     constructor(light: ILightEvent);
     constructor(light: ILightEvent, data: ILightCustomData);
     constructor(light?: ILightEvent | number, data?: ILightCustomData) {
-        this.time = 0;
-        this.type = 0;
-        this.value = 0;
-        this.float = 0;
+        this.time = 0.001;
+        this.type = 0.0;
+        this.value = 0.0;
+        this.float = 0.0;
         this.data = {};
         if (light) {
             if (typeof light === "number") {

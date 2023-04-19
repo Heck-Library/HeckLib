@@ -1,5 +1,5 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
-import ICustomData from "../interfaces/customData/customData";
+import ICustomData from "../interfaces/customData/customNoteData";
 import IChain from "../interfaces/objects/chain";
 import { chains } from "../map/initialize";
 import cutDirection from "../types/cutDirection";

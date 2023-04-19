@@ -1,33 +1,112 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
-import ICustomData from "../interfaces/customData/customData";
+import ICustomData from "../interfaces/customData/customNoteData";
 import INote from "../interfaces/objects/note";
 import { notes } from "../map/initialize";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 import noteType from "../types/noteType";
-import v3customData from "../interfaces/json/v3/v3customData";
-import v3objectAnimation from "../interfaces/json/v3/v3objectAnimation";
 
 interface noteProperties {
+    /**
+     * The time of the note.
+     * 
+     * This is the time in beats from the start of the song.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_time`
+     * - V3: `b`
+     */
     time: number;
+    /**
+     * The line index of the note.
+     * 
+     * This is the horizontal position of the note starting from left.
+     * 
+     * - Left: 0
+     * - Left Middle: 1
+     * - Right Middle: 2
+     * - Right: 3
+     * 
+     * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_lineIndex`
+     * - V3: `x`
+     */
     x?: lineIndex;
+    /**
+     * The line layer of the note.
+     * 
+     * This is the vertical position of the note starting from bottom.
+     * 
+     * - Bottom: 0
+     * - Middle: 1
+     * - Top: 2
+     * 
+     * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_lineLayer`
+     * - V3: `y`
+     */
     y?: lineLayer;
+    /**
+     * The type or the color of the note.
+     * 
+     * - Red: 0
+     * - Blue: 1
+     * - Bomb: 3
+     * 
+     * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_type`
+     * - V3: `c`
+    */
     type?: noteType;
-    direction?: cutDirection;
+    /**
+     * The angle offset of the note in degrees.
+     * 
+     * This only works in V3.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V3: `a`
+     */
     angle?: number;
-    customData?: ICustomData;
-    animation?: IObjectAnimation;
+    /**
+     * The cut direction of the note.
+     * 
+     * - Up: 0
+     * - Down: 1
+     * - Left: 2
+     * - Right: 3
+     * - Up Left: 4
+     * - Up Right: 5
+     * - Down Left: 6
+     * - Down Right: 7
+     * - Dot: 8
+     * 
+     * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_cutDirection`
+     * - V3: `d`
+     */
+    direction?: cutDirection;
 };
-
-interface v3noteProperties {
-    b: number;
-    x?: lineIndex;
-    y?: lineLayer;
-    d?: cutDirection;
-    c?: 0 | 1;
-    a?: number;
-}
 
 enum DIRECTION {
     UP = 0,
@@ -67,10 +146,6 @@ enum LINE_LAYER {
     BOTTOM = 0,
     MIDDLE = 1,
     TOP = 2
-}
-
-function isOfV3(object: any): object is v3noteProperties {
-    return object.b !== undefined;
 }
 
 export default class Note implements INote {
@@ -130,9 +205,22 @@ export default class Note implements INote {
      */
     public static readonly LINE_LAYER = LINE_LAYER;
 
+    /**
+     * The time of the note.
+     * 
+     * This is the time in beats from the start of the song.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_time`
+     * - V3: `b`
+     */
     public time: number;
     /**
      * The line index of the note.
+     * 
+     * This is the horizontal position of the note starting from left.
      * 
      * - Left: 0
      * - Left Middle: 1
@@ -140,30 +228,57 @@ export default class Note implements INote {
      * - Right: 3
      * 
      * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_lineIndex`
+     * - V3: `x`
      */
     public x: lineIndex;
     /**
      * The line layer of the note.
+     * 
+     * This is the vertical position of the note starting from bottom.
      * 
      * - Bottom: 0
      * - Middle: 1
      * - Top: 2
      * 
      * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_lineLayer`
+     * - V3: `y`
      */
     public y: lineLayer;
     /**
-     * The type of the note.
+     * The type or the color of the note.
      * 
      * - Red: 0
      * - Blue: 1
      * - Bomb: 3
      * 
      * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_type`
+     * - V3: `c`
     */
     public type: noteType;
     /**
      * The angle offset of the note in degrees.
+     * 
+     * This only works in V3.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V3: `a`
      */
     public angle: number;
     /**
@@ -180,14 +295,36 @@ export default class Note implements INote {
      * - Dot: 8
      * 
      * You can also use the enumerator in the Note class.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_cutDirection`
+     * - V3: `d`
      */
     public direction: cutDirection;
     /**
      * The custom data of the note.
+     * 
+     * This is used for adding custom data to the note. Such as `color` or `scale`
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_customData`
+     * - V3: `customData`
      */
     public customData: ICustomData;
     /**
      * The animation of the note.
+     * 
+     * This is used for adding animations to the note. Such as `position` or `rotation`
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_customData._animation`
+     * - V3: `customData.animation`
      */
     public animation: IObjectAnimation;
 
@@ -207,65 +344,6 @@ export default class Note implements INote {
      */
     constructor(note: number);
     /**
-     * Creates a new note with v3 formatted properties.
-     * ```ts
-     * new Note({
-     *     b: number,
-     *     x: lineIndex,
-     *     y: lineLayer,
-     *     d: cutDirection,
-     *     c: 0 | 1,
-     *     a: number;
-     * });
-     * ```
-     */
-    constructor(note: v3noteProperties);
-    /**
-     * Creates a new note with v3 formatted properties and custom data.
-     * ```ts
-     * new Note({
-     *     b: 0, // All the vanilla stuff here
-     * }, {
-     *     track: string | string[],
-     *     coordinates: vec2,
-     *     worldRotation: vec3,
-     *     localRotation: vec3,
-     *     scale: vec3,
-     *     flip: vec2,
-     *     color: vec4,
-     *     njs: number,
-     *     offset: number,
-     *     disableNoteGravity: boolean,
-     *     disableNoteLook: boolean,
-     *     disableSpawnEffect: boolean,
-     *     uninteractable: boolean,
-     *     fake: boolean
-     * });
-     * ```
-     */
-    constructor(note: v3noteProperties, data: v3customData);
-    /**
-     * Creates a new note with v3 formatted properties, custom data, and animation.
-     * ```ts
-     * new Note({
-     *     b: 0, // All the vanilla stuff here
-     * }, {
-     *     track: string | string[] // All the custom data here
-     * }, {
-     *     offsetPosition: vec3anim,
-     *     offsetWorldRotation: vec3anim,
-     *     dissolve: vec1anim,
-     *     dissolveArrow: vec1anim,
-     *     interactable: vec1anim,
-     *     localRotation: vec3anim,
-     *     scale: vec3anim,
-     *     color: vec4anim,
-     *     definitePosition: vec3anim
-     * });
-     * ```
-     */
-    constructor(note: v3noteProperties, data: v3customData, anim: v3objectAnimation);
-    /**
      * Creates a new note with the given properties.
      * ```ts
      * new Note({
@@ -274,7 +352,7 @@ export default class Note implements INote {
      *     y: lineLayer,
      *     type: noteType,
      *     direction: cutDirection,
-     *     angle: number,
+     *     angle: number, // V3 only
      * });
      * ```
      */
@@ -285,9 +363,10 @@ export default class Note implements INote {
      * new Note({
      *     time: number // Vanilla properties here
      * }, {
+     *     // This part will go under the custom data bracket of the note.
      *     track: string | string[],
-     *     coordinates: vec2,
-     *     worldRotation: vec3,
+     *     position: vec2,
+     *     rotation: vec3,
      *     localRotation: vec3,
      *     scale: vec3,
      *     flip: vec2,
@@ -309,8 +388,10 @@ export default class Note implements INote {
      * new Note({
      *     time: number // Vanilla properties here
      * }, {
+     *     // This part will go under the custom data bracket of the note.
      *     track: string | string[], // Custom data here
      * }, {
+     *     // This part will go under the animation bracket of the note inside the custom data.
      *     position: vec3anim,
      *     rotation: vec3anim,
      *     dissolve: vec1anim,
@@ -324,7 +405,7 @@ export default class Note implements INote {
      * ```
      */
     constructor(note: noteProperties, data: ICustomData, anim: IObjectAnimation);
-    constructor(note?: noteProperties | v3noteProperties | number, data?: ICustomData | v3customData, anim?: IObjectAnimation | v3objectAnimation) {
+    constructor(note?: noteProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
         this.time = 0;
         this.x = 0;
         this.y = 0;
@@ -334,19 +415,6 @@ export default class Note implements INote {
         this.customData = {};
         this.animation = {};
         if (note) {
-            if (isOfV3(note)) {
-                const { b, x, y, d, c, a } = note;
-                if (b) this.time = b;
-                if (x) this.x = x;
-                if (y) this.y = y;
-                if (d) this.direction = d;
-                if (c) this.type = c;
-                if (a) this.angle = a;
-                if (data) this.customData = data;
-                if (anim) this.animation = anim;
-
-                return this;
-            }
             if (typeof note === "number") {
                 this.time = note;
                 return this;
@@ -357,12 +425,15 @@ export default class Note implements INote {
             if (note.angle) this.angle = note.angle;
             if (note.type) this.type = note.type;
             if (note.direction) this.direction = note.direction;
-            if (note.customData) this.customData = note.customData;
-            if (note.animation) this.animation = note.animation;
+            if (data) this.customData = data;
+            if (anim) this.animation = anim;
         }
         return this;
     }
 
+    /**
+     * Pushes the note to the map.
+     */
     push() {
         notes.push(this);
     }

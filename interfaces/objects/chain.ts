@@ -1,6 +1,6 @@
 import cutDirection from "../../types/cutDirection";
 import IObjectAnimation from "../customData/animationData";
-import ICustomData from "../customData/customData";
+import ICustomData from "../customData/customNoteData";
 
 export default interface IChain {
     time: number;

@@ -3,12 +3,11 @@ import MyBaseEvent from "./baseEvent";
 
 export default class AssignPathAnimation extends MyBaseEvent {
     public readonly type: string = "AssignPathAnimation";
+    declare data: IPathAnimData;
 
-    constructor();
     constructor(time: number);
     constructor(time: number, data: IPathAnimData);
-    constructor(time?: number, data?: IPathAnimData) {
-        if (typeof time === 'undefined') time = 0;
+    constructor(time: number, data?: IPathAnimData) {
         if (typeof data === 'undefined') data = {
             track: "foo",
         };

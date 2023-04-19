@@ -1,6 +1,6 @@
 
 import IObjectAnimation from "../interfaces/customData/animationData";
-import ICustomData from "../interfaces/customData/customData";
+import ICustomData from "../interfaces/customData/customNoteData";
 import IBomb from "../interfaces/objects/bomb";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";

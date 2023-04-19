@@ -1,25 +1,21 @@
 
-import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
+import IUnknownEvent from "../interfaces/events/eventData/ICustomEvent";
 import { events } from "../map/initialize";
-import customEventData from "../types/customEventData";
+import unknownProperty from "../types/unknownProperty";
 
-export default abstract class MyBaseEvent implements ICustomEvent {
-    public time: number;
-    public type: string;
-    public data: customEventData;
+export default abstract class MyBaseEvent implements IUnknownEvent {
+    time: number;
+    type: string;
+    data: unknownProperty;
 
-    constructor();
-    constructor(time: number);
-    constructor(time: number, data: customEventData);
-    constructor(time?: number, data?: customEventData) {
-        this.time = 0;
+    constructor(beat: number);
+    constructor(beat: number, data: unknownProperty);
+    constructor(beat: number, data?: unknownProperty) {
+        this.time = beat;
         this.type = "";
         this.data = {};
-        if (time) {
-            this.time = time;
-            if (data) {
-                this.data = data;
-            }
+        if (data) {
+            this.data = data;
         }
     }
 

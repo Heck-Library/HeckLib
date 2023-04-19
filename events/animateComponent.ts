@@ -3,6 +3,7 @@ import MyBaseEvent from "./baseEvent";
 
 export default class AnimateComponent extends MyBaseEvent {
     public readonly type: string = "AnimateComponent";
+    declare data: IAnimComponentData;
 
     /**
      * Creates a new AnimateComponent event.
@@ -34,7 +35,6 @@ export default class AnimateComponent extends MyBaseEvent {
      */
     constructor(time: number, data: IAnimComponentData);
     constructor(time?: number, data?: IAnimComponentData) {
-        if (typeof time === 'undefined') time = 0;
         if (typeof data === 'undefined') data = {
             track: "",
             duration: 1

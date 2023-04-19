@@ -3,21 +3,15 @@ import MyBaseEvent from "./baseEvent";
 
 export default class AssignFogTrack extends MyBaseEvent {
     public readonly type: string = "AssignFogTrack";
+    declare data: IFogTrackData;
 
-    constructor();
-    constructor(time: string);
     constructor(time: number);
     constructor(time: number, data: IFogTrackData | string);
-    constructor(time?: number | string, data?: IFogTrackData | string) {
-        if (typeof time === 'undefined' || typeof time === 'string') time = 0;
-        if (typeof time === 'string') data = { track: time }
-        if (typeof data === 'undefined' || typeof data === 'string') {
-            data = {
-                track: data || "",
-            }
+    constructor(time: number, data?: IFogTrackData | string) {
+        if (typeof data === 'string') {
+            data = { track: data };
         }
-
-        super(time, data);
+        super(time, data)
         this.type = "AssignFogTrack";
     }
 }
