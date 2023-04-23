@@ -1,52 +1,29 @@
-import IEnvironment from "../interfaces/environment/environment";
-import IGeometryEnvironment from "../interfaces/environment/geometry";
-import ILightEvent from "../interfaces/environment/lightEvent";
-import IMaterial from "../interfaces/environment/material";
+
 import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
 import IInfo from "../interfaces/info/info";
-import IArc from "../interfaces/objects/arc";
-import IBomb from "../interfaces/objects/bomb";
-import IChain from "../interfaces/objects/chain";
-import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
-import IMapV2 from "../interfaces/v2map";
-import IMapV3 from "../interfaces/v3map";
-import { unknownAnim, vec1anim, vec3anim, vec4anim } from "../types/vectors";
 import { readFileSync, writeFileSync } from "fs";
-import { JSONtoNotes } from "./converters/JSONtoNotes";
-import { JSONtoWalls } from "./converters/JSONtoWalls";
-import { JSONtoLights } from "./converters/JSONtoLights";
-import { JSONtoCustomEvents } from "./converters/JSONtoCustomEvents";
 import { JSONtoPointDefs } from "./converters/JSONtoPointDefs";
 import { JSONtoChains } from "./converters/JSONtoChains";
-import { JSONtoArcs } from "./converters/JSONtoArcs";
 import { JSONtoBombs } from "./converters/JSONtoBombs";
+import AnimateTrack from "../events/animateTrack";
+import AssignPathAnimation from "../events/assignPathAnimation";
+import AssignPlayerToTrack from "../events/assignPlayerTrack";
+import AssignTrackParent from "../events/assignTrackParent";
+import AnimateComponent from "../events/animateComponent";
+import AssignFogTrack from "../events/assignFogTrack";
+import Wall from "../objects/wall";
+import { arcs, bombs, chains, environment, events, fakeBombs, fakeNotes, fakeWalls, lightEvents, materials, notes, walls } from "./variables";
+import INote from "../interfaces/objects/note";
+import Note from "../objects/note";
+import IArc from "../interfaces/objects/arc";
+import Arc from "../objects/arc";
+import ILightEvent from "../interfaces/environment/lightEvent";
+import Light from "../events/lightEvent";
 
-export const pointDefinitions: Record<string, unknownAnim> = {};
-export const definitionNames: string[] = [];
+//#region Variables
 
-export let events: ICustomEvent[] = [];
-
-export let notes: INote[] = [];
-export let arcs: IArc[] = [];
-export let chains: IChain[] = [];
-export let bombs: IBomb[] = [];
-export let walls: IWall[] = [];
-
-export let fakeNotes: Record<string, any>[] = [];
-export let fakeArcs: Record<string, any>[] = [];
-export let fakeChains: Record<string, any>[] = [];
-export let fakeBombs: Record<string, any>[] = [];
-export let fakeWalls: Record<string, any>[] = [];
-
-export let lightEvents: ILightEvent[] = [];
-
-export let environment: IEnvironment[] = [];
-export let materials: Record<string, IMaterial> = {};
-export let geometry: IGeometryEnvironment[] = [];
-export const materialNames: string[] = [];
-
-export const infoFile: IInfo = JSON.parse(readFileSync("./Info.dat", "utf-8").replace(/"_(\w+)":/g, '"$1":'));
+export const infoFile: IInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
 
 export const MAPDATA: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
     njs: 16,
@@ -58,6 +35,8 @@ export const MAPDATA: { njs: number, offset: number, bpm: number, halfJumpDurati
 
 export let activeInput: string;
 export let activeOutput: string;
+
+//#endregion
 
 export enum Difficulty {
     EXPERT_PLUS_STANDARD = "ExpertPlusStandard.dat",
@@ -114,6 +93,235 @@ interface IInitParams {
 
 export let V3: boolean;
 
+function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
+    const lightArr: ILightEvent[] = [];
+    if (V3) {
+        if (lightInput) lightInput.forEach((l: Record<string, any>) => {
+            l = JSON.parse(JSON.stringify(l).replace(/"_(\w+)":/g,'"$1":').replace(/"lockPosition":/g,'"lockRotation":'))
+            if (l.customData && l.customData.lightGradient) {
+                delete l.customData.lightGradient;
+            }
+            const light: ILightEvent = new Light({
+                time: l.b,
+                type: l.et,
+                value: l.i,
+                float: l.f
+            }, l.customData);
+            lightArr.push(light);
+        });
+    } else {
+        if (lightInput) lightInput.forEach((l: Record<string, any>) => {
+            const light: ILightEvent = new Light({
+                time: l._time,
+                type: l._type,
+                value: l._value,
+                float: l._floatValue
+            });
+            if (l._customData) {
+                light.data = {
+                    color: l._customData._color,
+                    lightID: l._customData._lightID,
+                    easing: l._customData._easing,
+                    lerpType: l._customData._lerpType,
+                    lockPosition: l._customData._lockRotation,
+                    speed: l._customData._speed,
+                    direction: l._customData._direction,
+                    nameFilter: l._customData._nameFilter,
+                    rotation: l._customData._rotation,
+                    step: l._customData._step,
+                    prop: l._customData._prop
+                };
+            }
+            lightArr.push(light);
+        });
+    }
+    return lightArr;
+}
+
+function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number): IArc[] {
+    const arcArr: IArc[] = [];
+    arcInput.forEach((c: Record<string, any>) => {
+        arcArr.push(new Arc({
+            time: c.b,
+            x: c.x,
+            y: c.y,
+            type: c.c,
+            direction: c.d,
+            multiplier: c.mu,
+            endTime: c.tb,
+            endX: c.tx,
+            endY: c.ty,
+            endDirection: c.tc,
+            endMultiplier: c.tmu,
+            anchor: c.m,
+            data: {
+                njs: NJS,
+                offset: offset
+            }
+        }));
+    });
+    return arcArr;
+}
+
+function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): INote[] {
+    const noteArr: INote[] = [];
+    if (V3) {
+        if (noteInput) noteInput.forEach((n: Record<string, any>) => {
+            noteArr.push(new Note({
+                //Vanilla data
+                time: n.b,
+                x: n.x,
+                y: n.y,
+                angle: n.a,
+                type: n.c,
+                direction: n.d
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        });
+    } else {
+        if (noteInput) noteInput.forEach((n: Record<string, any>) => {
+            noteArr.push(new Note({
+                //Vanilla data
+                time: n._time,
+                x: n._lineIndex,
+                y: n._lineLayer,
+                type: n._type,
+                direction: n._cutDirection
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        });
+    }
+    return noteArr;
+}
+
+function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): IWall[] {
+    const wallArr: IWall[] = [];
+    if (V3) {
+        if (wallInput) wallInput.forEach((w: Record<string, any>) => {
+            wallArr.push(new Wall({
+                //Vanilla data
+                time: w.b,
+                duration: w.d,
+                x: w.x,
+                y: w.y,
+                width: w.w,
+                height: w.h
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        });
+    } else {
+        if (wallInput) wallInput.forEach((w: Record<string, any>) => {
+            wallArr.push(new Wall({
+                //Vanilla data
+                time: w._time,
+                duration: w._duration,
+                width: w._width,
+                x: w._lineIndex,
+                y: w._type
+            }, {
+                //Custom data
+                njs: NJS,
+                offset: offset
+            }));
+        });
+    }
+    return wallArr;
+}
+
+function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
+    const eventArr: ICustomEvent[] = [];
+    if (!V3) {
+        eventInput.forEach((e: Record<string, any>) => {
+            const f = JSON.parse(
+                JSON.stringify(e)
+                    .replace(/"_(\w+)":/g, '"_$1":')
+            );
+            switch (f.t) {
+                case "AnimateTrack":
+                    if (!e._data._track)
+                        f.data.track = "NULL";
+                    if (!e._data._duration)
+                        f.data.duration = 1;
+                    eventArr.push(new AnimateTrack(f.time, f.data));
+                    break;
+                case "AssignPathAnimation":
+                    if (!e._data._track)
+                        f.data.track = "NULL";
+                    eventArr.push(new AssignPathAnimation(f.time, f.data));
+                    break;
+                case "AssignPlayerToTrack":
+                    if (!e._data._track)
+                        f.data.track = "NULL";
+                    eventArr.push(new AssignPlayerToTrack(f.time, f.data.track));
+                    break;
+                case "AssignTrackParent":
+                    eventArr.push(new AssignTrackParent(f.time, f.data));
+                    break;
+                case "AnimateComponent":
+                    if (!e._data._track)
+                        f.data.track = "NULL";
+                    if (!e._data._duration)
+                        f.data.duration = 1;
+                    eventArr.push(new AnimateComponent(f.time, f.data));
+                    break;
+                case "AssignFogTrack":
+                    if (!e._data._track)
+                        f.data.track = "NULL";
+                    eventArr.push(new AssignFogTrack(f.time, f.data.track));
+                    break;
+            }
+        });
+    }
+    if (V3) {
+        eventInput.forEach((e: Record<string, any>) => {
+            const f = JSON.parse(
+                JSON.stringify(e)
+                    .replace('"offsetPosition":', '"position":')
+                    .replace('"offsetWorldRotation":', '"rotation":')
+            );
+            switch (f.t) {
+                case "AnimateTrack":
+                    if (!e.d.track)
+                        f.d.track = "NULL";
+                    if (!e.d.duration)
+                        f.d.duration = 1;
+                    eventArr.push(new AnimateTrack(f.b, f.d));
+                    break;
+                case "AssignPathAnimation":
+                    if (!e.d.track)
+                        f.d.track = "NULL";
+                    eventArr.push(new AssignPathAnimation(f.b, f.d));
+                    break;
+                case "AssignPlayerToTrack":
+                    if (!e.d.track)
+                        f.d.track = "NULL";
+                    eventArr.push(new AssignPlayerToTrack(f.b, f.d.track));
+                    break;
+                case "AssignTrackParent":
+                    eventArr.push(new AssignTrackParent(f.b, f.d));
+                    break;
+                case "AnimateComponent":
+                    if (!e.d.track)
+                        f.d.track = "NULL";
+                    if (!e.d.duration)
+                        f.d.duration = 1;
+                    eventArr.push(new AnimateComponent(f.b, f.d));
+                    break;
+            }
+        });
+    }
+    return eventArr;
+}
+
 function isV3(diffName: string) : void {
     const difficulty = JSON.parse(readFileSync(diffName, 'utf-8'));
 
@@ -145,10 +353,10 @@ function getJumps() {
 }
 
 export function initialize(input: string, output: string, properties?: IInitParams) {
-    infoFile.difficultyBeatmapSets.forEach((set) => {
-        set.difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty.beatmapFilename.includes(output)) {
-                if (!difficulty.customData) difficulty.customData = {};
+    if (infoFile._difficultyBeatmapSets ) infoFile._difficultyBeatmapSets.forEach((set) => {
+        set._difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty._beatmapFilename.includes(output)) {
+                if (!difficulty._customData) difficulty._customData = {};
             }
         });
     });
@@ -161,7 +369,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
     const jumps = getJumps();
     MAPDATA.njs = p.njs;
     MAPDATA.offset = p.offset;
-    MAPDATA.bpm = infoFile.beatsPerMinute;
+    MAPDATA.bpm = infoFile._beatsPerMinute;
     MAPDATA.halfJumpDuration = jumps.half;
     MAPDATA.jumpDistance = jumps.dist;
 
@@ -171,32 +379,33 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
     isV3(`./${input}`);
     let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
-    infoFile.difficultyBeatmapSets.forEach((set) => {
-        set.difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty.customData?.settings) delete difficulty.customData.settings;
-            if (difficulty.customData?.requirements) delete difficulty.customData.requirements;
-            if (difficulty.customData?.suggestions) delete difficulty.customData.suggestions;
+    if (infoFile._difficultyBeatmapSets) infoFile._difficultyBeatmapSets.forEach((set) => {
+        set._difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty._customData?._settings) delete difficulty._customData._settings;
+            if (difficulty._customData?._requirements) delete difficulty._customData._requirements;
+            if (difficulty._customData?._suggestions) delete difficulty._customData._suggestions;
         });
     });
-    writeFileSync("./Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
 
     activeInput = input;
     activeOutput = output;
 
-    infoFile.difficultyBeatmapSets.forEach((set) => {
+    if (infoFile._difficultyBeatmapSets) infoFile._difficultyBeatmapSets.forEach((set) => {
         if (JSON.stringify(set).includes(output)) {
-            set.difficultyBeatmaps.forEach((difficulty) => {
+            set._difficultyBeatmaps.forEach((difficulty) => {
                 if (JSON.stringify(difficulty).includes(output)) {
-                    difficulty.customData = {};
+                    difficulty._customData = {};
                 }
             });
         }
     });
 
+    writeFileSync("./Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
+
     if (!V3) {
-        notes = JSONtoNotes(diff._notes, NJS, offset);
-        walls = JSONtoWalls(diff._obstacles, NJS, offset);
-        if (!p.lightshow) lightEvents = JSONtoLights(diff._events);
+        notes.push(...JSONtoNotes(diff._notes, NJS, offset));
+        walls.push(...JSONtoWalls(diff._obstacles, NJS, offset));
+        if (!p.lightshow) lightEvents.push(...JSONtoLights(diff._events));
 
         if (!diff._customData) {
             diff._customData = {};
@@ -211,17 +420,17 @@ export function initialize(input: string, output: string, properties?: IInitPara
         if (!customData._environment) customData._environment = [];
         if (!customData._materials) customData._materials = {};
 
-        events = diff._customData._customEvents;
-        environment = customData._environment;
-        materials = customData._materials;
+        events.push(...diff._customData._customEvents);
+        environment.push(customData._environment);
+        Object.assign(materials, ...customData._materials);
     }
     else if (V3) {
-        notes = JSONtoNotes(diff.colorNotes, NJS, offset);
-        walls = JSONtoWalls(diff.obstacles, NJS, offset);
-        chains = JSONtoChains(diff.burstSliders, NJS, offset);
-        arcs = JSONtoArcs(diff.sliders, NJS, offset);
-        bombs = JSONtoBombs(diff.bombNotes, NJS, offset);
-        lightEvents = JSONtoLights(diff.basicBeatmapEvents);
+        notes.push(...JSONtoNotes(diff.colorNotes, NJS, offset));
+        walls.push(...JSONtoWalls(diff.obstacles, NJS, offset));
+        chains.push(...JSONtoChains(diff.burstSliders, NJS, offset));
+        arcs.push(...JSONtoArcs(diff.sliders, NJS, offset));
+        bombs.push(...JSONtoBombs(diff.bombNotes, NJS, offset));
+        lightEvents.push(...JSONtoLights(diff.basicBeatmapEvents));
 
         if (!diff.customData) {
             diff.customData = {};
@@ -250,12 +459,12 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
         //(output, JSON.stringify(diff, null, 4));
 
-        events = customData.customEvents;
-        environment = customData.environment;
-        materials = customData.materials;
-        fakeNotes = customData.fakeColorNotes;
-        fakeWalls = customData.fakeObstacles;
-        fakeBombs = customData.fakeBombNotes;
+        events.push(...customData.customEvents);
+        environment.push(...customData.environment);
+        Object.assign(materials, ...customData.materials);
+        fakeNotes.push(...customData.fakeColorNotes);
+        fakeWalls.push(...customData.fakeObstacles);
+        fakeBombs.push(...customData.fakeBombNotes);
     }
     return diff;
 }

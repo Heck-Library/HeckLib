@@ -13,7 +13,7 @@ import IWall from "../interfaces/objects/wall";
 */
 export default function track(obj: INote[] | IWall[] | IArc[] | IChain[] | IBomb[], track: string | string[]): void {
     obj.forEach((x: Record<string, any>) => {
-        const d = x.data;
+        const d = x.customData;
         if (!d.track) {
             d.track = track;
             return;

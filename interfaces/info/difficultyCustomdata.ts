@@ -1,9 +1,9 @@
 import ISettings from "./settings";
 
 export default interface IDifficultyCustomData {
-    settings?: ISettings;
-    suggestions?: string[];
-    requirements?: string[];
-    warnings?: string[];
-    information?: string[];
+    _settings?: ISettings;
+    _suggestions?: string[];
+    _requirements?: string[];
+    _warnings?: string[];
+    _information?: string[];
 }

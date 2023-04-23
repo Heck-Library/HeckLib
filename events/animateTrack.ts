@@ -1,5 +1,5 @@
 import IAnimateTrackData from "../interfaces/events/eventData/IAnimateTrackData";
-import MyBaseEvent from "./baseEvent";
+import { MyBaseEvent } from "./baseEvent";
 
 export default class AnimateTrack extends MyBaseEvent {
     public readonly type: string = "AnimateTrack";

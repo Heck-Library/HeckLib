@@ -1,9 +1,9 @@
 
 import IUnknownEvent from "../interfaces/events/eventData/ICustomEvent";
-import { events } from "../map/initialize";
+import { events } from "../map/variables";
 import unknownProperty from "../types/unknownProperty";
 
-export default abstract class MyBaseEvent implements IUnknownEvent {
+export abstract class MyBaseEvent implements IUnknownEvent {
     time: number;
     type: string;
     data: unknownProperty;
@@ -17,6 +17,7 @@ export default abstract class MyBaseEvent implements IUnknownEvent {
         if (data) {
             this.data = data;
         }
+        return this;
     }
 
     push() : void {

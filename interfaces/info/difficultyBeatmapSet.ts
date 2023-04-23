@@ -1,6 +1,6 @@
 import IDifficultyBeatmap from "./difficultyBeatmap";
 
 export default interface IDifficultyBeatmapSet {
-    beatmapCharacteristicName: string;
-    difficultyBeatmaps: IDifficultyBeatmap[];
+    _beatmapCharacteristicName: string;
+    _difficultyBeatmaps: IDifficultyBeatmap[];
 }

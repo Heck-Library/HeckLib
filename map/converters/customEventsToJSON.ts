@@ -1,5 +1,6 @@
 import ICustomEvent from "../../interfaces/events/eventData/ICustomEvent";
-import { V3, events } from "../initialize";
+import { V3 } from "../initialize";
+import { events } from "../variables";
 
 export function customEventsToJSON(): Record<string, any>[] {
     const eventArr: any[] = [];

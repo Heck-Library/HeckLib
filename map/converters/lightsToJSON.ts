@@ -1,6 +1,7 @@
 
 import ILightEvent from "../../interfaces/environment/lightEvent";
-import { V3, lightEvents } from "../initialize";
+import { V3 } from "../initialize";
+import { lightEvents } from "../variables";
 
 export function lightsToJSON(): Record<string, any>[] {
     const lightArr: any[] = [];

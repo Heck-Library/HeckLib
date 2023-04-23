@@ -1,6 +1,7 @@
 import V2JsonNote from "../../interfaces/objects/json/v2/v2jsonNote";
 import INote from "../../interfaces/objects/note";
-import { V3, notes, fakeNotes } from "../initialize";
+import { V3 } from "../initialize";
+import { fakeNotes, notes } from "../variables";
 
 export function notesToJSON(): V2JsonNote[] {
     const noteArr: any[] = [];

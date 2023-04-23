@@ -1,5 +1,5 @@
 import { unknownAnim } from "../../types/vectors";
-import { pointDefinitions } from "../initialize";
+import { pointDefinitions } from "../variables";
 
 type JSONDefV2 = { _name: string, _points: unknownAnim };
 export function pointDefinitionsToV2JSON(): JSONDefV2[] {

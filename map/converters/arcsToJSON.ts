@@ -1,4 +1,4 @@
-import { arcs } from "../initialize";
+import { arcs } from "../variables";
 
 export function arcsToJSON(): Record<string, any>[] {
     const arcArr: any[] = [];

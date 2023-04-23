@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import { walls, V3, fakeWalls, notes, fakeNotes, lightEvents, pointDefinitions, bombs, fakeBombs, environment, activeInput, activeOutput, events, materials } from "./initialize";
+import { V3, activeInput, activeOutput } from "./initialize";
 import { wallsToJSON } from "./converters/wallsToJSON";
 import { notesToJSON } from "./converters/notesToJSON";
 import { customEventsToJSON } from "./converters/customEventsToJSON";
@@ -14,6 +14,7 @@ import noteType from "../types/noteType";
 import cutDirection from "../types/cutDirection";
 import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
+import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events } from "./variables";
 
 type V2DIFF = {
     _version: "2.2.0";

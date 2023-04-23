@@ -1,21 +1,21 @@
 import IDifficultyBeatmapSet from "./difficultyBeatmapSet";
 
 export default interface IInfo {
-    version: string;
-    songName: string;
-    songSubName: string;
-    songAuthorName: string;
-    levelAuthorName: string;
-    beatsPerMinute: number;
-    shuffle: number;
-    shufflePeriod: number;
-    previewStartTime: number;
-    previewDuration: number;
-    songFileName: string;
-    coverImageFileName: string;
-    environmentName: string;
-    allDirectionsEnvironmentName: string;
-    songTimeOffset: number;
-    customData?: Record<string, any>;
-    difficultyBeatmapSets: IDifficultyBeatmapSet[];
+    _version: string;
+    _songName: string;
+    _songSubName: string;
+    _songAuthorName: string;
+    _levelAuthorName: string;
+    _beatsPerMinute: number;
+    _shuffle: number;
+    _shufflePeriod: number;
+    _previewStartTime: number;
+    _previewDuration: number;
+    _songFileName: string;
+    _coverImageFileName: string;
+    _environmentName: string;
+    _allDirectionsEnvironmentName: string;
+    _songTimeOffset: number;
+    _customData?: Record<string, any>;
+    _difficultyBeatmapSets: IDifficultyBeatmapSet[];
 }

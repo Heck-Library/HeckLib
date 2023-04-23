@@ -1,5 +1,5 @@
 import IPlayerTrackData from "../interfaces/events/eventData/IPlayerTrackData";
-import MyBaseEvent from "./baseEvent";
+import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignPlayerToTrack extends MyBaseEvent {
     public readonly type: string = "AssignPlayerToTrack";

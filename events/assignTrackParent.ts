@@ -1,5 +1,5 @@
 import IParentTrackData from "../interfaces/events/eventData/IParentTrackData";
-import MyBaseEvent from "./baseEvent";
+import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignTrackParent extends MyBaseEvent {
     public readonly type: string = "AssignTrackParent";

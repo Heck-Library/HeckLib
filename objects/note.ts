@@ -1,7 +1,7 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import INote from "../interfaces/objects/note";
-import { notes } from "../map/initialize";
+import { notes } from "../map/variables";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";

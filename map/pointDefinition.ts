@@ -1,5 +1,5 @@
 import { unknownAnim, vec1anim, vec3anim, vec4anim } from "../types/vectors";
-import { pointDefinitions } from "./initialize";
+import { pointDefinitions } from "./variables";
 
 export default class PointDefinition {
 

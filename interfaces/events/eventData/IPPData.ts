@@ -4,9 +4,10 @@ import IPPProperty from "./IPPProperty";
 export default interface IPPData {
     asset: string;
     priority?: number;
+    source?: string;
     pass?: number;
-    target?: string;
     duration?: number;
     easing?: string;
-    properties: IPPProperty[];
+    destination?: string[];
+    properties?: IPPProperty[];
 }

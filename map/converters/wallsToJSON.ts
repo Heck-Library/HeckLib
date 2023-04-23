@@ -1,6 +1,7 @@
 
 import IWall from "../../interfaces/objects/wall";
-import { walls, V3, fakeWalls } from "../initialize";
+import { V3 } from "../initialize";
+import { fakeWalls, walls } from "../variables";
 
 export function wallsToJSON(): Record<string, any>[] {
     const wallArr: any[] = [];

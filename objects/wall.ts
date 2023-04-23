@@ -1,7 +1,7 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomWallData from "../interfaces/customData/customWallData";
 import IWall from "../interfaces/objects/wall";
-import { walls } from "../map/initialize";
+import { walls } from "../map/variables";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 

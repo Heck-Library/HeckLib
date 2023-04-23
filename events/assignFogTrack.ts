@@ -1,5 +1,5 @@
 import IFogTrackData from "../interfaces/events/eventData/IFogTrackData";
-import MyBaseEvent from "./baseEvent";
+import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignFogTrack extends MyBaseEvent {
     public readonly type: string = "AssignFogTrack";

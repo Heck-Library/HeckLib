@@ -1,6 +1,7 @@
 import IEnvironment from "../../interfaces/environment/environment";
 import IGeometryEnvironment from "../../interfaces/environment/geometry";
-import { V3, environment, geometry } from "../initialize";
+import { V3 } from "../initialize";
+import { environment, geometry } from "../variables";
 
 export default function environmentToJSON() {
     const envArr: any[] = [];

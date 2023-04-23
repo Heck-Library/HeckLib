@@ -1,9 +1,9 @@
 import IAnimComponentData from "../interfaces/events/eventData/IAnimComponentData";
-import MyBaseEvent from "./baseEvent";
+import { MyBaseEvent } from "./baseEvent";
 
 export default class AnimateComponent extends MyBaseEvent {
     public readonly type: string = "AnimateComponent";
-    declare data: IAnimComponentData;
+    data: IAnimComponentData = {track: "", duration: 1};
 
     /**
      * Creates a new AnimateComponent event.

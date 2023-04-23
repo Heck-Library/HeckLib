@@ -1,17 +1,17 @@
 export default interface IModifiers {
-    energyType?: 'Bar' | 'Battery';
-    noFailOn0Energy?: boolean;
-    instaFail?: boolean;
-    failOnSaberClash?: boolean;
-    enabledObstacleType?: 'All' | 'FullHeightOnly' | 'NoObstacles';
-    fastNotes?: boolean;
-    strictAngles?: boolean;
-    disappearingArrows?: boolean;
-    ghostNotes?: boolean;
-    noBombs?: boolean;
-    songSpeed?: 'Normal' | 'Faster' | 'Slower' | 'SuperFast';
-    noArrows?: boolean;
-    proMode?: boolean;
-    zenMode?: boolean;
-    smallCubes?: boolean;
+    _energyType?: 'Bar' | 'Battery';
+    _noFailOn0Energy?: boolean;
+    _instaFail?: boolean;
+    _failOnSaberClash?: boolean;
+    _enabledObstacleType?: 'All' | 'FullHeightOnly' | 'NoObstacles';
+    _fastNotes?: boolean;
+    _strictAngles?: boolean;
+    _disappearingArrows?: boolean;
+    _ghostNotes?: boolean;
+    _noBombs?: boolean;
+    _songSpeed?: 'Normal' | 'Faster' | 'Slower' | 'SuperFast';
+    _noArrows?: boolean;
+    _proMode?: boolean;
+    _zenMode?: boolean;
+    _smallCubes?: boolean;
 }

@@ -1,7 +1,7 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import IArc from "../interfaces/objects/arc";
-import { arcs } from "../map/initialize";
+import { arcs } from "../map/variables";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
