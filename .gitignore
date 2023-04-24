@@ -10,6 +10,7 @@ srcJs/main.js
 srcJs/mapHandler.js
 srcJs/objects.js
 src/text.ts
+script.ts
 dev/
 font.dae
 Cinema.json
