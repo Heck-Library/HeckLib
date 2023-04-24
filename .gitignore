@@ -1,14 +1,5 @@
 
 /*.dat
-script.js
-srcJs/animation.js
-srcJs/consts.js
-srcJs/events.js
-srcJs/general.js
-srcJs/info.js
-srcJs/main.js
-srcJs/mapHandler.js
-srcJs/objects.js
 src/text.ts
 script.ts
 dev/
