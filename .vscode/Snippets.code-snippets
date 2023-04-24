@@ -276,7 +276,7 @@
         "scope": "typescript",
         "prefix": "forEachNote",
         "body": [
-            "filter(notes, ${1:startTime}, ${2:endTime}).forEach((n: NOTE) => {",
+            "filter(notes, ${1:startTime}, ${2:endTime}).forEach((n: INote) => {",
             "    $0",
             "});"
         ],
@@ -286,7 +286,7 @@
         "scope": "typescript",
         "prefix": "forEachWall",
         "body": [
-            "filter(walls, ${1:startTime}, ${2:endTime}).forEach((w: WALL) => {",
+            "filter(walls, ${1:startTime}, ${2:endTime}).forEach((w: IWall) => {",
             "    $0",
             "});"
         ],
@@ -296,7 +296,7 @@
         "scope": "typescript",
         "prefix": "forEachArc",
         "body": [
-            "filter(arcs, ${1:startTime}, ${2:endTime}).forEach((a: ARC) => {",
+            "filter(arcs, ${1:startTime}, ${2:endTime}).forEach((a: IArc) => {",
             "    $0",
             "});"
         ]
@@ -305,7 +305,7 @@
         "scope": "typescript",
         "prefix": "forEachChain",
         "body": [
-            "filter(chains, ${1:startTime}, ${2:endTime}).forEach((c: CHAIN) => {",
+            "filter(chains, ${1:startTime}, ${2:endTime}).forEach((c: IChain) => {",
             "    $0",
             "});"
         ]
