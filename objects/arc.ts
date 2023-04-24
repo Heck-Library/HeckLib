@@ -6,57 +6,137 @@ import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
-type arcProperties = {
+interface arcProperties {
+    /**
+     * ### Time
+     * 
+     * The time in beats at which the arc starts.
+     */
     time: number;
+    /**
+     * ### X
+     * 
+     * The line index of the arc's start point.
+     */
     x?: lineIndex;
+    /**
+     * ### Y
+     * 
+     * The line layer of the arc's start point.
+     */
     y?: lineLayer;
+    /**
+     * ### Type
+     * 
+     * The type of the arc. (Red/Blue)
+     */
     type?: 0 | 1;
+    /**
+     * ### Direction
+     * 
+     * The direction of the arc's startpoint.
+     * 
+     * You can use the `DIRECTION` enum to set this value.
+     */
     direction?: cutDirection;
+    /**
+     * ### Multiplier
+     * 
+     * The multiplier of the arc's startpoint.
+     * 
+     * You can use the `MULTIPLIER` enum to set this value.
+     */
     multiplier?: number;
+    /**
+     * ### End Time
+     * 
+     * The time in beats at which the arc ends.
+     */
     endTime: number;
+    /**
+     * ### End X
+     * 
+     * The line index of the arc's end point.
+     */
     endX?: lineIndex;
+    /**
+     * ### End Y
+     * 
+     * The line layer of the arc's end point.
+     */
     endY?: lineLayer;
+    /**
+     * ### End Direction
+     * 
+     * The direction of the arc's endpoint.
+     * 
+     * You can use the `DIRECTION` enum to set this value.
+     */
     endDirection?: cutDirection;
+    /**
+     * ### End Multiplier
+     * 
+     * The multiplier of the arc's endpoint.
+     * 
+     * You can use the `MULTIPLIER` enum to set this value.
+     */
     endMultiplier?: number;
+    /**
+     * ### Anchor
+     * 
+     * The anchor type of the arc. (Straight/CW/CCW)
+     * 
+     * You can use the `ANCHOR` enum to set this value.
+     */
     anchor?: 0 | 1 | 2;
+    /**
+     * ### Custom Data
+     * 
+     * The custom data of the arc.
+     */
     data?: ICustomData;
+    /**
+     * ### Animation
+     * 
+     * The animation data of the arc.
+     */
     anim?: IObjectAnimation;
 }
 
 enum DIRECTION {
-    UP = 0,
-    DOWN = 1,
-    LEFT = 2,
-    RIGHT = 3,
-    UP_LEFT = 4,
-    UP_RIGHT = 5,
-    DOWN_LEFT = 6,
-    DOWN_RIGHT = 7,
-    DOT = 8
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    DOT
 }
 
 enum TYPE {
-    RED = 0,
-    BLUE = 1
+    RED,
+    BLUE
 }
 
 enum ANCHOR {
-    STRAIGHT = 0,
-    CW = 1,
-    CCW = 2
+    STRAIGHT,
+    CW,
+    CCW
 }
 
 enum LINE_INDEX {
-    LEFT = 0,
-    LEFT_MIDDLE = 1,
-    RIGHT_MIDDLE = 2,
-    RIGHT = 3
+    LEFT,
+    LEFT_MIDDLE,
+    RIGHT_MIDDLE,
+    RIGHT
 }
 
 enum LINE_LAYER {
-    BOTTOM = 0,
-    MIDDLE = 1,
-    TOP = 2
+    BOTTOM,
+    MIDDLE,
+    TOP
 }
 
 export default class Arc implements IArc {

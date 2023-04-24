@@ -14,16 +14,16 @@ type bombProperties = {
 };
 
 enum LINE_INDEX {
-    LEFT = 0,
-    LEFT_MIDDLE = 1,
-    RIGHT_MIDDLE = 2,
-    RIGHT = 3
+    LEFT,
+    LEFT_MIDDLE,
+    RIGHT_MIDDLE,
+    RIGHT
 }
 
 enum LINE_LAYER {
-    BOTTOM = 0,
-    MIDDLE = 1,
-    TOP = 2
+    BOTTOM,
+    MIDDLE,
+    TOP
 }
 
 export default class Bomb implements IBomb {

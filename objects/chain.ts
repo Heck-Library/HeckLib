@@ -20,33 +20,33 @@ type chainProperties = {
 }
 
 enum TYPE {
-    RED = 0,
-    BLUE = 1
+    RED,
+    BLUE
 }
 
 enum DIRECTION {
-    UP = 0,
-    DOWN = 1,
-    LEFT = 2,
-    RIGHT = 3,
-    UP_LEFT = 4,
-    UP_RIGHT = 5,
-    DOWN_LEFT = 6,
-    DOWN_RIGHT = 7,
-    DOT = 8
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    DOT
 }
 
 enum LINE_INDEX {
-    LEFT = 0,
-    LEFT_MIDDLE = 1,
-    RIGHT_MIDDLE = 2,
-    RIGHT = 3
+    LEFT,
+    LEFT_MIDDLE,
+    RIGHT_MIDDLE,
+    RIGHT
 }
 
 enum LINE_LAYER {
-    BOTTOM = 0,
-    MIDDLE = 1,
-    TOP = 2
+    BOTTOM,
+    MIDDLE,
+    TOP
 }
 
 export default class Chain implements IChain {

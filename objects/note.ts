@@ -109,26 +109,26 @@ interface noteProperties {
 };
 
 enum DIRECTION {
-    UP = 0,
-    DOWN = 1,
-    LEFT = 2,
-    RIGHT = 3,
-    UP_LEFT = 4,
-    UP_RIGHT = 5,
-    DOWN_LEFT = 6,
-    DOWN_RIGHT = 7,
-    DOT = 8,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    DOT
 }
 
 enum TYPE {
     /**
      * Red note type
      */
-    RED = 0,
+    RED,
     /**
      * Blue note type
      */
-    BLUE = 1,
+    BLUE,
     /**
      * Won't work in V3 due to bombs belonging to a separate array.
      */
@@ -136,16 +136,16 @@ enum TYPE {
 }
 
 enum LINE_INDEX {
-    LEFT = 0,
-    LEFT_MIDDLE = 1,
-    RIGHT_MIDDLE = 2,
-    RIGHT = 3
+    LEFT,
+    LEFT_MIDDLE,
+    RIGHT_MIDDLE,
+    RIGHT
 }
 
 enum LINE_LAYER {
-    BOTTOM = 0,
-    MIDDLE = 1,
-    TOP = 2
+    BOTTOM,
+    MIDDLE,
+    TOP
 }
 
 export default class Note implements INote {
