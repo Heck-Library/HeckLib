@@ -22,8 +22,8 @@ import ILightEvent from "../interfaces/environment/lightEvent";
 import Light from "../events/lightEvent";
 
 //#region Variables
-
-export const infoFile: IInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
+const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
+export const infoFile: IInfo = JSON.parse(JSON.stringify(stringInfo).replace(/"_(\w+)":/g,'"$1":'));
 
 export const MAPDATA: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
     njs: 16,
@@ -353,10 +353,10 @@ function getJumps() {
 }
 
 export function initialize(input: string, output: string, properties?: IInitParams) {
-    if (infoFile._difficultyBeatmapSets ) infoFile._difficultyBeatmapSets.forEach((set) => {
-        set._difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty._beatmapFilename.includes(output)) {
-                if (!difficulty._customData) difficulty._customData = {};
+    if (infoFile.difficultyBeatmapSets ) infoFile.difficultyBeatmapSets.forEach((set) => {
+        set.difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty.beatmapFilename.includes(output)) {
+                if (!difficulty.customData) difficulty.customData = {};
             }
         });
     });
@@ -369,7 +369,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
     const jumps = getJumps();
     MAPDATA.njs = p.njs;
     MAPDATA.offset = p.offset;
-    MAPDATA.bpm = infoFile._beatsPerMinute;
+    MAPDATA.bpm = infoFile.beatsPerMinute;
     MAPDATA.halfJumpDuration = jumps.half;
     MAPDATA.jumpDistance = jumps.dist;
 
@@ -379,22 +379,22 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
     isV3(`./${input}`);
     let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
-    if (infoFile._difficultyBeatmapSets) infoFile._difficultyBeatmapSets.forEach((set) => {
-        set._difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty._customData?._settings) delete difficulty._customData._settings;
-            if (difficulty._customData?._requirements) delete difficulty._customData._requirements;
-            if (difficulty._customData?._suggestions) delete difficulty._customData._suggestions;
+    if (infoFile.difficultyBeatmapSets) infoFile.difficultyBeatmapSets.forEach((set) => {
+        set.difficultyBeatmaps.forEach((difficulty) => {
+            if (difficulty.customData?.settings) delete difficulty.customData.settings;
+            if (difficulty.customData?.requirements) delete difficulty.customData.requirements;
+            if (difficulty.customData?.suggestions) delete difficulty.customData.suggestions;
         });
     });
 
     activeInput = input;
     activeOutput = output;
 
-    if (infoFile._difficultyBeatmapSets) infoFile._difficultyBeatmapSets.forEach((set) => {
+    if (infoFile.difficultyBeatmapSets) infoFile.difficultyBeatmapSets.forEach((set) => {
         if (JSON.stringify(set).includes(output)) {
-            set._difficultyBeatmaps.forEach((difficulty) => {
+            set.difficultyBeatmaps.forEach((difficulty) => {
                 if (JSON.stringify(difficulty).includes(output)) {
-                    difficulty._customData = {};
+                    difficulty.customData = {};
                 }
             });
         }
