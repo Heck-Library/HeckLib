@@ -1,10 +1,8 @@
 
 /*.dat
-src/text.ts
 script.ts
 dev/
 font.dae
-Cinema.json
 models/template.json
 untitled.json
 cinema-video.json
