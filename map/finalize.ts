@@ -159,6 +159,7 @@ interface IFinalizeProperties {
      * ```
      */
     settings?: ISettings;
+    roundNumbers?: number;
 };
 
 let formatting = false
@@ -336,9 +337,7 @@ function setWarnings(warnings: string | string[]) {
     });
 }
 
-function roundToDecimal(num: number, decimal: number) {
-    return Math.round(num * (10 ** decimal)) / (10 ** decimal);
-}
+
 
 /**
  * @param difficulty The difficulty that the map should be written to.
@@ -366,6 +365,22 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         writeFileSync('Info.dat', stringifiedInfo);
     }
     const sortP = Math.pow(10, 2);
+    const jsonP = Math.pow(10, 4);
+
+    
+    function deeperDaddy(obj) {
+        if (obj) for (const key in obj) {
+            if (obj[key] == null) {
+                delete obj[key];
+            } else if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
+                deeperDaddy(obj[key]);
+            } else if (typeof obj[key] === "number") {
+                obj[key] = Math.round(obj[key] * jsonP) / jsonP;
+            }
+        }
+    }
+
+    deeperDaddy(difficulty)
 
     if (!V3) {
         environmentToJSON()
