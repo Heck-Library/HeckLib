@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import { V3, activeInput, activeOutput } from "./initialize";
+import { V3, activeInput, activeOutput, infoFile } from "./initialize";
 import { wallsToJSON } from "./converters/wallsToJSON";
 import { notesToJSON } from "./converters/notesToJSON";
 import { customEventsToJSON } from "./converters/customEventsToJSON";
@@ -15,6 +15,7 @@ import cutDirection from "../types/cutDirection";
 import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
 import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events } from "./variables";
+import ISettings from "../interfaces/info/settings";
 
 type V2DIFF = {
     _version: "2.2.0";
@@ -31,7 +32,7 @@ type V2DIFF = {
         _materials: Record<string, any>;
     };
 };
-type FinalizeProperties = {
+interface IFinalizeProperties {
     sortObjects?: boolean;
     translateToV3?: boolean;
     translateToV2?: boolean;
@@ -61,6 +62,99 @@ type FinalizeProperties = {
         pointDefinitions?: boolean;
         showEnvironmentStats?: boolean;
     };
+    /**
+     * ## Requirements
+     * 
+     * Requirements adds required mods to the map.
+     * 
+     * This can be a string or an array of strings.
+     * 
+     * ### Example
+     * ```ts
+     * finalize(DIFFICULTY, {
+     *     formatting: true,
+     *     requirements: [
+     *         "Noodle Extensions",
+     *         "Chroma"
+     *     ]
+     * });
+     * ```
+     */
+    requirements?: string[] | string;
+    /**
+     * ## Suggestions
+     * 
+     * Suggestions adds suggested mods to the map.
+     * 
+     * This can be a string or an array of strings.
+     * 
+     * ### Example
+     * ```ts
+     * finalize(DIFFICULTY, {
+     *     formatting: true,
+     *     suggestions: [
+     *         "Chroma",
+     *         "Cinema"
+     *     ]
+     * });
+     * ```
+     */
+    suggestions?: string[] | string;
+    /**
+     * ## Warnings
+     * 
+     * Warnings adds warnings to the info/metadata of the map.
+     *
+     * This can be a string or an array of strings.
+     * 
+     * ### Example
+     * ```ts
+     * finalize(DIFFICULTY, {
+     *     formatting: true,
+     *     warnings: [
+     *         "Flashing lights",
+     *         "Motion sickness" 
+     *     ]
+     * });
+     * ```
+     */
+    warnings?: string[] | string;
+    /**
+     * ## Settings
+     * 
+     * Settings adds a settings setter to the map. It will display as a popup to the user showing the recommended settings and a prompt to set them temporarily upon loading the map.
+     * 
+     * This is an object.
+     * 
+     * ### Example
+     * ```ts
+     * finalize(DIFFICULTY, {
+     *     formatting: true,
+     *     settings: {
+     *         chroma: {
+     *             disableChromaEvents: false,
+     *             disableEnvironmentEnhancements: false,
+     *             disableNoteColoring: false
+     *         },
+     *         countersPlus: {
+     *             mainEnabled: false
+     *         },
+     *         graphics: {
+     *             mainGraphicsSettings: true,
+     *             screenDisplacementEffectsEnabled: true,
+     *             smokeGraphicsSettings: false,
+     *             maxShockwaveParticles: 0
+     *         },
+     *         playerOptions: {
+     *             advancedHud: true,
+     *             leftHanded: false,
+     *             noTextsAndHuds: false,
+     *         }
+     *     }
+     * });
+     * ```
+     */
+    settings?: ISettings;
 };
 
 let formatting = false
@@ -101,7 +195,7 @@ interface IStatsType {
     };
 };
 
-function showStats(properties?: FinalizeProperties): IStatsType {
+function showStats(properties?: IFinalizeProperties): IStatsType {
     const vs = {
         notes: 0,
         walls: 0,
@@ -206,6 +300,47 @@ function showStats(properties?: FinalizeProperties): IStatsType {
         vanillaStats: vs
     };
 }
+
+function setRequirements(requirements: string | string[]) {
+    infoFile.difficultyBeatmapSets.forEach(set => {
+        set.difficultyBeatmaps.forEach(diff => {
+            if (diff.beatmapFilename === activeOutput) {
+                if (typeof requirements === "string") diff.customData.requirements = [requirements];
+                else diff.customData.requirements = requirements;
+            }
+        });
+    });
+}
+function setSettings(settings: ISettings) {
+    infoFile.difficultyBeatmapSets.forEach(set => {
+        set.difficultyBeatmaps.forEach(diff => {
+            if (diff.beatmapFilename === activeOutput) {
+                diff.customData.settings = settings;
+            }
+        });
+    });
+}
+function setSuggestions(suggestions: string | string[]) {
+    infoFile.difficultyBeatmapSets.forEach(set => {
+        set.difficultyBeatmaps.forEach(diff => {
+            if (diff.beatmapFilename === activeOutput) {
+                if (typeof suggestions === "string") diff.customData.suggestions = [suggestions];
+                else diff.customData.requirements = suggestions;
+            }
+        });
+    });
+}
+function setWarnings(warnings: string | string[]) {
+    infoFile.difficultyBeatmapSets.forEach(set => {
+        set.difficultyBeatmaps.forEach(diff => {
+            if (diff.beatmapFilename === activeOutput) {
+                if (typeof warnings === "string") diff.customData.warnings = [warnings];
+                else diff.customData.warnings = warnings;
+            }
+        });
+    });
+}
+
 /**
  * @param difficulty The difficulty that the map should be written to.
  * @param properties Miscellaneous properties for the script, such as how it's exported.
@@ -220,11 +355,17 @@ function showStats(properties?: FinalizeProperties): IStatsType {
  *     }
  * });
  */
-export function finalize(difficulty: any, properties?: FinalizeProperties): void {
+export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
     const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
     if (properties) {
         const p = properties;
         if (p.formatting) formatting = true;
+        if (p.requirements) setRequirements(p.requirements);
+        if (p.suggestions) setSuggestions(p.suggestions);
+        if (p.warnings) setWarnings(p.warnings);
+        if (p.settings) setSettings(p.settings);
+        const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
+        writeFileSync('Info.dat', stringifiedInfo);
     }
     const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
