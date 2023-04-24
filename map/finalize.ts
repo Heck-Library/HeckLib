@@ -378,13 +378,12 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
                 obj[key] = Math.round(obj[key] * jsonP) / jsonP;
             }
         }
+        return obj;
     }
-
-    deeperDaddy(difficulty)
 
     if (!V3) {
         environmentToJSON()
-        const newDiff: IMapV2 = {
+        let newDiff: IMapV2 = {
             _version: "2.2.0",
             _notes: notesToJSON(),
             _obstacles: wallsToJSON(),
@@ -407,6 +406,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (newDiff._customData._materials.length < 1) {
             delete (difficulty._customData._materials)
         }
+        newDiff = deeperDaddy(newDiff);
         let outputtedDiff = JSON.stringify(newDiff)
         if (formatting == true) {
             outputtedDiff = JSON.stringify(newDiff, null, 4)
@@ -431,7 +431,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (difficulty.customData.materials && Object.keys(difficulty.customData.materials).length < 1) {
             delete difficulty.customData.materials
         }
-
+        difficulty = deeperDaddy(difficulty);
         let outputtedDiff = JSON.stringify(difficulty)
         if (formatting == true) {
             outputtedDiff = JSON.stringify(difficulty, null, 4)
