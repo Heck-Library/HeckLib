@@ -159,6 +159,21 @@ interface IFinalizeProperties {
      * ```
      */
     settings?: ISettings;
+    /**
+     * ## Round Numbers
+     * 
+     * Rounds the numbers in the map to the specified decimal place.
+     * 
+     * This is a number.
+     * 
+     * ### Example
+     * ```ts
+     * finalize(DIFFICULTY, {
+     *     formatting: true,
+     *     roundNumbers: 4
+     * });
+     * ```
+     */
     roundNumbers?: number;
 };
 
@@ -354,6 +369,7 @@ function setWarnings(warnings: string | string[]) {
  * });
  */
 export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
+    let precision = 5;
     if (properties) {
         const p = properties;
         if (p.formatting) formatting = true;
@@ -361,14 +377,15 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.suggestions) setSuggestions(p.suggestions);
         if (p.warnings) setWarnings(p.warnings);
         if (p.settings) setSettings(p.settings);
+        if (p.roundNumbers) precision = p.roundNumbers;
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
     }
     const sortP = Math.pow(10, 2);
-    const jsonP = Math.pow(10, 4);
+    const jsonP = Math.pow(10, precision);
 
     
-    function deeperDaddy(obj) {
+    function deeperDaddy(obj: any) {
         if (obj) for (const key in obj) {
             if (obj[key] == null) {
                 delete obj[key];

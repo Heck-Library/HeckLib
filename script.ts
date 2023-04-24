@@ -15,5 +15,6 @@ const DIFFICULTY = initialize(INPUT, OUTPUT);
 
 finalize(DIFFICULTY, {
     formatting: true,
-    sortObjects: true
+    sortObjects: true,
+    roundNumbers: 4
 });
