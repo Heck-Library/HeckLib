@@ -1,5 +1,6 @@
 import { Difficulty, initialize } from "./map/initialize";
 import { finalize } from "./map/finalize";
+import AnimateTrack from "./events/animateTrack";
 
 const INPUT = Difficulty.EXPERT_PLUS_STANDARD;
 const OUTPUT = Difficulty.EXPERT_PLUS_LAWLESS;
@@ -14,5 +15,6 @@ const DIFFICULTY = initialize(INPUT, OUTPUT);
 // #endregion MAP SCRIPT
 
 finalize(DIFFICULTY, {
-    formatting: true
+    formatting: true,
+    
 });
