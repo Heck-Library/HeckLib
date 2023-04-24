@@ -2,7 +2,9 @@ import { vec1anim, vec3anim, vec4anim } from "../../types/vectors";
 
 export default interface IObjectAnimation {
     /**
-     * The position offset of the object in `[x, y, z]` format.
+     * ## Position
+     * 
+     * The position offset of the object in `[x, y, z, time?]` format.
      * 
      * Usage:
      * ```ts
@@ -32,7 +34,9 @@ export default interface IObjectAnimation {
      */
     position?: vec3anim;
     /**
-     * The absolute position of the object in `[x, y, z]` format.
+     * ## Definite Position
+     * 
+     * The absolute position of the object in `[x, y, z, time?]` format.
      * 
      * Usage:
      * ```ts
@@ -62,7 +66,9 @@ export default interface IObjectAnimation {
      */
     definitePosition?: vec3anim;
     /**
-     * The rotation offset of the object relative to the world origin in `[pitch, yaw, roll]` format.
+     * ## Rotation Offset
+     * 
+     * The rotation offset of the object relative to the world origin in `[pitch, yaw, roll, time?]` format.
      * 
      * Usage:
      * ```ts
@@ -92,7 +98,9 @@ export default interface IObjectAnimation {
      */
     rotation?: vec3anim;
     /**
-     * The rotation offset of the object relative to the object's origin in [pitch, yaw, roll] format.
+     * ## Local Rotation Offset
+     * 
+     * The rotation offset of the object relative to the object's origin in [pitch, yaw, roll, time?] format.
      * 
      * Usage:
      * ```ts
@@ -122,6 +130,10 @@ export default interface IObjectAnimation {
      */
     localRotation?: vec3anim;
     /**
+     * ## Scale
+     * 
+     * The scale of the object in `[x, y, z, time?]` format.
+     * 
      * The scale of the object where the first 3 values are the scale and the last value is the time.
      * When the `x, y, z` values are all set to `1`, the object will be at its original size.
      * 
@@ -153,7 +165,9 @@ export default interface IObjectAnimation {
      */
     scale?: vec3anim;
     /**
-     * The color of the object in `[r, g, b, a]` format.
+     * ## Color
+     * 
+     * The color of the object in `[r, g, b, a, time?]` format.
      * 
      * Usage:
      * ```ts
@@ -183,6 +197,8 @@ export default interface IObjectAnimation {
      */
     color?: vec4anim;
     /**
+     * ## Interactable
+     * 
      * Whether the object is interactable or not.
      * 
      * When the value is 0, the object is not interactable.
@@ -219,7 +235,9 @@ export default interface IObjectAnimation {
      */
     interactable?: vec1anim;
     /**
-     * The opacity of the object in `[opacity, time]` format.
+     * ## Dissolve
+     * 
+     * The dissolve value of the object in `[opacity, time]` format.
      * 
      * The opacity is a value between 0 and 1.
      * Anything outside of that range will be capped to 0 or 1 respectively.
@@ -253,6 +271,8 @@ export default interface IObjectAnimation {
      */
     dissolve?: vec1anim;
     /**
+     * ## Dissolve Arrow
+     * 
      * The opacity of the object's arrow (if it has one) in `[opacity, time]` format.
      * 
      * The opacity is a value between 0 and 1.

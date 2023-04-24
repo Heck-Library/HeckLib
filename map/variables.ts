@@ -10,6 +10,20 @@ import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
 import { unknownAnim } from "../types/vectors";
 
+/**
+ * Contains all the point definitions of the map in the following format:
+ * ```ts
+ * { 
+ *     pointDef1: [
+ *         [0, 0],
+ *         [1, 0.25, ease.Out.Circ]
+ *     ],
+ *     pointDef2: [
+ *     
+ *   ]
+ * },
+ * ```
+ */
 export const pointDefinitions: Record<string, unknownAnim> = {};
 export const definitionNames: string[] = [];
 
