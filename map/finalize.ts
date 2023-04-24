@@ -8,49 +8,53 @@ import { chainsToJSON } from "./converters/chainsToJSON";
 import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
 import { arcsToJSON } from "./converters/arcsToJSON";
 import environmentToJSON from "./converters/environmentToJSON";
-import lineIndex from "../types/lineIndex";
-import lineLayer from "../types/lineLayer";
-import noteType from "../types/noteType";
-import cutDirection from "../types/cutDirection";
 import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
 import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events } from "./variables";
 import ISettings from "../interfaces/info/settings";
+import IMapV2 from "../interfaces/v2map";
 
-type V2DIFF = {
-    _version: "2.2.0";
-    _notes: V2JsonNote[];
-    _obstacles: Record<string, unknown>[];
-    _events: Record<string, unknown>[];
-    _waypoints: Record<string, unknown>[];
-    _customData: {
-        _time?: number;
-        _environment: Record<string, any>[];
-        _customEvents: Record<string, unknown>[];
-        _bookmarks: Record<string, unknown>[];
-        _pointDefinitions: Record<string, unknown>[];
-        _materials: Record<string, any>;
-    };
-};
 interface IFinalizeProperties {
-    sortObjects?: boolean;
-    translateToV3?: boolean;
-    translateToV2?: boolean;
     /**
+     * ### Sort Objects
+     * 
+     * Sorts the objects by time. This is recommended to be true for debugging and readability's sake.
+     * 
+     * ---
+     * 
+     * Type: `boolean`
+     */
+    sortObjects?: boolean;
+    /**
+     * ### Format File
+     * 
      * Formats and indents the file.
      * SIGNIFICANTLY INCREASES FILESIZE, DISABLE BEFORE FINAL RUN
      */
     formatting?: boolean;
     /**
+     * ### Vanilla Stats
+     * 
+     * Shows stats about the input difficulty.
+     * 
      * showVanillaStats is VERY performance heavy and will slow down your script
      */
     showVanillaStats?: {
+        /**
+         * ### Notes
+         * 
+         * Shows the note count.
+         */
         notes?: boolean;
         walls?: boolean;
         bombs?: boolean;
         lights?: boolean;
     };
     /**
+     * ### Modded Stats
+     * 
+     * Shows stats about the output difficulty.
+     * 
      * showModdedStats is VERY performance heavy and will slow down your script
      */
     showModdedStats?: {
@@ -158,15 +162,6 @@ interface IFinalizeProperties {
 };
 
 let formatting = false
-export type V2JsonNote = {
-    _time: number;
-    _lineIndex: lineIndex;
-    _lineLayer: lineLayer;
-    _type: noteType;
-    _cutDirection: cutDirection;
-    _customData?: any;
-};
-
 
 interface IStatsType {
     moddedStats: {
@@ -386,7 +381,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
 
     if (!V3) {
         environmentToJSON()
-        const newDiff: V2DIFF = {
+        const newDiff: IMapV2 = {
             _version: "2.2.0",
             _notes: notesToJSON(),
             _obstacles: wallsToJSON(),
