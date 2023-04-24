@@ -3,6 +3,7 @@ import lineIndex from "../../types/lineIndex";
 import lineLayer from "../../types/lineLayer";
 import IObjectAnimation from "../customData/animationData";
 import ICustomData from "../customData/customNoteData";
+import ICustomSliderData from "../customData/customSliderData";
 
 export default interface IArc {
     time: number;
@@ -17,6 +18,6 @@ export default interface IArc {
     endDirection?: cutDirection;
     endMultiplier?: number;
     anchor?: 0 | 1 | 2;
-    data: ICustomData;
-    anim: IObjectAnimation;
+    customData: ICustomSliderData;
+    animation: IObjectAnimation;
 }

@@ -1,6 +1,7 @@
 import cutDirection from "../../types/cutDirection";
 import IObjectAnimation from "../customData/animationData";
 import ICustomData from "../customData/customNoteData";
+import ICustomSliderData from "../customData/customSliderData";
 
 export default interface IChain {
     time: number;
@@ -13,6 +14,6 @@ export default interface IChain {
     endY?: number;
     segments?: number;
     squish?: number;
-    data: ICustomData;
-    anim: IObjectAnimation;
+    customData: ICustomSliderData;
+    animation: IObjectAnimation;
 }

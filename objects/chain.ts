@@ -1,5 +1,6 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
+import ICustomSliderData from "../interfaces/customData/customSliderData";
 import IChain from "../interfaces/objects/chain";
 import { chains } from "../map/variables";
 import cutDirection from "../types/cutDirection";
@@ -15,8 +16,8 @@ type chainProperties = {
     endY?: number;
     segments?: number;
     squish?: number;
-    data?: ICustomData;
-    anim?: IObjectAnimation;
+    customData?: ICustomData;
+    animation?: IObjectAnimation;
 }
 
 enum TYPE {
@@ -69,14 +70,14 @@ export default class Chain implements IChain {
     public endY: number;
     public segments: number;
     public squish: number;
-    public data: ICustomData;
-    public anim: IObjectAnimation;
+    public customData: ICustomData;
+    public animation: IObjectAnimation;
 
     constructor();
     constructor(chain: number);
     constructor(chain: chainProperties);
-    constructor(chain: chainProperties, data: ICustomData);
-    constructor(chain: chainProperties, data: ICustomData, anim: IObjectAnimation);
+    constructor(chain: chainProperties, data: ICustomSliderData);
+    constructor(chain: chainProperties, data: ICustomSliderData, anim: IObjectAnimation);
     constructor(chain?: chainProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
         this.time = 0;
         this.x = 0;
@@ -88,8 +89,8 @@ export default class Chain implements IChain {
         this.endY = 0;
         this.segments = 0;
         this.squish = 0;
-        this.data = {};
-        this.anim = {};
+        this.customData = {};
+        this.animation = {};
 
         if (chain) {
             if (typeof chain === "number") {
@@ -106,12 +107,12 @@ export default class Chain implements IChain {
             if (chain.endY) this.endY = chain.endY;
             if (chain.segments) this.segments = chain.segments;
             if (chain.squish) this.squish = chain.squish;
-            if (chain.data) this.data = chain.data;
-            if (chain.anim) this.anim = chain.anim;
+            if (chain.customData) this.customData = chain.customData;
+            if (chain.animation) this.animation = chain.animation;
         }
 
-        if (data) this.data = data;
-        if (anim) this.anim = anim;
+        if (data) this.customData = data;
+        if (anim) this.animation = anim;
 
         return this;
     }

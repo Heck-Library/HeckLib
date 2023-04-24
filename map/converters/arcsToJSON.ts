@@ -17,9 +17,9 @@ export function arcsToJSON(): Record<string, any>[] {
             tmu: a.endMultiplier,
             m: a.anchor,
             customData: {
-                ...a.data,
+                ...a.customData,
                 animation: {
-                    ...a.anim
+                    ...a.animation
                 }
             }
         };

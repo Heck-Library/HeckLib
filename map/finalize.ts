@@ -336,6 +336,10 @@ function setWarnings(warnings: string | string[]) {
     });
 }
 
+function roundToDecimal(num: number, decimal: number) {
+    return Math.round(num * (10 ** decimal)) / (10 ** decimal);
+}
+
 /**
  * @param difficulty The difficulty that the map should be written to.
  * @param properties Miscellaneous properties for the script, such as how it's exported.
@@ -351,7 +355,6 @@ function setWarnings(warnings: string | string[]) {
  * });
  */
 export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
-    const precision = 4; // decimals to round to  --- use this for better wall precision or to try and decrease JSON file size
     if (properties) {
         const p = properties;
         if (p.formatting) formatting = true;
@@ -362,22 +365,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
     }
-    const jsonP = Math.pow(10, precision);
     const sortP = Math.pow(10, 2);
-    function deeperDaddy(obj: any): void {
-        if (obj)
-            for (const key in obj) {
-                if (obj[key] == null) {
-                    delete obj[key];
-                } else if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
-                    deeperDaddy(obj[key]);
-                } else if (typeof obj[key] == "number") {
-                    obj[key] = (Math.round((obj[key] + Number.EPSILON) * jsonP) / jsonP);
-                }
-            }
-
-    }
-    deeperDaddy(difficulty)
 
     if (!V3) {
         environmentToJSON()

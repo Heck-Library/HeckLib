@@ -1,5 +1,6 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
+import ICustomSliderData from "../interfaces/customData/customSliderData";
 import IArc from "../interfaces/objects/arc";
 import { arcs } from "../map/variables";
 import cutDirection from "../types/cutDirection";
@@ -94,13 +95,13 @@ interface arcProperties {
      * 
      * The custom data of the arc.
      */
-    data?: ICustomData;
+    customData?: ICustomSliderData;
     /**
      * ### Animation
      * 
      * The animation data of the arc.
      */
-    anim?: IObjectAnimation;
+    animation?: IObjectAnimation;
 }
 
 enum DIRECTION {
@@ -151,27 +152,106 @@ export default class Arc implements IArc {
 
     public static readonly LINE_LAYER = LINE_LAYER;
 
+    /**
+     * ### Time
+     * 
+     * The time in beats at which the arc starts.
+     */
     time: number;
+    /**
+     * ### X
+     * 
+     * The line index of the arc's start point.
+     */
     x: lineIndex;
+    /**
+     * ### Y
+     * 
+     * The line layer of the arc's start point.
+     */
     y: lineLayer;
+    /**
+     * ### Type
+     * 
+     * The type of the arc. (Red/Blue)
+     */
     type: 0 | 1;
+    /**
+     * ### Direction
+     * 
+     * The direction of the arc's startpoint.
+     * 
+     * You can use the `DIRECTION` enum to set this value.
+     */
     direction: cutDirection;
+    /**
+     * ### Multiplier
+     * 
+     * The multiplier of the arc's startpoint.
+     * 
+     * You can use the `MULTIPLIER` enum to set this value.
+     */
     multiplier: number;
+    /**
+     * ### End Time
+     * 
+     * The time in beats at which the arc ends.
+     */
     endTime: number;
+    /**
+     * ### End X
+     * 
+     * The line index of the arc's end point.
+     */
     endX: lineIndex;
+    /**
+     * ### End Y
+     * 
+     * The line layer of the arc's end point.
+     */
     endY: lineLayer;
+    /**
+     * ### End Direction
+     * 
+     * The direction of the arc's endpoint.
+     * 
+     * You can use the `DIRECTION` enum to set this value.
+     */
     endDirection: cutDirection;
+    /**
+     * ### End Multiplier
+     * 
+     * The multiplier of the arc's endpoint.
+     * 
+     * You can use the `MULTIPLIER` enum to set this value.
+     */
     endMultiplier: number;
+    /**
+     * ### Anchor
+     * 
+     * The anchor type of the arc. (Straight/CW/CCW)
+     * 
+     * You can use the `ANCHOR` enum to set this value.
+     */
     anchor: 0 | 1 | 2;
-    data: ICustomData;
-    anim: IObjectAnimation;
+    /**
+     * ### Custom Data
+     * 
+     * The custom data of the arc.
+     */
+    customData: ICustomSliderData;
+    /**
+     * ### Animation
+     * 
+     * The animation data of the arc.
+     */
+    animation: IObjectAnimation;
 
     constructor();
-    constructor(arc: number);
     constructor(arc: arcProperties);
-    constructor(arc: arcProperties, data: ICustomData);
-    constructor(arc: arcProperties, data: ICustomData, anim: IObjectAnimation);
-    constructor(arc?: arcProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
+    constructor(arc: arcProperties, data: ICustomSliderData);
+    constructor(arc: arcProperties, data: ICustomSliderData, anim: IObjectAnimation);
+    constructor(arc?: arcProperties, data?: ICustomSliderData, anim?: IObjectAnimation) {
         this.time = 0;
         this.x = 0;
         this.y = 0;
@@ -184,14 +264,10 @@ export default class Arc implements IArc {
         this.endDirection = 0;
         this.endMultiplier = 1;
         this.anchor = 0;
-        this.data = {};
-        this.anim = {};	
+        this.customData = {};
+        this.animation = {};	
         
         if (arc) {
-            if (typeof arc === "number") {
-                this.time = arc;
-                return this;
-            }
             if (arc.time) this.time = arc.time;
             if (arc.x) this.x = arc.x;
             if (arc.y) this.y = arc.y;
@@ -204,12 +280,12 @@ export default class Arc implements IArc {
             if (arc.endDirection) this.endDirection = arc.endDirection;
             if (arc.endMultiplier) this.endMultiplier = arc.endMultiplier;
             if (arc.anchor) this.anchor = arc.anchor;
-            if (arc.data) this.data = arc.data;
-            if (arc.anim) this.anim = arc.anim;
+            if (arc.customData) this.customData = arc.customData;
+            if (arc.animation) this.animation = arc.animation;
         }
 
-        if (data) this.data = data;
-        if (anim) this.anim = anim;
+        if (data) this.customData = data;
+        if (anim) this.animation = anim;
 
         return this;
     }

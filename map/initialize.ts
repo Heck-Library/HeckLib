@@ -154,7 +154,7 @@ function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number
             endDirection: c.tc,
             endMultiplier: c.tmu,
             anchor: c.m,
-            data: {
+            customData: {
                 njs: NJS,
                 offset: offset
             }

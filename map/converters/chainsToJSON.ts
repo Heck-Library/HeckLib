@@ -1,6 +1,6 @@
 import IChain from "../../interfaces/objects/chain";
 import { V3 } from "../initialize";
-import { fakeNotes, chains, fakeChains } from "../variables";
+import { chains, fakeChains } from "../variables";
 
 export function chainsToJSON(): Record<string, any>[] {
     const chainArr: any[] = [];
@@ -17,9 +17,9 @@ export function chainsToJSON(): Record<string, any>[] {
             sc: c.segments,
             s: c.squish,
             customData: {
-                ...c.data,
+                ...c.customData,
                 animation: {
-                    ...c.anim
+                    ...c.animation
                 }
             }
         };
