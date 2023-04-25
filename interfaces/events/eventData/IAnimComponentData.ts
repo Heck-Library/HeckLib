@@ -5,7 +5,7 @@ export default interface IAnimComponentData {
     /**
      * The track to be controlled
      */
-    track: string | string[];
+    track?: string | string[];
     /**
      * Duration of the event in beats
      */
