@@ -4,7 +4,17 @@ import { events } from "../map/variables";
 import unknownProperty from "../types/unknownProperty";
 
 export abstract class MyBaseEvent implements IUnknownEvent {
+    /**
+     * ## Time
+     * 
+     * The time of the event in beats.
+     */
     time: number;
+    /**
+     * ## Type
+     * 
+     * The type of the event. This is used to determine what type of event it is. Classes that extend this class should set this value automatically and SHOULD **NOT** be set manually.
+     */
     type: string;
     data: unknownProperty;
 
@@ -20,6 +30,11 @@ export abstract class MyBaseEvent implements IUnknownEvent {
         return this;
     }
 
+    /**
+     * ## Push
+     * 
+     * Pushes the event to the map.
+     */
     push() : void {
         events.push(this);
     }

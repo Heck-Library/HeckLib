@@ -104,23 +104,6 @@ export default interface IAnimateTrackData {
      * In V2 this is the position offset of the object or the absolute position of an environment object.
      * In V3 this is just for environment objects.
      * 
-     * Usage:
-     * ```ts
-     * event.data.position = [
-     *     [0, 0, 0, 0],
-     *     [0, 5, 0, 1, ease.Out.Cubic]
-     * ];
-     * ```
-     * or
-     * ```ts
-     * new AnimateTrack(0, {
-     *     position: [
-     *         [0, 0, 0, 0],
-     *         [0, 5, 0, 1, ease.Out.Cubic]
-     *     ]
-     * }).push();
-     * ```
-     * 
      * ---
      * 
      * ### JSON Equivalents

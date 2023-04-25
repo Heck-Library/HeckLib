@@ -2,9 +2,34 @@ import IParentTrackData from "../interfaces/events/eventData/IParentTrackData";
 import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignTrackParent extends MyBaseEvent {
+    /**
+     * ## Type
+     * 
+     * The type of the event.
+     * 
+     * This is a `readonly` property, it can't and shouldn't be set manually. It will always be `"AssignTrackParent"`.
+     */
     public readonly type: string = "AssignTrackParent";
+    /**
+     * ## Data
+     * 
+     * The data of the event.
+     * 
+     * This is a `readonly` property. Please use the setters provided to change the values.
+     */
     declare data: IParentTrackData;
 
+    //#region Getters and setters
+
+    get parentTrack(): string { return this.data.parentTrack; }
+    set parentTrack(value: string) { this.data.parentTrack = value; }
+
+    get childrenTracks(): string[] { return this.data.childrenTracks; }
+    set childrenTracks(value: string[]) { this.data.childrenTracks = value; }
+
+    //#endregion
+
+    
     /**
      * Creates a new AssignTrackParent event.
      * @param time The time of the event.

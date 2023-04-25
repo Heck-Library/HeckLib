@@ -1,6 +1,7 @@
 import { vec1anim, vec3anim, vec4anim } from "../../../types/vectors";
 
 export default interface IPathAnimData {
+    offsetPosition?: vec3anim;
     /**
      * The track called for the animation.
      */
@@ -21,6 +22,7 @@ export default interface IPathAnimData {
      * The rotation animation.
      */
     rotation?: vec3anim;
+    offsetWorldRotation?: vec3anim;
     /**
      * The local rotation animation.
      */
