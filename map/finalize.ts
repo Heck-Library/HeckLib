@@ -46,8 +46,23 @@ interface IFinalizeProperties {
          * Shows the note count.
          */
         notes?: boolean;
+        /**
+         * ### Walls
+         * 
+         * Shows the wall count.
+         */
         walls?: boolean;
+        /**
+         * ### Bombs
+         * 
+         * Shows the bomb count.
+         */
         bombs?: boolean;
+        /**
+         * ### Lights
+         * 
+         * Shows the light event count.
+         */
         lights?: boolean;
     };
     /**
@@ -58,12 +73,47 @@ interface IFinalizeProperties {
      * showModdedStats is VERY performance heavy and will slow down your script
      */
     showModdedStats?: {
+        /**
+         * ### Notes
+         * 
+         * Shows the note count.
+         */
         notes?: boolean;
+        /**
+         * ### Walls
+         * 
+         * Shows the wall count.
+         */
         walls?: boolean;
+        /**
+         * ### Bombs
+         * 
+         * Shows the bomb count.
+         */
         bombs?: boolean;
+        /**
+         * ### Lights
+         * 
+         * Shows the light event count.
+         */
         lights?: boolean;
+        /**
+         * ### Custom Events
+         * 
+         * Shows the custom event count.
+         */
         customEvents?: boolean;
+        /**
+         * ### Point Definitions
+         * 
+         * Shows the point definition count.
+         */
         pointDefinitions?: boolean;
+        /**
+         * ### Environment
+         * 
+         * Shows the environment object count.
+         */
         showEnvironmentStats?: boolean;
     };
     /**
