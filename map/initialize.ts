@@ -25,6 +25,15 @@ import Light from "../events/lightEvent";
 const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
 export const infoFile: IInfo = JSON.parse(JSON.stringify(stringInfo).replace(/"_(\w+)":/g,'"$1":'));
 
+/**
+ * Contains metadata of the map. Such as the NJS, offset, BPM, etc.
+ * 
+ * - `njs`: The note jump speed of the map.
+ * - `offset`: The offset of the map.
+ * - `bpm`: The BPM of the map.
+ * - `halfJumpDuration`: The HJD of the map.
+ * - `jumpDistance`: The JD of the map.
+ */
 export const MAPDATA: { njs: number, offset: number, bpm: number, halfJumpDuration: number, jumpDistance: number } = {
     njs: 16,
     offset: 0,
@@ -352,6 +361,20 @@ function getJumps() {
     return { half: num2, dist: _jumpDistance };
 }
 
+/**
+ * Initializes the map file.
+ * 
+ * Example:
+ * ```ts
+ * const INPUT = Difficulty.EXPERT_PLUS_LAWLESS;
+ * const OUTPUT = Difficulty.EXPERT_PLUS_STANDARD;
+ * 
+ * const DIFFICULTY = initialize(INPUT, OUTPUT, {
+ *     njs: 16,
+ *     offset: 0
+ * });
+ * ```
+ */
 export function initialize(input: string, output: string, properties?: IInitParams) {
     if (infoFile.difficultyBeatmapSets ) infoFile.difficultyBeatmapSets.forEach((set) => {
         set.difficultyBeatmaps.forEach((difficulty) => {

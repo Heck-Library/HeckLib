@@ -49,7 +49,7 @@ export default class Wall implements IWall {
     /**
      * The line index at which the wall will appear.
      * 
-     * This is the horizontal position of the wall, starting from left.
+     * An integer number, from 0 to 3, which represents the column where this obstacle is located. The far left column is located at index 0, and increases to the far right column located at index 3.
      * 
      * ---
      * 
@@ -61,9 +61,17 @@ export default class Wall implements IWall {
     /**
      * The line layer at which the wall will appear.
      * 
-     * This is the vertical position of the wall, starting from bottom.
+     * An integer number, from 0 to 2, which represents the layer where base of the obstacle is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
      * 
      * **IN V2, THIS IS ONLY 0 OR 1.**
+     * 
+     * ---
+     * 
+     * | `y` | Result | V2     | V3     |
+     * |-----|--------|--------|--------|
+     * | 0   | Ground | `true` | `true` |
+     * | 1   | Prone  | `true` | `true` |
+     * | 2   | Crouch | `false`| `true` |
      * 
      * ---
      * 
@@ -73,7 +81,7 @@ export default class Wall implements IWall {
      */
     y: lineLayer;
     /**
-     * The duration of the wall in beats.
+     * The time, in beats, that the obstacle extends for (duration). While `duration` can go into negative numbers, be aware that this has some unintended effects.
      * 
      * ---
      * 
@@ -83,7 +91,7 @@ export default class Wall implements IWall {
      */
     duration: number;
     /**
-     * The width of the wall in beats.
+     * An integer which which represents the width of the obstacle. While `width` can go into negative numbers, be aware that this has some unintended effects.
      * 
      * ---
      * 
@@ -93,7 +101,7 @@ export default class Wall implements IWall {
      */
     width: number;
     /**
-     * The height of the wall.
+     * An integer numbers from 1 to 5, which represents the height of the obstacle. While `height` can go into negative numbers, be aware that this has some unintended effects.
      * 
      * **DOES NOT WORK WITH V2**
      * 

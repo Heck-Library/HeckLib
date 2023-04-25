@@ -6,10 +6,39 @@ import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
 type bombProperties = {
+    /**
+     * ### Time
+     * 
+     * The time in beats at which the bomb is placed.
+     */
     time: number;
+    /**
+     * ### X
+     * 
+     * The line index of the bomb.
+     * 
+     * You can use the `LINE_INDEX` enum to set this value.
+     */
     x?: lineIndex;
+    /**
+     * ### Y
+     * 
+     * The line layer of the bomb.
+     * 
+     * You can use the `LINE_LAYER` enum to set this value.
+     */
     y?: lineLayer;
+    /**
+     * ### Custom Data
+     * 
+     * Custom data for the bomb.
+     */
     data?: ICustomData;
+    /**
+     * ### Animation
+     * 
+     * Animation data for the bomb.
+     */
     anim?: IObjectAnimation;
 };
 
@@ -38,10 +67,29 @@ export default class Bomb implements IBomb {
     public data: ICustomData;
     public anim: IObjectAnimation;
 
-    constructor();
+    /**
+     * ### Bomb
+     * 
+     * Creates a bomb object with a time value.
+     */
     constructor(bomb: number);
+    /**
+     * ### Bomb
+     * 
+     * Creates a bomb object with a given properties.
+     */
     constructor(bomb: bombProperties);
+    /**
+     * ### Bomb
+     * 
+     * Creates a bomb object with a given properties and custom data.
+     */
     constructor(bomb: bombProperties, data: ICustomData);
+    /**
+     * ### Bomb
+     * 
+     * Creates a bomb object with a given properties, custom data and animation data.
+     */
     constructor(bomb: bombProperties, data: ICustomData, anim: IObjectAnimation);
     constructor(bomb?: bombProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
         this.time = 0;

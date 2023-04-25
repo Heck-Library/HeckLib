@@ -1,5 +1,4 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
-import ICustomData from "../interfaces/customData/customNoteData";
 import ICustomSliderData from "../interfaces/customData/customSliderData";
 import IArc from "../interfaces/objects/arc";
 import { arcs } from "../map/variables";
@@ -12,24 +11,58 @@ interface arcProperties {
      * ### Time
      * 
      * The time in beats at which the arc starts.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "b": number }
+     * ```
      */
     time: number;
     /**
      * ### X
      * 
-     * The line index of the arc's start point.
+     * An integer number, from 0 to 3, which represents the column where the head of the arc is located. The far left column is located at index 0, and increases to the far right column located at index 3.
+     * 
+     * You can use the `LINE_INDEX` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "x": number }
+     * ```
      */
     x?: lineIndex;
     /**
      * ### Y
      * 
-     * The line layer of the arc's start point.
+     * An integer number, from 0 to 2, which represents the layer where the head of the arc is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
+     * 
+     * You can use the `LINE_LAYER` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "y": number }
+     * ```
      */
     y?: lineLayer;
     /**
      * ### Type
      * 
      * The type of the arc. (Red/Blue)
+     * 
+     * You can use the `TYPE` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "c": number }
+     * ```
      */
     type?: 0 | 1;
     /**
@@ -38,32 +71,69 @@ interface arcProperties {
      * The direction of the arc's startpoint.
      * 
      * You can use the `DIRECTION` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "d": number }
+     * ```
      */
     direction?: cutDirection;
     /**
      * ### Multiplier
      * 
-     * The multiplier of the arc's startpoint.
+     * A float which represents how far the arc goes from the head of the arc. If head direction is a dot, this does nothing.
      * 
-     * You can use the `MULTIPLIER` enum to set this value.
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "mu": number }
+     * ```
      */
     multiplier?: number;
     /**
      * ### End Time
      * 
      * The time in beats at which the arc ends.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "tb": number }
+     * ```
      */
     endTime: number;
     /**
      * ### End X
      * 
-     * The line index of the arc's end point.
+     * An integer number, from 0 to 3, which represents the column where the tail of the arc is located. The far left column is located at index 0, and increases to the far right column located at index 3.
+     * 
+     * You can use the `LINE_INDEX` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "tx": number }
+     * ```
      */
     endX?: lineIndex;
     /**
      * ### End Y
      * 
-     * The line layer of the arc's end point.
+     * An integer number, from 0 to 2, which represents the layer where the tail of the arc is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
+     * 
+     * You can use the `LINE_LAYER` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "ty": number }
+     * ```
      */
     endY?: lineLayer;
     /**
@@ -72,14 +142,28 @@ interface arcProperties {
      * The direction of the arc's endpoint.
      * 
      * You can use the `DIRECTION` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "tc": number } // why is it tc and not td?
+     * ```
      */
     endDirection?: cutDirection;
     /**
      * ### End Multiplier
      * 
-     * The multiplier of the arc's endpoint.
+     * A float which represents how far the arc goes from the tail of the arc. If tail direction is a dot, this does nothing.
      * 
      * You can use the `MULTIPLIER` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "tmu": number }
+     * ```
      */
     endMultiplier?: number;
     /**
@@ -87,19 +171,48 @@ interface arcProperties {
      * 
      * The anchor type of the arc. (Straight/CW/CCW)
      * 
+     * An integer number which represents how the arc curves from the head to the mid point of the arc under certain conditions:
+     * - Head and tail x are equal; and
+     * - Head and tail cut direction are equal OR their angle difference is 180
+     * 
      * You can use the `ANCHOR` enum to set this value.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "m": number }
+     * ```
      */
     anchor?: 0 | 1 | 2;
     /**
      * ### Custom Data
      * 
      * The custom data of the arc.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { "customData": {} }
+     * ```
      */
     customData?: ICustomSliderData;
     /**
      * ### Animation
      * 
      * The animation data of the arc.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * { 
+     *     "customData":{
+     *         "animation": {}
+     *     } 
+     * }
+     * ```
      */
     animation?: IObjectAnimation;
 }
@@ -247,9 +360,21 @@ export default class Arc implements IArc {
      */
     animation: IObjectAnimation;
 
+    /**
+     * Creates a new `Arc`.
+     */
     constructor();
+    /**
+     * Creates a new `Arc` with the given properties.
+     */
     constructor(arc: arcProperties);
+    /**
+     * Creates a new `Arc` with the given properties and custom data.
+     */
     constructor(arc: arcProperties, data: ICustomSliderData);
+    /**
+     * Creates a new `Arc` with the given properties, custom data, and animation data.
+     */
     constructor(arc: arcProperties, data: ICustomSliderData, anim: IObjectAnimation);
     constructor(arc?: arcProperties, data?: ICustomSliderData, anim?: IObjectAnimation) {
         this.time = 0;

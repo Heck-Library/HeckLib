@@ -7,7 +7,7 @@ import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 import noteType from "../types/noteType";
 
-interface noteProperties {
+interface INoteProperties {
     /**
      * The time of the note.
      * 
@@ -23,7 +23,7 @@ interface noteProperties {
     /**
      * The line index of the note.
      * 
-     * This is the horizontal position of the note starting from left.
+     * An integer number, from 0 to 3, which represents the column where this note is located. The far left column is located at index 0, and increases to the far right column located at index 3.
      * 
      * - Left: 0
      * - Left Middle: 1
@@ -42,7 +42,7 @@ interface noteProperties {
     /**
      * The line layer of the note.
      * 
-     * This is the vertical position of the note starting from bottom.
+     * An integer number, from 0 to 2, which represents the layer where this note is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
      * 
      * - Bottom: 0
      * - Middle: 1
@@ -62,7 +62,7 @@ interface noteProperties {
      * 
      * - Red: 0
      * - Blue: 1
-     * - Bomb: 3
+     * - Bomb: 3 (Won't work in V3 due to bombs belonging to a separate array.)
      * 
      * You can also use the enumerator in the Note class.
      * 
@@ -74,7 +74,7 @@ interface noteProperties {
     */
     type?: noteType;
     /**
-     * The angle offset of the note in degrees.
+     * An integer number which represents the additional counter-clockwise angle offset applied to the note's cut direction in degrees. This has no effect on angles created due to snapping (e.g. dot stack, slanted windows).
      * 
      * This only works in V3.
      * 
@@ -356,7 +356,7 @@ export default class Note implements INote {
      * });
      * ```
      */
-    constructor(note: noteProperties);
+    constructor(note: INoteProperties);
     /**
      * Creates a new note with the given properties and custom data.
      * ```ts
@@ -381,7 +381,7 @@ export default class Note implements INote {
      * });
      * ```
      */
-    constructor(note: noteProperties, data: ICustomData);
+    constructor(note: INoteProperties, data: ICustomData);
     /**
      * Creates a new note with the given properties, custom data, and animation.
      * ```ts
@@ -404,8 +404,8 @@ export default class Note implements INote {
      * });
      * ```
      */
-    constructor(note: noteProperties, data: ICustomData, anim: IObjectAnimation);
-    constructor(note?: noteProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
+    constructor(note: INoteProperties, data: ICustomData, anim: IObjectAnimation);
+    constructor(note?: INoteProperties | number, data?: ICustomData, anim?: IObjectAnimation) {
         this.time = 0;
         this.x = 0;
         this.y = 0;
