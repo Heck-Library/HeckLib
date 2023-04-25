@@ -1,9 +1,79 @@
+import Environment from "../environment/environment";
+import IBloomFogEnvironmentAnimation from "../interfaces/animatable/fog";
+import ITubeBloomPrePassLightAnimation from "../interfaces/animatable/tubeBloom";
+import IBloomFogEnvironment from "../interfaces/components/fog";
+import ITubeBloomPrePassLight from "../interfaces/components/tubeBloom";
 import IAnimComponentData from "../interfaces/events/eventData/IAnimComponentData";
 import { MyBaseEvent } from "./baseEvent";
 
+let fogDone = false;
+
 export default class AnimateComponent extends MyBaseEvent {
-    public readonly type: string = "AnimateComponent";
-    data: IAnimComponentData = {track: "", duration: 1};
+    readonly type: string = "AnimateComponent";
+    readonly declare data: IAnimComponentData;
+    
+    /**
+     * ## Track
+     * 
+     * The track to be used for controlling the object with events.
+     * 
+     * This can be a string or an array of strings.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * { "_track": string | string[] }
+     * ```
+     * #### V3
+     * ```json
+     * { "track": string | string[] }
+     * ```
+     */
+    get track(): string | string[] { return this.data.track; }
+    set track(value: string | string[]) { this.data.track = value; }
+
+    /**
+     * ## Duration
+     * 
+     * Duration of the animation in beats.
+     * 
+     * This can be a number above 0.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * { "_duration": number }
+     * ```
+     * #### V3
+     * ```json
+     * { "duration": number }
+     * ```
+     */
+    get duration(): number { return this.data.duration; }
+    set duration(value: number) { this.data.duration = value; }
+
+    get bloomFogEnvironment(): IBloomFogEnvironmentAnimation { return this.data.BloomFogEnvironment; }
+    set bloomFogEnvironment(value: IBloomFogEnvironmentAnimation) {
+        if (!fogDone) {
+            const e = new Environment()
+            e.id = /\[0\]Environment$/
+            e.track = "FOG_TRACK";
+            e.lookupMethod = "Regex";
+            e.active = true;
+            e.push();
+            
+            this.track = e.track;
+        }
+        fogDone = true;
+        this.data.BloomFogEnvironment = value;
+    }
+
+    get tubeBloomPrePassLight(): ITubeBloomPrePassLightAnimation { return this.data.TubeBloomPrePassLight; }
+    set tubeBloomPrePassLight(value: ITubeBloomPrePassLightAnimation) { this.data.TubeBloomPrePassLight = value; }
 
     /**
      * Creates a new AnimateComponent event.

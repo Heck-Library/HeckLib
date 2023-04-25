@@ -1,4 +1,5 @@
-import { vec1anim } from "../../../types/vectors";
+import IBloomFogEnvironmentAnimation from "../../animatable/fog";
+import ITubeBloomPrePassLightAnimation from "../../animatable/tubeBloom";
 
 export default interface IAnimComponentData {
     /**
@@ -13,14 +14,6 @@ export default interface IAnimComponentData {
      * Easing used for the event
      */
     easing?: string;
-    BloomFogEnvironment?: {
-        attenuation?: vec1anim;
-        offset?: vec1anim;
-        startY?: vec1anim;
-        height?: vec1anim;
-    };
-    TubeBloomPrePassLight?: {
-        colorAlphaMultiplier?: vec1anim;
-        bloomFogIntensityMultiplier?: vec1anim;
-    };
+    BloomFogEnvironment?: IBloomFogEnvironmentAnimation
+    TubeBloomPrePassLight?: ITubeBloomPrePassLightAnimation
 }

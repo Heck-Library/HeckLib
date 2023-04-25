@@ -1,6 +1,6 @@
 import IComponents from "../interfaces/components/components";
 import IEnvironment from "../interfaces/environment/environment";
-import { environment } from "../map/initialize";
+import { environment } from "../map/variables";
 import lookupMethod from "../types/lookupMethod";
 import { vec3 } from "../types/vectors";
 
@@ -110,6 +110,9 @@ export default class Environment implements IEnvironment {
      * Pushes the environment object to the environment map.
      */
     push() : void {
+        if (typeof this.id !== 'string') {
+            this.id = this.id.toString().replace(/^\/|\/$/g, '');
+        }
         environment.push(this);
     }
 }
