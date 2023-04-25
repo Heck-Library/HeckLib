@@ -5,6 +5,7 @@ dev/
 font.dae
 models/template.json
 untitled.json
+node_modules/
 cinema-video.json
 *.zip
 *.exe
