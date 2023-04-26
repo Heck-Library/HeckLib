@@ -48,6 +48,14 @@ interface RandomPathProperties {
      * The point of time where the notes will appear opaque (`dissolve: 1`)
      */
     opaqueBy?: number;
+    /**
+     * The maximum value of the x position of the notes.
+     */
+    xMax?: number;
+    /**
+     * The maximum value of the y position of the notes.
+     */
+    yMax?: number;
 }
 
 export default class RandomPath {
@@ -71,7 +79,19 @@ export default class RandomPath {
      * The point of time where the notes will appear opaque (0 - 1)
      */
     opaqueBy?: number;
+    /**
+     * The maximum value of the x position of the notes.
+     */
+    xMax?: number;
+    /**
+     * The maximum value of the y position of the notes.
+     */
+    yMax?: number;
 
+    /**
+     * Creates a new instance of the RandomPath effect.
+     */
+    constructor();
     /**
      * Randomizes the path of all notes between the two time values: `start` and `end`.
      * 
@@ -80,22 +100,31 @@ export default class RandomPath {
      *     start: 69,   // The effect's start beat
      *     end: 727,    // The effect's ending beat
      *     track: "foo",// The track applied to all selected notes
-     *     offset: 2    // The offset applied to all selected notes
+     *     offset: 2,   // The offset applied to all selected notes
+     *     xMax: 10,    // The maximum value of the x position of the notes
+     *     yMax: 10,    // The maximum value of the y position of the notes
      *     opaqueBy: 0.5// The point of time where the notes will appear opaque (0 - 1)
      * }).push();       // Pushes the effect to the map
      * ```
      */
-    constructor(properties: RandomPathProperties) {
-        const p = properties;
+    constructor(properties: RandomPathProperties);
+    constructor(properties?: RandomPathProperties) {
+        const { start, end, track, offset, xMax, yMax, opaqueBy } = properties;
 
-        this.start = p.start;
-        this.end = p.end;
+        this.start = 0;
+        this.end = 0;
         this.offset = 2;
         this.opaqueBy = 0.125;
+        this.xMax = 10;
+        this.yMax = 7;
 
-        if (p.track) this.track = p.track;
-        if (p.offset) this.offset = p.offset;
-        if (p.opaqueBy) this.opaqueBy = p.opaqueBy;
+        if (start) this.start = start;
+        if (end) this.end = end;
+        if (track) this.track = track;
+        if (offset) this.offset = offset;
+        if (opaqueBy) this.opaqueBy = opaqueBy;
+        if (xMax) this.xMax = xMax;
+        if (yMax) this.yMax = yMax;
     }
     
     /**
@@ -106,13 +135,17 @@ export default class RandomPath {
             [0, 0],
             [1, this.opaqueBy, ease.Out.Cubic]
         ]).push();
+        
         for (let i = 1; i <= 20; i++) {
+            const xMaxRot = 45 * (this.xMax / 10);
+            const yMaxRot = 20 * (this.yMax / 7);
+
             new PointDefinition(`randPos${i}`, [
-                [random(-10, 10), random(-1, 7), 0, 0],
+                [random(-this.xMax, this.xMax), random(-1, this.yMax), 0, 0],
                 [0, 0, 0, 0.4785, ease.Out.Circ]
             ]).push();
             new PointDefinition(`randRot${i}`, [
-                [random(-20, 20), random(-90, 90), random(-40, 40), 0],
+                [random(-yMaxRot, yMaxRot), random(-xMaxRot, xMaxRot), random(-40, 40), 0],
                 [0, 0, 0, 0.4785, ease.Out.Circ]
             ]).push();
         }
