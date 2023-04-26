@@ -44,6 +44,30 @@ export default class AssignPathAnimation extends MyBaseEvent {
      */
     get track(): string | string[] { return this.data.track; }
     set track(value: string | string[]) { this.data.track = value; }
+    
+    /**
+     * ## Easing
+     * 
+     * The easing of the animation.
+     * 
+     * This can be a string which is a valid easing function.
+     * 
+     * You can find a list of valid easing functions [here](https://easings.net/). Or in the `ease` object.
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * { "_easing": string }
+     * ```
+     * #### V3
+     * ```json
+     * { "easing": string }
+     * ```
+     */
+    get easing(): string { return this.data.easing; }
+    set easing(value: string) { this.data.easing = value; }
 
     /**
      * ## Position
