@@ -1,7 +1,7 @@
 import IComponents from "../interfaces/components/components";
 import IGeometryEnvironment from "../interfaces/environment/geometry";
 import IGeometryProperties from "../interfaces/environment/geometryProperties";
-import { geometry } from "../map/initialize";
+import { geometry } from "../map/variables";
 import { vec3 } from "../types/vectors";
 
 enum SHAPE {
