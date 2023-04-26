@@ -4,7 +4,7 @@ import AssignFogTrack from "./assignFogTrack";
 import AssignPathAnimation from "./assignPathAnimation";
 import AssignPlayerToTrack from "./assignPlayerTrack";
 import AssignTrackParent from "./assignTrackParent";
-import Light from "./lightEvent";
+import LightEvent from "./lightEvent";
 
 const Event = {
     AnimateComponent,
@@ -13,7 +13,7 @@ const Event = {
     AssignPathAnimation,
     AssignPlayerToTrack,
     AssignTrackParent,
-    Light
+    LightEvent
 }
 
 export default Event;
