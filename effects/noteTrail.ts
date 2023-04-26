@@ -1,12 +1,9 @@
+import clamp from "../functions/clamp";
 import dupe from "../functions/dupe";
 import filter from "../functions/filter";
 import random from "../functions/random";
 import INote from "../interfaces/objects/note";
 import { notes } from "../map/variables";
-
-function clamp(x: number) {
-    return Math.min(Math.max(x, 0), 1);
-}
 
 interface INoteTrailProperties {
     /**
@@ -105,8 +102,8 @@ export default class NoteTrail {
                 d.disableSpawnEffect = true;
                 
                 a.dissolve = [
-                    [clamp(random(this.dissolve * 100 - 5, this.dissolve * 100 + 15, 0) / 100), 0],
-                    [Math.round(clamp(random(0, this.dissolve * 100 / 2, 2) / 100) * 100) / 100, 1],
+                    [clamp(random(this.dissolve * 100 - 5, this.dissolve * 100 + 15, 0) / 100, 0, 1), 0],
+                    [Math.round(clamp(random(0, this.dissolve * 100 / 2, 2) / 100, 0, 1) * 100) / 100, 1],
                 ];
                 a.dissolveArrow = JSON.parse(JSON.stringify(a.dissolve));
                 a.dissolveArrow[0][0] /= 2;
