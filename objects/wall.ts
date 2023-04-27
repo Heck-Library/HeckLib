@@ -6,11 +6,80 @@ import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
 type wallProperties = {
+    /**
+     * The time in seconds at which the wall will appear in beats.
+     * 
+     * --- 
+     * 
+     * ### JSON Values
+     * - V2: `_time`
+     * - V3: `b`
+     */
     time: number;
+    /**
+     * The line index at which the wall will appear.
+     * 
+     * An integer number, from 0 to 3, which represents the column where this obstacle is located. The far left column is located at index 0, and increases to the far right column located at index 3.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_lineIndex`
+     * - V3: `x`
+     */
     x?: lineIndex;
+    /**
+     * The line layer at which the wall will appear.
+     * 
+     * An integer number, from 0 to 2, which represents the layer where base of the obstacle is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
+     * 
+     * **IN V2, THIS IS ONLY 0 OR 1.**
+     * 
+     * ---
+     * 
+     * | `y` | Result | V2     | V3     |
+     * |-----|--------|--------|--------|
+     * | 0   | Ground | `true` | `true` |
+     * | 1   | Prone  | `true` | `true` |
+     * | 2   | Crouch | `false`| `true` |
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_type`
+     * - V3: `y`
+     */
     y?: lineLayer;
-    duration?: number;
+    /**
+     * The time, in beats, that the obstacle extends for (duration). While `duration` can go into negative numbers, be aware that this has some unintended effects.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_duration`
+     * - V3: `d`
+     */
+    duration: number;
+    /**
+     * An integer which which represents the width of the obstacle. While `width` can go into negative numbers, be aware that this has some unintended effects.
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V2: `_width`
+     * - V3: `w`
+     */
     width?: number;
+    /**
+     * An integer numbers from 1 to 5, which represents the height of the obstacle. While `height` can go into negative numbers, be aware that this has some unintended effects.
+     * 
+     * **DOES NOT WORK WITH V2**
+     * 
+     * ---
+     * 
+     * ### JSON Values
+     * - V3: `h`
+     */
     height?: number;
 };
 
