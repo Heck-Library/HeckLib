@@ -1,6 +1,6 @@
 
 import IWall from "../../interfaces/objects/wall";
-import { V3 } from "../initialize";
+import { V3FILE } from "../finalize";
 import { fakeWalls, walls } from "../variables";
 
 export function wallsToJSON(): Record<string, any>[] {
@@ -27,7 +27,7 @@ export function wallsToJSON(): Record<string, any>[] {
         let stringified = JSON.stringify(wallJSON)
             .replace('"njs"', '"noteJumpMovementSpeed"')
             .replace('"offset"', '"noteJumpStartBeatOffset"');
-        if (V3) {
+        if (V3FILE) {
             stringified = stringified
                 .replace('"interactable":false', '"uninteractable":true')
                 .replace('"interactable":true', '"uninteractable":false')
@@ -43,7 +43,7 @@ export function wallsToJSON(): Record<string, any>[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         wallJSON = JSON.parse(stringified);
-        if (V3) {
+        if (V3FILE) {
             if (wallJSON.customData) {
                 if (wallJSON.customData.animation) {
                     wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation)
@@ -56,7 +56,7 @@ export function wallsToJSON(): Record<string, any>[] {
                 .replace(/"scale":/g, '"size":'))
             }
         }
-        if (V3 && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
+        if (V3FILE && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;
             delete walls[walls.indexOf(w)];
             fakeWalls.push(wallJSON);

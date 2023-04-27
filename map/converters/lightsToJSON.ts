@@ -1,6 +1,6 @@
 
 import ILightEvent from "../../interfaces/environment/lightEvent";
-import { V3 } from "../initialize";
+import { V3FILE } from "../finalize";
 import { lightEvents } from "../variables";
 
 export function lightsToJSON(): Record<string, any>[] {
@@ -16,7 +16,7 @@ export function lightsToJSON(): Record<string, any>[] {
         if (l.data && Object.keys(l.data).length > 0)
             lightJSON.customData = l.data;
         let stringified = JSON.stringify(lightJSON);
-        if (!V3) {
+        if (!V3FILE) {
             stringified = stringified
                 .replace('"b":', '"time":')
                 .replace('"et":', '"type":')

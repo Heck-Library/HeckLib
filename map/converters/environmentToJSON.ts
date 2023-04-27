@@ -1,6 +1,6 @@
 import IEnvironment from "../../interfaces/environment/environment";
 import IGeometryEnvironment from "../../interfaces/environment/geometry";
-import { V3 } from "../initialize";
+import { V3FILE } from "../finalize";
 import { environment, geometry } from "../variables";
 
 export default function environmentToJSON() {
@@ -22,7 +22,7 @@ export default function environmentToJSON() {
                 track: e.track
             }
             let stringified = JSON.stringify(envJSON);
-            if (!V3) {
+            if (!V3FILE) {
                 stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
             }
             envArr.push(JSON.parse(stringified));
@@ -41,7 +41,7 @@ export default function environmentToJSON() {
                 geometry: e.geometry
             }
             let stringified = JSON.stringify(envJSON);
-            if (!V3) {
+            if (!V3FILE) {
                 stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
             }
             envArr.push(JSON.parse(stringified));

@@ -225,6 +225,18 @@ interface IFinalizeProperties {
      * ```
      */
     roundNumbers?: number;
+    /**
+     * ### File Format
+     * 
+     * Formats the output file to either V2 or V3, depending on the user's setting.
+     * 
+     * This is optional btw
+     * 
+     * Valid inputs:
+     * - `V2`
+     * - `V3`
+     */
+    format?: 'V2' | 'V3';
 };
 
 let formatting = false
@@ -403,7 +415,7 @@ function setWarnings(warnings: string | string[]) {
 }
 
 
-
+export let V3FILE = V3;
 /**
  * @param difficulty The difficulty that the map should be written to.
  * @param properties Miscellaneous properties for the script, such as how it's exported.
@@ -431,6 +443,11 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
     }
+    switch (properties.format) {
+        case "V2": V3FILE = false; break;
+        case "V3": V3FILE = true; break;
+        default: V3FILE = V3; break; // Just for backup :3
+    }
     const sortP = Math.pow(10, 2);
     const jsonP = Math.pow(10, precision);
 
@@ -448,7 +465,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         return obj;
     }
 
-    if (!V3) {
+    if (!V3FILE) {
         environmentToJSON()
         let newDiff: IMapV2 = {
             _version: "2.2.0",
@@ -480,7 +497,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         }
         writeFileSync(activeOutput, outputtedDiff)
     }
-    if (V3) {
+    if (V3FILE) {
         difficulty.colorNotes = notesToJSON();
         difficulty.burstSliders = chainsToJSON();
         difficulty.sliders = arcsToJSON();
@@ -511,6 +528,8 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     const ms = stats.moddedStats;
     const vs = stats.vanillaStats;
 
+    //#region Console logs :) (DON'T LOOK)
+
     console.log(" \x1b[5m\x1b[35m\x1b[1m __  __                 __      \x1b[37m__           __        ")
     console.log(" \x1b[35m/\\ \\/\\ \\               /\\ \\  _ \x1b[37m/\\ \\       __/\\ \\       ")
     console.log(" \x1b[35m\\ \\ \\_\\ \\     __    ___\\ \\ \\/ \\\x1b[37m\\ \\ \\     /\\_\\ \\ \\____  ")
@@ -540,5 +559,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         "\x1b[0m\n\n");
     if (properties?.showModdedStats?.showEnvironmentStats) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
         "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
+    //#endregion Console logs :) (DON'T LOOK)
+    
     console.timeEnd('HeckLib ran in')
 }

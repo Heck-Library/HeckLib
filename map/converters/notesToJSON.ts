@@ -1,6 +1,6 @@
 import V2JsonNote from "../../interfaces/objects/json/v2/v2jsonNote";
 import INote from "../../interfaces/objects/note";
-import { V3 } from "../initialize";
+import { V3FILE } from "../finalize";
 import { fakeNotes, notes } from "../variables";
 
 export function notesToJSON(): V2JsonNote[] {
@@ -27,7 +27,7 @@ export function notesToJSON(): V2JsonNote[] {
         let stringified = JSON.stringify(noteJSON)
             .replace('"njs"', '"noteJumpMovementSpeed"')
             .replace('"offset"', '"noteJumpStartBeatOffset"');
-        if (V3) {
+        if (V3FILE) {
             stringified = stringified
                 .replace('"interactable":false', '"uninteractable":true')
                 .replace(/"interactable":true,?/, '')
@@ -43,7 +43,7 @@ export function notesToJSON(): V2JsonNote[] {
                 .replace(/"([^_][\w\d]+)":/g, '"_$1":');
         }
         noteJSON = JSON.parse(stringified);
-        if (V3) {
+        if (V3FILE) {
             if (noteJSON.customData) {
                 if (noteJSON.customData.animation) {
                     noteJSON.customData.animation = JSON.parse(JSON.stringify(noteJSON.customData.animation)
@@ -55,7 +55,7 @@ export function notesToJSON(): V2JsonNote[] {
                 .replace(/"rotation":/g, '"worldRotation":'))
             }
         }
-        if (V3 && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
+        if (V3FILE && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
             delete noteJSON.customData.fake;
             fakeNotes.push(noteJSON);
         } else

@@ -92,12 +92,6 @@ interface IInitParams {
      * Imports the lightshow from another difficulty.
      */
     lightshow?: string;
-    /**
-     * Whether the map should export as V2 or V3
-     * This will enable V3 features even in V2 maps
-     * WARNING: Will export as selected format
-     */
-    format?: "V2"|"V3";
 }
 
 export let V3: boolean;

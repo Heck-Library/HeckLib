@@ -1,5 +1,5 @@
 import ICustomEvent from "../../interfaces/events/eventData/ICustomEvent";
-import { V3 } from "../initialize";
+import { V3FILE } from "../finalize";
 import { events } from "../variables";
 
 export function customEventsToJSON(): Record<string, any>[] {
@@ -12,7 +12,7 @@ export function customEventsToJSON(): Record<string, any>[] {
                 d: e.data
             };
             let stringified = JSON.stringify(eventJSON);
-            if (!V3) {
+            if (!V3FILE) {
                 stringified = stringified
                     .replace('"b":', '"time":')
                     .replace('"t":', '"type":')
