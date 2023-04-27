@@ -3,9 +3,7 @@
 script.ts
 dev/
 font.dae
-models/template.json
-untitled.json
 node_modules/
-cinema-video.json
+*.json
 *.zip
 *.exe
