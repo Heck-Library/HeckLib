@@ -83,11 +83,11 @@ interface IInitParams {
     /**
      * Sets the NJS of all notes
      */
-    njs: number;
+    njs?: number;
     /**
      * Sets the offset of all notes
      */
-    offset: number;
+    offset?: number;
     /**
      * Imports the lightshow from another difficulty.
      */
