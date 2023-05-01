@@ -91,18 +91,18 @@ export default class Environment implements IEnvironment {
         this.lookupMethod = Environment.LOOKUP.EXACT;
 
         if (typeof environment !== 'undefined') {
-            if (id) this.id = id;
-            if (lookupMethod) this.lookupMethod = lookupMethod;
-            if (components) this.components = components;
-            if (duplicate) this.duplicate = duplicate;
-            if (active) this.active = active;
-            if (scale) this.scale = scale;
-            if (position) this.position = position;
-            if (localPosition) this.localPosition = localPosition;
-            if (rotation) this.rotation = rotation;
-            if (localRotation) this.localRotation = localRotation;
-            if (lightID) this.lightID = lightID;
-            if (track) this.track = track;
+            if (typeof id !== 'undefined') this.id = id;
+            if (typeof lookupMethod !== 'undefined') this.lookupMethod = lookupMethod;
+            if (typeof components !== 'undefined') this.components = components;
+            if (typeof duplicate !== 'undefined') this.duplicate = duplicate;
+            if (typeof active !== 'undefined') this.active = active;
+            if (typeof scale !== 'undefined') this.scale = scale;
+            if (typeof position !== 'undefined') this.position = position;
+            if (typeof localPosition !== 'undefined') this.localPosition = localPosition;
+            if (typeof rotation !== 'undefined') this.rotation = rotation;
+            if (typeof localRotation !== 'undefined') this.localRotation = localRotation;
+            if (typeof lightID !== 'undefined') this.lightID = lightID;
+            if (typeof track !== 'undefined') this.track = track;
         }
     }
 
