@@ -15,24 +15,14 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > 
 > Just follow the installation and after it's installed open it up.
 
-### Git
-> Git is used to install the library from github automatically using the CLI for hecklib. The installation for Windows can be found <a href="https://git-scm.com/download/win">here</a>. Install that and you should be good to install the library itself. 
-
 ### Library
-> To install the library initialiser, run `npm i -g hecklib` in the Visual Studio Code **GIT BASH** terminal (Top bar > Terminal > New Terminal).
+> To install the library initialiser, install the VSC extension called "HeckLib" from the releases page <a href="https://github.com/Heck-Library/HeckLib/releases">here</a>.
 > 
-> Once installed, check that it works by running `hecklib` in the Git Bash terminal. If it doesn't work, try adding `npx` before the command.
+> After installing the extension, a panel should appear to the sidebar that says "HeckLib". If it doesn't, restart VSC. If it still doesn't, contact me on Discord: `Jevk#0004`
+>
+> The side panel should have a button that says "Download HeckLib". Click it and select your map directory. This will download the latest version of HeckLib to your map folder.
 > 
-> To install all the dependencies for HeckLib, run `hecklib f`. This installs everything HeckLib needs to run, it should only be needed once per device.
-
-## Map Setup
-> To setup the map, open the map folder in Visual Studio Code and just run the `hecklib i` command in the terminal.
-> The subcommands are `init` and `update`. `init` is used to initialise a HeckLib project to the current directory. `update` is used to update the files for an already existing HeckLib project without overwriting the `script.ts` file.
-> 
-> Run `hecklib i` in your terminal to install HeckLib for your map.
-
-### Updating HeckLib
-> Run `hecklib u` in your terminal to update all HeckLib files to the most recent version.
+> If you want to update HeckLib, just click the "Update HeckLib" button. This will update all the files in your map folder to the latest version of HeckLib. Please note that this will not overwrite your `script.ts` file. If the button says "Download HeckLib", it will overwrite every `.ts` file in your map folder.
 
 ## Scripting
 
@@ -42,7 +32,13 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > If you need any help with it, ask me on Discord: `Jevk#0004`
 
 ## Running The Script
-> To run the script, run `hecklib script.ts`. This will make HeckLib run every time you save your script.
+> To run the script, run `nodemon script.ts` in the terminal. This will run the script and automatically restart it when you save a file. Nodemon can be installed by running `npm i -g nodemon` in the terminal.
+> 
+> If you want to run the script without restarting it, run `node script.ts` in the terminal.
+>
+> For running, you may need to install the dependencies. To do this, run `npm i` in the terminal. These dependencies are `@types/node`, `typescript` and `ts-node`.
+> 
+> If you want to install these dependencies globally, so you don't have to install them for each map, run `npm i -g @types/node typescript ts-node` in the terminal.
 
 ***
 
