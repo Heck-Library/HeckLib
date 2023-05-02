@@ -1,9 +1,15 @@
+import Distortion from "./distortion";
+import GlitchDistortion from "./glitchDistortion";
 import NoteTrail from "./noteTrail";
+import ParticleTunnel from "./particleTunnel";
 import RandomPath from "./randomPath";
 
-const EFFECT = {
+const Effect = {
+    Distortion,
+    GlitchDistortion,
     NoteTrail,
+    ParticleTunnel,
     RandomPath
 }
 
-export default EFFECT;
+export default Effect;
