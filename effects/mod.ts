@@ -2,6 +2,7 @@ import Distortion from "./distortion";
 import GlitchDistortion from "./glitchDistortion";
 import NoteTrail from "./noteTrail";
 import ParticleTunnel from "./particleTunnel";
+import Polygon from "./polygon";
 import RandomPath from "./randomPath";
 
 /**
@@ -34,6 +35,12 @@ const Effect = {
      * `ParticleTunnel` is a premade effect that creates a tunnel of particles around the player and the track.
      */
     ParticleTunnel,
+    /**
+     * ### Polygon
+     * 
+     * `Polygon` is a premade effect that creates a polygon out of walls. This effect is highly customizable.
+     */
+    Polygon,
     /**
      * ### Random Path
      * 
