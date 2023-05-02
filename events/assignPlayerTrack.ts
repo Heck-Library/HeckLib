@@ -2,7 +2,21 @@ import IPlayerTrackData from "../interfaces/events/eventData/IPlayerTrackData";
 import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignPlayerToTrack extends MyBaseEvent {
+    /**
+     * ### Type
+     * 
+     * The type of the event.
+     * 
+     * This is a `readonly` property, it can't and shouldn't be set manually. It will always be `"AssignPlayerToTrack"`.
+     */
     public readonly type: string = "AssignPlayerToTrack";
+    /**
+     * ### Data
+     * 
+     * The data for the event.
+     * 
+     * This is a `readonly` property. Please use the setters provided to change the values.
+     */
     public declare readonly data: IPlayerTrackData;
 
     /**

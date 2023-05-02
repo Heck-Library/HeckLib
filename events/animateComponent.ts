@@ -7,7 +7,21 @@ import { MyBaseEvent } from "./baseEvent";
 let fogDone = false;
 
 export default class AnimateComponent extends MyBaseEvent {
+    /**
+     * ### Type
+     * 
+     * The type of the event.
+     * 
+     * This is a `readonly` property, it can't and shouldn't be set manually. It will always be `"AnimateComponent"`.
+     */
     readonly type: string = "AnimateComponent";
+    /**
+     * ## Data
+     * 
+     * The data for the event.
+     * 
+     * This is a `readonly` property. Please use the setters provided to change the values.
+     */
     readonly declare data: IAnimComponentData;
     
     /**
