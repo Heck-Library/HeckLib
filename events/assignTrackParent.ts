@@ -21,9 +21,19 @@ export default class AssignTrackParent extends MyBaseEvent {
 
     //#region Getters and setters
 
+    /**
+     * ### Parent Track
+     * 
+     * The parent track for the children.
+     */
     get parentTrack(): string { return this.data.parentTrack; }
     set parentTrack(value: string) { this.data.parentTrack = value; }
 
+    /**
+     * ### Children Tracks
+     * 
+     * The children tracks to be parented.
+     */
     get childrenTracks(): string[] { return this.data.childrenTracks; }
     set childrenTracks(value: string[]) { this.data.childrenTracks = value; }
 

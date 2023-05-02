@@ -1,8 +1,6 @@
 import Environment from "../environment/environment";
 import IBloomFogEnvironmentAnimation from "../interfaces/animatable/fog";
 import ITubeBloomPrePassLightAnimation from "../interfaces/animatable/tubeBloom";
-import IBloomFogEnvironment from "../interfaces/components/fog";
-import ITubeBloomPrePassLight from "../interfaces/components/tubeBloom";
 import IAnimComponentData from "../interfaces/events/eventData/IAnimComponentData";
 import { MyBaseEvent } from "./baseEvent";
 
