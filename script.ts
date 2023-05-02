@@ -18,8 +18,5 @@ const DIFFICULTY = initialize(INPUT, OUTPUT, {
 finalize(DIFFICULTY, {
     formatting: true,
     sortObjects: true,
-    roundNumbers: 4,
-    requirements: [
-        "Noodle Extensions"
-    ]
+    roundNumbers: 4
 });
