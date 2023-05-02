@@ -16,7 +16,7 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > Just follow the installation and after it's installed open it up.
 
 ### Library
-> To install the library initialiser, install the VSC extension called "HeckLib" from the releases page <a href="https://github.com/Heck-Library/HeckLib/releases">here</a>.
+> To install the library initialiser, install the VSC extension called "HeckLib" from the releases page <a href="https://github.com/Heck-Library/HeckLib-Installer/releases/">here</a>.
 > 
 > After installing the extension, a panel should appear to the sidebar that says "HeckLib". If it doesn't, restart VSC. If it still doesn't, contact me on Discord: `Jevk#0004`
 >
