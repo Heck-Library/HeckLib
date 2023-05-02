@@ -100,9 +100,35 @@ enum LINE_LAYER {
  * Test
  */
 export default class Wall implements IWall {
-    
+    /**
+     * ### Line Index Enumerations
+     * 
+     * An integer number, from 0 to 3, which represents the column where this obstacle is located. The far left column is located at index 0, and increases to the far right column located at index 3.
+     * 
+     * ---
+     * 
+     * | `LINE_INDEX`   | Result        |
+     * |----------------|---------------|
+     * | `LEFT`         | Far Left      |
+     * | `LEFT_MIDDLE`  | Left Middle   |
+     * | `RIGHT_MIDDLE` | Right Middle  |
+     * | `RIGHT`        | Far Right     |
+     */
     public static readonly LINE_INDEX = LINE_INDEX;
 
+    /**
+     * ### Line Layer Enumerations
+     * 
+     * An integer number, from 0 to 2, which represents the layer where base of the obstacle is located. The bottommost layer is located at layer 0, and inceases to the topmost layer located at index 2.
+     * 
+     * ---
+     * 
+     * | `LINE_LAYER` | Result  | V2      | V3      |
+     * |--------------|---------|---------|---------|
+     * | `BOTTOM`     | Ground  | `true`  | `true`  |
+     * | `MIDDLE`     | Prone   | `true`  | `true`  |
+     * | `TOP`        | Crouch  | `false` | `true`  |
+     */
     public static readonly LINE_LAYER = LINE_LAYER;
 
     /**
