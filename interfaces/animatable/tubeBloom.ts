@@ -1,14 +1,28 @@
 import { vec1anim } from "../../types/vectors";
 
 /**
- * Interface for the TubeBloom component.
- * @interface
- * @name ITubeBloomPrePassLight
+ * ### Tube Bloom Pre-Pass Light Animation
  * 
- * @property {vec1anim} [colorAlphaMultiplier] The color alpha multiplier of the TubeBloom component.
- * @property {vec1anim} [bloomFogIntensityMultiplier] The bloom fog intensity multiplier of the TubeBloom component.
+ * Interface for the TubeBloom component.
+ * 
+ * `colorAlphaMultiplier` The color alpha multiplier of the tube bloom.
+ * `bloomFogIntensityMultiplier` The bloom fog intensity multiplier of the tube bloom.
  */
 export default interface ITubeBloomPrePassLightAnimation {
+    /**
+     * ### Color Alpha Multiplier
+     * 
+     * The color alpha multiplier of the tube bloom.
+     * 
+     * Type: `vec1anim`
+     */
     colorAlphaMultiplier?: vec1anim;
+    /**
+     * ### Bloom Fog Intensity Multiplier
+     * 
+     * The bloom fog intensity multiplier of the tube bloom.
+     * 
+     * Type: `vec1anim`
+     */
     bloomFogIntensityMultiplier?: vec1anim;
 }
