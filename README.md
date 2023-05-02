@@ -40,6 +40,10 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > 
 > If you want to install these dependencies globally, so you don't have to install them for each map, run `npm i -g @types/node typescript ts-node` in the terminal.
 
+## Documentation
+
+Documentation is built into the library using `JSDoc` which is a standard for documenting JavaScript and TypeScript code. However, if you prefer to read the documentation online, you can find a work-in-progress version <a href="https://github.com/Heck-Library/HeckLib/wiki">here</a>.
+
 ***
 
 I am open to all feedback on Discord: `Jevk#0004`
