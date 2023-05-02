@@ -14,9 +14,9 @@ export function wallsToJSON(): Record<string, any>[] {
             w: w.width,
             h: w.height,
             customData: {
-                ...w.data,
+                ...w.customData,
                 animation: {
-                    ...w.anim
+                    ...w.animation
                 }
             }
         };

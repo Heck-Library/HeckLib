@@ -317,7 +317,7 @@ function showStats(properties?: IFinalizeProperties): IStatsType {
                 ms.fakeWalls = fakeWalls.length;
             } else {
                 walls.forEach((w: IWall) => {
-                    if (w.data.fake) ms.fakeWalls++;
+                    if (w.customData.fake) ms.fakeWalls++;
                     else ms.walls++;
                 })
             }

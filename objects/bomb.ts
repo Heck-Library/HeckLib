@@ -69,7 +69,7 @@ type bombProperties = {
      * "customData": { ... }
      * ```
      */
-    data: ICustomData;
+    customData?: ICustomData;
     /**
      * ### Animation
      * 
@@ -84,7 +84,7 @@ type bombProperties = {
      * "customData": { "_animation": { ... } }
      * ```
      */
-    anim: IObjectAnimation;
+    animation?: IObjectAnimation;
 };
 
 enum LINE_INDEX {
@@ -225,8 +225,8 @@ export default class Bomb implements IBomb {
             if (bomb.time) this.time = bomb.time;
             if (bomb.x) this.x = bomb.x;
             if (bomb.y) this.y = bomb.y;
-            if (bomb.data) this.customData = bomb.data;
-            if (bomb.anim) this.animation = bomb.anim;
+            if (bomb.customData) this.customData = bomb.customData;
+            if (bomb.animation) this.animation = bomb.animation;
         }
         if (data) this.customData = data;
         if (anim) this.animation = anim;
