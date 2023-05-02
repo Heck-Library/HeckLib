@@ -82,7 +82,7 @@ export default interface IWall {
      * - V2: `_customData`
      * - V3: `customData`
      */
-    data: ICustomWallData;
+    customData: ICustomWallData;
     /**
      * The animation data of the wall.
      * 
@@ -94,5 +94,5 @@ export default interface IWall {
      * - V2: `_customData._animation`
      * - V3: `customData.animation`
      */
-    anim: IObjectAnimation;
+    animation: IObjectAnimation;
 }

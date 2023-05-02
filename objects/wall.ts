@@ -217,7 +217,7 @@ export default class Wall implements IWall {
      * - V2: `_customData`
      * - V3: `customData`
      */
-    data: ICustomWallData;
+    customData: ICustomWallData;
     /**
      * The animation data of the wall.
      * 
@@ -229,7 +229,7 @@ export default class Wall implements IWall {
      * - V2: `_customData._animation`
      * - V3: `customData.animation`
      */
-    anim: IObjectAnimation;
+    animation: IObjectAnimation;
 
     /**
      * Creates a new wall object.
@@ -395,8 +395,8 @@ export default class Wall implements IWall {
         this.duration = 0;
         this.width = 0;
         this.height = 0;
-        this.data = {};
-        this.anim = {};
+        this.customData = {};
+        this.animation = {};
         if (wall) {
             if (typeof wall === "number") {
                 this.time = wall;
@@ -408,8 +408,8 @@ export default class Wall implements IWall {
             if (wall.duration) this.duration = wall.duration;
             if (wall.width) this.width = wall.width;
             if (wall.height) this.height = wall.height;
-            if (data) this.data = data;
-            if (anim) this.anim = anim;
+            if (data) this.customData = data;
+            if (anim) this.animation = anim;
         }
         return this;
     }
