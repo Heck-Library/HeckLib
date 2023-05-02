@@ -1,12 +1,6 @@
+import ICinemaCoordinates from "./cinemaCoords";
+
 export interface IAdditionalScreen {
-    position: {
-        x: number;
-        y: number;
-        z: number;
-    };
-    rotation: {
-        x: number;
-        y: number;
-        z: number;
-    };
+    position: ICinemaCoordinates;
+    rotation: ICinemaCoordinates;
 }
