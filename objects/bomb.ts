@@ -9,7 +9,16 @@ type bombProperties = {
     /**
      * ### Time
      * 
-     * The time in beats at which the bomb is placed.
+     * The time in beats at which the bomb is placed at.
+     * 
+     * Type: `number`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "b": number
+     * ```
      */
     time: number;
     /**
@@ -17,7 +26,16 @@ type bombProperties = {
      * 
      * The line index of the bomb.
      * 
-     * You can use the `LINE_INDEX` enum to set this value.
+     * You can use the `LINE_INDEX` enum for setting this value.
+     * 
+     * Type: `lineIndex`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "x": lineIndex
+     * ```
      */
     x?: lineIndex;
     /**
@@ -25,21 +43,48 @@ type bombProperties = {
      * 
      * The line layer of the bomb.
      * 
-     * You can use the `LINE_LAYER` enum to set this value.
+     * You can use the `LINE_LAYER` enum for setting this value.
+     * 
+     * Type: `lineLayer`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "y": lineLayer
+     * ```
      */
     y?: lineLayer;
     /**
      * ### Custom Data
      * 
-     * Custom data for the bomb.
+     * The custom data of the bomb.
+     * 
+     * Type: `ICustomData`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "customData": { ... }
+     * ```
      */
-    data?: ICustomData;
+    data: ICustomData;
     /**
      * ### Animation
      * 
-     * Animation data for the bomb.
+     * The animation of the bomb.
+     * 
+     * Type: `IObjectAnimation`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "customData": { "_animation": { ... } }
+     * ```
      */
-    anim?: IObjectAnimation;
+    anim: IObjectAnimation;
 };
 
 enum LINE_INDEX {
@@ -61,11 +106,86 @@ export default class Bomb implements IBomb {
 
     public static readonly LINE_LAYER = LINE_LAYER;
 
-    public time: number;
-    public x: lineIndex;
-    public y: lineLayer;
-    public data: ICustomData;
-    public anim: IObjectAnimation;
+    
+    /**
+     * ### Time
+     * 
+     * The time in beats at which the bomb is placed at.
+     * 
+     * Type: `number`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "b": number
+     * ```
+     */
+    time: number;
+    /**
+     * ### X
+     * 
+     * The line index of the bomb.
+     * 
+     * You can use the `LINE_INDEX` enum for setting this value.
+     * 
+     * Type: `lineIndex`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "x": lineIndex
+     * ```
+     */
+    x: lineIndex;
+    /**
+     * ### Y
+     * 
+     * The line layer of the bomb.
+     * 
+     * You can use the `LINE_LAYER` enum for setting this value.
+     * 
+     * Type: `lineLayer`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "y": lineLayer
+     * ```
+     */
+    y: lineLayer;
+    /**
+     * ### Custom Data
+     * 
+     * The custom data of the bomb.
+     * 
+     * Type: `ICustomData`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "customData": { ... }
+     * ```
+     */
+    customData: ICustomData;
+    /**
+     * ### Animation
+     * 
+     * The animation of the bomb.
+     * 
+     * Type: `IObjectAnimation`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalent
+     * ```json
+     * "customData": { "_animation": { ... } }
+     * ```
+     */
+    animation: IObjectAnimation;
 
     /**
      * ### Bomb
@@ -95,8 +215,8 @@ export default class Bomb implements IBomb {
         this.time = 0;
         this.x = 0;
         this.y = 0;
-        this.data = {};
-        this.anim = {};
+        this.customData = {};
+        this.animation = {};
         if (bomb) {
             if (typeof bomb === "number") {
                 this.time = bomb;
@@ -105,11 +225,11 @@ export default class Bomb implements IBomb {
             if (bomb.time) this.time = bomb.time;
             if (bomb.x) this.x = bomb.x;
             if (bomb.y) this.y = bomb.y;
-            if (bomb.data) this.data = bomb.data;
-            if (bomb.anim) this.anim = bomb.anim;
+            if (bomb.data) this.customData = bomb.data;
+            if (bomb.anim) this.animation = bomb.anim;
         }
-        if (data) this.data = data;
-        if (anim) this.anim = anim;
+        if (data) this.customData = data;
+        if (anim) this.animation = anim;
         return this;
     }
 
