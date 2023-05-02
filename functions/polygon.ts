@@ -58,7 +58,8 @@ export default function polygon(parameters: IPolygonParams): void {
         let sy = p.position[0] + Math.sin(radians) * p.radius - (p.h / 2);
         new Wall({
             //Vanilla data
-            time: p.time + MAPDATA.halfJumpDuration
+            time: p.time + MAPDATA.halfJumpDuration,
+            duration: p.duration,
         }, {
             //Custom data
             interactable: false,
