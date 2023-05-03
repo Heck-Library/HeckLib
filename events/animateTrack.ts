@@ -18,7 +18,7 @@ export default class AnimateTrack extends MyBaseEvent {
      * 
      * This is a `readonly` property. Please use the setters provided to change the values.
      */
-    readonly declare data: IAnimateTrackData;
+    declare readonly data: IAnimateTrackData;
 
     //#region Getters and setters
 

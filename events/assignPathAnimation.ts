@@ -18,7 +18,7 @@ export default class AssignPathAnimation extends MyBaseEvent {
      * 
      * This is a `readonly` property. Please use the setters provided to change the values.
      */ 
-    readonly declare data: IPathAnimData;
+    declare readonly data: IPathAnimData;
 
     //#region getters and setters
 

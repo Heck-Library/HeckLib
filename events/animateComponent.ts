@@ -22,7 +22,7 @@ export default class AnimateComponent extends MyBaseEvent {
      * 
      * This is a `readonly` property. Please use the setters provided to change the values.
      */
-    readonly declare data: IAnimComponentData;
+    declare readonly data: IAnimComponentData;
     
     /**
      * ## Track

@@ -17,7 +17,7 @@ export default class AssignFogTrack extends MyBaseEvent {
      * 
      * This is a `readonly` property. Please use the setters provided to change the values.s
      */
-    readonly declare data: IFogTrackData;
+    declare readonly data: IFogTrackData;
 
     //#region Getters and setters
 
