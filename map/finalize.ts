@@ -5,7 +5,7 @@ import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON"
 import { arcsToJSON } from "./converters/arcsToJSON";
 import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
-import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events, geometry } from "./variables";
+import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events, geometry, fakeArcs, fakeChains, fakeBombs } from "./variables";
 import ISettings from "../interfaces/info/settings";
 import IMapV2 from "../interfaces/v2map";
 import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
@@ -724,6 +724,11 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         difficulty.customData.customEvents = customEventsToJSON();
         difficulty.customData.environment = environmentToJSON();
         difficulty.customData.pointDefinitions = pointDefinitions;
+        difficulty.customData.fakeObstacles = fakeWalls;
+        difficulty.customData.fakeNotes = fakeNotes;
+        difficulty.customData.fakeSliders = fakeArcs;
+        difficulty.customData.fakeBurstSliders = fakeChains;
+        difficulty.customData.fakeBombs = fakeBombs;
         difficulty.customData.materials = materials;
         if (properties && properties.sortObjects) {
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
