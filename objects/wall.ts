@@ -5,7 +5,7 @@ import { walls } from "../map/variables";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
-type wallProperties = {
+interface wallProperties {
     /**
      * The time in seconds at which the wall will appear in beats.
      * 
