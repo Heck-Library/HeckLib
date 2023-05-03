@@ -1,18 +1,18 @@
 import { readFileSync, writeFileSync } from "fs";
 import { V3, activeInput, activeOutput, infoFile } from "./initialize";
-import { wallsToJSON } from "./converters/wallsToJSON";
-import { notesToJSON } from "./converters/notesToJSON";
-import { customEventsToJSON } from "./converters/customEventsToJSON";
-import { lightsToJSON } from "./converters/lightsToJSON";
 import { chainsToJSON } from "./converters/chainsToJSON";
 import { pointDefinitionsToV2JSON } from "./converters/pointDefinitionsToV2JSON";
 import { arcsToJSON } from "./converters/arcsToJSON";
-import environmentToJSON from "./converters/environmentToJSON";
 import INote from "../interfaces/objects/note";
 import IWall from "../interfaces/objects/wall";
-import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events } from "./variables";
+import { notes, fakeNotes, walls, fakeWalls, lightEvents, pointDefinitions, environment, materials, events, geometry } from "./variables";
 import ISettings from "../interfaces/info/settings";
 import IMapV2 from "../interfaces/v2map";
+import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
+import IEnvironment from "../interfaces/environment/environment";
+import IGeometryEnvironment from "../interfaces/environment/geometry";
+import ILightEvent from "../interfaces/environment/lightEvent";
+import V2JsonNote from "../interfaces/objects/json/v2/v2jsonNote";
 
 interface IFinalizeProperties {
     /**
@@ -413,6 +413,224 @@ function setWarnings(warnings: string | string[]) {
         });
     });
 }
+
+function customEventsToJSON(): Record<string, any>[] {
+    const eventArr: any[] = [];
+    if (events)
+        events.forEach((e: ICustomEvent) => {
+            const eventJSON: Record<string, any> = {
+                b: e.time,
+                t: e.type,
+                d: e.data
+            };
+            let stringified = JSON.stringify(eventJSON);
+            if (!V3FILE) {
+                stringified = stringified
+                    .replace('"b":', '"time":')
+                    .replace('"t":', '"type":')
+                    .replace('"d":', '"data":')
+                    .replace(/"([^_][\w\d]+)":/g, '"_$1":');
+            }
+            eventArr.push(JSON.parse(stringified));
+        });
+    return eventArr;
+}
+function environmentToJSON() {
+    const envArr: any[] = [];
+    if (environment) {
+        environment.forEach((e: IEnvironment) => {
+            const envJSON: Record<string, any> = {
+                id: e.id,
+                lookupMethod: e.lookupMethod,
+                components: e.components,
+                duplicate: e.duplicate,
+                active: e.active,
+                scale: e.scale,
+                position: e.position,
+                localPosition: e.localPosition,
+                rotation: e.rotation,
+                localRotation: e.localRotation,
+                lightID: e.lightID,
+                track: e.track
+            }
+            let stringified = JSON.stringify(envJSON);
+            if (!V3FILE) {
+                stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
+            }
+            envArr.push(JSON.parse(stringified));
+        });
+        geometry.forEach((e: IGeometryEnvironment) => {
+            const envJSON: Record<string, any> = {
+                components: e.components,
+                active: e.active,
+                scale: e.scale,
+                position: e.position,
+                localPosition: e.localPosition,
+                rotation: e.rotation,
+                localRotation: e.localRotation,
+                lightID: e.lightID,
+                track: e.track,
+                geometry: e.geometry
+            }
+            let stringified = JSON.stringify(envJSON);
+            if (!V3FILE) {
+                stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
+            }
+            envArr.push(JSON.parse(stringified));
+        });
+    }
+    return envArr;
+}
+function lightsToJSON(): Record<string, any>[] {
+    const lightArr: any[] = [];
+    lightEvents.forEach((l: ILightEvent) => {
+        const lightJSON: Record<string, any> = {
+            b: l.time,
+            et: l.type,
+            i: l.value,
+        };
+        if (l.float)
+            lightJSON.f = l.float;
+        if (l.data && Object.keys(l.data).length > 0)
+            lightJSON.customData = l.data;
+        let stringified = JSON.stringify(lightJSON);
+        if (!V3FILE) {
+            stringified = stringified
+                .replace('"b":', '"time":')
+                .replace('"et":', '"type":')
+                .replace('"i":', '"value":')
+                .replace('"f":', '"floatValue":')
+                .replace('"lockRotation":', '"lockPosition":')
+                .replace(/"([^_][\w\d]+)":/g, '"_$1":');
+        }
+        lightArr.push(JSON.parse(stringified));
+    });
+    return lightArr;
+}
+function notesToJSON(): V2JsonNote[] {
+    const noteArr: any[] = [];
+    if (notes) notes.forEach((n: INote) => {
+        let noteJSON: Record<string, any> = {
+            b: n.time,
+            c: n.type,
+            d: n.direction,
+            a: n.angle,
+            x: n.x,
+            y: n.y,
+            customData: {
+                ...n.customData,
+                animation: {
+                    ...n.animation
+                }
+            }
+        };
+        if (Object.keys(noteJSON.customData.animation).length < 1)
+            delete noteJSON.customData.animation;
+        if (Object.keys(noteJSON.customData).length < 1)
+            delete noteJSON.customData;
+        let stringified = JSON.stringify(noteJSON)
+            .replace('"njs"', '"noteJumpMovementSpeed"')
+            .replace('"offset"', '"noteJumpStartBeatOffset"');
+        if (V3FILE) {
+            stringified = stringified
+                .replace('"interactable":false', '"uninteractable":true')
+                .replace(/"interactable":true,?/, '')
+                .replace('"disableSpawnEffect":true', '"spawnEffect":false');
+        } else {
+            stringified = stringified
+                .replace('"b":', '"time":')
+                .replace('"c":', '"type":')
+                .replace('"d":', '"cutDirection":')
+                .replace('"x":', '"lineIndex":')
+                .replace('"y":', '"lineLayer":')
+                .replace(/"a":\d+,/g, '')
+                .replace(/"([^_][\w\d]+)":/g, '"_$1":');
+        }
+        noteJSON = JSON.parse(stringified);
+        if (V3FILE) {
+            if (noteJSON.customData) {
+                if (noteJSON.customData.animation) {
+                    noteJSON.customData.animation = JSON.parse(JSON.stringify(noteJSON.customData.animation)
+                    .replace(/"position":/g, '"offsetPosition":')
+                    .replace(/"rotation":/g, '"offsetWorldRotation":'))
+                }
+                noteJSON.customData = JSON.parse(JSON.stringify(noteJSON.customData)
+                .replace(/"position":/g, '"coordinates":')
+                .replace(/"rotation":/g, '"worldRotation":'))
+            }
+        }
+        if (V3FILE && noteJSON.customData && Object.keys(noteJSON.customData).includes("fake")) {
+            delete noteJSON.customData.fake;
+            fakeNotes.push(noteJSON);
+        } else
+            noteArr.push(noteJSON);
+    });
+    return noteArr;
+}
+function wallsToJSON(): Record<string, any>[] {
+    const wallArr: any[] = [];
+    walls.forEach((w: IWall) => {
+        let wallJSON: Record<string, any> = {
+            b: w.time,
+            x: w.x,
+            y: w.y,
+            d: w.duration,
+            w: w.width,
+            h: w.height,
+            customData: {
+                ...w.customData,
+                animation: {
+                    ...w.animation
+                }
+            }
+        };
+        if (Object.keys(wallJSON.customData.animation).length < 1)
+            delete wallJSON.customData.animation;
+        if (Object.keys(wallJSON.customData).length < 1)
+            delete wallJSON.customData;
+        let stringified = JSON.stringify(wallJSON)
+            .replace('"njs"', '"noteJumpMovementSpeed"')
+            .replace('"offset"', '"noteJumpStartBeatOffset"');
+        if (V3FILE) {
+            stringified = stringified
+                .replace('"interactable":false', '"uninteractable":true')
+                .replace('"interactable":true', '"uninteractable":false')
+                .replace('"disableSpawnEffect":true', '"spawnEffect":false');
+        } else {
+            stringified = stringified
+                .replace('"b":', '"time":')
+                .replace('"x":', '"lineIndex":')
+                .replace(/"y":(\d)/, '"type":$1')
+                .replace('"d":', '"duration":')
+                .replace('"w":', '"width":')
+                .replace(/"h":\d+,/, '')
+                .replace(/"([^_][\w\d]+)":/g, '"_$1":');
+        }
+        wallJSON = JSON.parse(stringified);
+        if (V3FILE) {
+            if (wallJSON.customData) {
+                if (wallJSON.customData.animation) {
+                    wallJSON.customData.animation = JSON.parse(JSON.stringify(wallJSON.customData.animation)
+                    .replace(/"position":/g, '"offsetPosition":')
+                    .replace(/"rotation":/g, '"offsetWorldRotation":'))
+                }
+                wallJSON.customData = JSON.parse(JSON.stringify(wallJSON.customData)
+                .replace(/"position":/g, '"coordinates":')
+                .replace(/"rotation":/g, '"worldRotation":')
+                .replace(/"scale":/g, '"size":'))
+            }
+        }
+        if (V3FILE && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
+            delete wallJSON.customData.fake;
+            delete walls[walls.indexOf(w)];
+            fakeWalls.push(wallJSON);
+        } else {
+            wallArr.push(wallJSON);
+        }
+    });
+    return wallArr;
+}
+
 
 
 export let V3FILE = V3;
