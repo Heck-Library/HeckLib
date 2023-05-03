@@ -129,13 +129,21 @@ export default class ParticleGenerator implements IParticleGenerator {
      */
     public hueVariation: number = 0;
     /**
+     * ### Color Space
+     * 
+     * The color space of the particles. Valid values are "HSV" or "RGB".
+     * 
+     * Default: `"RGB"`
+     */
+    public colorSpace: "HSV" | "RGB" = "RGB";
+    /**
      * ### Base Color
      * 
      * The base color of the particles in `[r, g, b, a, colorSpace]`. The last value is the color space, either "HSV" or "RGB".
      * '
      * Default: `[1, 1, 1, 1, "RGB"]`
      */
-    public baseColor: [number, number, number, number, "HSV" | "RGB"] = [1, 1, 1, 1, "RGB"];
+    public baseColor: vec4 = [1, 1, 1, 1];
     /**
      * ### Base Direction
      * 
@@ -228,6 +236,27 @@ export default class ParticleGenerator implements IParticleGenerator {
             rotDefinition = true;
         }
         new PointDefinition(`particleDissolve${this.startTime}`, this.dissolve).push();
+
+        let eventStartTime = this.startTime - 8;
+        if (eventStartTime < 0) eventStartTime = 0;
+
+        new AssignTrackParent(eventStartTime, {
+            childrenTracks: [`PARTICLE_GEN${this.startTime}`],
+            parentTrack: `PARTICLE_GEN_PARENT${this.startTime}`
+        }).push();
+        if (V3) {
+            new AnimateTrack(eventStartTime, {
+                track: `PARTICLE_GEN_PARENT${this.startTime}`,
+                duration: 0,
+                position: this.position
+            }).push();
+        } else {
+            new AnimateTrack(eventStartTime, {
+                track: `PARTICLE_GEN_PARENT${this.startTime}`,
+                duration: 0,
+                offsetPosition: this.position
+            }).push();
+        }
         
         for (let i = this.startTime; i <= this.endTime; i += 1 / this.density) {
 
@@ -248,7 +277,7 @@ export default class ParticleGenerator implements IParticleGenerator {
             }
 
             let color: vec4 = [this.baseColor[0], this.baseColor[1], this.baseColor[2], this.baseColor[3]];
-            if (this.baseColor[4] === "HSV") {
+            if (this.colorSpace === "HSV") {
                 color = [...HSVtoRGB(color[0] + random(-this.hueVariation, this.hueVariation), color[1], color[2]), color[3]];
             } else {
                 const HSVcol = RGBtoHSV(color[0], color[1], color[2]);
@@ -257,29 +286,13 @@ export default class ParticleGenerator implements IParticleGenerator {
 
             let wallScale: vec3 = [this.size + random(-this.sizeVariation, this.sizeVariation), this.size + random(-this.sizeVariation, this.sizeVariation), this.size + random(-this.sizeVariation, this.sizeVariation)];
 
-
-            new AssignTrackParent(this.startTime - 8, {
-                childrenTracks: [`PARTICLE_GEN${this.startTime}`],
-                parentTrack: `PARTICLE_GEN_PARENT${this.startTime}`
-            }).push();
-            if (V3) {
-                new AnimateTrack(this.startTime - 8, {
-                    track: `PARTICLE_GEN_PARENT${this.startTime}`,
-                    duration: 0,
-                    position: this.position
-                }).push();
-            } else {
-                new AnimateTrack(this.startTime - 8, {
-                    track: `PARTICLE_GEN_PARENT${this.startTime}`,
-                    duration: 0,
-                    offsetPosition: this.position
-                }).push();
-            }
             new Wall({
                 time: i,
                 duration: this.lifetime + random(-this.lifetimeVariation, this.lifetimeVariation)
             }, {
                 scale: wallScale,
+                fake: true,
+                interactable: false,
                 color: color,
             }, {
                 definitePosition: defPosPath,

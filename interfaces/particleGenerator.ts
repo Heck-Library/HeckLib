@@ -1,4 +1,4 @@
-import { vec1anim, vec3, vec3anim } from "../types/vectors";
+import { vec1anim, vec3, vec3anim, vec4 } from "../types/vectors";
 
 export interface IParticleGenerator {
     /**
@@ -111,13 +111,21 @@ export interface IParticleGenerator {
      */
     hueVariation?: number;
     /**
+     * ### Color Space
+     * 
+     * The color space of the particles. Valid values are "HSV" or "RGB".
+     * 
+     * Default: `"RGB"`
+     */
+    colorSpace?: "HSV" | "RGB";
+    /**
      * ### Base Color
      * 
      * The base color of the particles in `[r, g, b, a, colorSpace]`. The last value is the color space, either "HSV" or "RGB".
      * '
      * Default?: `[1, 1, 1, 1, "RGB"]`
      */
-    baseColor?: [number, number, number, number, "HSV" | "RGB"];
+    baseColor?: vec4
     /**
      * ### Base Direction
      * 
