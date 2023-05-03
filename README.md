@@ -20,25 +20,24 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > 
 > After installing the extension, a panel should appear to the sidebar that says "HeckLib". If it doesn't, restart VSC. If it still doesn't, contact me on Discord: `Jevk#0004`
 >
-> The side panel should have a button that says "Download HeckLib". Click it and select your map directory. This will download the latest version of HeckLib to your map folder.
+> The side panel should have a button that says "Download HeckLib". This will download the latest version of HeckLib to your map folder.
 > 
 > If you want to update HeckLib, just click the "Update HeckLib" button. This will update all the files in your map folder to the latest version of HeckLib. Please note that this will not overwrite your `script.ts` file. If the button says "Download HeckLib", it will overwrite every `.ts` file in your map folder.
 
 ## Scripting
 
 ### Editing
-> To edit the script, open your map folder in Visual Studio Code and start editing the `example.ts`. This file already contains the initialisation of the map.
+> To edit the script, open your map folder in Visual Studio Code and start editing the `script.ts`. This file already contains the initialisation of the map.
 >
 > If you need any help with it, ask me on Discord: `Jevk#0004`
 
 ## Running The Script
-> To run the script, run `nodemon script.ts` in the terminal. This will run the script and automatically restart it when you save a file. Nodemon can be installed by running `npm i -g nodemon` in the terminal.
+> To run the script, press ctrl+1 keycombo or alternatively type `nodemon ./script.ts -e ts`. This will run the script and automatically restart it when you save a file..
 > 
 > If you want to run the script without restarting it, run `node script.ts` in the terminal.
 >
-> For running, you may need to install the dependencies. To do this, run `npm i` in the terminal. These dependencies are `@types/node`, `typescript` and `ts-node`.
+> For running, you may need to install the dependencies. To do this, press "Download Dependencies" when you have installed HeckLib, it will download the nessacery dependencies.
 > 
-> If you want to install these dependencies globally, so you don't have to install them for each map, run `npm i -g @types/node typescript ts-node` in the terminal.
 
 ## Documentation
 
