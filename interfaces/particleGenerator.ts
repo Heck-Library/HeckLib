@@ -119,22 +119,6 @@ export interface IParticleGenerator {
      */
     baseColor?: [number, number, number, number, "HSV" | "RGB"];
     /**
-     * ### Velocity
-     * 
-     * The velocity of the particles.
-     * 
-     * Default?: `2`
-     */
-    velocity?: number;
-    /**
-     * ### Velocity Variation
-     * 
-     * The amount of velocity variation the particles will have.
-     * 
-     * Default?: `0`
-     */
-    velocityVariation?: number;
-    /**
      * ### Base Direction
      * 
      * The base direction of the particles. This is a rotation value in degrees. Format is `[pitch, yaw, roll]`.

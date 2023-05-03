@@ -1,7 +1,12 @@
 import ease from "../consts/easing";
 import SPLINE from "../consts/spline";
+import AnimateTrack from "../events/animateTrack";
+import AssignTrackParent from "../events/assignTrackParent";
+import HSVtoRGB from "../functions/hsvToRgb";
 import random from "../functions/random";
+import RGBtoHSV from "../functions/rgbToHsv";
 import { IParticleGenerator } from "../interfaces/particleGenerator";
+import { V3 } from "../map/initialize";
 import PointDefinition from "../map/pointDefinition";
 import Wall from "../objects/wall";
 import { vec1anim, vec3, vec3anim, vec4 } from "../types/vectors";
@@ -132,22 +137,6 @@ export default class ParticleGenerator implements IParticleGenerator {
      */
     public baseColor: [number, number, number, number, "HSV" | "RGB"] = [1, 1, 1, 1, "RGB"];
     /**
-     * ### Velocity
-     * 
-     * The velocity of the particles.
-     * 
-     * Default: `2`
-     */
-    public velocity: number = 2;
-    /**
-     * ### Velocity Variation
-     * 
-     * The amount of velocity variation the particles will have.
-     * 
-     * Default: `0`
-     */
-    public velocityVariation: number = 0;
-    /**
      * ### Base Direction
      * 
      * The base direction of the particles. This is a rotation value in degrees. Format is `[pitch, yaw, roll]`.
@@ -205,6 +194,7 @@ export default class ParticleGenerator implements IParticleGenerator {
     constructor(parameters?: any) {
         if (parameters) {
             const { startTime, endTime, lifetime, pathPosition, pathPositionVariation, pathRotation, pathRotationVariation, density, sizeVariation, size, hueVariation, baseColor, velocity, velocityVariation, baseDirection, directionVariation, position, positionVariation, dissolve } = parameters;
+            
             if (startTime !== undefined) this.startTime = startTime;
             if (endTime !== undefined) this.endTime = endTime;
             if (lifetime !== undefined) this.lifetime = lifetime;
@@ -217,8 +207,6 @@ export default class ParticleGenerator implements IParticleGenerator {
             if (sizeVariation !== undefined) this.sizeVariation = sizeVariation;
             if (hueVariation !== undefined) this.hueVariation = hueVariation;
             if (baseColor !== undefined) this.baseColor = baseColor;
-            if (velocity !== undefined) this.velocity = velocity;
-            if (velocityVariation !== undefined) this.velocityVariation = velocityVariation;
             if (baseDirection !== undefined) this.baseDirection = baseDirection;
             if (directionVariation !== undefined) this.directionVariation = directionVariation;
             if (position !== undefined) this.position = position;
@@ -228,38 +216,76 @@ export default class ParticleGenerator implements IParticleGenerator {
     }
 
     push(): void {
-        if (this.pathPositionVariation[0] === 0 && this.pathPositionVariation[1] === 0 && this.pathPositionVariation[2] === 0) new PointDefinition(`particlePosition${this.startTime}`, this.pathPosition);
-        if (this.pathRotationVariation[0] === 0 && this.pathRotationVariation[1] === 0 && this.pathRotationVariation[2] === 0) new PointDefinition(`particleRotation${this.startTime}`, this.pathRotation);
-        new PointDefinition(`particleDissolve${this.startTime}`, this.dissolve);
+        let posDefinition = false;
+        let rotDefinition = false;
+
+        if (this.pathPositionVariation[0] === 0 && this.pathPositionVariation[1] === 0 && this.pathPositionVariation[2] === 0) {
+            new PointDefinition(`particlePosition${this.startTime}`, this.pathPosition).push();
+            posDefinition = true;
+        }
+        if (this.pathRotationVariation[0] === 0 && this.pathRotationVariation[1] === 0 && this.pathRotationVariation[2] === 0) {
+            new PointDefinition(`particleRotation${this.startTime}`, this.pathRotation).push();
+            rotDefinition = true;
+        }
+        new PointDefinition(`particleDissolve${this.startTime}`, this.dissolve).push();
+        
         for (let i = this.startTime; i <= this.endTime; i += 1 / this.density) {
-            const startingPoint = [
-                this.position[0] + random(-this.positionVariation[0], this.positionVariation[0]),
-                this.position[1] + random(-this.positionVariation[1], this.positionVariation[1]),
-                this.position[2] + random(-this.positionVariation[2], this.positionVariation[2])
-            ];
-            const defPosPath = this.pathPosition;
-            for (let point of defPosPath) {
-                point[0] += random(-this.pathPositionVariation[0], this.pathPositionVariation[0]) + startingPoint[0];
-                point[1] += random(-this.pathPositionVariation[1], this.pathPositionVariation[1]) + startingPoint[1];
-                point[2] += random(-this.pathPositionVariation[2], this.pathPositionVariation[2]) + startingPoint[2];
+
+            let defPosPath: string | vec3anim = this.pathPosition;
+            if (posDefinition) defPosPath = `particlePosition${this.startTime}`;
+            else for (let point of defPosPath) {
+                point[0] += random(-this.pathPositionVariation[0], this.pathPositionVariation[0]);
+                point[1] += random(-this.pathPositionVariation[1], this.pathPositionVariation[1]);
+                point[2] += random(-this.pathPositionVariation[2], this.pathPositionVariation[2]);
             }
-            const defRotPath = this.pathRotation;
-            for (let point of defRotPath) {
+
+            let rotPath: string | vec3anim = this.pathRotation;
+            if (rotDefinition) rotPath = `particleRotation${this.startTime}`;
+            else for (let point of rotPath) {
                 point[0] += random(-this.pathRotationVariation[0], this.pathRotationVariation[0]);
                 point[1] += random(-this.pathRotationVariation[1], this.pathRotationVariation[1]);
                 point[2] += random(-this.pathRotationVariation[2], this.pathRotationVariation[2]);
             }
-            const color: vec4 = [this.baseColor[0], this.baseColor[1], this.baseColor[2], this.baseColor[3]];
+
+            let color: vec4 = [this.baseColor[0], this.baseColor[1], this.baseColor[2], this.baseColor[3]];
             if (this.baseColor[4] === "HSV") {
-                
+                color = [...HSVtoRGB(color[0] + random(-this.hueVariation, this.hueVariation), color[1], color[2]), color[3]];
+            } else {
+                const HSVcol = RGBtoHSV(color[0], color[1], color[2]);
+                color = [...HSVtoRGB(HSVcol[0] + random(-this.hueVariation, this.hueVariation), HSVcol[1], HSVcol[2]), color[3]];
+            }
+
+            let wallScale: vec3 = [this.size + random(-this.sizeVariation, this.sizeVariation), this.size + random(-this.sizeVariation, this.sizeVariation), this.size + random(-this.sizeVariation, this.sizeVariation)];
+
+
+            new AssignTrackParent(this.startTime - 8, {
+                childrenTracks: [`PARTICLE_GEN${this.startTime}`],
+                parentTrack: `PARTICLE_GEN_PARENT${this.startTime}`
+            }).push();
+            if (V3) {
+                new AnimateTrack(this.startTime - 8, {
+                    track: `PARTICLE_GEN_PARENT${this.startTime}`,
+                    duration: 0,
+                    position: this.position
+                }).push();
+            } else {
+                new AnimateTrack(this.startTime - 8, {
+                    track: `PARTICLE_GEN_PARENT${this.startTime}`,
+                    duration: 0,
+                    offsetPosition: this.position
+                }).push();
             }
             new Wall({
                 time: i,
                 duration: this.lifetime + random(-this.lifetimeVariation, this.lifetimeVariation)
             }, {
-                scale: [this.size, this.size, this.size],
-                color: color
-            })
+                scale: wallScale,
+                color: color,
+            }, {
+                definitePosition: defPosPath,
+                dissolve: `particleDissolve${this.startTime}`,
+                rotation: rotPath
+            }).push();
         }
     }
 }
