@@ -170,7 +170,7 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
     const noteArr: INote[] = [];
     if (V3) {
         if (noteInput) noteInput.forEach((n: Record<string, any>) => {
-            noteArr.push(new Note({
+            const note = new Note({
                 //Vanilla data
                 time: n.b,
                 x: n.x,
@@ -181,12 +181,26 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
             }, {
                 //Custom data
                 njs: NJS,
-                offset: offset
-            }));
+                offset: offset,
+            });
+            if (n.customData) {
+                if (n.customData.color) note.customData.color = n.customData.color;
+                if (n.customData.fake) note.customData.fake = n.customData.fake;
+                if (n.customData.uninteractable) note.customData.interactable = n.customData.interactable;
+                if (n.customData.scale) note.customData.scale = n.customData.scale;
+                if (n.customData.disableNoteGravity) note.customData.disableNoteGravity = n.customData.disableNoteGravity;
+                if (n.customData.disableSpawnEffect) note.customData.disableSpawnEffect = n.customData.disableSpawnEffect;
+                if (n.customData.disableNoteLook) note.customData.disableNoteLook = n.customData.disableNoteLook;
+                if (n.customData.flip) note.customData.flip = n.customData.flip;
+                if (n.customData.localRotation) note.customData.localRotation = n.customData.localRotation;
+                if (n.customData.coordinates) note.customData.position = n.customData.coordinates;
+                if (n.customData.worldRotation) note.customData.rotation = n.customData.worldRotation;
+            }
+            notes.push(note)
         });
     } else {
         if (noteInput) noteInput.forEach((n: Record<string, any>) => {
-            noteArr.push(new Note({
+            const note = new Note({
                 //Vanilla data
                 time: n._time,
                 x: n._lineIndex,
@@ -196,8 +210,23 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
             }, {
                 //Custom data
                 njs: NJS,
-                offset: offset
-            }));
+                offset: offset,
+            });
+            if (n._customData) {
+                if (n._customData._color) note.customData.color = n._customData._color;
+                if (n._customData._fake) note.customData.fake = n._customData._fake;
+                if (n._customData._interactable) note.customData.interactable = n._customData._interactable;
+                if (n._customData._scale) note.customData.scale = n._customData._scale;
+                if (n._customData._disableNoteGravity) note.customData.disableNoteGravity = n._customData._disableNoteGravity;
+                if (n._customData._disableSpawnEffect) note.customData.disableSpawnEffect = n._customData._disableSpawnEffect;
+                if (n._customData._disableNoteLook) note.customData.disableNoteLook = n._customData._disableNoteLook;
+                if (n._customData._flip) note.customData.flip = n._customData._flip;
+                if (n._customData._localRotation) note.customData.localRotation = n._customData._localRotation;
+                if (n._customData._position) note.customData.position = n._customData._position;
+                if (n._customData._rotation) note.customData.rotation = n._customData._rotation;
+                if (n._customData._cutDirection) note.customData.cutDirection = n._customData._cutDirection;
+            }
+            noteArr.push(note);
         });
     }
     return noteArr;
