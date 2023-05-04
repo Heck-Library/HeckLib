@@ -439,7 +439,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
         events.push(...diff._customData._customEvents);
         environment.push(customData._environment);
-        Object.assign(materials, ...customData._materials);
+        Object.assign(materials, Object.entries(customData._materials));
     }
     else if (V3) {
         notes.push(...JSONtoNotes(diff.colorNotes, NJS, offset));
@@ -478,7 +478,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
         events.push(...customData.customEvents);
         environment.push(...customData.environment);
-        Object.assign(materials, ...customData.materials);
+        Object.assign(materials, Object.entries(customData.materials));
         fakeNotes.push(...customData.fakeColorNotes);
         fakeWalls.push(...customData.fakeObstacles);
         fakeBombs.push(...customData.fakeBombNotes);

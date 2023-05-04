@@ -6,6 +6,7 @@
         "skipDefaultLibCheck": true
     },
     "ts-node": {
-        "typeCheck": false
+        "typeCheck": false,
+        "swc": true
     }
 }

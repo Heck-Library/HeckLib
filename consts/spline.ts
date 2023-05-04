@@ -1,3 +1,3 @@
-const SPLINE = "SplineCatmullRom";
+const SPLINE = "splineCatmullRom";
 
 export default SPLINE;

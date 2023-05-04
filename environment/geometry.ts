@@ -34,54 +34,136 @@ export default class Geometry implements IGeometryEnvironment {
      * The components of the geometry object.
      * 
      * type: `IComponents`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * Doesn't exist.
+     * #### V3
+     * ```json
+     * "components": { ... }
+     * ```
      */
     public components?: IComponents;
     /**
      * ### Active
      * 
-     * Whether the geometry object is active or not.
+     * Whether the geometry object is active or not. Defaults to `true`. If set to `false`, the geometry object will not be created.
      * 
      * type: `boolean`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_active": true
+     * ```
+     * #### V3
+     * ```json
+     * "active": true
+     * ```
      */
     public active?: boolean;
     /**
      * ### Scale
      * 
-     * The scale of the geometry object. Formatted as `[x, y, z]`.
+     * The scale of the geometry object. Formatted as `[x, y, z]`. Defaults to `[1, 1, 1]`.
      * 
      * type: `vec3`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents	
+     * #### V2
+     * ```json
+     * "_scale": vec3
+     * ```
+     * #### V3
+     * ```json
+     * "scale": vec3
+     * ```
      */
     public scale?: vec3;
     /**
      * ### Position
      * 
-     * The position of the geometry object. Formatted as `[x, y, z]`.
+     * The position of the geometry object. Formatted as `[x, y, z]`. Defaults to `[0, 0, 0]`. This is relative to the world. If localPosition is set, it is ignored and this will override it instead.
      * 
      * type: `vec3`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_position": vec3
+     * ```
+     * #### V3
+     * ```json
+     * "position": vec3
+     * ```
      */
     public position?: vec3;
     /**
      * ### Local Position
      * 
-     * The local position of the geometry object. Formatted as `[x, y, z]`.
+     * The local position of the geometry object. Formatted as `[x, y, z]`. Defaults to `[0, 0, 0]`. This is relative to the parent object. If there is no parent object, this is relative to the world. If position is set, this is ignored.
      * 
      * type: `vec3`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_localPosition": vec3
+     * ```
+     * #### V3
+     * ```json
+     * "localPosition": vec3
+     * ```
      */
     public localPosition?: vec3;
     /**
      * ### Rotation
      * 
-     * The rotation of the geometry object in degrees. Formatted as `[pitch, yaw, roll]`.
+     * The rotation of the geometry object in degrees. Formatted as `[pitch, yaw, roll]`. Defaults to `[0, 0, 0]`.
      * 
      * type: `vec3`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_rotation": vec3
+     * ```
+     * #### V3
+     * ```json
+     * "rotation": vec3
+     * ```
      */
     public rotation?: vec3;
     /**
      * ### Local Rotation
      * 
-     * The local rotation of the geometry object in degrees. Formatted as `[pitch, yaw, roll]`.
+     * The local rotation of the geometry object in degrees. Formatted as `[pitch, yaw, roll]`. Defaults to `[0, 0, 0]`.
      * 
      * type: `vec3`
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_localRotation": vec3
+     * ```
+     * #### V3
+     * ```json
+     * "localRotation": vec3
+     * ```
      */
     public localRotation?: vec3;
     /**
@@ -114,6 +196,18 @@ export default class Geometry implements IGeometryEnvironment {
      *     shape: Geometry.SHAPE.CUBE,
      *     material: 'Material Name'
      * }
+     * ```
+     * 
+     * ---
+     * 
+     * ### JSON Equivalents
+     * #### V2
+     * ```json
+     * "_geometry": { ... }
+     * ```
+     * #### V3
+     * ```json
+     * "geometry": { ... }
      * ```
      */
     public geometry: IGeometryProperties;
