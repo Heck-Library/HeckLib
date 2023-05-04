@@ -1,6 +1,7 @@
 import { vec2, vec3, vec4 } from "../../types/vectors";
 
 export default interface ICustomData {
+    cutDirection?: number;
     /**
      * The track to be used for controlling the note with events.
      * 

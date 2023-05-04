@@ -17,7 +17,18 @@ export function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offse
             }, {
                 //Custom data
                 njs: NJS,
-                offset: offset
+                offset: offset,
+                color: n.color,
+                disableNoteGravity: n.disableNoteGravity,
+                disableSpawnEffect: n.disableSpawnEffect,
+                disableNoteLook: n.disableNoteLook,
+                interactable: !n.uninteractable,
+                flip: n.flip,
+                localRotation: n.localRotation,
+                position: n.coordinates,
+                rotation: n.worldRotation,
+                scale: n.scale,
+                track: n.track,
             }));
         });
     } else {
@@ -32,7 +43,19 @@ export function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offse
             }, {
                 //Custom data
                 njs: NJS,
-                offset: offset
+                offset: offset,
+                color: n._customData._color,
+                fake: n._customData._fake,
+                interactable: n._customData._interactable,
+                scale: n._customData._scale,
+                disableNoteGravity: n._customData._disableNoteGravity,
+                disableSpawnEffect: n._customData._disableSpawnEffect,
+                disableNoteLook: n._customData._disableNoteLook,
+                flip: n._customData._flip,
+                localRotation: n._customData._localRotation,
+                position: n._customData._position,
+                rotation: n._customData._rotation,
+                cutDirection: n._customData._cutDirection,
             }));
         });
     }
