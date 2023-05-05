@@ -1,6 +1,7 @@
 
 import IUnknownEvent from "../interfaces/events/eventData/ICustomEvent";
-import { events } from "../map/variables";
+import IParentTrackData from "../interfaces/events/eventData/IParentTrackData";
+import { events, trackParents } from "../map/variables";
 import unknownProperty from "../types/unknownProperty";
 
 export abstract class MyBaseEvent implements IUnknownEvent {
@@ -30,12 +31,21 @@ export abstract class MyBaseEvent implements IUnknownEvent {
         return this;
     }
 
+    private isTrackParentData(data: unknownProperty): data is IParentTrackData {
+        return (data as IParentTrackData).parentTrack !== undefined;
+    }
+
     /**
      * ## Push
      * 
      * Pushes the event to the map.
      */
     push() : void {
-        events.push(this);
+        if (this.isTrackParentData(this.data)) {
+            if (!trackParents.includes(this.data.parentTrack)) {
+                trackParents.push(this.data.parentTrack);
+                events.push(this);
+            }
+        } else events.push(this);
     }
 }
