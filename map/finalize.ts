@@ -457,7 +457,7 @@ function environmentToJSON() {
             if (!V3FILE) {
                 stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
             }
-            envArr.push(JSON.parse(stringified));
+            if (Object.keys(e).length != 0) envArr.push(JSON.parse(stringified));
         });
         geometry.forEach((e: IGeometryEnvironment) => {
             const envJSON: Record<string, any> = {
@@ -476,7 +476,7 @@ function environmentToJSON() {
             if (!V3FILE) {
                 stringified = stringified.replace(/"([^_][\w\d]+)":/g, '"_$1":');
             }
-            envArr.push(JSON.parse(stringified));
+            if (Object.keys(e).length != 0) envArr.push(JSON.parse(stringified));
         });
     }
     return envArr;
