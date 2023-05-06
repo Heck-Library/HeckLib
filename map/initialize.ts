@@ -427,9 +427,11 @@ export function initialize(input: string, output: string, properties?: IInitPara
     let diff = JSON.parse(readFileSync(`./${input}`, 'utf-8'));
     if (infoFile.difficultyBeatmapSets) infoFile.difficultyBeatmapSets.forEach((set) => {
         set.difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty.customData?.settings) delete difficulty.customData.settings;
-            if (difficulty.customData?.requirements) delete difficulty.customData.requirements;
-            if (difficulty.customData?.suggestions) delete difficulty.customData.suggestions;
+            if(difficulty.beatmapFilename.includes(output)){
+                if (difficulty.customData?.settings) delete difficulty.customData.settings;
+                if (difficulty.customData?.requirements) delete difficulty.customData.requirements;
+                if (difficulty.customData?.suggestions) delete difficulty.customData.suggestions;
+            }
         });
     });
 
