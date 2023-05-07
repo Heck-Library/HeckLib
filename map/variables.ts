@@ -102,4 +102,3 @@ export const geometry: IGeometryEnvironment[] = [];
  * Contains all the material names in the map.
  */
 export const materialNames: string[] = [];
-export const trackParents: string[] = []
