@@ -1,8 +1,8 @@
-import Arc from "../objects/arc";
-import Bomb from "../objects/bomb";
-import Chain from "../objects/chain";
-import Note from "../objects/note";
-import Wall from "../objects/wall";
+import IArc from "../interfaces/objects/arc";
+import IBomb from "../interfaces/objects/bomb";
+import IChain from "../interfaces/objects/chain";
+import INote from "../interfaces/objects/note";
+import IWall from "../interfaces/objects/wall";
 
 
 /**
@@ -15,12 +15,12 @@ import Wall from "../objects/wall";
  * @param obj Object to be duplicated
  * @returns Duplicate of the object
  */
-export default function dupe(obj : Note): Note;
-export default function dupe(obj : Chain) : Chain;
-export default function dupe(obj : Bomb) : Bomb;
-export default function dupe(obj : Wall) : Wall;
-export default function dupe(obj : Arc) : Arc;
-export default function dupe(obj : object) : Note | Chain | Bomb | Wall | Arc {
+export default function dupe(obj : INote) : INote;
+export default function dupe(obj : IChain) : IChain;
+export default function dupe(obj : IBomb) : IBomb;
+export default function dupe(obj : IWall) : IWall;
+export default function dupe(obj : IArc) : IArc;
+export default function dupe(obj : object) : INote | IChain | IBomb | IWall | IArc {
     const newObject = Object.assign(Object.create(Object.getPrototypeOf(obj)), JSON.parse(JSON.stringify(obj)));
     return newObject
 }
