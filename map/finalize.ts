@@ -14,6 +14,18 @@ import IGeometryEnvironment from "../interfaces/environment/geometry";
 import ILightEvent from "../interfaces/environment/lightEvent";
 import V2JsonNote from "../interfaces/objects/json/v2/v2jsonNote";
 
+interface IRGB {
+    r: number;
+    g: number;
+    b: number;
+}
+
+interface IContributor {
+    role: string;
+    name: string;
+    iconPath: string;
+}
+
 interface IFinalizeProperties {
     /**
      * ### Sort Objects
@@ -237,6 +249,20 @@ interface IFinalizeProperties {
      * - `V3`
      */
     format?: 'V2' | 'V3';
+    /**
+     * ### Difficulty Label
+     * 
+     * Adds a difficulty label to the map. This is the text that shows up in place of the difficulty name, such as "Expert" or "ExpertPlus". Leave empty to not add a difficulty label.
+     */
+    difficultyLabel?: string;
+    colorLeft?: IRGB;
+    colorRight?: IRGB;
+    envColorLeft?: IRGB;
+    envColorRight?: IRGB;
+    envColorLeftBoost?: IRGB;
+    envColorRightBoost?: IRGB;
+    obstaclesColor?: IRGB;
+    contributors?: IContributor[];
 };
 
 let formatting = false
@@ -409,6 +435,15 @@ function setWarnings(warnings: string | string[]) {
             if (diff.beatmapFilename === activeOutput) {
                 if (typeof warnings === "string") diff.customData.warnings = [warnings];
                 else diff.customData.warnings = warnings;
+            }
+        });
+    });
+}
+function setColor(rgb: IRGB, section: "colorLeft" | "colorRight" | "envColorLeft" | "envColorRight" | "envColorLeftBoost" | "envColorRightBoost" | "obstaclesColor") {
+    infoFile.difficultyBeatmapSets.forEach(set => {
+        set.difficultyBeatmaps.forEach(diff => {
+            if (diff.beatmapFilename === activeOutput) {
+                diff.customData[section] = rgb;
             }
         });
     });
@@ -653,6 +688,14 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     if (properties) {
         const p = properties;
         if (p.formatting) formatting = true;
+        if (p.contributors) infoFile.customData.contributors = p.contributors;
+        if (p.colorLeft) setColor(p.colorLeft, "colorLeft");
+        if (p.colorRight) setColor(p.colorRight, "colorRight");
+        if (p.envColorLeft) setColor(p.envColorLeft, "envColorLeft");
+        if (p.envColorRight) setColor(p.envColorRight, "envColorRight");
+        if (p.envColorLeftBoost) setColor(p.envColorLeftBoost, "envColorLeftBoost");
+        if (p.envColorRightBoost) setColor(p.envColorRightBoost, "envColorRightBoost");
+        if (p.obstaclesColor) setColor(p.obstaclesColor, "obstaclesColor");
         if (p.requirements) setRequirements(p.requirements);
         if (p.suggestions) setSuggestions(p.suggestions);
         if (p.warnings) setWarnings(p.warnings);
