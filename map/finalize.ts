@@ -723,11 +723,12 @@ export let V3FILE = V3;
  * });
  */
 export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
-    console.time("Finalized in");
+    console.time("\x1b[36mFinalized in");
     let precision = 5;
     if (properties) {
         const p = properties;
         if (p.formatting) formatting = true;
+        console.time("Info.dat written in");
         if (p.contributors) infoFile.customData.contributors = p.contributors;
         if (p.colorLeft) setColor(p.colorLeft, "colorLeft");
         if (p.colorRight) setColor(p.colorRight, "colorRight");
@@ -743,6 +744,8 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.roundNumbers) precision = p.roundNumbers;
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
+        console.timeEnd("Info.dat written in");
+        console.log("")
     }
     switch (properties.format) {
         case "V2": V3FILE = false; break;
@@ -752,7 +755,6 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     const sortP = Math.pow(10, 2);
     const jsonP = Math.pow(10, precision);
 
-    
     function deeperDaddy(obj: any) {
         if (obj) for (const key in obj) {
             if (obj[key] == null) {
@@ -783,18 +785,26 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
             }
         }
         if (properties && properties.sortObjects) {
+            console.time("Objects sorted in")
             newDiff._notes.sort((a: { _time: number; _lineIndex: number; _lineLayer: number; }, b: { _time: number; _lineIndex: number; _lineLayer: number; }) => (Math.round((a._time + Number.EPSILON) * sortP) / sortP) - (Math.round((b._time + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineIndex + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineIndex + Number.EPSILON) * sortP) / sortP) || (Math.round((a._lineLayer + Number.EPSILON) * sortP) / sortP) - (Math.round((b._lineLayer + Number.EPSILON) * sortP) / sortP));
             newDiff._obstacles.sort((a: any, b: any) => a._time - b._time);
             newDiff._events.sort((a: any, b: any) => a._time - b._time);
+            newDiff._customData._customEvents.sort((a: any, b: any) => a._time - b._time);
+            console.timeEnd("Objects sorted in")
         }
 
         if (newDiff._customData._materials.length < 1) {
             delete (difficulty._customData._materials)
         }
+        console.log("");
+        console.time("Numbers rounded in");
         newDiff = deeperDaddy(newDiff);
+        console.timeEnd("Numbers rounded in");
         let outputtedDiff = JSON.stringify(newDiff)
         if (formatting == true) {
+            console.time("Formatted output file in")
             outputtedDiff = JSON.stringify(newDiff, null, 4)
+            console.timeEnd("Formatted output file in")
         }
         writeFileSync(activeOutput, outputtedDiff)
     }
@@ -814,28 +824,42 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         difficulty.customData.fakeBombs = fakeBombs;
         difficulty.customData.materials = materials;
         if (properties && properties.sortObjects) {
+            console.time("Objects sorted in")
             difficulty.colorNotes.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.burstSliders.sort((a: { b: number; x: number; y: number; }, b: { b: number; x: number; y: number; }) => (Math.round((a.b + Number.EPSILON) * sortP) / sortP) - (Math.round((b.b + Number.EPSILON) * sortP) / sortP) || (Math.round((a.x + Number.EPSILON) * sortP) / sortP) - (Math.round((b.x + Number.EPSILON) * sortP) / sortP) || (Math.round((a.y + Number.EPSILON) * sortP) / sortP) - (Math.round((b.y + Number.EPSILON) * sortP) / sortP));
             difficulty.obstacles.sort((a: any, b: any) => a.b - b.b);
             difficulty.basicBeatmapEvents.sort((a: any, b: any) => a.b - b.b);
+            difficulty.customData.customEvents.sort((a: any, b: any) => a.b - b.b);
+            console.timeEnd("Objects sorted in")
         }
         if (difficulty.customData.materials && Object.keys(difficulty.customData.materials).length < 1) {
             delete difficulty.customData.materials
         }
-        difficulty = deeperDaddy(difficulty);
+        console.log("");
+        if (properties && properties.roundNumbers) {
+            console.time("Numbers rounded in");
+            difficulty = deeperDaddy(difficulty);
+            console.timeEnd("Numbers rounded in");
+        }
         let outputtedDiff = JSON.stringify(difficulty)
         if (formatting == true) {
+            console.time("Formatted output file in")
             outputtedDiff = JSON.stringify(difficulty, null, 4)
+            console.timeEnd("Formatted output file in")
         }
 
+        console.time("Wrote difficulty file in");
         writeFileSync(activeOutput, outputtedDiff)
+        console.timeEnd("Wrote difficulty file in");
     }
 
     const stats = showStats(properties);
     const ms = stats.moddedStats;
     const vs = stats.vanillaStats;
 
-    console.timeEnd("Finalized in");
+    console.log("");
+    console.timeEnd("\x1b[36mFinalized in");
+    console.log("");
 
     //#region Console logs :) (DON'T LOOK)
 
@@ -860,6 +884,6 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     if (properties?.showModdedStats?.showEnvironmentStats) console.log(" \x1b[36m\x1b[1m\x1b[4m" + "=== ENVIRONMENT INFO ===" + "\x1b[0m" +
         "\n\n Environment Objects: \x1b[32m\x1b[1m" + environment.length + "\x1b[0m\n\n")
     //#endregion Console logs :) (DON'T LOOK)
-    console.log("")
+    console.log("\x1b[0m\n =============== \n")
     console.timeEnd('HeckLib ran in')
 }

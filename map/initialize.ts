@@ -411,7 +411,7 @@ function getJumps() {
  * ```
  */
 export function initialize(input: string, output: string, properties?: IInitParams) {
-    console.time("Initialized in");
+    console.time("\x1b[36mInitialized in");
     if (infoFile.difficultyBeatmapSets ) infoFile.difficultyBeatmapSets.forEach((set) => {
         set.difficultyBeatmaps.forEach((difficulty) => {
             if (difficulty.beatmapFilename.includes(output)) {
@@ -538,7 +538,8 @@ export function initialize(input: string, output: string, properties?: IInitPara
         fakeWalls.push(...customData.fakeObstacles);
         fakeBombs.push(...customData.fakeBombNotes);
     }
-    console.timeEnd("Initialized in")
     console.log("")
+    console.timeEnd("\x1b[36mInitialized in")
+    console.log("\x1b[0m")
     return diff;
 }
