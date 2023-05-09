@@ -1,11 +1,20 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import INote from "../interfaces/objects/note";
-import { notes } from "../map/variables";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 import noteType from "../types/noteType";
+
+
+/**
+ * Contains all the fake notes in the map.
+ */
+export const fakeNotes: Record<string, any>[] = [];
+/**
+ * Contains all the notes in the map. 
+ */
+export const notes: Note[] = [];
 
 interface INoteProperties {
     /**
@@ -436,5 +445,11 @@ export default class Note implements INote {
      */
     push() {
         notes.push(this);
+    }
+
+    duplicate(): Note {
+        const n = new Note();
+        Object.assign(n, JSON.parse(JSON.stringify(this)));
+        return n;
     }
 }

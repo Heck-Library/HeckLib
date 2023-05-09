@@ -6,7 +6,11 @@ import AssignTrackParent from "../events/assignTrackParent";
 import filter from "../functions/filter";
 import track from "../functions/track";
 import { V3 } from "../map/initialize";
-import { notes, walls, bombs, arcs, chains } from "../map/variables";
+import { bombs } from "../map/variables";
+import { notes } from "../objects/note";
+import { walls } from "../objects/wall";
+import { chains } from "../objects/chain";
+import { arcs } from "../objects/arc";
 
 let firstDistortion = true;
 

@@ -1,4 +1,4 @@
-import { arcs } from "../variables";
+import { arcs } from "../../objects/arc";
 
 export function arcsToJSON(): Record<string, any>[] {
     const arcArr: any[] = [];

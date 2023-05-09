@@ -4,7 +4,7 @@ import random from "../functions/random";
 import track from "../functions/track";
 import INote from "../interfaces/objects/note";
 import PointDefinition from "../map/pointDefinition";
-import { notes } from "../map/variables";
+import { notes } from "../objects/note";
 
 /**
  * Properties for the RandomPath effect

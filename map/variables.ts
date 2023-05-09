@@ -5,9 +5,6 @@ import IMaterial from "../interfaces/environment/material";
 import IUnknownEvent from "../interfaces/events/eventData/ICustomEvent";
 import IArc from "../interfaces/objects/arc";
 import IBomb from "../interfaces/objects/bomb";
-import IChain from "../interfaces/objects/chain";
-import INote from "../interfaces/objects/note";
-import IWall from "../interfaces/objects/wall";
 import { unknownAnim } from "../types/vectors";
 
 /**
@@ -40,46 +37,14 @@ export const definitionNames: string[] = [];
  */
 export const events: IUnknownEvent[] = [];
 /**
- * Contains all the notes in the map. 
- */
-export const notes: INote[] = [];
-/**
- * Contains all the arcs in the map.
- */
-export const arcs: IArc[] = [];
-/**
- * Contains all the chains in the map.
- */
-export const chains: IChain[] = [];
-/**
  * Contains all the bombs in the map.
  */
 export const bombs: IBomb[] = [];
-/**
- * Contains all the walls in the map.
- */
-export const walls: IWall[] = [];
 
-/**
- * Contains all the fake notes in the map.
- */
-export const fakeNotes: Record<string, any>[] = [];
-/**
- * Contains all the fake arcs in the map.
- */
-export const fakeArcs: Record<string, any>[] = [];
-/**
- * Contains all the fake chains in the map.
- */
-export const fakeChains: Record<string, any>[] = [];
 /**
  * Contains all the fake bombs in the map.
  */
 export const fakeBombs: Record<string, any>[] = [];
-/**
- * Contains all the fake walls in the map.
- */
-export const fakeWalls: Record<string, any>[] = [];
 
 /**
  * Contains all the light events in the map.

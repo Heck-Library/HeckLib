@@ -2,9 +2,16 @@ import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import ICustomSliderData from "../interfaces/customData/customSliderData";
 import IChain from "../interfaces/objects/chain";
-import { chains } from "../map/variables";
 import cutDirection from "../types/cutDirection";
 
+/**
+ * Contains all the fake chains in the map.
+ */
+export const fakeChains: Record<string, any>[] = [];
+/**
+ * Contains all the chains in the map.
+ */
+export const chains: Chain[] = [];
 interface IChainProperties {
     /**
      * ### Time
@@ -385,6 +392,7 @@ export default class Chain implements IChain {
      */
     animation: IObjectAnimation;
 
+    constructor();
     /**
      * ### Chain
      * 
@@ -450,5 +458,11 @@ export default class Chain implements IChain {
 
     push() : void {
         chains.push(this);
+    }
+
+    duplicate() : Chain {
+        const c = new Chain();
+        Object.assign(c, JSON.parse(JSON.stringify(this)));
+        return c;
     }
 }

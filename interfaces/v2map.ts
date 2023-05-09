@@ -1,8 +1,6 @@
-import V2JsonNote from "./objects/json/v2/v2jsonNote";
-
 export default interface IMapV2 {
     _version: "2.2.0";
-    _notes: V2JsonNote[];
+    _notes: Record<string,any>[];
     _obstacles: Record<string, unknown>[];
     _events: Record<string, unknown>[];
     _waypoints: Record<string, unknown>[];

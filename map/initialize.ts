@@ -1,7 +1,6 @@
 
 import ICustomEvent from "../interfaces/events/eventData/ICustomEvent";
 import IInfo from "../interfaces/info/info";
-import IWall from "../interfaces/objects/wall";
 import { readFileSync, writeFileSync } from "fs";
 import { JSONtoPointDefs } from "./converters/JSONtoPointDefs";
 import { JSONtoChains } from "./converters/JSONtoChains";
@@ -13,13 +12,15 @@ import AssignTrackParent from "../events/assignTrackParent";
 import AnimateComponent from "../events/animateComponent";
 import AssignFogTrack from "../events/assignFogTrack";
 import Wall from "../objects/wall";
-import { arcs, bombs, chains, environment, events, fakeBombs, fakeNotes, fakeWalls, lightEvents, materials, notes, walls } from "./variables";
-import INote from "../interfaces/objects/note";
+import { bombs, environment, events, fakeBombs, lightEvents, materials } from "./variables";
 import Note from "../objects/note";
-import IArc from "../interfaces/objects/arc";
 import Arc from "../objects/arc";
 import ILightEvent from "../interfaces/environment/lightEvent";
 import Light from "../events/lightEvent";
+import { fakeNotes, notes } from "../objects/note";
+import { walls, fakeWalls } from "../objects/wall";
+import { chains } from "../objects/chain";
+import { arcs } from "../objects/arc";
 
 //#region Variables
 const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
@@ -92,11 +93,13 @@ interface IInitParams {
      * Imports the lightshow from another difficulty.
      */
     lightshow?: string;
+    noLogo?: boolean;
 }
 
 export let V3: boolean;
 
 function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
+    console.time("Read lights in")
     const lightArr: ILightEvent[] = [];
     if (V3) {
         if (lightInput) lightInput.forEach((l: Record<string, any>) => {
@@ -138,11 +141,13 @@ function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
             lightArr.push(light);
         });
     }
+    console.timeEnd("Read lights in")
     return lightArr;
 }
 
-function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number): IArc[] {
-    const arcArr: IArc[] = [];
+function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number): Arc[] {
+    console.time("Read arcs in");
+    const arcArr: Arc[] = [];
     arcInput.forEach((c: Record<string, any>) => {
         arcArr.push(new Arc({
             time: c.b,
@@ -163,11 +168,13 @@ function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number
             }
         }));
     });
+    console.timeEnd("Read arcs in");
     return arcArr;
 }
 
-function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): INote[] {
-    const noteArr: INote[] = [];
+function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: number): Note[] {
+    console.time("Read notes in");
+    const noteArr: Note[] = [];
     if (V3) {
         if (noteInput) noteInput.forEach((n: Record<string, any>) => {
             const note = new Note({
@@ -229,11 +236,13 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
             noteArr.push(note);
         });
     }
+    console.timeEnd("Read notes in");
     return noteArr;
 }
 
-function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): IWall[] {
-    const wallArr: IWall[] = [];
+function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: number): Wall[] {
+    console.time("Read walls in");
+    const wallArr: Wall[] = [];
     if (V3) {
         if (wallInput) wallInput.forEach((w: Record<string, any>) => {
             wallArr.push(new Wall({
@@ -266,10 +275,12 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
             }));
         });
     }
+    console.timeEnd("Read walls in");
     return wallArr;
 }
 
 function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
+    console.time("Read custom events in")
     const eventArr: ICustomEvent[] = [];
     if (!V3) {
         eventInput.forEach((e: Record<string, any>) => {
@@ -351,6 +362,7 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
             }
         });
     }
+    console.timeEnd("Read custom events in")
     return eventArr;
 }
 
@@ -399,6 +411,7 @@ function getJumps() {
  * ```
  */
 export function initialize(input: string, output: string, properties?: IInitParams) {
+    console.time("Initialized in");
     if (infoFile.difficultyBeatmapSets ) infoFile.difficultyBeatmapSets.forEach((set) => {
         set.difficultyBeatmaps.forEach((difficulty) => {
             if (difficulty.beatmapFilename.includes(output)) {
@@ -421,6 +434,17 @@ export function initialize(input: string, output: string, properties?: IInitPara
 
     if (p.lightshow) {
         lightEvents.length = 0;
+    }
+    if (!p.noLogo) {
+        console.log(" \x1b[5m\x1b[35m\x1b[1m __  __                 __      \x1b[37m__           __        ")
+        console.log(" \x1b[35m/\\ \\/\\ \\               /\\ \\  _ \x1b[37m/\\ \\       __/\\ \\       ")
+        console.log(" \x1b[35m\\ \\ \\_\\ \\     __    ___\\ \\ \\/ \\\x1b[37m\\ \\ \\     /\\_\\ \\ \\____  ")
+        console.log(" \x1b[35m \\ \\  _  \\  / __ \\ / ___\\ \\   < \x1b[37m\\ \\ \\    \\/\\ \\ \\  __ \\ ")
+        console.log(" \x1b[35m  \\ \\ \\ \\ \\/\\  __//\\ \\__/\\ \\ \\\\ \\\x1b[37m\\ \\ \\____\\ \\ \\ \\ \\_\\ \\")
+        console.log(" \x1b[35m   \\ \\_\\ \\_\\ \\____\\ \\____\\\\ \\_\\ \\_\x1b[37m\\ \\____/ \\ \\_\\ \\____/")
+        console.log(" \x1b[35m    \\/_/\\/_/\\/____/\\/____/ \\/_/\\/_/\x1b[37m\\/___/   \\/_/\\/___/ ")
+        console.log(" \x1b[0m ")
+        console.log(" ======================================================= \n")
     }
 
     isV3(`./${input}`);
@@ -514,5 +538,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
         fakeWalls.push(...customData.fakeObstacles);
         fakeBombs.push(...customData.fakeBombNotes);
     }
+    console.timeEnd("Initialized in")
+    console.log("")
     return diff;
 }

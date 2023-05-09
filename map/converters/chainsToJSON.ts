@@ -1,6 +1,6 @@
 import IChain from "../../interfaces/objects/chain";
 import { V3 } from "../initialize";
-import { chains, fakeChains } from "../variables";
+import { chains, fakeChains } from "../../objects/chain";
 
 export function chainsToJSON(): Record<string, any>[] {
     const chainArr: any[] = [];

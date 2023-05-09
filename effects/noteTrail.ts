@@ -1,9 +1,7 @@
 import clamp from "../functions/clamp";
-import dupe from "../functions/dupe";
 import filter from "../functions/filter";
 import random from "../functions/random";
-import INote from "../interfaces/objects/note";
-import { notes } from "../map/variables";
+import Note, { notes } from "../objects/note";
 
 interface INoteTrailProperties {
     /**
@@ -89,10 +87,10 @@ export default class NoteTrail {
      * Pushes the trails to the map.
      */
     push() : void {
-        filter(notes, this.start, this.end).forEach((n: INote) => {
+        filter(notes, this.start, this.end).forEach((n: Note) => {
             for (let i = this.stretch / this.noteCount; i <= this.stretch; i += this.stretch / this.noteCount) {
                 n.customData.disableNoteGravity = true;
-                const duplicate = dupe(n);
+                const duplicate = n.duplicate();
                 const d = duplicate.customData;
                 const a = duplicate.animation;
 

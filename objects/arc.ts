@@ -1,11 +1,18 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomSliderData from "../interfaces/customData/customSliderData";
 import IArc from "../interfaces/objects/arc";
-import { arcs } from "../map/variables";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
+/**
+ * Contains all the fake arcs in the map.
+ */
+export const fakeArcs: Record<string, any>[] = [];
+/**
+ * Contains all the arcs in the map.
+ */
+export const arcs: Arc[] = [];
 interface arcProperties {
     /**
      * ### Time
@@ -540,5 +547,11 @@ export default class Arc implements IArc {
 
     push() : void {
         arcs.push(this);
+    }
+    
+    duplicate(): Arc {
+        const a = new Arc();
+        Object.assign(a, JSON.parse(JSON.stringify(this)));
+        return a;
     }
 }

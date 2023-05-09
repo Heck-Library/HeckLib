@@ -1,9 +1,17 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomWallData from "../interfaces/customData/customWallData";
 import IWall from "../interfaces/objects/wall";
-import { walls } from "../map/variables";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
+
+/**
+ * Contains all the walls in the map.
+ */
+export const walls: Wall[] = [];
+/**
+ * Contains all the fake walls in the map.
+ */
+export const fakeWalls: Record<string, any>[] = [];
 
 interface wallProperties {
     /**
@@ -416,5 +424,11 @@ export default class Wall implements IWall {
 
     push() : void {
         walls.push(this);
+    }
+
+    duplicate(): Wall {
+        const w = new Wall();
+        Object.assign(w, JSON.parse(JSON.stringify(this)));
+        return w;
     }
 }
