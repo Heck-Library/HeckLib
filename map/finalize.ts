@@ -603,14 +603,30 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
                 _type: n.type,
                 _cutDirection: n.direction,
                 _customData: {
-                    _track: n.customData.track,
-                    _noteJumpMovementSpeed: n.customData.njs,
-                    _noteJumpStartBeatOffset: n.customData.offset,
+                    _color: n.customData.color,
+                    _disableNoteGravity: n.customData.disableNoteGravity,
+                    _disableSpawnEffect: n.customData.disableSpawnEffect,
+                    _disableNoteLook: n.customData.disableNoteLook,
+                    _flip: n.customData.flip,
+                    _localRotation: n.customData.localRotation,
+                    _position: n.customData.position,
                     _fake: n.customData.fake,
                     _interactable: n.customData.interactable,
                     _scale: n.customData.scale,
-                    _position: n.customData.position,
+                    _noteJumpMovementSpeed: n.customData.njs,
+                    _noteJumpStartBeatOffset: n.customData.offset,
+                    _track: n.customData.track,
                     _rotation: n.customData.rotation,
+                    _animation: {
+                        _color: n.animation.color,
+                        _localRotation: n.animation.localRotation,
+                        _position: n.animation.position,
+                        _rotation: n.animation.rotation,
+                        _definitePosition: n.animation.definitePosition,
+                        _dissolve: n.animation.dissolve,
+                        _dissolveArrow: n.animation.dissolveArrow,
+                        _scale: n.animation.scale
+                    }
                 }
             };
         }
@@ -689,9 +705,9 @@ function wallsToJSON(): Record<string, any>[] {
                 }
             }
         }
-        if (Object.keys(wallJSON.customData.animation).length < 1)
+        if (wallJSON.customData && Object.keys(wallJSON.customData.animation).length < 1)
             delete wallJSON.customData.animation;
-        if (Object.keys(wallJSON.customData).length < 1)
+        if (wallJSON.customData && Object.keys(wallJSON.customData).length < 1)
             delete wallJSON.customData;
         if (V3FILE && wallJSON.customData && Object.keys(wallJSON.customData).includes("fake")) {
             delete wallJSON.customData.fake;

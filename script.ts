@@ -15,7 +15,5 @@ const DIFFICULTY = initialize(INPUT, OUTPUT);   // This initializes the map.
 
 finalize(DIFFICULTY, {
     sortObjects: true,
-    showModdedStats: {
-        walls: true
-    }
+    formatting: true
 });
