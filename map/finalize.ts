@@ -785,7 +785,8 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     }
 
     if (!V3FILE) {
-        environmentToJSON()
+        environmentToJSON();
+        const mats = JSON.parse(JSON.stringify(materials).replace(/"\w+":/g, '"_$1":'));
         let newDiff: IMapV2 = {
             _version: "2.2.0",
             _notes: notesToJSON(),
@@ -797,7 +798,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
                 _customEvents: customEventsToJSON(),
                 _environment: environmentToJSON(),
                 _pointDefinitions: pointDefinitionsToV2JSON(),
-                _materials: materials
+                _materials: mats
             }
         }
         if (properties && properties.sortObjects) {
