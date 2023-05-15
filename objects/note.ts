@@ -1,6 +1,7 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import INote from "../interfaces/objects/note";
+import { V3 } from "../map/initialize";
 import cutDirection from "../types/cutDirection";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
@@ -444,6 +445,11 @@ export default class Note implements INote {
      * Pushes the note to the map.
      */
     push() {
+        if (V3 && this.type === TYPE.BOMB) {
+            const e = new Error("Invalid bomb type in notes.");
+            e.cause = "Bomb type in notes is not supported in V3, use bombs instead.";
+            throw e;
+        }
         notes.push(this);
     }
 

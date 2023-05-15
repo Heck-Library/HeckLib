@@ -2,6 +2,7 @@
 import IObjectAnimation from "../interfaces/customData/animationData";
 import ICustomData from "../interfaces/customData/customNoteData";
 import IBomb from "../interfaces/objects/bomb";
+import { bombs } from "../map/variables";
 import lineIndex from "../types/lineIndex";
 import lineLayer from "../types/lineLayer";
 
@@ -234,6 +235,6 @@ export default class Bomb implements IBomb {
     }
 
     push() {
-        // bombs.push(this);
+        bombs.push(this);
     }
 }

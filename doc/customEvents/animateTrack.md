@@ -8,19 +8,21 @@ Class that creates a new `AnimateTrack` event. For simultaneously controlling th
 
 ```ts
 new AnimateTrack(time: number, {
-    track: Track,               // The track to be controlled
+    track: string|string[],     // The track to be controlled
     duration: number,           // The duration of the animation in beats
-    easing?: string,
-    position?: vec3anim,
-    localPosition?: vec3anim,
-    rotation?: vec3anim,
-    localRotation?: vec3anim,
-    scale?: vec3anim,
-    color?: vec4anim,
-    dissolve?: vec1anim,
-    dissolveArrow?: vec1anim,
-    interactable?: vec1anim,
-    time?: vec1anim,
+    easing?: string,            // Easing of the animation.
+    position?: vec3anim,        // The position offset of the object.
+    offsetPosition?: vec3anim,  // Same as position, but in V3 only.
+    localPosition?: vec3anim,   // The local position of the environment object.
+    rotation?: vec3anim,        // The rotation offset of the object.
+    offsetWorldRotation?: vec3anim, // Same as rotation, but in V3 only.
+    localRotation?: vec3anim,   // The local rotation offset of the object.
+    scale?: vec3anim,           // The scale offset of the object.
+    color?: vec4anim,           // The color of the object.
+    dissolve?: vec1anim,        // The dissolve value of the object.
+    dissolveArrow?: vec1anim,   // The dissolve value of the arrow.
+    interactable?: vec1anim,    // Whether the object is interactable or not.
+    time?: vec1anim,            // The time animation of the object.
 }).push();
 ```
 
@@ -28,7 +30,7 @@ new AnimateTrack(time: number, {
 
 | Property                                          | Type                                  | Description                                                                               |
 |---------------------------------------------------|---------------------------------------|-------------------------------------------------------------------------------------------|
-| `track`                                           | [`Track`](../types/track.md)          | The track to be controlled. (Required)                                                    |
+| `track`                                           | `string\|string[]`          | The track to be controlled. (Required)                                                    |
 | `duration`                                        | `number`                              | The duration of the animation in beats. (Required)                                        |
 | `easing`                                          | [`easing`](../enums/easings.md)       | The easing of the animation. If not specified, it will use the default easing (linear).   |
 | [`position`](../animations/position.md)           | [`vec3anim`](../types/vec3anim.md)    |  The position of the object.                                                              |

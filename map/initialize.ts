@@ -4,7 +4,6 @@ import IInfo from "../interfaces/info/info";
 import { readFileSync, writeFileSync } from "fs";
 import { JSONtoPointDefs } from "./converters/JSONtoPointDefs";
 import { JSONtoChains } from "./converters/JSONtoChains";
-import { JSONtoBombs } from "./converters/JSONtoBombs";
 import AnimateTrack from "../events/animateTrack";
 import AssignPathAnimation from "../events/assignPathAnimation";
 import AssignPlayerToTrack from "../events/assignPlayerTrack";
@@ -21,6 +20,7 @@ import { fakeNotes, notes } from "../objects/note";
 import { walls, fakeWalls } from "../objects/wall";
 import { chains } from "../objects/chain";
 import { arcs } from "../objects/arc";
+import Bomb from "../objects/bomb";
 
 //#region Variables
 const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
@@ -97,6 +97,34 @@ interface IInitParams {
 }
 
 export let V3: boolean;
+
+function JSONtoBombs(bombInput: Record<string, any>, NJS: number, offset: number): Bomb[] {
+    const bombArr: Bomb[] = [];
+    bombInput.forEach((b: any) => {
+        if (!V3) {
+            const bomb = new Bomb({
+                time: b._time,
+                x: b._lineIndex,
+                y: b._lineLayer
+            }, {
+                njs: NJS,
+                offset: offset
+            });
+            bombArr.push(bomb);
+        } else {
+            const bomb = new Bomb({
+                time: b.b,
+                x: b.x,
+                y: b.y1
+            }, {
+                njs: NJS,
+                offset: offset
+            });
+            bombArr.push(bomb);
+        }
+    });
+    return bombArr;
+}
 
 function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
     console.time("Read lights in")
@@ -541,5 +569,6 @@ export function initialize(input: string, output: string, properties?: IInitPara
     console.log("")
     console.timeEnd("\x1b[36mInitialized in")
     console.log("\x1b[0m")
+    console.log(" ===== Map Debug Below ===== \n");
     return diff;
 }

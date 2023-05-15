@@ -18,6 +18,8 @@ import Wall, { walls, fakeWalls } from "../objects/wall";
 import { fakeChains } from "../objects/chain";
 import { fakeArcs } from "../objects/arc";
 import V3JsonNote from "../interfaces/objects/json/v3/v3jsonNote";
+import { bombs } from "./variables";
+import Bomb from "../objects/bomb";
 
 interface IRGB {
     r: number;
@@ -720,6 +722,46 @@ function wallsToJSON(): Record<string, any>[] {
     console.timeEnd("Wrote walls in");
     return wallArr;
 }
+function bombsToJSON(): Record<string, any>[] {
+    console.time("Wrote bombs in");
+    const bombArr: any[] = [];
+    bombs.forEach((b: Bomb) => {
+        const bomb = {
+            b: b.time,
+            x: b.x,
+            y: b.y,
+            customData: {
+                track: b.customData.track,
+                noteJumpMovementSpeed: b.customData.njs,
+                noteJumpStartBeatOffset: b.customData.offset,
+                fake: b.customData.fake,
+                uninteractable: !b.customData.interactable,
+                scale: b.customData.scale,
+                coordinates: b.customData.position,
+                worldRotation: b.customData.rotation,
+                localRotation: b.customData.localRotation,
+                color: b.customData.color,
+                animation: {
+                    dissolve: b.animation.dissolve,
+                    offsetPosition: b.animation.position,
+                    offsetWorldRotation: b.animation.rotation,
+                    localRotation: b.animation.localRotation,
+                    scale: b.animation.scale,
+                    color: b.animation.color,
+                    definitePosition: b.animation.definitePosition
+                }
+            }
+        };
+        if (bomb.customData.fake) {
+            delete bomb.customData.fake;
+            fakeBombs.push(bomb);
+        } else {
+            bombArr.push(bomb);
+        }
+    });
+    console.timeEnd("Wrote bombs in");
+    return bombArr;
+}
 
 
 
@@ -739,6 +781,7 @@ export let V3FILE = V3;
  * });
  */
 export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
+    console.log("\n ===== Map Debug Above =====\n")
     console.time("\x1b[36mFinalized in");
     let precision = 5;
     if (properties) {
@@ -827,6 +870,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
     }
     if (V3FILE) {
         difficulty.colorNotes = notesToJSON();
+        difficulty.bombNotes = bombsToJSON();
         difficulty.burstSliders = chainsToJSON();
         difficulty.sliders = arcsToJSON();
         difficulty.obstacles = wallsToJSON();
