@@ -835,7 +835,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         difficulty.customData.environment = environmentToJSON();
         difficulty.customData.pointDefinitions = pointDefinitions;
         difficulty.customData.fakeObstacles = fakeWalls;
-        difficulty.customData.fakeNotes = fakeNotes;
+        difficulty.customData.fakeColorNotes = fakeNotes;
         difficulty.customData.fakeSliders = fakeArcs;
         difficulty.customData.fakeBurstSliders = fakeChains;
         difficulty.customData.fakeBombs = fakeBombs;
