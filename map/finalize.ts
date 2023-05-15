@@ -786,7 +786,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
 
     if (!V3FILE) {
         environmentToJSON();
-        const mats = JSON.parse(JSON.stringify(materials).replace(/"\w+":/g, '"_$1":'));
+        const mats = JSON.parse(JSON.stringify(materials).replace(/"(\w+)":/g, '"_$1":'));
         let newDiff: IMapV2 = {
             _version: "2.2.0",
             _notes: notesToJSON(),
