@@ -768,7 +768,8 @@ function bombsToJSON(): Record<string, any>[] {
 export let V3FILE = V3;
 /**
  * @param difficulty The difficulty that the map should be written to.
- * @param properties Miscellaneous properties for the script, such as how it's exported.
+ * @param properties Miscellaneous properties for the script, such as how it's exported and requirements.
+ * ```ts
  * Map.finalize(difficulty, {
  *     formatting: true,
  *     showModdedStats: {
@@ -779,6 +780,7 @@ export let V3FILE = V3;
  *         walls: true
  *     }
  * });
+ * ```
  */
 export function finalize(difficulty: any, properties?: IFinalizeProperties): void {
     console.log("\n ===== Map Debug Above =====\n")
