@@ -20,6 +20,7 @@ import { fakeArcs } from "../objects/arc";
 import V3JsonNote from "../interfaces/objects/json/v3/v3jsonNote";
 import { bombs } from "./variables";
 import Bomb from "../objects/bomb";
+import animationsToDefinitions from "./animsToDefs";
 
 interface IRGB {
     r: number;
@@ -270,6 +271,7 @@ interface IFinalizeProperties {
     envColorRightBoost?: IRGB;
     obstaclesColor?: IRGB;
     contributors?: IContributor[];
+    optimizeDefinitions?: boolean;
 };
 
 let formatting = false
@@ -803,6 +805,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.warnings) setWarnings(p.warnings);
         if (p.settings) setSettings(p.settings);
         if (p.roundNumbers) precision = p.roundNumbers;
+        if (p.optimizeDefinitions) animationsToDefinitions();
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
         console.timeEnd("Info.dat written in");
