@@ -581,7 +581,7 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
                     flip: n.customData.flip,
                     localRotation: n.customData.localRotation,
                     coordinates: n.customData.position,
-                    uninteractable: !n.customData.interactable,
+                    uninteractable: undefined,
                     scale: n.customData.scale,
                     noteJumpMovementSpeed: n.customData.njs,
                     noteJumpStartBeatOffset: n.customData.offset,
@@ -599,6 +599,7 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
                     }
                 }
             }
+            if (n.customData.interactable === false) noteJSON.customData.uninteractable = true;
         } else {
             noteJSON = {
                 _time: n.time,
