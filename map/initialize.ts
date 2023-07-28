@@ -213,12 +213,10 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
                 angle: n.a,
                 type: n.c,
                 direction: n.d
-            }, {
-                //Custom data
-                njs: NJS,
-                offset: offset,
             });
             if (n.customData) {
+                if (n.customData.njs) note.customData.njs = n.customData.njs;
+                if (n.customData.offset) note.customData.offset = n.customData.offset;
                 if (n.customData.color) note.customData.color = n.customData.color;
                 if (n.customData.fake) note.customData.fake = n.customData.fake;
                 if (n.customData.uninteractable) note.customData.interactable = n.customData.interactable;
@@ -242,12 +240,10 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
                 y: n._lineLayer,
                 type: n._type,
                 direction: n._cutDirection
-            }, {
-                //Custom data
-                njs: NJS,
-                offset: offset,
             });
             if (n._customData) {
+                if (n._customData._njs) note.customData.njs = n._customData._njs;
+                if (n._customData._offset) note.customData.offset = n._customData._offset;
                 if (n._customData._color) note.customData.color = n._customData._color;
                 if (n._customData._fake) note.customData.fake = n._customData._fake;
                 if (n._customData._interactable) note.customData.interactable = n._customData._interactable;
@@ -281,10 +277,6 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
                 y: w.y,
                 width: w.w,
                 height: w.h
-            }, {
-                //Custom data
-                njs: NJS,
-                offset: offset
             }));
         });
     } else {
@@ -296,10 +288,6 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
                 width: w._width,
                 x: w._lineIndex,
                 y: w._type
-            }, {
-                //Custom data
-                njs: NJS,
-                offset: offset
             }));
         });
     }

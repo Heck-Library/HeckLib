@@ -598,8 +598,10 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
                         scale: n.animation.scale
                     }
                 }
-            }
+            };
             if (n.customData.interactable === false) noteJSON.customData.uninteractable = true;
+            if (Object.values(noteJSON.customData.animation).every(el => el === undefined)) delete noteJSON.customData.animation;
+            if (Object.values(noteJSON.customData).every(el => el === undefined)) delete noteJSON.customData;
         } else {
             noteJSON = {
                 _time: n.time,
@@ -634,6 +636,8 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
                     }
                 }
             };
+            if (Object.values(noteJSON._customData._animation).every(el => el === undefined)) delete noteJSON._customData._animation;
+            if (Object.values(noteJSON._customData).every(el => el === undefined)) delete noteJSON._customData;
         }
         if (v3fake) {
             fakeNotes.push(noteJSON);
