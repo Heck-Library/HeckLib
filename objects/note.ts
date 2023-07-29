@@ -118,6 +118,19 @@ interface INoteProperties {
     direction?: cutDirection;
 };
 
+/**
+ * Direction enumerator, used for the direction of the note.
+ * 
+ * - Up: 0
+ * - Down: 1
+ * - Left: 2
+ * - Right: 3
+ * - Up Left: 4
+ * - Up Right: 5
+ * - Down Left: 6
+ * - Down Right: 7
+ * - Dot: 8
+ */
 enum DIRECTION {
     UP,
     DOWN,
@@ -130,6 +143,13 @@ enum DIRECTION {
     DOT
 }
 
+/**
+ * Type enumerator, used for the type of the note.
+ * 
+ * - Red: 0
+ * - Blue: 1
+ * - Bomb: 3 (Won't work in V3 due to bombs belonging to a separate array.)
+ */
 enum TYPE {
     /**
      * Red note type
@@ -145,6 +165,14 @@ enum TYPE {
     BOMB = 3
 }
 
+/**
+ * Line index enumerator, used for the horizontal position of the note.
+ * 
+ * - Left: 0
+ * - Left Middle: 1
+ * - Right Middle: 2
+ * - Right: 3
+ */
 enum LINE_INDEX {
     LEFT,
     LEFT_MIDDLE,
@@ -152,12 +180,98 @@ enum LINE_INDEX {
     RIGHT
 }
 
+/**
+ * Line layer enumerator, used for the vertical position of the note.
+ * 
+ * - Bottom: 0
+ * - Middle: 1
+ * - Top: 2
+ */
 enum LINE_LAYER {
     BOTTOM,
     MIDDLE,
     TOP
 }
 
+/**
+ * The note class, used for creating notes.
+ * 
+ * You can create a note with default values.
+ * ```ts
+ * new Note();
+ * ```
+ * 
+ * You can also create a note with the given time.
+ * ```ts
+ * new Note(0);
+ * ```
+ * 
+ * You can also create a note with the given properties.
+ * ```ts
+ * new Note({
+ *    time: number,
+ *     x: lineIndex,
+ *     y: lineLayer,
+ *     type: noteType,
+ *     direction: cutDirection,
+ *     angle: number, // V3 only
+ * });
+ * ```
+ * 
+ * You can also create a note with the given properties and custom data.
+ * ```ts
+ * new Note({
+ *    time: number // Vanilla properties here
+ * }, {
+ *    // This part will go under the custom data bracket of the note.
+ *     track: string | string[],
+ *     position: vec2,
+ *     rotation: vec3, // V2 only
+ *     worldRotation: vec3, // V3 only
+ *     localRotation: vec3,
+ *     fake: boolean,
+ *     interactable: boolean,
+ *     scale: vec3,
+ *     flip: vec2,
+ *     color: vec4,
+ *     offset: number,
+ *     njs: number,
+ *     disableNoteGravity: boolean,
+ *     disableNoteLook: boolean,
+ *     disableSpawnEffect: boolean,
+ * });
+ * ```
+ * 
+ * You can also create a note with the given properties, custom data, and animation.
+ * ```ts
+ * new Note({
+ *     time: number // Vanilla properties here
+ * }, {
+ *  // This part will go under the custom data bracket of the note.
+ *     track: string | string[], // Custom data here
+ * }, {
+ * // This part will go under the animation bracket of the note inside the custom data.
+ *     position: vec3anim, // V2 only
+ *     offsetPosition: vec3anim, // V3 only
+ *     rotation: vec3anim, // V2 only
+ *     offsetWorldRotation: vec3anim, // V3 only
+ *     dissolve: vec1anim,
+ *     dissolveArrow: vec1anim,
+ *     interactable: vec1anim,
+ *     localRotation: vec3anim,
+ *     scale: vec3anim,
+ *     color: vec4anim,
+ *     definitePosition: vec3anim
+ * });
+ * ```
+ * 
+ * To push the note, simply add `.push();` at the end of the note.
+ * ```ts
+ * new Note({
+ *     time: 69
+ * }).push();
+ * ```
+ */
 export default class Note implements INote {
 
     /**
