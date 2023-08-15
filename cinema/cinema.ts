@@ -365,6 +365,9 @@ export default class Cinema implements ICinemaConfig {
         this.additionalScreens.push(screen);
         return this;
     }
+    /**
+     * Pushes the current state of the cinema config to the cinema-video.json file.
+     */
     push() {
         writeFileSync('cinema-video.json', JSON.stringify(this, null, 4));
     }
