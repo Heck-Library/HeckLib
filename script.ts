@@ -8,7 +8,7 @@ const OUTPUT = Difficulty.EXPERT_PLUS_LAWLESS;  // This is your modded output di
 const DIFFICULTY = initialize(INPUT, OUTPUT);   // This initializes the map.
 
 // REMOVE THIS FOREACH LOOP IF YOU DO NOT WISH TO USE NOODLE
-notes.forEach(note => {
+notes.forEach((note: Note) => {
     note.customData = {};
     note.animation = {};
     note.customData.njs = MAPDATA.njs;
