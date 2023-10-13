@@ -7,6 +7,6 @@
     },
     "ts-node": {
         "typeCheck": false,
-        "swc": true
+        "swc": false
     }
 }

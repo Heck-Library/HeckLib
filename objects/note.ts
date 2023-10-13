@@ -561,7 +561,6 @@ export default class Note implements INote {
     push() {
         if (V3 && this.type === TYPE.BOMB) {
             const e = new Error("Invalid bomb type in notes.");
-            e.cause = "Bomb type in notes is not supported in V3, use bombs instead.";
             throw e;
         }
         notes.push(this);
