@@ -666,7 +666,7 @@ function wallsToJSON(): Record<string, any>[] {
                     noteJumpStartBeatOffset: w.customData.offset,
                     fake: w.customData.fake,
                     uninteractable: !w.customData.interactable,
-                    scale: w.customData.scale,
+                    size: w.customData.scale,
                     coordinates: w.customData.position,
                     worldRotation: w.customData.rotation,
                     localRotation: w.customData.localRotation,

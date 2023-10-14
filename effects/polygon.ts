@@ -1,4 +1,5 @@
 import AnimateTrack from "../events/animateTrack";
+import IObjectAnimation from "../interfaces/customData/animationData";
 import { MAPDATA } from "../map/initialize";
 import Wall from "../objects/wall";
 import { vec3, vec4 } from "../types/vectors";
@@ -30,6 +31,7 @@ interface IPolygonParams {
     rotations?: number;
     dissolveTime?: number;
     color: vec4;
+    animation?: IObjectAnimation;
 }
 /**
  * Creates a polygon
@@ -59,11 +61,12 @@ export default class Polygon implements IPolygonParams {
     rotations?: number;
     dissolveTime?: number;
     color: vec4;
+    animation?: IObjectAnimation;
     
     constructor();
     constructor(parameters: IPolygonParams);
     constructor(parameters?: IPolygonParams) {
-        const { time, track, duration, radius, amount, h, l, position, rotations, dissolveTime, color } = parameters;
+        const { time, track, duration, radius, amount, h, l, position, rotations, dissolveTime, color, animation } = parameters;
         this.time = (time) ? time : 0;
         this.track = (track) ? track : "track1";
         this.duration = (duration) ? duration : 4;
@@ -75,10 +78,11 @@ export default class Polygon implements IPolygonParams {
         this.rotations = (rotations) ? rotations : 0;
         this.dissolveTime = (dissolveTime) ? dissolveTime : 0;
         this.color = (color) ? color : [1, 1, 1, 1];
+        this.animation = animation;
     }
 
     push(): void {
-        const { time, track, duration, radius, amount, h, l, position, rotations, dissolveTime, color } = this;
+        const { time, track, duration, radius, amount, h, l, position, rotations, dissolveTime, color, animation } = this;
         for (let i = 0; i < amount; i++) {
             let angle = Math.PI * 2 / amount;
             let rot = 360 / amount * i;
@@ -86,7 +90,7 @@ export default class Polygon implements IPolygonParams {
             let w = 2 * radius * Math.tan(Math.PI / amount);
             let sx = position[0] + Math.cos(radians) * radius - (w / 2);
             let sy = position[0] + Math.sin(radians) * radius - (h / 2);
-            new Wall({
+            const wall = new Wall({
                 //Vanilla data
                 time: time + MAPDATA.halfJumpDuration,
                 duration: duration,
@@ -98,11 +102,10 @@ export default class Polygon implements IPolygonParams {
                 rotation: [0, 0, 0],
                 localRotation: [0, 0, 90 + rot],
                 position: [sx, sy]
-            }, {
-                //Animation data
-                definitePosition: [[0, 0, position[2], 0], [0, 0, position[2], 1]],
-                color: (color) ? color : [1, 1, 1, 1]
-            }).push();
+            }, animation);
+            wall.animation.definitePosition = position;
+            wall.animation.color = (color) ? color : [1, 1, 1, 1];
+            wall.push();
         }
         if (rotations) {
             new AnimateTrack(time - 2, {
