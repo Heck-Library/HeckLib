@@ -1,6 +1,6 @@
 
 export default interface IPPProperty {
-    name: string;
+    id: string;
     type: 'Texture' | 'Float' | 'Color' | 'Integer';
     value: any;
 }
