@@ -3,7 +3,7 @@ import IILightWithId from "./iLightWithId";
 import ITubeBloomPrePassLight from "./tubeBloom";
 
 export default interface IComponents {
-    ILightWithId: IILightWithId;
-    BloomFogEnvironment: IBloomFogEnvironment;
-    TubeBloomPrePassLight: ITubeBloomPrePassLight;
+    ILightWithId?: IILightWithId;
+    BloomFogEnvironment?: IBloomFogEnvironment;
+    TubeBloomPrePassLight?: ITubeBloomPrePassLight;
 }
