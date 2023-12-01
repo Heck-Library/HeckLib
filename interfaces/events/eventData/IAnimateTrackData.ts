@@ -65,7 +65,7 @@ export default interface IAnimateTrackData {
      * { "duration": number }
      * ```
      */
-    duration: number;
+    duration?: number;
     /**
      * ## Easing
      * 
