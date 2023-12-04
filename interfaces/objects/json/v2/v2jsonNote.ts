@@ -2,7 +2,7 @@ import cutDirection from "../../../../types/cutDirection";
 import lineIndex from "../../../../types/lineIndex";
 import lineLayer from "../../../../types/lineLayer";
 import noteType from "../../../../types/noteType";
-import { vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "../../../../types/vectors";
+import { colorAnim, vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "../../../../types/vectors";
 
 export default interface V2JsonNote {
     _time: number;
@@ -34,7 +34,7 @@ export default interface V2JsonNote {
             _scale?: vec3anim;
             _dissolve?: vec1anim;
             _dissolveArrow?: vec1anim;
-            _color?: vec4anim;
+            _color?: colorAnim | vec4anim;
         }
     }
 }

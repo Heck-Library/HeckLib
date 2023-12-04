@@ -1,7 +1,7 @@
 import cutDirection from "../../../../types/cutDirection";
 import lineIndex from "../../../../types/lineIndex";
 import lineLayer from "../../../../types/lineLayer";
-import { vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "../../../../types/vectors";
+import { colorAnim, vec1anim, vec2, vec3, vec3anim, vec4, vec4anim } from "../../../../types/vectors";
 import ICustomData from "../../../customData/customNoteData";
 
 export default interface V3JsonNote {
@@ -35,7 +35,7 @@ export default interface V3JsonNote {
             scale?: vec3anim;
             dissolve?: vec1anim;
             dissolveArrow?: vec1anim;
-            color?: vec4anim;
+            color?: colorAnim | vec4anim;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { vec1anim, vec3anim, vec4anim } from "../../../types/vectors";
+import { colorAnim, vec1anim, vec3anim, vec4anim } from "../../../types/vectors";
 
 export default interface IAnimateTrackData {
     /**
@@ -242,7 +242,7 @@ export default interface IAnimateTrackData {
      * { "color": vec4anim }
      * ```
      */
-    color?: vec4anim;
+    color?: vec4anim | colorAnim;
     /**
      * ## Dissolve
      * 

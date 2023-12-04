@@ -1,4 +1,4 @@
-import { vec1anim, vec3anim, vec4anim } from "../../../types/vectors";
+import { colorAnim, vec1anim, vec3anim, vec4anim } from "../../../types/vectors";
 
 export default interface IPathAnimData {
     offsetPosition?: vec3anim;
@@ -34,7 +34,7 @@ export default interface IPathAnimData {
     /**
      * The color animation.
      */
-    color?: vec4anim;
+    color?: vec4anim | colorAnim;
     /**
      * The dissolve animation.
      */

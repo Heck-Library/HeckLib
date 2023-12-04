@@ -1,5 +1,5 @@
 import IPathAnimData from "../interfaces/events/eventData/IPathAnimData";
-import { vec1anim, vec3anim, vec4anim } from "../types/vectors";
+import { colorAnim, vec1anim, vec3anim, vec4anim } from "../types/vectors";
 import { MyBaseEvent } from "./baseEvent";
 
 export default class AssignPathAnimation extends MyBaseEvent {
@@ -269,8 +269,8 @@ export default class AssignPathAnimation extends MyBaseEvent {
      * { "color": vec4anim }
      * ```
      */
-    get color(): vec4anim { return this.data.color; }
-    set color(value: vec4anim) { this.data.color = value; }
+    get color(): vec4anim | colorAnim { return this.data.color; }
+    set color(value: vec4anim | colorAnim) { this.data.color = value; }
 
     /**
      * ## Interactable

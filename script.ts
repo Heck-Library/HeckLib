@@ -19,7 +19,6 @@ notes.forEach((note: Note) => {
 
 
 
-
 // #endregion MAP SCRIPT
 
 finalize(DIFFICULTY, {
