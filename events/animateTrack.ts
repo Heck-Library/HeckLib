@@ -372,6 +372,15 @@ export default class AnimateTrack extends MyBaseEvent {
     get timeAnimation(): vec1anim { return this.data.time; }
     set timeAnimation(value: vec1anim) { this.data.time = value; }
 
+    /**
+     * ## Repeat
+     * 
+     * This property controls how many times the animation will repeat. This is useful for making animations that loop.
+     * 
+     * This is a number above 0. If this is not set, it will NOT repeat.
+     */
+    get repeat(): number { return this.data.repeat; }
+    set repeat(value: number) { this.data.repeat = value; }
     //#endregion Getters and setters
 
     /**

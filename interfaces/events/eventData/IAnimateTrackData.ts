@@ -331,4 +331,10 @@ export default interface IAnimateTrackData {
      * Fog height
      */
     height?: vec1anim;
+    /**
+     * Repeat
+     * 
+     * This property controls how many times the animation will repeat. If this is not set, it will NOT repeat.
+     */
+    repeat?: number;
 };
