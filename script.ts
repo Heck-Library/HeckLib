@@ -1,9 +1,6 @@
 import { Difficulty, MAPDATA, initialize } from "./map/initialize";
 import { finalize } from "./map/finalize";
 import Note, { notes } from "./objects/note";
-import AnimateComponent from "./events/animateComponent";
-import AnimateTrack from "./events/animateTrack";
-import ease from "./consts/easing";
 
 const INPUT = Difficulty.EXPERT_PLUS_STANDARD;  // This is your vanilla/input difficulty.
 const OUTPUT = Difficulty.EXPERT_PLUS_LAWLESS;  // This is your modded output difficulty.
