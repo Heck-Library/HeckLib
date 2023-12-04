@@ -6,8 +6,9 @@ export type vec2 = [number, number];
 export type vec3 = [number, number, number];
 export type vec4 = [number, number, number, number];
 
-export type vec1Keyframe = [number, number, string?, string?];
-export type vec3Keyframe = [number, number, number, number, string?, string?];
+export type vec1Keyframe = [number, number, easingType?];
+export type vec3Keyframe =  [number, number, number, number, easingType?, "SplineCatmullRom"?] |
+                            [number, number, number, number, "SplineCatmullRom"];
 export type vec4Keyframe = [number, number, number, number, number, string?, string?];
 export type colorKeyframe = BaseColor |
                             [number, number, number, number, number, easingType | colorModifier | undefined] |
