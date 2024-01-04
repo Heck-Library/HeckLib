@@ -115,7 +115,7 @@ function JSONtoBombs(bombInput: Record<string, any>, NJS: number, offset: number
             const bomb = new Bomb({
                 time: b.b,
                 x: b.x,
-                y: b.y1
+                y: b.y
             }, {
                 njs: NJS,
                 offset: offset
