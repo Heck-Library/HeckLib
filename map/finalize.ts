@@ -674,8 +674,8 @@ function wallsToJSON(): Record<string, any>[] {
                     animation: {
                         dissolve: w.animation.dissolve,
                         dissolveArrow: w.animation.dissolveArrow,
-                        position: w.animation.position,
-                        rotation: w.animation.rotation,
+                        offsetPosition: w.animation.position,
+                        offsetWorldRotation: w.animation.rotation,
                         localRotation: w.animation.localRotation,
                         scale: w.animation.scale,
                         color: w.animation.color,
