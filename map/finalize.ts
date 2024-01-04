@@ -743,6 +743,7 @@ function bombsToJSON(): Record<string, any>[] {
                 noteJumpStartBeatOffset: b.customData.offset,
                 fake: b.customData.fake,
                 uninteractable: !b.customData.interactable,
+                spawnEffect: !b.customData.disableSpawnEffect,
                 scale: b.customData.scale,
                 coordinates: b.customData.position,
                 worldRotation: b.customData.rotation,
@@ -892,7 +893,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         difficulty.customData.fakeColorNotes = fakeNotes;
         difficulty.customData.fakeSliders = fakeArcs;
         difficulty.customData.fakeBurstSliders = fakeChains;
-        difficulty.customData.fakeBombs = fakeBombs;
+        difficulty.customData.fakeBombNotes = fakeBombs;
         difficulty.customData.materials = materials;
         if (properties && properties.sortObjects) {
             console.time("Objects sorted in")
