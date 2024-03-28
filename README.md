@@ -10,6 +10,9 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 ### Node.js
 > Node.js is the framework used to run the script in the first place, it can be found <a href="https://nodejs.org/en/">here</a>. There's two downloads, LTS and Current, it shouldn't matter which one you use but I recommend the Current version.
 
+### Git
+> Git is needed for the HeckLib installer to work properly, it can be installed <a href="https://git-scm.com">here</a>
+
 ### Visual Studio Code
 > You need to have <a href="https://code.visualstudio.com/">VSC</a> installed on your PC, you can install it from <a href="https://code.visualstudio.com/">here.</a>
 > 
