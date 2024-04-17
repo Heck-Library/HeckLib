@@ -48,4 +48,4 @@ Documentation is built into the library using `JSDoc` which is a standard for do
 
 ***
 
-I am open to all feedback on Discord: `Jevk#0004`
+If you have any questions, you can contact me on Discord: `Jevk#0004`
