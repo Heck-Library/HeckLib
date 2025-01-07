@@ -110,6 +110,15 @@ function JSONtoBombs(bombInput: Record<string, any>, NJS: number, offset: number
                 njs: NJS,
                 offset: offset
             });
+
+            if (b._customData) {
+                Object.keys(b._customData).forEach((key: string) => {
+                    if (key != "_animation") bomb.customData[key] = b._customData[key];
+                    if (b._customData._animation)
+                        bomb.animation[key] = b._customData._animation[key];
+                });
+            }
+
             bombArr.push(bomb);
         } else {
             const bomb = new Bomb({
@@ -120,6 +129,15 @@ function JSONtoBombs(bombInput: Record<string, any>, NJS: number, offset: number
                 njs: NJS,
                 offset: offset
             });
+
+            if (b.customData) {
+                Object.keys(b.customData).forEach((key: string) => {
+                    if (key != "animation") bomb.customData[key] = b.customData[key];
+                    if (b.customData.animation)
+                        bomb.animation[key] = b.customData.animation[key];
+                });
+            }
+
             bombArr.push(bomb);
         }
     });
@@ -141,6 +159,7 @@ function JSONtoLights(lightInput: Record<string, any>[]): ILightEvent [] {
                 value: l.i,
                 float: l.f
             }, l.customData);
+
             lightArr.push(light);
         });
     } else {
@@ -177,7 +196,7 @@ function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number
     console.time("Read arcs in");
     const arcArr: Arc[] = [];
     arcInput.forEach((c: Record<string, any>) => {
-        arcArr.push(new Arc({
+        const arc = new Arc({
             time: c.b,
             x: c.x,
             y: c.y,
@@ -194,7 +213,17 @@ function JSONtoArcs(arcInput: Record<string, any>[], NJS: number, offset: number
                 njs: NJS,
                 offset: offset
             }
-        }));
+        });
+
+        if (c.customData) {
+            Object.keys(c.customData).forEach((key: string) => {
+                if (key != "animation") arc.customData[key] = c.customData[key];
+                if (c.customData.animation)
+                    arc.animation[key] = c.customData.animation[key];
+            });
+        }
+
+        arcArr.push(arc);
     });
     console.timeEnd("Read arcs in");
     return arcArr;
@@ -213,23 +242,18 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
                 angle: n.a,
                 type: n.c,
                 direction: n.d
+            }, {
+                njs: NJS,
+                offset: offset
             });
             if (n.customData) {
-                if (n.customData.njs) note.customData.njs = n.customData.njs;
-                if (n.customData.offset) note.customData.offset = n.customData.offset;
-                if (n.customData.color) note.customData.color = n.customData.color;
-                if (n.customData.fake) note.customData.fake = n.customData.fake;
-                if (n.customData.uninteractable) note.customData.interactable = n.customData.interactable;
-                if (n.customData.scale) note.customData.scale = n.customData.scale;
-                if (n.customData.disableNoteGravity) note.customData.disableNoteGravity = n.customData.disableNoteGravity;
-                if (n.customData.disableSpawnEffect) note.customData.disableSpawnEffect = n.customData.disableSpawnEffect;
-                if (n.customData.disableNoteLook) note.customData.disableNoteLook = n.customData.disableNoteLook;
-                if (n.customData.flip) note.customData.flip = n.customData.flip;
-                if (n.customData.localRotation) note.customData.localRotation = n.customData.localRotation;
-                if (n.customData.coordinates) note.customData.position = n.customData.coordinates;
-                if (n.customData.worldRotation) note.customData.rotation = n.customData.worldRotation;
+                Object.keys(n.customData).forEach((key: string) => {
+                    if (key != "animation") note.customData[key] = n.customData[key];
+                    if (n.customData.animation)
+                        note.animation[key] = n.customData.animation[key];
+                });
             }
-            notes.push(note)
+            notes.push(note);
         });
     } else {
         if (noteInput) noteInput.forEach((n: Record<string, any>) => {
@@ -240,22 +264,16 @@ function JSONtoNotes(noteInput: Record<string, any>[], NJS: number, offset: numb
                 y: n._lineLayer,
                 type: n._type,
                 direction: n._cutDirection
+            }, {
+                njs: NJS,
+                offset: offset
             });
             if (n._customData) {
-                if (n._customData._njs) note.customData.njs = n._customData._njs;
-                if (n._customData._offset) note.customData.offset = n._customData._offset;
-                if (n._customData._color) note.customData.color = n._customData._color;
-                if (n._customData._fake) note.customData.fake = n._customData._fake;
-                if (n._customData._interactable) note.customData.interactable = n._customData._interactable;
-                if (n._customData._scale) note.customData.scale = n._customData._scale;
-                if (n._customData._disableNoteGravity) note.customData.disableNoteGravity = n._customData._disableNoteGravity;
-                if (n._customData._disableSpawnEffect) note.customData.disableSpawnEffect = n._customData._disableSpawnEffect;
-                if (n._customData._disableNoteLook) note.customData.disableNoteLook = n._customData._disableNoteLook;
-                if (n._customData._flip) note.customData.flip = n._customData._flip;
-                if (n._customData._localRotation) note.customData.localRotation = n._customData._localRotation;
-                if (n._customData._position) note.customData.position = n._customData._position;
-                if (n._customData._rotation) note.customData.rotation = n._customData._rotation;
-                if (n._customData._cutDirection) note.customData.cutDirection = n._customData._cutDirection;
+                Object.keys(n._customData).forEach((key: string) => {
+                    if (key != "_animation") note.customData[key] = n._customData[key];
+                    if (n._customData._animation)
+                        note.animation[key] = n._customData._animation[key];
+                });
             }
             noteArr.push(note);
         });
@@ -269,7 +287,7 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
     const wallArr: Wall[] = [];
     if (V3) {
         if (wallInput) wallInput.forEach((w: Record<string, any>) => {
-            wallArr.push(new Wall({
+            const wall = new Wall({
                 //Vanilla data
                 time: w.b,
                 duration: w.d,
@@ -277,18 +295,38 @@ function JSONtoWalls(wallInput: Record<string, any>[], NJS: number, offset: numb
                 y: w.y,
                 width: w.w,
                 height: w.h
-            }));
+            });
+
+            if (w.customData) {
+                Object.keys(w.customData).forEach((key: string) => {
+                    if (key != "animation") wall.customData[key] = w.customData[key];
+                    if (w.customData.animation)
+                        wall.animation[key] = w.customData.animation[key];
+                });
+            }
+
+            wallArr.push(wall);
         });
     } else {
         if (wallInput) wallInput.forEach((w: Record<string, any>) => {
-            wallArr.push(new Wall({
+            const wall = new Wall({
                 //Vanilla data
                 time: w._time,
                 duration: w._duration,
                 width: w._width,
                 x: w._lineIndex,
                 y: w._type
-            }));
+            });
+
+            if (w._customData) {
+                Object.keys(w._customData).forEach((key: string) => {
+                    if (key != "_animation") wall.customData[key] = w._customData[key];
+                    if (w._customData._animation)
+                        wall.animation[key] = w._customData._animation[key];
+                });
+            }
+
+            wallArr.push(wall);
         });
     }
     console.timeEnd("Read walls in");
@@ -428,9 +466,13 @@ function getJumps() {
  */
 export function initialize(input: string, output: string, properties?: IInitParams) {
     console.time("\x1b[36mInitialized in");
+
     if (infoFile.difficultyBeatmapSets ) infoFile.difficultyBeatmapSets.forEach((set) => {
         set.difficultyBeatmaps.forEach((difficulty) => {
-            if (difficulty.beatmapFilename.includes(output)) {
+            if (difficulty.beatmapFilename.includes(input)) {
+                if (properties == null || typeof properties === 'undefined') {
+                    properties = { njs: difficulty.noteJumpMovementSpeed, offset: difficulty.noteJumpStartBeatOffset };
+                }
                 if (!difficulty.customData) difficulty.customData = {};
             }
         });
