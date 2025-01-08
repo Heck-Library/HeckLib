@@ -16,13 +16,12 @@ export function chainsToJSON(): Record<string, any>[] {
             ty: c.endY,
             sc: c.segments,
             s: c.squish,
-            customData: {
-                ...c.customData,
-                animation: {
-                    ...c.animation
-                }
-            }
         };
+        if (c.customData) chainJSON.customData = { ...c.customData };
+        if (c.animation) {
+            if (!chainJSON.customData) chainJSON.customData = {};
+            chainJSON.customData.animation = {...c.animation};
+        }
         chainJSON = JSON.parse(JSON.stringify(chainJSON)
             .replace('"njs":', '"noteJumpMovementSpeed":')
             .replace('"offset":', '"noteJumpStartBeatOffset":')
