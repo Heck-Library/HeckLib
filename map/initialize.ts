@@ -21,6 +21,16 @@ import { walls, fakeWalls } from "../objects/wall";
 import { chains } from "../objects/chain";
 import { arcs } from "../objects/arc";
 import Bomb from "../objects/bomb";
+import ApplyPostProcessing from "../events/applyPostProcessing";
+import DeclareCullingMask from "../events/declareCullingMask";
+import DeclareRenderTexture from "../events/declareRenderTexture";
+import DestroyTexture from "../events/destroyTexture";
+import DestroyPrefab from "../events/destroyPrefab";
+import InstantiatePrefab from "../events/instantiatePrefab";
+import SetAnimatorProperty from "../events/setAnimatorProperty";
+import { SetCameraProperty } from "../events/setCameraProperty";
+import SetGlobalProperty from "../events/setGlobalProperty";
+import SetMaterialProperty from "../events/setMaterialProperty";
 
 //#region Variables
 const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
@@ -380,11 +390,7 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
     }
     if (V3) {
         eventInput.forEach((e: Record<string, any>) => {
-            const f = JSON.parse(
-                JSON.stringify(e)
-                    .replace('"offsetPosition":', '"position":')
-                    .replace('"offsetWorldRotation":', '"rotation":')
-            );
+            const f = JSON.parse(JSON.stringify(e));
             switch (f.t) {
                 case "AnimateTrack":
                     if (!e.d.track)
@@ -412,6 +418,39 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
                     if (!e.d.duration)
                         f.d.duration = 1;
                     eventArr.push(new AnimateComponent(f.b, f.d));
+                    break;
+                case "Blit":
+                    eventArr.push(new ApplyPostProcessing(f.b, f.d));
+                    break;
+                case "DeclareCullingMask":
+                    eventArr.push(new DeclareCullingMask(f.b, f.d));
+                    break;
+                case "DeclareRenderTexture":
+                    eventArr.push(new DeclareRenderTexture(f.b, f.d));
+                    break;
+                case "DestroyPrefab":
+                    eventArr.push(new DestroyPrefab(f.b, f.d));
+                    break;
+                case "DestroyTexture":
+                    eventArr.push(new DestroyTexture(f.b, f.d));
+                    break;
+                case "InstantiatePrefab":
+                    eventArr.push(new InstantiatePrefab(f.b, f.d));
+                    break;
+                case "SetAnimatorProperty":
+                    eventArr.push(new SetAnimatorProperty(f.b, f.d));
+                    break;
+                case "SetCameraProperty":
+                    eventArr.push(new SetCameraProperty(f.b, f.d));
+                    break;
+                case "SetGlobalProperty":
+                    eventArr.push(new SetGlobalProperty(f.b, f.d));
+                    break;
+                case "SetMaterialProperty":
+                    eventArr.push(new SetMaterialProperty(f.b, f.d));
+                    break;
+                default:
+                    console.log(`Unknown event type: ${f.t}`);
                     break;
             }
         });
@@ -567,7 +606,9 @@ export function initialize(input: string, output: string, properties?: IInitPara
         }
         if (!diff.customData.fakeColorNotes) {
             diff.customData.fakeColorNotes = [];
-        } 
+        } else {
+            fakeNotes.push(...JSONtoNotes(diff.customData.fakeColorNotes, NJS, offset));
+        }
         if (!diff.customData.fakeBurstSliders) {
             diff.customData.fakeBurstSliders = [];
         }

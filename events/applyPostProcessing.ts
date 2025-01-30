@@ -2,7 +2,7 @@ import { MyBaseEvent } from "../events/baseEvent";
 import IPPData from "../interfaces/events/eventData/IPPData";
 
 export default class ApplyPostProcessing extends MyBaseEvent {
-    public readonly type: string = "ApplyPostProcessing";
+    public readonly type: string = "Blit";
     declare data: IPPData;
 
     constructor(time: number);
@@ -16,6 +16,6 @@ export default class ApplyPostProcessing extends MyBaseEvent {
 
         super(time, data);
 
-        this.type = "ApplyPostProcessing";
+        this.type = "Blit";
     }
 }

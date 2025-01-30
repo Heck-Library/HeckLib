@@ -3,6 +3,7 @@ enum PLUGIN {
     CHROMA = "Chroma",
     MAPPING_EXTENSIONS = "Mapping Extensions",
     CINEMA = "Cinema",
+    VIVIFY = "Vivify",
 }
 
 export default PLUGIN;

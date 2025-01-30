@@ -6,4 +6,5 @@ export default interface IMatPropertyData {
     duration?: number;
     easing?: string;
     properties?: IPPProperty[];
+    repeat?: number;
 }

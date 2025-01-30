@@ -11,7 +11,7 @@ import noteType from "../types/noteType";
 /**
  * Contains all the fake notes in the map.
  */
-export const fakeNotes: Record<string, any>[] = [];
+export const fakeNotes: Note[] = [];
 /**
  * Contains all the notes in the map. 
  */

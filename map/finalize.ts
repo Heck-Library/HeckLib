@@ -34,6 +34,13 @@ interface IContributor {
     iconPath: string;
 }
 
+interface IAssetBundles {
+    windows2019?: number,
+    windows2021?: number,
+    android2019?: number,
+    android2021?: number
+}
+
 interface IFinalizeProperties {
     /**
      * ### Sort Objects
@@ -272,6 +279,7 @@ interface IFinalizeProperties {
     obstaclesColor?: IRGB;
     contributors?: IContributor[];
     optimizeDefinitions?: boolean;
+    assetBundles?: IAssetBundles
 };
 
 let formatting = false
@@ -640,7 +648,6 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
             if (Object.values(noteJSON._customData).every(el => el === undefined)) delete noteJSON._customData;
         }
         if (v3fake) {
-            fakeNotes.push(noteJSON);
         } else
             noteArr.push(noteJSON);
     });
@@ -799,6 +806,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.formatting) formatting = true;
         console.time("Info.dat written in");
         if (p.contributors) infoFile.customData.contributors = p.contributors;
+        if (p.assetBundles) infoFile.customData.assetBundle = p.assetBundles;
         if (p.colorLeft) setColor(p.colorLeft, "colorLeft");
         if (p.colorRight) setColor(p.colorRight, "colorRight");
         if (p.envColorLeft) setColor(p.envColorLeft, "envColorLeft");

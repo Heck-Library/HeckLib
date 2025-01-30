@@ -14,5 +14,5 @@ export default function random(min : number, max : number, precision? : number):
     if (typeof precision !== "undefined" && precision !== null) {
         p = Math.pow(p, precision);
     }
-    return Math.round((Math.random() * (max - min + 1) + min) * p) / p;
+    return Math.round((Math.random() * (max - min) + min) * p) / p;
 }
