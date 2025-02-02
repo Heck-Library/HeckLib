@@ -13,7 +13,7 @@ import IEnvironment from "../interfaces/environment/environment";
 import IGeometryEnvironment from "../interfaces/environment/geometry";
 import ILightEvent from "../interfaces/environment/lightEvent";
 import V2JsonNote from "../interfaces/objects/json/v2/v2jsonNote";
-import { notes, fakeNotes} from "../objects/note";
+import Note, { notes, fakeNotes} from "../objects/note";
 import Wall, { walls, fakeWalls } from "../objects/wall";
 import { fakeChains } from "../objects/chain";
 import { fakeArcs } from "../objects/arc";
@@ -654,6 +654,95 @@ function notesToJSON(): V2JsonNote[] | V3JsonNote[] {
     console.timeEnd("Wrote notes in");
     return noteArr;
 }
+function fakeNotesToJSON(): V2JsonNote[] | V3JsonNote[] {
+    console.time("Wrote fake notes in");
+    const noteArr: any[] = [];
+    if (fakeNotes) fakeNotes.forEach((n: Note) => {
+        let noteJSON: V2JsonNote | V3JsonNote;
+        let v3fake = false;
+        if (V3FILE) {
+            v3fake = n.customData.fake
+            noteJSON = {
+                b: n.time,
+                x: n.x,
+                y: n.y,
+                c: n.type,
+                d: n.direction,
+                a: n.angle,
+                f: 0,
+                customData: {
+                    color: n.customData.color,
+                    disableNoteGravity: n.customData.disableNoteGravity,
+                    spawnEffect: !n.customData.disableSpawnEffect,
+                    disableNoteLook: n.customData.disableNoteLook,
+                    flip: n.customData.flip,
+                    localRotation: n.customData.localRotation,
+                    coordinates: n.customData.position,
+                    uninteractable: n.customData.interactable,
+                    scale: n.customData.scale,
+                    noteJumpMovementSpeed: n.customData.njs,
+                    noteJumpStartBeatOffset: n.customData.offset,
+                    track: n.customData.track,
+                    worldRotation: n.customData.rotation,
+                    animation: {
+                        color: n.animation.color,
+                        localRotation: n.animation.localRotation,
+                        offsetPosition: n.animation.position,
+                        offsetWorldRotation: n.animation.rotation,
+                        definitePosition: n.animation.definitePosition,
+                        dissolve: n.animation.dissolve,
+                        dissolveArrow: n.animation.dissolveArrow,
+                        scale: n.animation.scale
+                    }
+                }
+            };
+            if (n.customData.interactable === false) noteJSON.customData.uninteractable = true;
+            if (Object.values(noteJSON.customData.animation).every(el => el === undefined)) delete noteJSON.customData.animation;
+            if (Object.values(noteJSON.customData).every(el => el === undefined)) delete noteJSON.customData;
+        } else {
+            noteJSON = {
+                _time: n.time,
+                _lineIndex: n.x,
+                _lineLayer: n.y,
+                _type: n.type,
+                _cutDirection: n.direction,
+                _customData: {
+                    _color: n.customData.color,
+                    _disableNoteGravity: n.customData.disableNoteGravity,
+                    _disableSpawnEffect: n.customData.disableSpawnEffect,
+                    _disableNoteLook: n.customData.disableNoteLook,
+                    _flip: n.customData.flip,
+                    _localRotation: n.customData.localRotation,
+                    _position: n.customData.position,
+                    _fake: n.customData.fake,
+                    _interactable: n.customData.interactable,
+                    _scale: n.customData.scale,
+                    _noteJumpMovementSpeed: n.customData.njs,
+                    _noteJumpStartBeatOffset: n.customData.offset,
+                    _track: n.customData.track,
+                    _rotation: n.customData.rotation,
+                    _animation: {
+                        _color: n.animation.color,
+                        _localRotation: n.animation.localRotation,
+                        _position: n.animation.position,
+                        _rotation: n.animation.rotation,
+                        _definitePosition: n.animation.definitePosition,
+                        _dissolve: n.animation.dissolve,
+                        _dissolveArrow: n.animation.dissolveArrow,
+                        _scale: n.animation.scale
+                    }
+                }
+            };
+            if (Object.values(noteJSON._customData._animation).every(el => el === undefined)) delete noteJSON._customData._animation;
+            if (Object.values(noteJSON._customData).every(el => el === undefined)) delete noteJSON._customData;
+        }
+        if (v3fake) {
+        } else
+            noteArr.push(noteJSON);
+    });
+    console.timeEnd("Wrote fake notes in");
+    return noteArr;
+}
 function wallsToJSON(): Record<string, any>[] {
     console.time("Wrote walls in");
     const wallArr: any[] = [];
@@ -898,7 +987,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         difficulty.customData.environment = environmentToJSON();
         difficulty.customData.pointDefinitions = pointDefinitions;
         difficulty.customData.fakeObstacles = fakeWalls;
-        difficulty.customData.fakeColorNotes = fakeNotes;
+        difficulty.customData.fakeColorNotes = fakeNotesToJSON();
         difficulty.customData.fakeSliders = fakeArcs;
         difficulty.customData.fakeBurstSliders = fakeChains;
         difficulty.customData.fakeBombNotes = fakeBombs;

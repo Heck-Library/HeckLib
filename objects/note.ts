@@ -559,9 +559,12 @@ export default class Note implements INote {
      * Pushes the note to the map.
      */
     push() {
-        if (V3 && this.type === TYPE.BOMB) {
-            const e = new Error("Invalid bomb type in notes.");
-            throw e;
+        if (this.animation == null || this.animation == undefined) this.animation = {};
+        if (V3 && this.type === TYPE.BOMB) throw new Error("Invalid bomb type in notes.");
+        if (this.customData.fake) {
+            delete this.customData.fake;
+            fakeNotes.push(this);
+            return;
         }
         notes.push(this);
     }
