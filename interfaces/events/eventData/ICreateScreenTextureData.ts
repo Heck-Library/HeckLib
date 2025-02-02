@@ -1,5 +1,5 @@
 
-export default interface IRenderTextData {
+export default interface ICreateScreenTextureData {
     name: string;
     xRatio?: number;
     yRatio?: number;

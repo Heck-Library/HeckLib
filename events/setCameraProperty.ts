@@ -3,7 +3,7 @@ import ISetCamPropData from "../interfaces/events/eventData/ISetCamPropData";
 import DepthTextureMode from "../types/depthTextMode";
 
 
-export class SetCameraProperty extends MyBaseEvent {
+export default class SetCameraProperty extends MyBaseEvent {
     public readonly type: string = "SetCameraProperty";
     declare data: ISetCamPropData;
 

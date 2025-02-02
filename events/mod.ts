@@ -2,17 +2,17 @@ import AnimateComponent from "./animateComponent";
 import AnimateTrack from "./animateTrack";
 import ApplyPostProcessing from "./applyPostProcessing";
 import AssignFogTrack from "./assignFogTrack";
+import AssignObjectPrefab from "./assignObjectPrefab";
 import AssignPathAnimation from "./assignPathAnimation";
 import AssignPlayerToTrack from "./assignPlayerTrack";
 import AssignTrackParent from "./assignTrackParent";
-import DeclareCullingMask from "./declareCullingMask";
-import DeclareRenderTexture from "./declareRenderTexture";
-import DestroyPrefab from "./destroyPrefab";
-import DestroyTexture from "./destroyTexture";
+import CreateCamera from "./createCamera";
+import CreateScreenTexture from "./createScreenTexture";
+import DestroyObject from "./destroyObject";
 import InstantiatePrefab from "./instantiatePrefab";
 import LightEvent from "./lightEvent";
 import SetAnimatorProperty from "./setAnimatorProperty";
-import { SetCameraProperty } from "./setCameraProperty";
+import SetCameraProperty from "./setCameraProperty";
 import SetGlobalProperty from "./setGlobalProperty";
 import SetMaterialProperty from "./setMaterialProperty";
 
@@ -25,15 +25,15 @@ const Event = {
     AssignTrackParent,
     LightEvent,
     ApplyPostProcessing,
-    DeclareCullingMask,
-    DeclareRenderTexture,
-    DestroyPrefab,
-    DestroyTexture,
     InstantiatePrefab,
     SetAnimatorProperty,
     SetCameraProperty,
     SetGlobalProperty,
-    SetMaterialProperty
+    SetMaterialProperty,
+    CreateCamera,
+    CreateScreenTexture,
+    DestroyObject,
+    AssignObjectPrefab
 }
 
 export default Event;
