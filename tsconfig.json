@@ -3,7 +3,8 @@
         "module": "NodeNext",
         "isolatedModules": true,
         "skipLibCheck": true,
-        "skipDefaultLibCheck": true
+        "skipDefaultLibCheck": true,
+        "resolveJsonModule": true
     },
     "ts-node": {
         "typeCheck": false,
