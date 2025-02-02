@@ -21,6 +21,7 @@ import V3JsonNote from "../interfaces/objects/json/v3/v3jsonNote";
 import { bombs } from "./variables";
 import Bomb from "../objects/bomb";
 import animationsToDefinitions from "./animsToDefs";
+import PLUGIN from "../consts/plugin";
 
 interface IRGB {
     r: number;
@@ -34,7 +35,7 @@ interface IContributor {
     iconPath: string;
 }
 
-interface IAssetBundles {
+export interface IAssetBundles {
     windows2019?: number,
     windows2021?: number,
     android2019?: number,
@@ -909,6 +910,26 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.settings) setSettings(p.settings);
         if (p.roundNumbers) precision = p.roundNumbers;
         if (p.optimizeDefinitions) animationsToDefinitions();
+
+        if (p.requirements.includes(PLUGIN.VIVIFY) && !p.assetBundles) {
+            const assetBundleCRCs: IAssetBundles = {};
+            const bundels = [
+                "bundleAndroid2019.vivify.manifest",
+                "bundleAndroid2021.vivify.manifest",
+                "bundleWindows2019.vivify.manifest",
+                "bundleWindows2021.vivify.manifest"
+            ];
+            for (let i of bundels) {
+                try {
+                    const bundle = readFileSync(i, 'utf-8');
+                    const CRC = bundle.split("\n")[1].split(" ")[1];
+                    assetBundleCRCs[i.split("bundle")[1]] = parseInt(CRC);
+                } catch(e) {
+                    console.error(`Could not automatically fetch CRC from ${i}`);
+                }
+            }
+        }
+
         const stringifiedInfo = JSON.stringify(infoFile, null, 4).replace(/"(\w+)":/g, '"_$1":');
         writeFileSync('Info.dat', stringifiedInfo);
         console.timeEnd("Info.dat written in");
