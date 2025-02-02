@@ -22,15 +22,18 @@ import { chains } from "../objects/chain";
 import { arcs } from "../objects/arc";
 import Bomb from "../objects/bomb";
 import ApplyPostProcessing from "../events/applyPostProcessing";
-import DeclareCullingMask from "../events/declareCullingMask";
 import DeclareRenderTexture from "../events/createScreenTexture";
-import DestroyTexture from "../events/destroyTexture";
 import DestroyPrefab from "../events/destroyObject";
 import InstantiatePrefab from "../events/instantiatePrefab";
 import SetAnimatorProperty from "../events/setAnimatorProperty";
-import { SetCameraProperty } from "../events/setCameraProperty";
+import SetCameraProperty from "../events/setCameraProperty";
 import SetGlobalProperty from "../events/setGlobalProperty";
 import SetMaterialProperty from "../events/setMaterialProperty";
+import CreateScreenTexture from "../events/createScreenTexture";
+import DestroyObject from "../events/destroyObject";
+import CreateCamera from "../events/createCamera";
+import SetRenderingSettings from "../events/setRenderSettings";
+import AssignObjectPrefab from "../events/assignObjectPrefab";
 
 //#region Variables
 const stringInfo = JSON.parse(readFileSync("./Info.dat", "utf-8"));
@@ -422,17 +425,8 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
                 case "Blit":
                     eventArr.push(new ApplyPostProcessing(f.b, f.d));
                     break;
-                case "DeclareCullingMask":
-                    eventArr.push(new DeclareCullingMask(f.b, f.d));
-                    break;
-                case "DeclareRenderTexture":
-                    eventArr.push(new DeclareRenderTexture(f.b, f.d));
-                    break;
-                case "DestroyPrefab":
-                    eventArr.push(new DestroyPrefab(f.b, f.d));
-                    break;
-                case "DestroyTexture":
-                    eventArr.push(new DestroyTexture(f.b, f.d));
+                case "DestroyObject":
+                    eventArr.push(new DestroyObject(f.b, f.d));
                     break;
                 case "InstantiatePrefab":
                     eventArr.push(new InstantiatePrefab(f.b, f.d));
@@ -448,6 +442,18 @@ function JSONtoCustomEvents(eventInput: Record<string, any>[]) {
                     break;
                 case "SetMaterialProperty":
                     eventArr.push(new SetMaterialProperty(f.b, f.d));
+                    break;
+                case "CreateScreenTexture":
+                    eventArr.push(new CreateScreenTexture(f.b, f.d));
+                    break;
+                case "CreateCamera":
+                    eventArr.push(new CreateCamera(f.b, f.d));
+                    break;
+                case "SetRenderingSettings":
+                    eventArr.push(new SetRenderingSettings(f.b, f.d));
+                    break;
+                case "AssignObjectPrefab":
+                    eventArr.push(new AssignObjectPrefab(f.b, f.d));
                     break;
                 default:
                     console.log(`Unknown event type: ${f.t}`);
