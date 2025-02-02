@@ -8,6 +8,6 @@
     },
     "ts-node": {
         "typeCheck": false,
-        "swc": false
+        "swc": true
     }
 }
