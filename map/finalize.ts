@@ -912,6 +912,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.optimizeDefinitions) animationsToDefinitions();
 
         if (p.requirements.includes(PLUGIN.VIVIFY) && !p.assetBundles) {
+            infoFile.customData.assetBundle = {};
             const assetBundleCRCs: IAssetBundles = {};
             const bundels = [
                 "bundleAndroid2019.vivify.manifest",
@@ -919,11 +920,18 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
                 "bundleWindows2019.vivify.manifest",
                 "bundleWindows2021.vivify.manifest"
             ];
+            const bundelsInfo = [
+                "android2019",
+                "android2021",
+                "windows2019",
+                "windows2021"
+            ];
             for (let i of bundels) {
                 try {
                     const bundle = readFileSync(i, 'utf-8');
                     const CRC = bundle.split("\n")[1].split(" ")[1];
                     assetBundleCRCs[i.split("bundle")[1]] = parseInt(CRC);
+                    infoFile.customData.assetBundle[bundelsInfo[bundels.indexOf(i)]] = CRC
                 } catch(e) {
                     console.error(`Could not automatically fetch CRC from ${i}`);
                 }

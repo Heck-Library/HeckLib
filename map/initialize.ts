@@ -522,6 +522,7 @@ export function initialize(input: string, output: string, properties?: IInitPara
             }
         });
     });
+    if (infoFile.customData.assetBundle) delete infoFile.customData.assetBundle;
     writeFileSync("./Info.dat", JSON.stringify(infoFile, null, 4), "utf-8");
     console.time('HeckLib ran in');
 
