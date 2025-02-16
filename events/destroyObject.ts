@@ -13,6 +13,6 @@ export default class DestroyObject extends MyBaseEvent {
         }
         if (typeof data === 'string' || Array.isArray(data)) data = { id : data };
         super(time, data);
-        this.type = "DestroyPrefab";
+        this.type = "DestroyObject";
     }
 }
