@@ -19,11 +19,13 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 > Just follow the installation and after it's installed open it up.
 
 ### Library
-> To install the library initialiser, install the VSC extension called "HeckLib" from the releases page <a href="https://github.com/Heck-Library/HeckLib-Installer/releases/">here</a>.
+> To install the library initialiser, install the VSC extension called "HeckLib" from the extensions market in Visual Studio Code.
 > 
 > After installing the extension, a panel should appear to the sidebar that says "HeckLib". If it doesn't, restart VSC. If it still doesn't, contact me on Discord: `Jevk#0004`
 >
-> The side panel should have a button that says "Download HeckLib". This will download the latest version of HeckLib to your map folder.
+> The side panel should have a button that says "Download HeckLib". This will download the latest version of HeckLib to your map folder. After downloading, a popup should show up in the middle of your screen, just click cancel.
+>
+> Once you've installed HeckLib to your map, you need to install the dependencies from the "Install Dependencies" button. After that you're ready to go.
 > 
 > If you want to update HeckLib, just click the "Update HeckLib" button. This will update all the files in your map folder to the latest version of HeckLib. Please note that this will not overwrite your `script.ts` file. If the button says "Download HeckLib", it will overwrite every `.ts` file in your map folder.
 
