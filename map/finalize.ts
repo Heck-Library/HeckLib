@@ -911,7 +911,7 @@ export function finalize(difficulty: any, properties?: IFinalizeProperties): voi
         if (p.roundNumbers) precision = p.roundNumbers;
         if (p.optimizeDefinitions) animationsToDefinitions();
 
-        if (p.requirements.includes(PLUGIN.VIVIFY) && !p.assetBundles) {
+        if (p.requirements !== undefined && p.requirements.includes(PLUGIN.VIVIFY) && !p.assetBundles) {
             infoFile.customData.assetBundle = {};
             const assetBundleCRCs: IAssetBundles = {};
             const bundels = [
