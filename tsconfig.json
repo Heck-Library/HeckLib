@@ -1,22 +1,30 @@
 {
     "compilerOptions": {
-      "module": "CommonJS",              // Change from ESNext to CommonJS
-      "moduleResolution": "node",        // Use Node.js module resolution
-      "target": "ES2021",                // Target modern JS
-      "outDir": "dist",                  // Output to the dist folder
-      "declaration": true,               // Include TypeScript declaration files
-      "declarationMap": true,            // Generate declaration maps
-      "esModuleInterop": true,           // Enable compatibility for importing CommonJS modules
-      "skipLibCheck": true,              // Skip type checking for declaration files
-      "resolveJsonModule": true,         // Allow imports of JSON modules
-      "strict": true,                    // Enable strict mode for TypeScript
-      "allowJs": true,                   // Allow JavaScript files
-      "baseUrl": ".",                    // Resolve imports from root
-      "paths": {
-        "*": ["src/*"]                   // Base path mapping
-      }
+        "target": "ES2021", // Target modern JavaScript (ES2021 or later)
+        "module": "ESNext", // Use ES modules
+        "moduleResolution": "node", // Resolve modules like Node.js does
+        "outDir": "dist", // Output compiled JS files into the 'dist' folder
+        "esModuleInterop": true, // Enable interop with CommonJS modules
+        "skipLibCheck": true, // Skip type-checking of declaration files
+        "strict": true, // Enable strict type-checking
+        "declaration": true, // Generate declaration files (.d.ts)
+        "declarationMap": true, // Generate declaration maps
+        "resolveJsonModule": true, // Allow importing JSON files
+        "allowJs": false, // Disallow JS files (only compile TS)
+        "sourceMap": true, // Generate source maps for debugging
+        "baseUrl": ".", // Base directory for module resolution
+        "paths": {
+            "*": [
+                "node_modules/*",
+                "src/*"
+            ] // Resolve modules within 'src'
+        }
     },
-    "include": ["src/**/*"],             // Include all source files in the src folder
-    "exclude": ["node_modules", "dist"]  // Exclude node_modules and dist
-  }
-  
+    "include": [
+        "src/**/*" // Include everything in the 'src' folder
+    ],
+    "exclude": [
+        "node_modules",
+        "dist" // Exclude 'node_modules' and 'dist' from the compilation
+    ]
+}
