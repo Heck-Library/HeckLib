@@ -1,6 +1,6 @@
-const { PLUGIN } = require("./dist/util/enums");
-const { log } = require("./dist/util/logs");
-const { Difficulty } = require("./dist/v3");
+const { PLUGIN } = require("hecklib/dist/util/enums");
+const { log } = require("hecklib/dist/util/logs");
+const { Difficulty } = require("hecklib/dist/v3");
 
 const START = performance.now();
 
