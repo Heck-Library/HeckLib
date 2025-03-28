@@ -1,0 +1,838 @@
+{
+    "title": "V3Map",
+    "definitions": {
+        "kf": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    { "type": "number" },
+                    { "type": "string" }
+                ]
+            }
+        },
+        "vA": {
+            "anyOf": [
+                { "type": "null" },
+                { "type": "string" },
+                { "type": "array", "items": { "type": "number" } },
+                { "type": "array", "items": { "$ref": "#/definitions/kf" }}
+            ]
+        },
+        "anim": {
+            "anyOf": [
+                {"type": "null"},
+                {
+                    "type": "object",
+                    "properties": {
+                        "offsetPosition": { "$ref": "#/definitions/vA" },
+                        "offsetWorldRotation": { "$ref": "#/definitions/vA" },
+                        "localRotation": { "$ref": "#/definitions/vA" },
+                        "scale": { "$ref": "#/definitions/vA" },
+                        "dissolve": { "$ref": "#/definitions/vA" },
+                        "dissolveArrow": { "$ref": "#/definitions/vA" },
+                        "color": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" },
+                                { "type": "array", "items": {
+                                    "anyOf": [
+                                        { "type": "number" },
+                                        { "type": "string" },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "anyOf": [
+                                                    { "type": "number" },
+                                                    { "type": "string" }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }},
+                                { "type": "array", "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            { "type": "number" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }}
+                            ]
+                        },
+                        "interactable": { "$ref": "#/definitions/vA" },
+                        "definitePosition": { "$ref": "#/definitions/vA" }
+                    }
+                }
+            ]
+        },
+        "nCD": {
+            "anyOf" : [
+                { "type": "null" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "track": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" }
+                                }
+                            ]
+                        },
+                        "flip": {
+                            "anyOf": [
+                                { "type": "null" },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            ]
+                        },
+                        "disableNoteGravity": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "disableNoteLook": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "disableBadCutDirection": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "disableBadCutSpeed": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "disableBadCutSaberType": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "disableNoteDebris": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "spawnEffect": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "link": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "color": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { 
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            { "type": "number" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        "coordinates": {
+                            "anyOf": [
+                                { "type": "null" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "number" }
+                                }
+                            ]
+                        },
+                        "worldRotation": {
+                            "anyOf": [
+                                { "type": "null" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "number" }
+                                }
+                            ]
+                        },
+                        "localRotation": {
+                            "anyOf": [
+                                { "type": "null" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "number" }
+                                }
+                            ]
+                        },
+                        "scale": {
+                            "anyOf": [
+                                { "type": "null" },
+                                {
+                                    "type": "array",
+                                    "items": { "type": "number" }
+                                }
+                            ]
+                        },
+                        "noteJumpMovementSpeed": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "number" }
+                            ]
+                        },
+                        "noteJumpStartBeatOffset": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "number" }
+                            ]
+                        },
+                        "uninteractable": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "boolean" }
+                            ]
+                        },
+                        "animation": {
+                            "$ref": "#/definitions/anim"
+                        }
+                    }
+                }
+            ]
+        },
+        "note": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "c": { "type": "number" },
+                    "d": { "type": "number" },
+                    "a": { "type": "number" },
+                    "customData": { "$ref": "#/definitions/nCD" }
+                }
+            }
+        },
+        "bomb": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "customData": { "$ref": "#/definitions/nCD" }
+                }
+            }
+        },
+        "wall":  {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "d": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "w": { "type": "number" },
+                    "h": { "type": "number" },
+                    "customData": {
+                        "anyOf" : [
+                            { "type": "null" },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "track": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "string" }
+                                            }
+                                        ]
+                                    },
+                                    "color": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" },
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "anyOf": [
+                                                                    { "type": "number" },
+                                                                    { "type": "string" }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "coordinates": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "worldRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "localRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "size": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "noteJumpMovementSpeed": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "noteJumpStartBeatOffset": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "uninteractable": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "animation": {
+                                        "$ref": "#/definitions/anim"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "slider": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "c": { "type": "number" },
+                    "d": { "type": "number" },
+                    "mu": { "type": "number" },
+                    "tb": { "type": "number" },
+                    "tx": { "type": "number" },
+                    "ty": { "type": "number" },
+                    "tc": { "type": "number" },
+                    "tmu": { "type": "number" },
+                    "m": { "type": "number" },
+                    "customData": { "$ref": "#/definitions/nCD" }
+                }
+            }
+        },
+        "burstSlider": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "c": { "type": "number" },
+                    "d": { "type": "number" },
+                    "tb": { "type": "number" },
+                    "tx": { "type": "number" },
+                    "ty": { "type": "number" },
+                    "sc": { "type": "number" },
+                    "s": { "type": "number" },
+                    "customData": {
+                        "anyOf" : [
+                            { "type": "null" },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "track": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "string" }
+                                            }
+                                        ]
+                                    },
+                                    "flip": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "disableNoteGravity": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "disableNoteLook": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "disableBadCutDirection": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "disableBadCutSpeed": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "disableBadCutSaberType": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "disableNoteDebris": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "spawnEffect": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "link": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "string" }
+                                        ]
+                                    },
+                                    "color": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { 
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" },
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "anyOf": [
+                                                                    { "type": "number" },
+                                                                    { "type": "string" }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "coordinates": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "worldRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "localRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "scale": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "noteJumpMovementSpeed": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "noteJumpStartBeatOffset": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "uninteractable": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "animation": {
+                                        "anyOf": [
+                                            {"type": "null"},
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "offsetPosition": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "offsetWorldRotation": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "localRotation": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "scale": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "dissolve": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "dissolveArrow": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "color": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": {
+                                                                "anyOf": [
+                                                                    { "type": "number" },
+                                                                    { "type": "string" },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "anyOf": [
+                                                                                { "type": "number" },
+                                                                                { "type": "string" }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }},
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "anyOf": [
+                                                                                    { "type": "number" },
+                                                                                    { "type": "string" }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "interactable": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    },
+                                                    "definitePosition": {
+                                                        "anyOf": [
+                                                            { "type": "null" },
+                                                            { "type": "string" },
+                                                            { "type": "array", "items": { "type": "number" } },
+                                                            { "type": "array", "items": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        { "type": "number" },
+                                                                        { "type": "string" }
+                                                                    ]
+                                                                }
+                                                            }}
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "version": { "type": "string" },
+        "bpmEvents": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "m": { "type": "number" }
+                }
+            }
+        },
+        "rotationEvents": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "e": { "type": "number" },
+                    "r": { "type": "number" }
+                }
+            }
+        },
+        "basicBeatmapEvents": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "et": { "type": "number" },
+                    "i": { "type": "number" },
+                    "f": { "type": "number" },
+                    "customData": { "type": "object" }
+                }
+            }
+        },
+        "colorNotes": { "$ref": "#/definitions/note" },
+        "bombNotes": { "$ref": "#/definitions/bomb" },
+        "obstacles": { "$ref": "#/definitions/wall" },
+        "sliders": { "$ref": "#/definitions/slider" },
+        "burstSliders": { "$ref": "#/definitions/burstSlider" },
+        "useNormalEventsAsCompatibleEvents": { "type": "boolean" },
+        "customData": {
+            "type": "object",
+            "properties": {
+                "time": { "type": "number" },
+                "fakeColorNotes": { "$ref": "#/definitions/note" },
+                "fakeBombNotes": { "$ref": "#/definitions/bomb" },
+                "fakeObstacles": { "$ref": "#/definitions/wall" },
+                "fakeSliders": { "$ref": "#/definitions/slider" },
+                "fakeBurstSliders": { "$ref": "#/definitions/slider" },
+                "customEvents": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "b": { "type": "number" },
+                            "t": { "type": "string" },
+                            "d": { "type": "object", "properties": {
+                                "anyOf": [
+                                    { "$ref": "#/definitions/anim" }
+                                ]
+                            }}
+                        }
+                    }
+                },
+                "environment": {
+                    "type": "array",
+                    "items": { "type": "object" }
+                },
+                "pointDefinitions": { "type": "object" },
+                "materials": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "name": { "type": "string" },
+                            "color": { "type": "array" },
+                            "shader": { "type": "string" },
+                            "shaderKeywords": { "type": "array" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

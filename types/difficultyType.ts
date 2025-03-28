@@ -1,1 +1,0 @@
-type difficultyType = "Easy" | "Normal" | "Hard" | "Expert" | "ExpertPlus";

@@ -1,19 +1,49 @@
-import { Difficulty, initialize } from "./map/initialize";
-import { finalize } from "./map/finalize";
+import * as hl from "./src";
 
-const INPUT = Difficulty.EXPERT_PLUS_STANDARD;  // This is your vanilla/input difficulty.
-const OUTPUT = Difficulty.EXPERT_PLUS_LAWLESS;  // This is your modded output difficulty.
+for (let i = 0; i < 1; i++) {
+const START = performance.now();
 
-const DIFFICULTY = initialize(INPUT, OUTPUT);   // This initializes the map.
+//#region INITIALIZATION
+const Diff = new hl.Map.Difficulty(
+    hl.Map.Difficulty.STANDARD.ExpertPlus,
+    hl.Map.Difficulty.LAWLESS.ExpertPlus,
+    {
+        NoLogo: true,
+        Logs: "Success"
+    }
+);
 
-// #region MAP SCRIPT
+Diff.DifficultyInfo.CustomData.Requirements = [
+    hl.Util.Enum.PLUGIN.NoodleExtensions,
+    hl.Util.Enum.PLUGIN.Chroma,
+    hl.Util.Enum.PLUGIN.Vivify
+]
+
+//const { ColorNotes: notes, BombNotes: bombs, Obstacles: walls, Sliders: arcs, BurstSliders: chains, BasicBeatmapEvents: events } = Diff.Map;
+//const { FakeColorNotes: fakeNotes, FakeBombNotes: fakeBombs, FakeObstacles: fakeWalls, FakeSliders: fakeArcs, FakeBurstSliders: fakeChains, CustomEvents: customEvents, PointDefinitions: pointDefinitions, Materials: materials, Environment: environment } = Diff.Map.CustomData;
+//#endregion INITIALIZATION
+
+//fakeNotes as any + notes as any;
+//#region       =============== Functions Below  ===============
 
 
 
 
-// #endregion MAP SCRIPT
 
-finalize(DIFFICULTY, {
-    sortObjects: true,
-    formatting: true
+//#endregion    =============== Functions Above  ===============
+
+//#region       =============== Map Script Below ===============
+
+
+
+
+
+//#endregion    =============== Map Script Above ===============
+
+Diff.Push({
+    format: true // Change this to true to indent the JSON output
 });
+
+hl.Util.Log.success("HeckLib ran", { StartTime: START });
+}
+hl.Util.Log.printLogBuffer();

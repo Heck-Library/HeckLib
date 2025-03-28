@@ -1,0 +1,203 @@
+{
+    "title": "Wall",
+    "type": "object",
+    "definitions": {
+        "kf": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    { "type": "number" },
+                    { "type": "string" }
+                ]
+            }
+        },
+        "vA": {
+            "anyOf": [
+                { "type": "null" },
+                { "type": "string" },
+                { "type": "array", "items": { "type": "number" } },
+                { "type": "array", "items": { "$ref": "#/definitions/kf" }}
+            ]
+        },
+        "wall": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "b": { "type": "number" },
+                    "d": { "type": "number" },
+                    "x": { "type": "number" },
+                    "y": { "type": "number" },
+                    "w": { "type": "number" },
+                    "h": { "type": "number" },
+                    "customData": {
+                        "anyOf" : [
+                            { "type": "null" },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "track": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "string" }
+                                            }
+                                        ]
+                                    },
+                                    "color": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" },
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "anyOf": [
+                                                                    { "type": "number" },
+                                                                    { "type": "string" }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "coordinates": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "worldRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "localRotation": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "size": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            {
+                                                "type": "array",
+                                                "items": { "type": "number" }
+                                            }
+                                        ]
+                                    },
+                                    "noteJumpMovementSpeed": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "noteJumpStartBeatOffset": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "number" }
+                                        ]
+                                    },
+                                    "uninteractable": {
+                                        "anyOf": [
+                                            { "type": "null" },
+                                            { "type": "boolean" }
+                                        ]
+                                    },
+                                    "animation": {
+                                        "$ref": "#/definitions/anim"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "anim": {
+            "anyOf": [
+                {"type": "null"},
+                {
+                    "type": "object",
+                    "properties": {
+                        "offsetPosition": { "$ref": "#/definitions/vA" },
+                        "offsetWorldRotation": { "$ref": "#/definitions/vA" },
+                        "localRotation": { "$ref": "#/definitions/vA" },
+                        "scale": { "$ref": "#/definitions/vA" },
+                        "dissolve": { "$ref": "#/definitions/vA" },
+                        "dissolveArrow": { "$ref": "#/definitions/vA" },
+                        "color": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" },
+                                { "type": "array", "items": {
+                                    "anyOf": [
+                                        { "type": "number" },
+                                        { "type": "string" },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "anyOf": [
+                                                    { "type": "number" },
+                                                    { "type": "string" }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }},
+                                { "type": "array", "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            { "type": "number" },
+                                            { "type": "string" },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        { "type": "number" },
+                                                        { "type": "string" }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }}
+                            ]
+                        },
+                        "interactable": { "$ref": "#/definitions/vA" },
+                        "definitePosition": { "$ref": "#/definitions/vA" }
+                    }
+                }
+            ]
+        }
+    },
+    "properties": {
+        "obstacles": { "$ref": "#/definitions/wall" },
+        "customData": {
+            "type": "object",
+            "properties": {
+                "fakeObstacles": { "$ref": "#/definitions/wall" }
+            }
+        }
+    }
+}

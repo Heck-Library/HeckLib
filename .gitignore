@@ -1,9 +1,9 @@
-
-/*.dat
+*.dat
 script.ts
-dev/
-font.dae
 node_modules/
-*.json
+TODO
 *.zip
 *.exe
+*.cpuprofile
+*.old
+/dist
