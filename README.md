@@ -5,49 +5,36 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 
 # Setup
 
-## First Time Installation
+## Node.js
+> Node.js is the framework used to run the script in the first place, it can be found [here](https://nodejs.org/en/). There's two downloads, LTS and Current, it shouldn't matter which one you use but I recommend the Current version.
 
-### Node.js
-> Node.js is the framework used to run the script in the first place, it can be found <a href="https://nodejs.org/en/">here</a>. There's two downloads, LTS and Current, it shouldn't matter which one you use but I recommend the Current version.
+## IDE
+> IDE refers to your development environment, personally I prefer [Visual Studio Code](https://code.visualstudio.com/) due to it's simplicity.
 
-### Git
-> Git is needed for the HeckLib installer to work properly, it can be installed <a href="https://git-scm.com">here</a>
+## Library
+> To install the library to your project, you can run `npm i hecklib` in your project, this should install all depenedencies to run your code. 
 
-### Visual Studio Code
-> You need to have <a href="https://code.visualstudio.com/">VSC</a> installed on your PC, you can install it from <a href="https://code.visualstudio.com/">here.</a>
-> 
-> Just follow the installation and after it's installed open it up.
+# Scripting
 
-### Library
-> To install the library initialiser, install the VSC extension called "HeckLib" from the extensions market in Visual Studio Code.
-> 
-> After installing the extension, a panel should appear to the sidebar that says "HeckLib". If it doesn't, restart VSC. If it still doesn't, contact me on Discord: `Jevk#0004`
+## Editing
+> To start editing your map with scripts, you can download the template script for either language mentioned below: 
 >
-> The side panel should have a button that says "Download HeckLib". This will download the latest version of HeckLib to your map folder. After downloading, a popup should show up in the middle of your screen, just click cancel.
->
-> Once you've installed HeckLib to your map, you need to install the dependencies from the "Install Dependencies" button. After that you're ready to go.
-> 
-> If you want to update HeckLib, just click the "Update HeckLib" button. This will update all the files in your map folder to the latest version of HeckLib. Please note that this will not overwrite your `script.ts` file. If the button says "Download HeckLib", it will overwrite every `.ts` file in your map folder.
-
-## Scripting
-
-### Editing
-> To edit the script, open your map folder in Visual Studio Code and start editing the `script.ts`. This file already contains the initialisation of the map.
->
-> If you need any help with it, ask me on Discord: `Jevk#0004`
+> - [JavaScript](https://github.com/Heck-Library/HeckLib/blob/main/script.js)
+> - [TypeScript](https://github.com/Heck-Library/HeckLib/blob/main/script.ts)
 
 ## Running The Script
-> To run the script, press ctrl+1 keycombo or alternatively type `nodemon ./script.ts -e ts`. This will run the script and automatically restart it when you save a file..
+> To run the script, just run the command `node script.js` if you're on JavaScript. Or the command `tsx script.ts`. 
 > 
-> If you want to run the script without restarting it, run `node script.ts` in the terminal.
->
-> For running, you may need to install the dependencies. To do this, press "Download Dependencies" when you have installed HeckLib, it will download the nessacery dependencies.
+> If the TypeScript command doesn't work, you might need to install `tsx` using `npm i -g tsx`. And if it still doesn't work, you might need to run it with `npx tsx script.ts`
 > 
+> If you want to run the script everytime you save (or press `ctrl + s`), you can run it using nodemon. To install nodemon, just run `npm i -g nodemon`.
 
 ## Documentation
 
-Documentation is built into the library using `JSDoc` which is a standard for documenting JavaScript and TypeScript code. However, if you prefer to read the documentation online, you can find a work-in-progress version <a href="https://github.com/Heck-Library/HeckLib/wiki">here</a>.
+> Documentation is built into the library using `JSDoc` which is a standard for documenting JavaScript and TypeScript code.
+>
+> In Visual Studio Code, the easiest way to see it is to just hover over the component you need documentation for, and an explanation should pop up.
 
 ***
 
-If you have any questions, you can contact me on Discord: `Jevk#0004`
+> If you have any questions, you can contact me on Discord: `jevk`
