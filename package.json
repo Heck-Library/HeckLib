@@ -1,5 +1,4 @@
 {
-    "type": "module",
     "name": "hecklib",
     "author": "Jevk",
     "license": "MIT",
@@ -12,7 +11,7 @@
     ],
     "scripts": {
         "build": "tsc",
-        "test": "npx tsx ./script.ts",
+        "test": "npx node ./script.js",
         "buildTest": "call npm run build && call npm run test",
         "watch": "npx nodemon -e ts --exec \"call npm run buildTest\"",
         "clean": "tsc --build --clean",

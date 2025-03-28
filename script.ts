@@ -1,3 +1,4 @@
+import { log } from "./dist/util/logs";
 import * as hl from "./src";
 
 for (let i = 0; i < 1; i++) {
@@ -44,6 +45,6 @@ Diff.Push({
     format: true // Change this to true to indent the JSON output
 });
 
-hl.Util.Log.success("HeckLib ran", { StartTime: START });
+log.success("HeckLib ran", { StartTime: START });
 }
-hl.Util.Log.printLogBuffer();
+log.printLogBuffer();

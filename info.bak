@@ -40,6 +40,7 @@
                     "_beatmapColorSchemeIdx": 0,
                     "_environmentNameIdx": 0,
                     "_customData": {
+                        "_settings": {},
                         "_requirements": [
                             "Noodle Extensions",
                             "Chroma",
@@ -60,7 +61,9 @@
                     "_noteJumpStartBeatOffset": 0,
                     "_beatmapColorSchemeIdx": 0,
                     "_environmentNameIdx": 0,
-                    "_customData": {}
+                    "_customData": {
+                        "_settings": {}
+                    }
                 }
             ]
         }

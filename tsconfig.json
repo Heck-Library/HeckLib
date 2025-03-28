@@ -1,20 +1,22 @@
 {
     "compilerOptions": {
-        "module": "ESNext",                  // Ensure ESNext modules for modern JS
-        "moduleResolution": "node",          // Use Node.js module resolution
-        "target": "ES2021",                  // Modern JavaScript output
-        "outDir": "dist",                    // Output to dist folder
-        "declaration": true,                 // Include type declarations
-        "declarationMap": true,              // Generate declaration maps
-        "skipLibCheck": true,                // Skip library checks for faster builds
-        "resolveJsonModule": true,           // Resolve JSON imports
-        "strict": true,                      // Enable strict mode
-        "allowJs": true,                     // Allow JS files to be imported
-        "baseUrl": ".",                      // Resolve imports from the root directory
-        "paths": {
-            "*": ["src/*"]                     // Resolve paths from 'src' directory
-        }
+      "module": "CommonJS",              // Change from ESNext to CommonJS
+      "moduleResolution": "node",        // Use Node.js module resolution
+      "target": "ES2021",                // Target modern JS
+      "outDir": "dist",                  // Output to the dist folder
+      "declaration": true,               // Include TypeScript declaration files
+      "declarationMap": true,            // Generate declaration maps
+      "esModuleInterop": true,           // Enable compatibility for importing CommonJS modules
+      "skipLibCheck": true,              // Skip type checking for declaration files
+      "resolveJsonModule": true,         // Allow imports of JSON modules
+      "strict": true,                    // Enable strict mode for TypeScript
+      "allowJs": true,                   // Allow JavaScript files
+      "baseUrl": ".",                    // Resolve imports from root
+      "paths": {
+        "*": ["src/*"]                   // Base path mapping
+      }
     },
-    "include": ["src/**/*"],               // Include all TypeScript files in the src folder
-    "exclude": ["node_modules", "dist"]    // Exclude the dist and node_modules folders
+    "include": ["src/**/*"],             // Include all source files in the src folder
+    "exclude": ["node_modules", "dist"]  // Exclude node_modules and dist
   }
+  
