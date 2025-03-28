@@ -1,13 +1,12 @@
+import { PLUGIN } from "./dist/util/enums";
 import { log } from "./dist/util/logs";
-import * as hl from "./src";
+import { Difficulty } from "./dist/v3";
 
-for (let i = 0; i < 1; i++) {
 const START = performance.now();
 
-//#region INITIALIZATION
-const Diff = new hl.Map.Difficulty(
-    hl.Map.Difficulty.STANDARD.ExpertPlus,
-    hl.Map.Difficulty.LAWLESS.ExpertPlus,
+const Diff = new Difficulty(
+    Difficulty.STANDARD.ExpertPlus,
+    Difficulty.LAWLESS.ExpertPlus,
     {
         NoLogo: true,
         Logs: "Success"
@@ -15,16 +14,14 @@ const Diff = new hl.Map.Difficulty(
 );
 
 Diff.DifficultyInfo.CustomData.Requirements = [
-    hl.Util.Enum.PLUGIN.NoodleExtensions,
-    hl.Util.Enum.PLUGIN.Chroma,
-    hl.Util.Enum.PLUGIN.Vivify
+    PLUGIN.NoodleExtensions,
+    PLUGIN.Chroma,
+    PLUGIN.Vivify
 ]
 
-//const { ColorNotes: notes, BombNotes: bombs, Obstacles: walls, Sliders: arcs, BurstSliders: chains, BasicBeatmapEvents: events } = Diff.Map;
-//const { FakeColorNotes: fakeNotes, FakeBombNotes: fakeBombs, FakeObstacles: fakeWalls, FakeSliders: fakeArcs, FakeBurstSliders: fakeChains, CustomEvents: customEvents, PointDefinitions: pointDefinitions, Materials: materials, Environment: environment } = Diff.Map.CustomData;
-//#endregion INITIALIZATION
+const { ColorNotes: notes, BombNotes: bombs, Obstacles: walls, Sliders: arcs, BurstSliders: chains, BasicBeatmapEvents: events } = Diff.Map;
+const { FakeColorNotes: fakeNotes, FakeBombNotes: fakeBombs, FakeObstacles: fakeWalls, FakeSliders: fakeArcs, FakeBurstSliders: fakeChains, CustomEvents: customEvents, PointDefinitions: pointDefinitions, Materials: materials, Environment: environment } = Diff.Map.CustomData;
 
-//fakeNotes as any + notes as any;
 //#region       =============== Functions Below  ===============
 
 
@@ -46,5 +43,4 @@ Diff.Push({
 });
 
 log.success("HeckLib ran", { StartTime: START });
-}
 log.printLogBuffer();

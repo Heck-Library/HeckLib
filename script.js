@@ -2,15 +2,14 @@ const { PLUGIN } = require("./dist/util/enums");
 const { log } = require("./dist/util/logs");
 const { Difficulty } = require("./dist/v3");
 
-for (let i = 0; i < 1000; i++) {
 const START = performance.now();
 
-const Diff = new Difficulty(
+const Diff = Difficulty(
     Difficulty.STANDARD.ExpertPlus,
     Difficulty.LAWLESS.ExpertPlus,
     {
-        Logs: "Success",
-
+        NoLogo: true,
+        Logs: "Success"
     }
 );
 
@@ -20,11 +19,28 @@ Diff.DifficultyInfo.CustomData.Requirements = [
     PLUGIN.Vivify
 ]
 
+const { ColorNotes: notes, BombNotes: bombs, Obstacles: walls, Sliders: arcs, BurstSliders: chains, BasicBeatmapEvents: events } = Diff.Map;
+const { FakeColorNotes: fakeNotes, FakeBombNotes: fakeBombs, FakeObstacles: fakeWalls, FakeSliders: fakeArcs, FakeBurstSliders: fakeChains, CustomEvents: customEvents, PointDefinitions: pointDefinitions, Materials: materials, Environment: environment } = Diff.Map.CustomData;
+
+//#region       =============== Functions Below  ===============
+
+
+
+
+
+//#endregion    =============== Functions Above  ===============
+
+//#region       =============== Map Script Below ===============
+
+
+
+
+
+//#endregion    =============== Map Script Above ===============
 
 Diff.Push({
     format: true // Change this to true to indent the JSON output
 });
 
 log.success("HeckLib ran", { StartTime: START });
-}
 log.printLogBuffer();
