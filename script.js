@@ -1,6 +1,6 @@
-import { PLUGIN } from "./dist/util/enums.js";
-import { log } from "./dist/util/logs.js";
-import { Difficulty } from "./dist/v3/index.js";
+const { PLUGIN } = require("./dist/util/enums");
+const { log } = require("./dist/util/logs");
+const { Difficulty } = require("./dist/v3");
 
 const START = performance.now();
 

@@ -93,31 +93,31 @@ export interface IV3MapCustomData {
      * 
      * The fake notes in the map.
      */
-    FakeColorNotes?: NoteArray;
+    FakeColorNotes: NoteArray;
     /**
      * ## Fake Bomb Notes
      * 
      * The fake bomb notes in the map.
      */
-    FakeBombNotes?: BombArray;
+    FakeBombNotes: BombArray;
     /**
      * ## Fake Obstacles
      * 
      * The fake obstacles in the map.
      */
-    FakeObstacles?: ObstacleArray;
+    FakeObstacles: ObstacleArray;
     /**
      * ## Fake Sliders
      * 
      * The fake sliders in the map.
      */
-    FakeSliders?: SliderArray;
+    FakeSliders: SliderArray;
     /**
      * ## Fake Burst Sliders
      * 
      * The fake burst sliders in the map.
      */
-    FakeBurstSliders?: BurstSliderArray;
+    FakeBurstSliders: BurstSliderArray;
     /**
      * ## Point Definitions
      * 
@@ -141,5 +141,5 @@ export interface IV3MapCustomData {
      * 
      * The custom events for the map.
      */
-    CustomEvents?: BaseCustomEvent[];
+    CustomEvents: BaseCustomEvent[];
 }

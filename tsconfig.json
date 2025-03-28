@@ -1,16 +1,15 @@
 {
     "compilerOptions": {
-        "target": "ES2021", // Target modern JavaScript (ES2021 or later)
-        "module": "ESNext", // Use ES modules
-        "moduleResolution": "node", // Resolve modules like Node.js does
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ESNext",
         "outDir": "dist", // Output compiled JS files into the 'dist' folder
-        "esModuleInterop": true, // Enable interop with CommonJS modules
         "skipLibCheck": true, // Skip type-checking of declaration files
         "strict": true, // Enable strict type-checking
         "declaration": true, // Generate declaration files (.d.ts)
         "declarationMap": true, // Generate declaration maps
-        "resolveJsonModule": true, // Allow importing JSON files
-        "allowJs": false, // Disallow JS files (only compile TS)
+        "esModuleInterop": true,
+        "allowJs": true, // Disallow JS files (only compile TS)
         "sourceMap": true, // Generate source maps for debugging
         "baseUrl": ".", // Base directory for module resolution
         "paths": {

@@ -24,7 +24,8 @@ export class V3MapCustomData implements IV3MapCustomData {
     private customEvents: CustomEventArray = new CustomEventArray();
 
     constructor(data?: IV3MapCustomData) {
-        if (data === undefined) return;
+        if (data === undefined) data = {} as IV3MapCustomData;
+        
         this.time = data.Time ?? 0;
         this.fakeColorNotes = new NoteArray(true, ...(data.FakeColorNotes ?? []));
         this.fakeBombNotes = new BombArray(true, ...(data.FakeBombNotes ?? []));
