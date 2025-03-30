@@ -4,6 +4,7 @@ import { INoteCustomData } from "./customData/interfaces/INoteCustomData";
 import { INoteData } from "./interfaces/INoteData";
 import { IPathAnimationData } from "../events/customEvents/interfaces/IPathAnimationData";
 import { log } from "../../util/logs";
+import { BaseObject } from "./BaseObject";
 
 type NoteFilters = {
     StartBeat: number,
@@ -91,23 +92,17 @@ export class NoteArray extends Array<Note> {
     }
 }
 
-export class Note implements INoteData {
+export class Note extends BaseObject implements INoteData {
     public static readonly LINEINDEX = LineIndex;
     public static readonly LINELAYER = LineLayer;
     public static readonly COLOR = NoteColor;
     public static readonly DIRECTION = CutDirection;
 
-    private b: number = 0;
-    private x: LineIndex = Note.LINEINDEX.Left;
-    private y: LineLayer = Note.LINELAYER.Bottom;
     private c: NoteColor = Note.COLOR.Red;
     private d: CutDirection = Note.DIRECTION.Up;
     private a: number = 0;
-    private customData?: NoteCustomData;
+    protected declare customData?: NoteCustomData;
 
-    set Beat(b: number) { this.b = b; }
-    set X(x: LineIndex) { this.x = x; }
-    set Y(y: LineLayer) { this.y = y; }
     set Color(c: NoteColor) { this.c = c; }
     set CutDirection(d: CutDirection) { this.d = d; }
     set Angle(a: number) { this.a = a; }
@@ -158,9 +153,6 @@ export class Note implements INoteData {
         anim.Scale = animation.Scale;
     }
 
-    get Beat(): number { return this.b; }
-    get X(): LineIndex { return this.x; }
-    get Y(): LineLayer { return this.y; }
     get Color(): NoteColor { return this.c; }
     get CutDirection(): CutDirection { return this.d; }
     get Angle(): number { return this.a; }
@@ -179,12 +171,9 @@ export class Note implements INoteData {
         if (this.customData === undefined) this.customData = new NoteCustomData();
     }
 
-    constructor(vanillaData?: INoteData, customData?: INoteCustomData) {
-        if (vanillaData === undefined) vanillaData = {}; // Avoids unnecessary checks
+    constructor(vanillaData: INoteData = {} as INoteData, customData?: INoteCustomData) {
+        super(vanillaData.Beat, vanillaData.X, vanillaData.Y);
 
-        this.b = vanillaData.Beat ?? 0;
-        this.x = vanillaData.X ?? 0;
-        this.y = vanillaData.Y ?? 0;
         this.c = vanillaData.Color ?? 0;
         this.d = vanillaData.CutDirection ?? 0;
         this.a = vanillaData.Angle ?? 0;

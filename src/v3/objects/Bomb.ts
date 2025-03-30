@@ -4,6 +4,7 @@ import { INoteCustomData } from "./customData/interfaces/INoteCustomData";
 import { IBombData } from "./interfaces/IBombData";
 import { IPathAnimationData } from "../events/customEvents/interfaces/IPathAnimationData";
 import { log } from "../../util/logs";
+import { BaseObject } from "./BaseObject";
 
 export class BombArray extends Array<Bomb> {
     private fake: boolean = false;
@@ -87,18 +88,12 @@ export class BombArray extends Array<Bomb> {
     }
 }
 
-export class Bomb implements IBombData {
+export class Bomb extends BaseObject implements IBombData {
     public static readonly LINEINDEX = LineIndex;
     public static readonly LINELAYER = LineLayer;
+    
+    protected declare customData?: NoteCustomData;
 
-    private b: number = 0;
-    private x: LineIndex = Bomb.LINEINDEX.Left;
-    private y: LineLayer = Bomb.LINELAYER.Bottom;
-    private customData?: NoteCustomData = new NoteCustomData();
-
-    public set Beat(b: number) { this.b = b; }
-    public set X(x: LineIndex) { this.x = x; }
-    public set Y(y: LineLayer) { this.y = y; }
     public set CustomData(customData: INoteCustomData) {
         this.ifUndefinedNewCustomData();
 
@@ -146,9 +141,6 @@ export class Bomb implements IBombData {
         anim.Scale = animation.Scale;
     }
 
-    public get Beat(): number { return this.b; }
-    public get X(): LineIndex { return this.x; }
-    public get Y(): LineLayer { return this.y; }
     public get CustomData(): NoteCustomData {
         this.ifUndefinedNewCustomData();
 
@@ -164,12 +156,8 @@ export class Bomb implements IBombData {
         if (this.customData === undefined) this.customData = new NoteCustomData();
     }
     
-    constructor(vanillaData?: IBombData, customData?: INoteCustomData) {
-        if (vanillaData === undefined) vanillaData = {};
-    
-        this.b = vanillaData.Beat ?? 0;
-        this.x = vanillaData.X ?? 0;
-        this.y = vanillaData.Y ?? 0;
+    constructor(vanillaData: IBombData = {} as IBombData, customData?: INoteCustomData) {
+        super(vanillaData.Beat, vanillaData.X, vanillaData.Y);
     
         customData && (this.customData = new NoteCustomData(customData));
     }

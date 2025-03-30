@@ -1,19 +1,7 @@
-import { LineIndex, LineLayer } from "../../../util/enums";
+import { IBaseObject } from "./IBaseObject";
 
 
-export interface IObstacleData {
-    /**
-     * The beat at which the obstacle should approach the player.
-     *
-     * In seconds this is calculated as `Beat / BPM`.
-     *
-     * ---
-     *
-     * **Type:** `number`
-     *
-     * **Default:** `0`
-     */
-    Beat?: number;
+export interface IObstacleData extends IBaseObject {
     /**
      * The duration of the obstacle.
      *
@@ -26,43 +14,6 @@ export interface IObstacleData {
      * **Default:** `0`
      */
     Duration?: number;
-    /**
-     * The horizontal position of the obstacle.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `Obstacle.LINEINDEX.Left` : `0`
-     * - `Obstacle.LINEINDEX.CenterLeft` : `1`
-     * - `Obstacle.LINEINDEX.CenterRight` : `2`
-     * - `Obstacle.LINEINDEX.Right` : `3`
-     *
-     * ---
-     *
-     * **Type:** `LineIndex`
-     *
-     * **Default:** `LineIndex.Left`
-     */
-    X?: LineIndex;
-    /**
-     * The vertical position of the obstacle.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `Obstacle.LINELAYER.Bottom` : `0`
-     * - `Obstacle.LINELAYER.Middle` : `1`
-     * - `Obstacle.LINELAYER.Top` : `2`
-     *
-     * ---
-     *
-     * **Type:** `LineLayer`
-     *
-     * **Default:** `LineLayer.Bottom`
-     */
-    Y?: LineLayer;
     /**
      * The width of the obstacle.
      *

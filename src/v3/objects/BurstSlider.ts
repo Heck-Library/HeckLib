@@ -4,6 +4,7 @@ import { INoteCustomData } from "./customData/interfaces/INoteCustomData";
 import { IBurstSliderData } from "./interfaces/IBurstSliderData";
 import { IPathAnimationData } from "../events/customEvents/interfaces/IPathAnimationData";
 import { log } from "../../util/logs";
+import { BaseObject } from "./BaseObject";
 
 type BurstSliderFilters = {
     StartBeat: number,
@@ -111,15 +112,12 @@ export class BurstSliderArray extends Array<BurstSlider> {
     }
 }
 
-export class BurstSlider implements IBurstSliderData {
+export class BurstSlider extends BaseObject implements IBurstSliderData {
     public static readonly LINEINDEX = LineIndex;
     public static readonly LINELAYER = LineLayer;
     public static readonly COLOR = NoteColor;
     public static readonly DIRECTION = CutDirection;
 
-    private b: number = 0;
-    private x: LineIndex = BurstSlider.LINEINDEX.Left;
-    private y: LineLayer = BurstSlider.LINELAYER.Bottom;
     private c: NoteColor = BurstSlider.COLOR.Red;
     private d: CutDirection = BurstSlider.DIRECTION.Up;
     private tb: number = 0;
@@ -127,11 +125,8 @@ export class BurstSlider implements IBurstSliderData {
     private ty: LineLayer = BurstSlider.LINELAYER.Bottom;
     private sc: number = 2;
     private s: number = .5;
-    private customData?: NoteCustomData = new NoteCustomData();
+    protected declare customData?: NoteCustomData;
 
-    set Beat(b: number) { this.b = b; }
-    set X(x: LineIndex) { this.x = x; }
-    set Y(y: LineLayer) { this.y = y; }
     set Color(c: NoteColor) { this.c = c; }
     set CutDirection(d: CutDirection) { this.d = d; }
     set TailBeat(tb: number) { this.tb = tb; }
@@ -186,9 +181,6 @@ export class BurstSlider implements IBurstSliderData {
         anim.Scale = animation.Scale;
     }
 
-    get Beat(): number { return this.b; }
-    get X(): LineIndex { return this.x; }
-    get Y(): LineLayer { return this.y; }
     get Color(): NoteColor { return this.c; }
     get CutDirection(): CutDirection { return this.d; }
     get TailBeat(): number { return this.tb; }
@@ -211,12 +203,9 @@ export class BurstSlider implements IBurstSliderData {
         if (this.customData === undefined) this.customData = new NoteCustomData();
     }
 
-    constructor(vanillaData?: IBurstSliderData, customData?: INoteCustomData) {
-        if (vanillaData === undefined) vanillaData = {};
+    constructor(vanillaData: IBurstSliderData = {} as IBurstSliderData, customData?: INoteCustomData) {
+        super(vanillaData.Beat, vanillaData.X, vanillaData.Y);
 
-        this.b = vanillaData.Beat ?? 0;
-        this.x = vanillaData.X ?? 0;
-        this.y = vanillaData.Y ?? 0;
         this.c = vanillaData.Color ?? 0;
         this.d = vanillaData.CutDirection ?? 0;
         this.tb = vanillaData.TailBeat ?? 0;
@@ -230,6 +219,7 @@ export class BurstSlider implements IBurstSliderData {
 
     public toJSON() {
         const json: Record<string, any> = {};
+
         json.b = this.b;
         json.x = this.x;
         json.y = this.y;
@@ -240,7 +230,9 @@ export class BurstSlider implements IBurstSliderData {
         json.ty = this.ty;
         json.sc = this.sc;
         json.s = this.s;
+
         if (this.customData) json.customData = this.customData.toJSON();
+
         return json;
     }
 
@@ -249,6 +241,7 @@ export class BurstSlider implements IBurstSliderData {
 
         json.forEach(b => {
             const burstSlider = new BurstSlider()
+
             burstSlider.Beat = b.b;
             burstSlider.X = b.x;
             burstSlider.Y = b.y;
@@ -259,6 +252,7 @@ export class BurstSlider implements IBurstSliderData {
             burstSlider.TailY = b.ty;
             burstSlider.SliceCount = b.sc;
             burstSlider.Squish = b.s;
+
             b.customData && (burstSlider.CustomData = NoteCustomData.fromJSON(b.customData));
         });
 

@@ -1,6 +1,7 @@
 import { LineIndex, LineLayer } from "../../util/enums";
 import { log } from "../../util/logs";
 import { IPathAnimationData } from "../events/customEvents/interfaces/IPathAnimationData";
+import { BaseObject } from "./BaseObject";
 import { ObjectAnimationData } from "./customData/ObjectAnimationData";
 import { ObstacleCustomData } from "./customData/ObstacleCustomData";
 import { IObstacleCustomData } from "./customData/interfaces/IObstacleCustomData";
@@ -101,22 +102,16 @@ export class ObstacleArray extends Array<Obstacle> {
     }
 }
 
-export class Obstacle implements IObstacleData {
+export class Obstacle extends BaseObject implements IObstacleData {
     public static readonly LINEINDEX = LineIndex;
     public static readonly LINELAYER = LineLayer;
 
-    private b: number = 0;
     private d: number = 0;
-    private x: LineIndex = Obstacle.LINEINDEX.Left;
-    private y: LineLayer = Obstacle.LINELAYER.Bottom;
     private w: number = 1;
     private h: 1 | 2 | 3 | 4 | 5 = 1;
-    private customData?: ObstacleCustomData;
+    protected declare customData?: ObstacleCustomData;
 
-    set Beat(b: number) { this.b = b; }
     set Duration(d: number) { this.d = d; }
-    set X(x: LineIndex) { this.x = x; }
-    set Y(y: LineLayer) { this.y = y; }
     set Width(w: number) { this.w = w; }
     set Height(h: 1 | 2 | 3 | 4 | 5) { this.h = h; }
     set CustomData(customData: IObstacleCustomData) { this.customData = new ObstacleCustomData(customData); }
@@ -126,10 +121,7 @@ export class Obstacle implements IObstacleData {
         (this.customData as ObstacleCustomData).Animation = new ObjectAnimationData(animation);
     }
 
-    get Beat(): number { return this.b; }
     get Duration(): number { return this.d; }
-    get X(): LineIndex { return this.x; }
-    get Y(): LineLayer { return this.y; }
     get Width(): number { return this.w; }
     get Height(): 1 | 2 | 3 | 4 | 5 { return this.h; }
     get CustomData(): ObstacleCustomData {
@@ -147,13 +139,10 @@ export class Obstacle implements IObstacleData {
         if (this.customData === undefined) this.customData = new ObstacleCustomData();
     }
 
-    constructor(vanillaData?: IObstacleData, customData?: IObstacleCustomData) {
-        if (vanillaData === undefined) return;
-
-        this.b = vanillaData.Beat ?? 0;
+    constructor(vanillaData: IObstacleData = {} as IObstacleData, customData?: IObstacleCustomData) {
+        super(vanillaData.Beat, vanillaData.X, vanillaData.Y);
+        
         this.d = vanillaData.Duration ?? 0;
-        this.x = vanillaData.X ?? 0;
-        this.y = vanillaData.Y ?? 0;
         this.w = vanillaData.Width ?? 1;
         this.h = vanillaData.Height ?? 1;
         
@@ -162,13 +151,16 @@ export class Obstacle implements IObstacleData {
 
     public toJSON() {
         const json: Record<string, any> = {};
+
         json.b = this.b;
         json.d = this.d;
         json.x = this.x;
         json.y = this.y;
         json.w = this.w;
         json.h = this.h;
+
         if (this.customData !== undefined) json.customData = this.customData.toJSON();
+
         return json;
     }
 

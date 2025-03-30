@@ -1,62 +1,8 @@
 import { LineIndex, LineLayer, NoteColor, CutDirection } from "../../../util/enums";
+import { IBaseObject } from "./IBaseObject";
 
 
-export interface IBurstSliderData {
-    /**
-     * ## Beat
-     *
-     * The beat the chain's head will be hit on.
-     *
-     * In seconds this is calculated as `Beat / BPM * 60`.
-     *
-     * ---
-     *
-     * **Type:** `number`
-     *
-     * **Default:** `0`
-     */
-    Beat?: number;
-    /**
-     * ## X
-     *
-     * The horizontal position of the chain's head.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `BurstSlider.LINEINDEX.Left` : `0`
-     * - `BurstSlider.LINEINDEX.CenterLeft` : `1`
-     * - `BurstSlider.LINEINDEX.CenterRight` : `2`
-     * - `BurstSlider.LINEINDEX.Right` : `3`
-     *
-     * ---
-     *
-     * **Type:** `LineIndex`
-     *
-     * **Default:** `BurstSlider.LINEINDEX.Left`
-     */
-    X?: LineIndex;
-    /**
-     * ## Y
-     *
-     * The vertical position of the chain's head.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `BurstSlider.LINELAYER.Bottom` : `0`
-     * - `BurstSlider.LINELAYER.Middle` : `1`
-     * - `BurstSlider.LINELAYER.Top` : `2`
-     *
-     * ---
-     *
-     * **Type:** `LineLayer`
-     *
-     * **Default:** `BurstSlider.LINELAYER.Bottom`
-     */
-    Y?: LineLayer;
+export interface IBurstSliderData extends IBaseObject {
     /**
      * ## Color
      *

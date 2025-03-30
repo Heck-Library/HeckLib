@@ -1,61 +1,7 @@
 import { LineIndex, LineLayer, NoteColor, CutDirection, MidAnchorMode } from "../../../util/enums";
+import { IBaseObject } from "./IBaseObject";
 
-export interface ISliderData {
-    /**
-     * ## Beat
-     *
-     * The beat the arc will start on.
-     *
-     * In seconds this is calculated as `Beat / BPM * 60`.
-     *
-     * ---
-     *
-     * **Type:** `number`
-     *
-     * **Default:** `0`
-     */
-    Beat?: number;
-    /**
-     * ## X
-     *
-     * The horizontal position of the arc's head.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `Slider.LINEINDEX.Left` : `0`
-     * - `Slider.LINEINDEX.CenterLeft` : `1`
-     * - `Slider.LINEINDEX.CenterRight` : `2`
-     * - `Slider.LINEINDEX.Right` : `3`
-     *
-     * ---
-     *
-     * **Type:** `LineIndex`
-     *
-     * **Default:** `LineIndex.Left`
-     */
-    X?: LineIndex;
-    /**
-     * ## Y
-     *
-     * The vertical position of the arc's head.
-     *
-     * ---
-     *
-     * ### Values
-     *
-     * - `Slider.LINELAYER.Bottom` : `0`
-     * - `Slider.LINELAYER.Middle` : `1`
-     * - `Slider.LINELAYER.Top` : `2`
-     *
-     * ---
-     *
-     * **Type:** `LineLayer`
-     *
-     * **Default:** `LineLayer.Bottom`
-     */
-    Y?: LineLayer;
+export interface ISliderData extends IBaseObject {
     /**
      * ## Color
      *
