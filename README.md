@@ -1,5 +1,5 @@
 # HeckLib
-HeckLib is a TypeScript library intended to be accessible to all Beat Saber modchart creators. It should be easy to set up.
+HeckLib is a JavaScript/TypeScript library intended to be accessible to all Beat Saber modchart creators. It should be easy to set up.
 
 ***
 
