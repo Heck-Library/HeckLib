@@ -2,8 +2,7 @@ import { VignetteType } from "../enums";
 import { ICinema, ICinemaColorCorrection, ICinemaEnvironment, ICinemaVignette } from "./interfaces/ICinema";
 import { ICinemaColorCorrectionJSON, ICinemaEnvironmentJSON, ICinemaJSON, ICinemaVignetteJSON } from "./interfaces/ICinemaJSON";
 import { writeFile } from "fs/promises";
-import { log } from "util/logs";
-import { writeFileSync } from "fs";
+import { log } from "../logs";
 
 type xyz = Record<"x" | "y" | "z", number>;
 type XYZ = Record<"X" | "Y" | "Z", number>;
