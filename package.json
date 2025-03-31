@@ -4,8 +4,8 @@
     "license": "MIT",
     "version": "3.2.5",
     "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "build": "tsc",
         "start": "node dist/index.js",
