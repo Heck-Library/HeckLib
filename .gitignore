@@ -12,3 +12,4 @@ test.ts
 cinema-video.json
 bundleinfo.json
 *.tgz
+*.log
