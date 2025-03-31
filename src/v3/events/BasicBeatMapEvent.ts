@@ -119,8 +119,8 @@ export class BaseBeatmapEvent implements IBasicBeatmapEvent {
         json.forEach(e => {
             const event = new BaseBeatmapEvent();
             event.Beat = e.b;
-            event.Type = e.t;
-            event.Value = e.v;
+            event.Type = e.et;
+            event.Value = e.i;
             event.Float = e.f;
             if (e.customData) Object.keys(e.customData).forEach(k => {
                 event.customData[k[0].toUpperCase() + k.slice(1)] = e.customData[k];
