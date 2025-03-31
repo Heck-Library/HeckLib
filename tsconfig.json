@@ -3,7 +3,7 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "target": "ESNext",
-        "outDir": "dist", // Output compiled JS files into the 'dist' folder
+        "outDir": "package", // Output compiled JS files into the 'dist' folder
         "skipLibCheck": true, // Skip type-checking of declaration files
         "strict": true, // Enable strict type-checking
         "declaration": true, // Generate declaration files (.d.ts)
