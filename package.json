@@ -10,7 +10,7 @@
     "scripts": {
         "prepublishOnly": "npm run build && npm run prepare",
         "build": "tsc",
-        "prepare": "rm -rf package && mkdir package && cp -r dist/* package/",
+        "prepare": "rm -rf dist && mkdir dist && cp -r package/* dist/",
         "watch-ts": "nodemon --exec tsx script.ts",
         "watch-js": "nodemon script.js"
     },
@@ -21,9 +21,9 @@
         "typescript": "^5.0.0"
     },
     "files": [
-        "package/**/*"
+        "dist/**/*"
     ],
     "directories": {
-        "lib": "package"
+        "lib": "dist"
     }
 }
