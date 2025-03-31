@@ -8,3 +8,4 @@ TODO
 *.old
 /dist
 test.ts
+cinema-video.json
