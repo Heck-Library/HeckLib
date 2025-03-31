@@ -24,6 +24,12 @@
         "@types/node": "^22.13.14"
     },
     "files": [
-        "dist/**"
+        "dist/info/",
+        "dist/util/",
+        "dist/v3/",
+        "dist/index.d.ts",
+        "dist/index.d.ts.map",
+        "dist/index.js",
+        "dist/index.js.map"
     ]
 }
