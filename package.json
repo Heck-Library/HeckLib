@@ -8,7 +8,7 @@
     "types": "index.d.ts",
     "repository": "github:heck-library/hecklib",
     "scripts": {
-        "build": "rm -rf package/ && tsc && cp package.json package/package.json",
+        "build": "rm -rf package/ && npm version patch && tsc && cp package.json package/package.json",
         "watch-ts": "nodemon --exec tsx script.ts",
         "watch-js": "nodemon script.js"
     },
