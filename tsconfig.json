@@ -16,7 +16,7 @@
             "*": [
                 "node_modules/*",
                 "src/*"
-            ] // Resolve modules within 'src'
+            ]
         }
     },
     "include": [
@@ -24,7 +24,6 @@
     ],
     "exclude": [
         "node_modules",
-        "package",
-        "dist" // Exclude 'node_modules' and 'dist' from the compilation
+        "package"
     ]
 }
