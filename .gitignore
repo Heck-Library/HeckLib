@@ -7,5 +7,6 @@ TODO
 *.cpuprofile
 *.old
 /dist
+/package/
 test.ts
 cinema-video.json
