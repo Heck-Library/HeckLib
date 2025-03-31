@@ -1,6 +1,6 @@
-import { PLUGIN } from "hecklib/dist/util/enums";
-import { log } from "hecklib/dist/util/logs";
-import { Difficulty } from "hecklib/dist/v3";
+import { PLUGIN } from "hecklib/util/enums";
+import { log } from "hecklib/util/logs";
+import { Difficulty } from "hecklib/v3";
 
 const START = performance.now();
 

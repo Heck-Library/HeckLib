@@ -1,4 +1,4 @@
-import { VignetteType } from "util/enums";
+import { VignetteType } from "../../enums";
 
 type vec3obj = Record<"x" | "y" | "z", number>;
 

@@ -2,28 +2,20 @@
     "name": "hecklib",
     "author": "Jevk",
     "license": "MIT",
-    "version": "3.2.0",
+    "version": "3.2.16",
     "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "repository": "github:heck-library/hecklib",
     "scripts": {
-        "build": "tsc",
-        "start": "node dist/index.js",
-        "test": "npx tsx ./script.ts",
-        "buildTest": "npm run build && npm run test",
-        "watch": "npx nodemon -e ts --exec 'npm run buildTest'",
-        "clean": "tsc --build --clean",
-        "cleanBuild": "npm run clean && npm run build"
+        "build": "rm -rf package/ && tsc && cp package.json package/package.json",
+        "watch-ts": "nodemon --exec tsx script.ts",
+        "watch-js": "nodemon script.js"
     },
     "devDependencies": {
+        "@types/node": "^22.13.14",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2",
         "typescript": "^5.0.0"
-    },
-    "dependencies": {
-        "@types/node": "^22.13.14"
-    },
-    "files": [
-        "dist"
-    ]
+    }
 }

@@ -4,7 +4,7 @@ export interface IBaseObject {
     /**
      * ## Beat
      *
-     * The beat the note will be hit on.
+     * The beat the object will be on.
      *
      * In seconds this is calculated as `Beat / BPM * 60`.
      *
@@ -18,7 +18,7 @@ export interface IBaseObject {
     /**
      * ## X
      *
-     * The horizontal position of the note.
+     * The horizontal position of the object.
      *
      * ---
      *
@@ -39,7 +39,7 @@ export interface IBaseObject {
     /**
      * ## Y
      *
-     * The vertical position of the note.
+     * The vertical position of the object.
      *
      * ---
      *
