@@ -7,13 +7,11 @@
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {
+        "prepublishOnly": "npm run build && npm run prepare",
         "build": "tsc",
-        "start": "node dist/index.js",
-        "test": "npx tsx ./script.ts",
-        "buildTest": "npm run build && npm run test",
-        "watch": "npx nodemon -e ts --exec 'npm run buildTest'",
-        "clean": "tsc --build --clean",
-        "cleanBuild": "npm run clean && npm run build"
+        "prepare": "rm -rf package && mkdir package && cp -r dist/* package/",
+        "watch-ts": "nodemon --exec tsx script.ts",
+        "watch-js": "nodemon script.js"
     },
     "devDependencies": {
         "@types/node": "^22.13.14",
@@ -22,12 +20,12 @@
         "typescript": "^5.0.0"
     },
     "files": [
-        "dist/info/",
-        "dist/util/",
-        "dist/v3/",
-        "dist/index.d.ts",
-        "dist/index.d.ts.map",
-        "dist/index.js",
-        "dist/index.js.map"
+        "package/info/",
+        "package/util/",
+        "package/v3/",
+        "package/index.d.ts",
+        "package/index.d.ts.map",
+        "package/index.js",
+        "package/index.js.map"
     ]
 }
