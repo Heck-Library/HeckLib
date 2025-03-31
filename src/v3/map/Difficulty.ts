@@ -362,7 +362,7 @@ export class Difficulty implements IDifficulty {
         return col.map(v => v * 255) as [number, number, number];
     }
 
-    private getAssetBundleCRCs(path: string = "./bundleinfo.json"): void {
+    private getAssetBundleCRCs(path: string = "bundleinfo.json"): void {
         const bundleStart = performance.now();
 
         log.info(`AssetBundle CRCs not defined. Attempting to automatically add CRCs...`);
