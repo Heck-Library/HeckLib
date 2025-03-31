@@ -27,5 +27,8 @@
         "package/index.d.ts.map",
         "package/index.js",
         "package/index.js.map"
-    ]
+    ],
+    "directories": {
+        "lib": "package"
+    },
 }
