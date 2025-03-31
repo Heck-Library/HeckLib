@@ -1,5 +1,5 @@
 # HeckLib
-HeckLib is a TypeScript library intended to be accessible to all Beat Saber modchart creators. It should be easy to set up.
+HeckLib is a JavaScript/TypeScript library intended to be accessible to all Beat Saber modchart creators. It should be easy to set up.
 
 ***
 
@@ -38,3 +38,14 @@ HeckLib is a TypeScript library intended to be accessible to all Beat Saber modc
 ***
 
 > If you have any questions, you can contact me on Discord: `jevk`
+
+# Mods
+
+## Download
+> If you're here to download the Heck mods (Noodle, Vivify, etc.), you're in the wrong place because Google indexing sucks. However, they can be found here:
+>
+> - [Heck (Needed for all of the mods below)](https://github.com/Aeroluna/Heck)
+> - [Noodle Extensions](https://github.com/Aeroluna/Heck)
+> - [Chroma](https://github.com/Aeroluna/Heck)
+> - [Vivify](https://github.com/Aeroluna/Vivify)
+> - [Cinema](https://github.com/Kevga/BeatSaberCinema)
