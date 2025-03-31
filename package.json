@@ -16,12 +16,10 @@
         "cleanBuild": "npm run clean && npm run build"
     },
     "devDependencies": {
+        "@types/node": "^22.13.14",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2",
         "typescript": "^5.0.0"
-    },
-    "dependencies": {
-        "@types/node": "^22.13.14"
     },
     "files": [
         "dist/info/",
