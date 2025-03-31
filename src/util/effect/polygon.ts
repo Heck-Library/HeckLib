@@ -1,6 +1,6 @@
 // CREDITS TO REDDEK FOR HELPING ME WITH THIS
 
-import { Obstacle } from "v3/objects";
+import { Obstacle } from "v3/objects/Obstacle";
 import { IPolygonParams } from "./interfaces/IPolygonParams";
 
 /**
