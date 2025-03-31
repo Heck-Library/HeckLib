@@ -4,13 +4,12 @@
     "license": "MIT",
     "version": "3.2.11",
     "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
-    "main": "index.js",
-    "types": "index.d.ts",
+    "main": "package/index.js",
+    "types": "package/index.d.ts",
     "repository": "github:heck-library/hecklib",
     "scripts": {
-        "prepublishOnly": "npm run build && npm run prepare",
-        "build": "tsc",
-        "prepare": "rm -rf dist && mkdir dist && cp -r package/* dist/",
+        "prepublishOnly": "npm run build",
+        "build": "rm -rf package/ && tsc && cp package.json package/package.json && cd package && npm i --omit=dev",
         "watch-ts": "nodemon --exec tsx script.ts",
         "watch-js": "nodemon script.js"
     },
@@ -21,9 +20,10 @@
         "typescript": "^5.0.0"
     },
     "files": [
-        "dist/**/*"
+        "/package/",
+        "README.md"
     ],
     "directories": {
-        "lib": "dist"
+        "lib": "/package/"
     }
 }

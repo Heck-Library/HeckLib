@@ -1,4 +1,4 @@
-import { VignetteType } from "util/enums";
+import { VignetteType } from "../enums";
 import { ICinema, ICinemaColorCorrection, ICinemaEnvironment, ICinemaVignette } from "./interfaces/ICinema";
 import { ICinemaColorCorrectionJSON, ICinemaEnvironmentJSON, ICinemaJSON, ICinemaVignetteJSON } from "./interfaces/ICinemaJSON";
 import { writeFile } from "fs/promises";
