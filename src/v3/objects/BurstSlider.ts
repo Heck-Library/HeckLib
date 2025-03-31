@@ -97,7 +97,7 @@ export class BurstSliderArray extends Array<BurstSlider> {
      * sliders[0].CustomData // Returns the CustomData of the burst slider.
      */
     push(...items: BurstSlider[]): number {
-        log.info(`Pushing ${items.length} burst sliders to ${this.determineName()}`);
+        log.debug(`Pushing ${items.length} burst sliders to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
         return this.length;
     }

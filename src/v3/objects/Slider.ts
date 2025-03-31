@@ -95,7 +95,7 @@ export class SliderArray extends Array<Slider> {
      * @returns Length of the array (How many sliders are in the map).
      */
     push(...items: Slider[]): number {
-        log.info(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
+        log.debug(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         items.forEach(n => super.push(n.Duplicate()));
         return this.length;
     }

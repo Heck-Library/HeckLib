@@ -87,7 +87,7 @@ export class ObstacleArray extends Array<Obstacle> {
      * walls[0].CustomData // Returns a valid object
      */
     push(...items: Obstacle[]): number {
-        log.info(`Pushing ${items.length} obstacles to ${this.determineName()}`);
+        log.debug(`Pushing ${items.length} obstacles to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
         return this.length;
     }
