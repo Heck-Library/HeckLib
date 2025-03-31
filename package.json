@@ -6,6 +6,7 @@
     "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
     "main": "index.js",
     "types": "index.d.ts",
+    "repository": "github:heck-library/hecklib",
     "scripts": {
         "prepublishOnly": "npm run build && npm run prepare",
         "build": "tsc",
@@ -20,15 +21,9 @@
         "typescript": "^5.0.0"
     },
     "files": [
-        "package/info/",
-        "package/util/",
-        "package/v3/",
-        "package/index.d.ts",
-        "package/index.d.ts.map",
-        "package/index.js",
-        "package/index.js.map"
+        "package/**/*"
     ],
     "directories": {
-        "lib": "package"
+        "bin": "package"
     }
 }
