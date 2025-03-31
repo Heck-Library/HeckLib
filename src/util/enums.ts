@@ -507,3 +507,7 @@ export enum GeometryShape {
     Triangle = "Triangle"
 }
 
+export enum VignetteType {
+    elliptical = "elliptical",
+    rectangular = "rectangular"
+}

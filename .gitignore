@@ -7,3 +7,5 @@ TODO
 *.cpuprofile
 *.old
 /dist
+test.ts
+cinema-video.json

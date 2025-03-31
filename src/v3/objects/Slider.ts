@@ -5,6 +5,7 @@ import { ISliderCustomData } from "./customData/interfaces/ISliderCustomData";
 import { ISliderData } from "./interfaces/ISliderData";
 import { IPathAnimationData } from "../events/customEvents/interfaces/IPathAnimationData";
 import { log } from "../../util/logs";
+import { BaseObject } from "./BaseObject";
 type SliderFilters = {
     StartBeat: number,
     Xs: LineIndex[];
@@ -94,7 +95,7 @@ export class SliderArray extends Array<Slider> {
      * @returns Length of the array (How many sliders are in the map).
      */
     push(...items: Slider[]): number {
-        log.info(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
+        log.debug(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         items.forEach(n => super.push(n.Duplicate()));
         return this.length;
     }
@@ -109,16 +110,13 @@ export class SliderArray extends Array<Slider> {
     }
 }
 
-export class Slider implements ISliderData {
+export class Slider extends BaseObject implements ISliderData {
     public static readonly LINEINDEX = LineIndex;
     public static readonly LINELAYER = LineLayer;
     public static readonly COLOR = NoteColor;
     public static readonly DIRECTION = CutDirection;
     public static readonly MIDANCHORMODE = MidAnchorMode;
 
-    private b: number = 0;
-    private x: LineIndex = Slider.LINEINDEX.Left;
-    private y: LineLayer = Slider.LINELAYER.Bottom;
     private c: NoteColor = Slider.COLOR.Red;
     private d: CutDirection = Slider.DIRECTION.Up;
     private mu: number = 1;
@@ -128,11 +126,8 @@ export class Slider implements ISliderData {
     private tc: CutDirection = Slider.DIRECTION.Up;
     private tmu: number = 1;
     private m: MidAnchorMode = MidAnchorMode.Straight;
-    private customData?: SliderCustomData = new SliderCustomData();
+    protected declare customData?: SliderCustomData;
 
-    set Beat(b: number) { this.b = b; }
-    set X(x: LineIndex) { this.x = x; }
-    set Y(y: LineLayer) { this.y = y; }
     set Color(c: NoteColor) { this.c = c; }
     set CutDirection(d: CutDirection) { this.d = d; }
     set Multiplier(mu: number) { this.mu = mu; }
@@ -177,9 +172,6 @@ export class Slider implements ISliderData {
         anim.Scale = animation.Scale;
     }
 
-    get Beat(): number { return this.b; }
-    get X(): LineIndex { return this.x; }
-    get Y(): LineLayer { return this.y; }
     get Color(): NoteColor { return this.c; }
     get CutDirection(): CutDirection { return this.d; }
     get Multiplier(): number { return this.mu; }
@@ -204,12 +196,9 @@ export class Slider implements ISliderData {
         if (this.customData === undefined) this.customData = new SliderCustomData();
     }
 
-    constructor(vanillaData?: ISliderData, customData?: INoteCustomData) {
-        if (vanillaData === undefined) vanillaData = {} as ISliderData;
+    constructor(vanillaData: ISliderData = {} as ISliderData, customData?: INoteCustomData) {
+        super(vanillaData.Beat, vanillaData.X, vanillaData.Y);
 
-        this.b = vanillaData.Beat ?? 0;
-        this.x = vanillaData.X ?? 0;
-        this.y = vanillaData.Y ?? 0;
         this.c = vanillaData.Color ?? 0;
         this.d = vanillaData.CutDirection ?? 0;
         this.mu = vanillaData.Multiplier ?? 1;
