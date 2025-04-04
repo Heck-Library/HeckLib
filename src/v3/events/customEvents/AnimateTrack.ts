@@ -52,7 +52,7 @@ class AnimateTrackData implements IAnimateTrackData {
     public get Interactable(): undefined | Vec1Animation { return this.interactable; }
     public get Time(): undefined | Vec1Animation { return this.time; }
 
-    public toJSON() {
+    public toJSON(): Record<string, unknown> {
         return {
             track: this.track,
             duration: this.duration,
@@ -150,6 +150,6 @@ export class AnimateTrack extends BaseCustomEvent {
     
     constructor(beat: number = 0, data: IAnimateTrackData = {} as IAnimateTrackData) {
         super(beat, "AnimateTrack");
-        this.Data = data;
+        this.d = new AnimateTrackData(data);
     }
 }
