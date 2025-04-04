@@ -433,9 +433,19 @@ export class Difficulty implements IDifficulty {
         const push = this.pushFromJSONIfExists.bind(this);
 
         push(json.bpmEvents, serialized.BPMEvents, BPMEvent.fromJSON, "bpmEvents");
-        push(json.colorBoostBeatmapEvents, serialized.ColorBoostBeatmapEvents, ColorBoostBeatmapEvent.fromJSON, "colorBoostBeatmapEvents");
-        push(json.basicBeatmapEvents, serialized.BasicBeatmapEvents, BaseBeatmapEvent.fromJSON, "basicBeatmapEvents");
         push(json.rotationEvents, serialized.RotationEvents, RotationEvent.fromJSON, "rotationEvents");
+
+        if (!properties.LightshowDifficulty) {
+            push(json.colorBoostBeatmapEvents, serialized.ColorBoostBeatmapEvents, ColorBoostBeatmapEvent.fromJSON, "colorBoostBeatmapEvents");
+            push(json.basicBeatmapEvents, serialized.BasicBeatmapEvents, BaseBeatmapEvent.fromJSON, "basicBeatmapEvents");
+        }
+
+        if (properties.LightshowDifficulty) {
+            const lightshowDiff = this.readJSON(properties.LightshowDifficulty);
+            
+            push(lightshowDiff.BasicBeatmapEvents, serialized.ColorBoostBeatmapEvents, ColorBoostBeatmapEvent.fromJSON, "colorBoostBeatmapEvents");
+            push(lightshowDiff.ColorBoostBeatmapEvents, serialized.ColorBoostBeatmapEvents, ColorBoostBeatmapEvent.fromJSON, "colorBoostBeatmapEvents");
+        }
 
         push(json.colorNotes, serialized.ColorNotes, Note.fromJSON, "colorNotes");
         push(json.bombNotes, serialized.BombNotes, Bomb.fromJSON, "bombNotes");

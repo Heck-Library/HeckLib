@@ -165,4 +165,5 @@ export interface IInitParameters {
      * - `"inherit"` will inherit the offset from the `info.dat` file, so setting the NJS with the script will not affect the forced offset until the second run because the Forced values are run before you can call any of the info setters.
      */
     ForcedOffset?: number | "inherit";
+    LightshowDifficulty?: string;
 }
