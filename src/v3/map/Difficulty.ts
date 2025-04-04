@@ -515,8 +515,8 @@ export class Difficulty implements IDifficulty {
             map.lightRotationEventBoxGroups = u.lightRotationEventBoxGroups ?? [];
             map.lightTranslationEventBoxGroups = u.lightTranslationEventBoxGroups ?? [];
             map.vfxEventBoxGroups = u.vfxEventBoxGroups ?? [];
-            map._fxEventsCollection = u._fxEventsCollection ?? [];
-            map.basicEventTypesWithKeywords = u.basicEventTypesWithKeywords ?? [];
+            map._fxEventsCollection = u._fxEventsCollection ?? { _il: [], _fl: [] };
+            map.basicEventTypesWithKeywords = u.basicEventTypesWithKeywords ?? { d: [] };
             map.useNormalEventsAsCompatibleEvents = u.useNormalEventsAsCompatibleEvents ?? true;
             map.customData = {} as Record<string, number | Record<string, any> | object[] | Map<"materials", object> | Map<"pointDefinitions", AnyAnimation>>;
     
