@@ -580,8 +580,10 @@ export class Difficulty implements IDifficulty {
 
     Push(params: {
         format?: boolean,
+        showRunCount?: boolean,
     } = {
-        format: false
+        format: false,
+        showRunCount: true,
     }): void {
         log.pushToLogBuffer(" ===== Map Debug Above =====\n");
         log.printLogBuffer();
@@ -626,6 +628,6 @@ export class Difficulty implements IDifficulty {
         this.writeFileStream(params.format ? 2 : false);
         
         log.success(`Saved ${log.console.FILE_MSG(this.path.output)} in: ${log.console.TIME_MSG(start)}`);
-        log.success(`HeckLib ran ${this.info.CustomData["_editors"]["HeckLib"]["runCount"]} times`);
+        if (params.showRunCount) log.success(`HeckLib ran ${this.info.CustomData._editors.HeckLib.runCount} times`);
     }
 }
