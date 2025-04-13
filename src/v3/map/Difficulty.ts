@@ -515,8 +515,8 @@ export class Difficulty implements IDifficulty {
             map.lightRotationEventBoxGroups = u.lightRotationEventBoxGroups ?? [];
             map.lightTranslationEventBoxGroups = u.lightTranslationEventBoxGroups ?? [];
             map.vfxEventBoxGroups = u.vfxEventBoxGroups ?? [];
-            map._fxEventsCollection = u._fxEventsCollection ?? [];
-            map.basicEventTypesWithKeywords = u.basicEventTypesWithKeywords ?? [];
+            map._fxEventsCollection = u._fxEventsCollection ?? { _il: [], _fl: [] };
+            map.basicEventTypesWithKeywords = u.basicEventTypesWithKeywords ?? { d: [] };
             map.useNormalEventsAsCompatibleEvents = u.useNormalEventsAsCompatibleEvents ?? true;
             map.customData = {} as Record<string, number | Record<string, any> | object[] | Map<"materials", object> | Map<"pointDefinitions", AnyAnimation>>;
     
@@ -546,7 +546,7 @@ export class Difficulty implements IDifficulty {
             log.error(`Could not convert ${log.console.FILE_MSG(this.path.input)} to object: ${(e as Error).message ?? "Unknown error"}`);
             return map;
         }
-    }    
+    }
 
     private async writeFileStream(indent: number | false = false) {
         const newMap = this.mapToObject();
@@ -580,8 +580,10 @@ export class Difficulty implements IDifficulty {
 
     Push(params: {
         format?: boolean,
+        showRunCount?: boolean,
     } = {
-        format: false
+        format: false,
+        showRunCount: true,
     }): void {
         log.pushToLogBuffer(" ===== Map Debug Above =====\n");
         log.printLogBuffer();
@@ -626,5 +628,6 @@ export class Difficulty implements IDifficulty {
         this.writeFileStream(params.format ? 2 : false);
         
         log.success(`Saved ${log.console.FILE_MSG(this.path.output)} in: ${log.console.TIME_MSG(start)}`);
+        if (params.showRunCount) log.success(`HeckLib ran ${this.info.CustomData._editors.HeckLib.runCount} times`);
     }
 }

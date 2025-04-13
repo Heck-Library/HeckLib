@@ -52,6 +52,26 @@ class AnimateTrackData implements IAnimateTrackData {
     public get Interactable(): undefined | Vec1Animation { return this.interactable; }
     public get Time(): undefined | Vec1Animation { return this.time; }
 
+    public toJSON(): Record<string, unknown> {
+        return {
+            track: this.track,
+            duration: this.duration,
+            easing: this.easing,
+            repeat: this.repeat,
+            position: this.position,
+            offsetPosition: this.offsetPosition,
+            rotation: this.rotation,
+            offsetWorldRotation: this.offsetWorldRotation,
+            localRotation: this.localRotation,
+            scale: this.scale,
+            dissolve: this.dissolve,
+            dissolveArrow: this.dissolveArrow,
+            color: this.color,
+            interactable: this.interactable,
+            time: this.time,
+        }
+    }
+
     constructor(data: IAnimateTrackData = {} as IAnimateTrackData) {
         this.track = data.Track;
         this.duration = data.Duration;
@@ -119,9 +139,17 @@ export class AnimateTrack extends BaseCustomEvent {
     get Color(): undefined | ColorAnimation { return this.d.Color; }
     get Interactable(): undefined | Vec1Animation { return this.d.Interactable; }
     get Time(): undefined | Vec1Animation { return this.d.Time; }
+
+    public toJSON() {
+        return {
+            b: this.Beat,
+            t: this.Type,
+            d: this.d.toJSON(),
+        };
+    }
     
     constructor(beat: number = 0, data: IAnimateTrackData = {} as IAnimateTrackData) {
         super(beat, "AnimateTrack");
-        this.Data = data;
+        this.d = new AnimateTrackData(data);
     }
 }
