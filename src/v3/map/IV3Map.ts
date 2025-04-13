@@ -123,19 +123,19 @@ export interface IV3MapCustomData {
      * 
      * The point definitions in the map.
      */
-    PointDefinitions?: Map<string, AnyAnimation>;
+    PointDefinitions: Map<string, AnyAnimation>;
     /**
      * ## Materials
      * 
      * The materials in the map.
      */
-    Materials?: Map<string, Material>;
+    Materials: Map<string, Material>;
     /**
      * ## Environment
      * 
      * The environment for the map.
      */
-    Environment?: Environment[];
+    Environment: Environment[];
     /**
      * ## CustomEvents
      * 
