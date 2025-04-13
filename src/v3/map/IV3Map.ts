@@ -135,7 +135,7 @@ export interface IV3MapCustomData {
      * 
      * The environment for the map.
      */
-    Environment: Environment[];
+    Environment?: Environment[];
     /**
      * ## CustomEvents
      * 
