@@ -328,19 +328,29 @@ export class Info implements IInfo {
 
     private addHeckLibToEditors(): void {
         log.info(`Adding ${log.console.STR_MSG('HeckLib')} to ${log.console.FIELD_MSG("_editors")}...`);
+
         if (!this.CustomData) this.CustomData = {};
+        
         if (!this.CustomData._editors) {
-            this.CustomData["_editors"] = {
+            this.CustomData._editors = {
                 _lastEditedBy: "HeckLib",
-                _HeckLib: {
-                    version: "3.0.0"
+                HeckLib: {
+                    version: "3.0.0",
+                    runCount: 1
                 }
             };
             return;
         }
-        this.CustomData["_editors"]["_lastEditedBy"] = "HeckLib",
-        this.CustomData["_editors"]["_HeckLib"] = {
-            version: "3.0.0"
+
+        this.CustomData._editors._lastEditedBy = "HeckLib";
+
+        if (!this.CustomData._editors.HeckLib) this.CustomData._editors.HeckLib = {
+            version: "3.0.0",
+            runCount: 1
+        }
+
+        if (this.CustomData._editors.HeckLib) {
+            this.CustomData._editors.HeckLib.runCount++;
         }
     }
     

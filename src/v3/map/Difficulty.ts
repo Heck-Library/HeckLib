@@ -546,7 +546,7 @@ export class Difficulty implements IDifficulty {
             log.error(`Could not convert ${log.console.FILE_MSG(this.path.input)} to object: ${(e as Error).message ?? "Unknown error"}`);
             return map;
         }
-    }    
+    }
 
     private async writeFileStream(indent: number | false = false) {
         const newMap = this.mapToObject();
@@ -626,5 +626,6 @@ export class Difficulty implements IDifficulty {
         this.writeFileStream(params.format ? 2 : false);
         
         log.success(`Saved ${log.console.FILE_MSG(this.path.output)} in: ${log.console.TIME_MSG(start)}`);
+        log.success(`HeckLib ran ${this.info.CustomData["_editors"]["HeckLib"]["runCount"]} times`);
     }
 }
