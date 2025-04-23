@@ -95,8 +95,8 @@ export class SliderArray extends Array<Slider> {
      * @returns Length of the array (How many sliders are in the map).
      */
     push(...items: Slider[]): number {
-        log.debug(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         return this.length;
     }
 
@@ -254,7 +254,7 @@ export class Slider extends BaseObject implements ISliderData {
     }
     
     public SetCustomData(customData?: INoteCustomData): void {
-        customData && (this.customData = new SliderCustomData(customData));
+        this.customData = new SliderCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {

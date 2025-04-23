@@ -73,8 +73,8 @@ export class BombArray extends Array<Bomb> {
      * bombs[0].CustomData // Returns a NoteCustomData object
      */
     push(...items: Bomb[]): number {
-        log.debug(`Pushing ${items.length} bombs to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} bombs to ${this.determineName()}`);
         return this.length;
     }
     
@@ -190,11 +190,7 @@ export class Bomb extends BaseObject implements IBombData {
     }
 
     public SetCustomData(customData?: INoteCustomData): void {
-        Object.entries(customData as NoteCustomData).forEach(([key, value]) => {
-            if (value !== undefined) {
-                (this.customData as any)[key] = value;
-            }
-        });
+        this.customData = new NoteCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {

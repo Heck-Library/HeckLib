@@ -76,7 +76,6 @@ export class NoteArray extends Array<Note> {
      * notes[0].CustomData // Returns the CustomData of the note.
      */
     public push(...items: Note[]): number {
-        log.debug(`Pushing ${items.length} notes to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
         log.debug(`Pushed ${log.console.NUM_MSG(items.length)} ${this.determineName()}.`);
         return this.length;
@@ -202,6 +201,7 @@ export class Note extends BaseObject implements INoteData {
 
     public static fromJSON(...json: Record<string, any>[]): Note[] {
         const notes: Note[] = [];
+
         json.forEach(j => {
             const note = new Note();
 
@@ -218,6 +218,7 @@ export class Note extends BaseObject implements INoteData {
 
             notes.push(note);
         });
+        
         return notes;
     }
 

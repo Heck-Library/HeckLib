@@ -97,18 +97,18 @@ export class BurstSliderArray extends Array<BurstSlider> {
      * sliders[0].CustomData // Returns the CustomData of the burst slider.
      */
     push(...items: BurstSlider[]): number {
-        log.debug(`Pushing ${items.length} burst sliders to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} burst sliders to ${this.determineName()}`);
         return this.length;
+    }
+
+    toJSON() {
+        return this.map(b => b.toJSON());
     }
 
     constructor(fake: boolean = false, ...items: BurstSlider[]) {
         super(...items);
         this.fake = fake;
-    }
-
-    toJSON() {
-        return this.map(b => b.toJSON());
     }
 }
 
@@ -253,18 +253,19 @@ export class BurstSlider extends BaseObject implements IBurstSliderData {
             burstSlider.SliceCount = b.sc;
             burstSlider.Squish = b.s;
 
-            b.customData && (burstSlider.CustomData = NoteCustomData.fromJSON(b.customData));
+            if (b.customData !== undefined) {
+                if (burstSlider.customData === undefined) burstSlider.customData = new NoteCustomData();
+                burstSlider.customData = NoteCustomData.fromJSON(b.customData);
+            }
+
+            burstSliders.push(burstSlider);
         });
 
         return burstSliders;
     }
 
     public SetCustomData(customData?: INoteCustomData): void {
-        Object.entries(customData ?? {}).forEach(([key, value]) => {
-            if (value !== undefined) {
-                (this.customData as any)[key] = value;
-            }
-        });
+        this.customData = new NoteCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {

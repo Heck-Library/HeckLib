@@ -87,8 +87,8 @@ export class ObstacleArray extends Array<Obstacle> {
      * walls[0].CustomData // Returns a valid object
      */
     push(...items: Obstacle[]): number {
-        log.debug(`Pushing ${items.length} obstacles to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} obstacles to ${this.determineName()}`);
         return this.length;
     }
 
@@ -181,7 +181,7 @@ export class Obstacle extends BaseObject implements IObstacleData {
     }
     
     public SetCustomData(customData?: IObstacleCustomData): void {
-        customData && (this.customData = new ObstacleCustomData(customData));
+        this.customData = new ObstacleCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {
