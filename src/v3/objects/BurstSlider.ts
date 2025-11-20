@@ -76,7 +76,7 @@ export class BurstSliderArray extends Array<BurstSlider> {
                 if (filters.MaxSquish !== undefined && burstSlider.Squish > filters.MaxSquish) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Error selecting ${this.determineName()}s: ${e}`);
@@ -269,8 +269,8 @@ export class BurstSlider extends BaseObject implements IBurstSliderData {
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {

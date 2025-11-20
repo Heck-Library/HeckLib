@@ -74,7 +74,7 @@ export class SliderArray extends Array<Slider> {
                 if (filters.MidAnchorMode !== undefined && slider.MidAnchorMode !== filters.MidAnchorMode) return false;
                 return true;
             });
-            log.success(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
+            log.info(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
             return filtered;
         } catch(e) {
             if (e instanceof Error) {
@@ -258,8 +258,8 @@ export class Slider extends BaseObject implements ISliderData {
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {

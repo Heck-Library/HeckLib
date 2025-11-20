@@ -603,11 +603,11 @@ export class Difficulty implements IDifficulty {
             log.info(`Clearing empty ${log.console.OBJ_MSG("CustomData")} for all objects...`);
 
             const allObjects = [
-                ...this.map.ColorNotes,
-                ...this.map.Obstacles,
-                ...this.map.BombNotes,
-                ...this.map.Sliders,
-                ...this.map.BurstSliders,
+                ...(this.map.ColorNotes ?? []),
+                ...(this.map.Obstacles ?? []),
+                ...(this.map.BombNotes ?? []),
+                ...(this.map.Sliders ?? []),
+                ...(this.map.BurstSliders ?? []),
                 ...(this.map.CustomData.FakeColorNotes ?? []),
                 ...(this.map.CustomData.FakeBombNotes ?? []),
                 ...(this.map.CustomData.FakeObstacles ?? []),

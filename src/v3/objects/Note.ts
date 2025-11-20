@@ -55,7 +55,7 @@ export class NoteArray extends Array<Note> {
                 if (filters.CutDirections !== undefined && !filters.CutDirections.includes(note.CutDirection)) return false;
                 return true;
             });
-            log.success(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
+            log.info(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Could not filter ${log.console.CLASS_MSG(this.determineName())}: \x1b[31m${(e as Error).message}`);

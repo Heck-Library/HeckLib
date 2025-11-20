@@ -62,7 +62,7 @@ export class ObstacleArray extends Array<Obstacle> {
                 if (filters.Heights !== undefined && !filters.Heights.includes(obstacle.Height)) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             if (e instanceof Error) {
@@ -185,8 +185,8 @@ export class Obstacle extends BaseObject implements IObstacleData {
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {

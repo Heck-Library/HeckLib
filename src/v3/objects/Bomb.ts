@@ -52,7 +52,7 @@ export class BombArray extends Array<Bomb> {
                 if (filters.Ys !== undefined && !filters.Ys.includes(bomb.Y)) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Error selecting ${this.determineName()}: ${e}`);
@@ -194,8 +194,8 @@ export class Bomb extends BaseObject implements IBombData {
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {
@@ -222,7 +222,7 @@ export class Bomb extends BaseObject implements IBombData {
         b.X = this.X;
         b.Y = this.Y;
 
-        this.SetCustomData(this.CustomData);
+        b.SetCustomData(this.CustomData);
 
         return b;
     }
