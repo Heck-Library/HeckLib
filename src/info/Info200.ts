@@ -241,6 +241,7 @@ export class DifficultyBeatmap implements IDifficultyBeatmap {
 }
 
 export class Info implements IInfo {
+    private _version: string = "2.0.0";
     private _songName: string = ""; 
     private _songSubName: string = ""; 
     private _songAuthorName: string = ""; 
@@ -309,6 +310,7 @@ export class Info implements IInfo {
         log.change("Map", "DifficultyBeatmapSets", difficultyBeatmapSets, "Map", "custom");
     }
 
+    get Version(): string { return this._version; }
     get SongName(): string { return this._songName; }
     get SongSubName(): string { return this._songSubName; }
     get SongAuthorName(): string { return this._songAuthorName; }
