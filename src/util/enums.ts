@@ -64,7 +64,7 @@ export enum LookupMethod {
     Exact = "Exact",
     Contains = "Contains",
     StartsWith = "StartsWith",
-    EndsWidth = "EndsWith"
+    EndsWith = "EndsWith"
 }
 
 export enum MidAnchorMode {
