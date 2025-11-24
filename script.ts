@@ -9,7 +9,7 @@ const Diff = new Difficulty(
     Difficulty.LAWLESS.ExpertPlus,
     {
         NoLogo: true,
-        Logs: "Success"
+        Logs: "Info"
     }
 );
 

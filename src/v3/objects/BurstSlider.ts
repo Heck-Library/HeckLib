@@ -61,8 +61,8 @@ export class BurstSliderArray extends Array<BurstSlider> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(burstSlider => {
-                if (filters.StartBeat !== undefined && burstSlider.Beat < filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && burstSlider.Beat > filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && burstSlider.Beat <= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && burstSlider.Beat >= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(burstSlider.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(burstSlider.Y)) return false;
                 if (filters.Colors !== undefined && !filters.Colors.includes(burstSlider.Color)) return false;
@@ -76,7 +76,7 @@ export class BurstSliderArray extends Array<BurstSlider> {
                 if (filters.MaxSquish !== undefined && burstSlider.Squish > filters.MaxSquish) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Error selecting ${this.determineName()}s: ${e}`);
@@ -97,18 +97,18 @@ export class BurstSliderArray extends Array<BurstSlider> {
      * sliders[0].CustomData // Returns the CustomData of the burst slider.
      */
     push(...items: BurstSlider[]): number {
-        log.debug(`Pushing ${items.length} burst sliders to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} burst sliders to ${this.determineName()}`);
         return this.length;
+    }
+
+    toJSON() {
+        return this.map(b => b.toJSON());
     }
 
     constructor(fake: boolean = false, ...items: BurstSlider[]) {
         super(...items);
         this.fake = fake;
-    }
-
-    toJSON() {
-        return this.map(b => b.toJSON());
     }
 }
 
@@ -253,23 +253,24 @@ export class BurstSlider extends BaseObject implements IBurstSliderData {
             burstSlider.SliceCount = b.sc;
             burstSlider.Squish = b.s;
 
-            b.customData && (burstSlider.CustomData = NoteCustomData.fromJSON(b.customData));
+            if (b.customData !== undefined) {
+                if (burstSlider.customData === undefined) burstSlider.customData = new NoteCustomData();
+                burstSlider.customData = NoteCustomData.fromJSON(b.customData);
+            }
+
+            burstSliders.push(burstSlider);
         });
 
         return burstSliders;
     }
 
     public SetCustomData(customData?: INoteCustomData): void {
-        Object.entries(customData ?? {}).forEach(([key, value]) => {
-            if (value !== undefined) {
-                (this.customData as any)[key] = value;
-            }
-        });
+        this.customData = new NoteCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {
