@@ -2,7 +2,7 @@
   "name": "hecklib",
   "author": "Jevk",
   "license": "MIT",
-  "version": "3.2.31",
+  "version": "3.2.32",
   "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
   "main": "index.js",
   "types": "index.d.ts",
