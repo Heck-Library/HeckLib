@@ -330,7 +330,7 @@ export interface IDifficultyBeatmapCustomData {
      * ### Example
      * 
      * ```ts
-     * DIFF.DifficultyInfo.CustomData.EnvColorRightBoost = [1, 0, 0];
+     * DIFF.DifficultyInfo.CustomData.ColorLeft = [1, 0, 0];
      * ```
      */
     ColorLeft?: IRGB | RGBVec;
@@ -344,7 +344,7 @@ export interface IDifficultyBeatmapCustomData {
      * ### Example
      * 
      * ```ts
-     * DIFF.DifficultyInfo.CustomData.EnvColorRightBoost = [0, 0, 1];
+     * DIFF.DifficultyInfo.CustomData.ColorRight = [0, 0, 1];
      * ```
      */
     ColorRight?: IRGB | RGBVec;
@@ -358,7 +358,7 @@ export interface IDifficultyBeatmapCustomData {
      * ### Example
      * 
      * ```ts
-     * DIFF.DifficultyInfo.CustomData.EnvColorRightBoost = [1, 0, 0];
+     * DIFF.DifficultyInfo.CustomData.EnvColorLeft = [1, 0, 0];
      * ```
      */
     EnvColorLeft?: IRGB | RGBVec;
@@ -372,10 +372,24 @@ export interface IDifficultyBeatmapCustomData {
      * ### Example
      * 
      * ```ts
-     * DIFF.DifficultyInfo.CustomData.EnvColorRightBoost = [0, 0, 1];
+     * DIFF.DifficultyInfo.CustomData.EnvColorRight = [0, 0, 1];
      * ```
      */
     EnvColorRight?: IRGB | RGBVec;
+    /**
+     * ## Environment Color White
+     * 
+     * The white environment color of the map (this is the white light color by default).
+     * 
+     * ---
+     * 
+     * ### Example
+     * 
+     * ```ts
+     * DIFF.DifficultyInfo.CustomData.EnvColorWhite = [0, 0, 1];
+     * ```
+     */
+    EnvColorWhite?: IRGB | RGBVec;
     /**
      * ## Environment Color Left Boost
      * 
@@ -386,7 +400,7 @@ export interface IDifficultyBeatmapCustomData {
      * ### Example
      * 
      * ```ts
-     * DIFF.DifficultyInfo.CustomData.EnvColorRightBoost = [1, 0, 0];
+     * DIFF.DifficultyInfo.CustomData.EnvColorLeftBoost = [1, 0, 0];
      * ```
      */
     EnvColorLeftBoost?: IRGB | RGBVec;
@@ -404,6 +418,20 @@ export interface IDifficultyBeatmapCustomData {
      * ```
      */
     EnvColorRightBoost?: IRGB | RGBVec;
+    /**
+     * ## Environment Color White Boost
+     * 
+     * The white environment boost color of the map (this is the white light color by default).
+     * 
+     * ---
+     * 
+     * ### Example
+     * 
+     * ```ts
+     * DIFF.DifficultyInfo.CustomData.EnvColorWhiteBoost = [0, 0, 1];
+     * ```
+     */
+    EnvColorWhiteBoost?: IRGB | RGBVec;
     /**
      * ## Obstacle Color
      * 

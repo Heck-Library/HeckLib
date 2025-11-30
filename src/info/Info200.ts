@@ -60,8 +60,10 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
     private _colorRight?: IRGB;
     private _envColorLeft?: IRGB;
     private _envColorRight?: IRGB;
+    private _envColorWhite?: IRGB;
     private _envColorLeftBoost?: IRGB;
     private _envColorRightBoost?: IRGB;
+    private _envColorWhiteBoost?: IRGB;
     private _obstacleColor?: IRGB;
     private _warnings?: string[];
     private _information?: string[];
@@ -77,10 +79,12 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         this._oneSaber = oneSaber;
         log.change("Difficulty", "OneSaber", oneSaber, "boolean");
     }
+
     set ShowRotationNoteSpawnLines(showRotationNoteSpawnLines: boolean) {
         this._showRotationNoteSpawnLines = showRotationNoteSpawnLines;
         log.change("Difficulty", "ShowRotationNoteSpawnLines", showRotationNoteSpawnLines, "boolean");
     }
+
     set EditorOffset(editorOffset: number) {
         log.change("Difficulty", "EditorOffset", editorOffset, "number", "object", false);
         this._editorOffset = editorOffset;
@@ -89,11 +93,14 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         log.change("Difficulty", "EditorOldOffset", editorOldOffset, "number", "object", false);
         this._editorOldOffset = editorOldOffset;
     }
+
     set DifficultyLabel(difficultyLabel: string) {
         this._difficultyLabel = difficultyLabel;
         log.change("Difficulty", "DifficultyLabel", difficultyLabel, "string");
     }
+    
     set Settings(settings: ISettings) { this._settings = new Settings(settings); }
+
     set ColorLeft(color: RGBVec | IRGB) {
         this._colorLeft = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "ColorLeft", color, "color");
@@ -102,6 +109,7 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         this._colorRight = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "ColorRight", color, "color");
     }
+
     set EnvColorLeft(color: RGBVec | IRGB) {
         this._envColorLeft = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "EnvColorLeft", color, "color");
@@ -110,6 +118,11 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         this._envColorRight = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "EnvColorRight", color, "color");
     }
+    set EnvColorWhite(color: RGBVec | IRGB) {
+        this._envColorWhite = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
+        log.change("Difficulty", "EnvColorWhite", color, "color");
+    }
+
     set EnvColorLeftBoost(color: RGBVec | IRGB) {
         this._envColorLeftBoost = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "EnvColorLeftBoost", color, "color");
@@ -118,10 +131,16 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         this._envColorRightBoost = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "EnvColorRightBoost", color, "color");
     }
+    set EnvColorWhiteBoost(color: RGBVec | IRGB) {
+        this._envColorWhiteBoost = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
+        log.change("Difficulty", "EnvColorWhiteBoost", color, "color");
+    }
+
     set ObstacleColor(color: RGBVec | IRGB) {
         this._obstacleColor = DifficultyBeatmapCustomData.ifVecRGBVecToIRGB(color);
         log.change("Difficulty", "ObstacleColor", color, "color");
     }
+
     set Warnings(warnings: string[]) { 
         this._warnings = warnings;
         log.change("Difficulty", "Warnings", warnings, "array"); 
@@ -130,6 +149,7 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
         this._information = information;
         log.change("Difficulty", "Information", information, "array"); 
     }
+    
     set Suggestions(suggestions: string[] | PLUGIN[]) { 
         this._suggestions = suggestions;
         log.change("Difficulty", "Suggestions", suggestions, "array"); 
@@ -149,8 +169,10 @@ export class DifficultyBeatmapCustomData implements IDifficultyBeatmapCustomData
     get ColorRight(): undefined | IRGB { return this._colorRight; }
     get EnvColorLeft(): undefined | IRGB { return this._envColorLeft; }
     get EnvColorRight(): undefined | IRGB { return this._envColorRight; }
+    get EnvColorWhite(): undefined | IRGB { return this._envColorWhite; }
     get EnvColorLeftBoost(): undefined | IRGB { return this._envColorLeftBoost; }
     get EnvColorRightBoost(): undefined | IRGB { return this._envColorRightBoost; }
+    get EnvColorWhiteBoost(): undefined | IRGB { return this._envColorWhiteBoost; }
     get ObstacleColor(): undefined | IRGB { return this._obstacleColor; }
     get Warnings(): undefined | string[] { return this._warnings; }
     get Information(): undefined | string[] { return this._information; }
