@@ -47,15 +47,15 @@ export class NoteArray extends Array<Note> {
         try {
             log.debug(`Selecting ${this.determineName()} with filters: ${log.console.OBJ_MSG(this.filtersToString(filters))}`);
             const filtered = this.filter(note => {
-                if (filters.StartBeat !== undefined && note.Beat < filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && note.Beat > filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && note.Beat <= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && note.Beat >= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(note.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(note.Y)) return false;
                 if (filters.Color !== undefined && note.Color !== filters.Color) return false;
                 if (filters.CutDirections !== undefined && !filters.CutDirections.includes(note.CutDirection)) return false;
                 return true;
             });
-            log.success(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
+            log.info(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Could not filter ${log.console.CLASS_MSG(this.determineName())}: \x1b[31m${(e as Error).message}`);
@@ -76,7 +76,6 @@ export class NoteArray extends Array<Note> {
      * notes[0].CustomData // Returns the CustomData of the note.
      */
     public push(...items: Note[]): number {
-        log.debug(`Pushing ${items.length} notes to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
         log.debug(`Pushed ${log.console.NUM_MSG(items.length)} ${this.determineName()}.`);
         return this.length;
@@ -202,6 +201,7 @@ export class Note extends BaseObject implements INoteData {
 
     public static fromJSON(...json: Record<string, any>[]): Note[] {
         const notes: Note[] = [];
+
         json.forEach(j => {
             const note = new Note();
 
@@ -218,6 +218,7 @@ export class Note extends BaseObject implements INoteData {
 
             notes.push(note);
         });
+        
         return notes;
     }
 

@@ -9,6 +9,7 @@ import { IPlayerOptions } from "../v3/map/settings/PlayerOptions";
 type RGBVec = [number, number, number];
 
 export interface IInfo {
+    Version: string;
     /**
      * ## Song Name
      * 

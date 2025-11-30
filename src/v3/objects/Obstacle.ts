@@ -52,8 +52,8 @@ export class ObstacleArray extends Array<Obstacle> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(obstacle => {
-                if (filters.StartBeat !== undefined && obstacle.Beat < filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && obstacle.Beat > filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && obstacle.Beat <= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && obstacle.Beat >= filters.EndBeat) return false;
                 if (filters.MinDuration !== undefined && obstacle.Duration < filters.MinDuration) return false;
                 if (filters.MaxDuration !== undefined && obstacle.Duration > filters.MaxDuration) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(obstacle.X)) return false;
@@ -62,7 +62,7 @@ export class ObstacleArray extends Array<Obstacle> {
                 if (filters.Heights !== undefined && !filters.Heights.includes(obstacle.Height)) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             if (e instanceof Error) {
@@ -87,8 +87,8 @@ export class ObstacleArray extends Array<Obstacle> {
      * walls[0].CustomData // Returns a valid object
      */
     push(...items: Obstacle[]): number {
-        log.debug(`Pushing ${items.length} obstacles to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} obstacles to ${this.determineName()}`);
         return this.length;
     }
 
@@ -181,12 +181,12 @@ export class Obstacle extends BaseObject implements IObstacleData {
     }
     
     public SetCustomData(customData?: IObstacleCustomData): void {
-        customData && (this.customData = new ObstacleCustomData(customData));
+        this.customData = new ObstacleCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {

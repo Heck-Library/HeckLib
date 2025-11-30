@@ -8,6 +8,7 @@ import { log } from "../../util/logs";
 import { BaseObject } from "./BaseObject";
 type SliderFilters = {
     StartBeat: number,
+    EndBeat: number,
     Xs: LineIndex[];
     Ys: LineLayer[];
     Color: NoteColor;
@@ -60,7 +61,8 @@ export class SliderArray extends Array<Slider> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${log.console.OBJ_MSG(this.filtersToString(filters))}`);
             const filtered = this.filter(slider => {
-                if (filters.StartBeat !== undefined && slider.Beat < filters.StartBeat) return false;
+                if (filters.StartBeat !== undefined && slider.Beat <= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && slider.Beat >= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(slider.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(slider.Y)) return false;
                 if (filters.Color !== undefined && slider.Color !== filters.Color) return false;
@@ -74,7 +76,7 @@ export class SliderArray extends Array<Slider> {
                 if (filters.MidAnchorMode !== undefined && slider.MidAnchorMode !== filters.MidAnchorMode) return false;
                 return true;
             });
-            log.success(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
+            log.info(`Selected ${log.console.NUM_MSG(filtered.length)} ${this.determineName()}.`);
             return filtered;
         } catch(e) {
             if (e instanceof Error) {
@@ -95,8 +97,8 @@ export class SliderArray extends Array<Slider> {
      * @returns Length of the array (How many sliders are in the map).
      */
     push(...items: Slider[]): number {
-        log.debug(`Pushing ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length) +' '+this.determineName()} to ${this.determineName()}.`);
         return this.length;
     }
 
@@ -254,12 +256,12 @@ export class Slider extends BaseObject implements ISliderData {
     }
     
     public SetCustomData(customData?: INoteCustomData): void {
-        customData && (this.customData = new SliderCustomData(customData));
+        this.customData = new SliderCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {

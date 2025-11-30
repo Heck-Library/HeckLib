@@ -46,13 +46,13 @@ export class BombArray extends Array<Bomb> {
         try {
             log.debug(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(bomb => {
-                if (filters.StartBeat !== undefined && bomb.Beat < filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && bomb.Beat > filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && bomb.Beat <= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && bomb.Beat >= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(bomb.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(bomb.Y)) return false;
                 return true;
             });
-            log.success(`Selected ${filtered.length} ${this.determineName()}.`);
+            log.info(`Selected ${filtered.length} ${this.determineName()}.`);
             return filtered;
         } catch (e) {
             log.error(`Error selecting ${this.determineName()}: ${e}`);
@@ -73,8 +73,8 @@ export class BombArray extends Array<Bomb> {
      * bombs[0].CustomData // Returns a NoteCustomData object
      */
     push(...items: Bomb[]): number {
-        log.debug(`Pushing ${items.length} bombs to ${this.determineName()}`);
         items.forEach(n => super.push(n.Duplicate()));
+        log.debug(`Pushed ${log.console.NUM_MSG(items.length)} bombs to ${this.determineName()}`);
         return this.length;
     }
     
@@ -190,16 +190,12 @@ export class Bomb extends BaseObject implements IBombData {
     }
 
     public SetCustomData(customData?: INoteCustomData): void {
-        Object.entries(customData as NoteCustomData).forEach(([key, value]) => {
-            if (value !== undefined) {
-                (this.customData as any)[key] = value;
-            }
-        });
+        this.customData = new NoteCustomData(customData);
     }
 
     public ClearAllEmptyData() : void {
-        if (this.customData?.Animation) this.customData.deleteAnimation();
-        this.customData?.isEmpty() && (this.customData = undefined);
+        if (this.customData?.Animation !== undefined) this.customData.deleteAnimation();
+        if (this.customData !== undefined) this.customData.isEmpty() && (this.customData = undefined);
     }
 
     public AddTrack(...tracks: string[]): void {
@@ -226,7 +222,7 @@ export class Bomb extends BaseObject implements IBombData {
         b.X = this.X;
         b.Y = this.Y;
 
-        this.SetCustomData(this.CustomData);
+        b.SetCustomData(this.CustomData);
 
         return b;
     }

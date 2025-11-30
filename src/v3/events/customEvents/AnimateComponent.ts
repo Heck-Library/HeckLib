@@ -9,8 +9,8 @@ export class AnimateComponentData {
     private track: string;
     private duration?: number;
     private easing?: Ease;
-    private BloomFogEnvironment?: Partial<AnimatableBloomFogEnvironment>;
-    private TubeBloomPrePassLight?: Partial<AnimatableTubeBloomPrePassLight>;
+    private BloomFogEnvironment?: AnimatableBloomFogEnvironment;
+    private TubeBloomPrePassLight?: AnimatableTubeBloomPrePassLight;
 
     public set Track(value: string) { this.track = value; }
     public set Duration(value: undefined | number) { this.duration = value; }
@@ -28,8 +28,22 @@ export class AnimateComponentData {
         this.track = data.Track;
         this.duration = data.Duration;
         this.easing = data.Easing;
-        this.BloomFogEnvironment = data.BloomFogEnv;
-        this.TubeBloomPrePassLight = data.TubeBloomPrePass;
+
+        if (data.BloomFogEnv !== undefined) {
+            this.BloomFogEnvironment = new AnimatableBloomFogEnvironment();
+
+            this.BloomFogEnvironment.Attenuation = data.BloomFogEnv?.Attenuation || undefined;
+            this.BloomFogEnvironment.Offset = data.BloomFogEnv?.Offset || undefined;
+            this.BloomFogEnvironment.StartY = data.BloomFogEnv?.StartY || undefined;
+            this.BloomFogEnvironment.Height = data.BloomFogEnv?.Height || undefined;
+        }
+
+        if (data.TubeBloomPrePass !== undefined) {
+            this.TubeBloomPrePassLight = new AnimatableTubeBloomPrePassLight();
+
+            this.TubeBloomPrePassLight.ColorAlphaMultiplier = data.TubeBloomPrePass?.ColorAlphaMultiplier || undefined;
+            this.TubeBloomPrePassLight.BloomFogIntensityMultiplier = data.TubeBloomPrePass?.BloomFogIntensityMultiplier || undefined;
+        }
     }
 }
 
@@ -40,8 +54,8 @@ export class AnimateComponent extends BaseCustomEvent {
     public set Track(value: string) { this.d.Track = value; }
     public set Duration(value: undefined | number) { this.d.Duration = value; }
     public set Easing(value: undefined | Ease) { this.d.Easing = value; }
-    public set BloomFogEnv(value: undefined | Partial<AnimatableBloomFogEnvironment>) { this.d.BloomFogEnv = value; }
-    public set TubeBloomPrePass(value: undefined | Partial<AnimatableTubeBloomPrePassLight>) { this.d.TubeBloomPrePass = value; }
+    public set BloomFogEnv(value: undefined | AnimatableBloomFogEnvironment) { this.d.BloomFogEnv = value; }
+    public set TubeBloomPrePass(value: undefined | AnimatableTubeBloomPrePassLight) { this.d.TubeBloomPrePass = value; }
 
     public get Data(): AnimateComponentData { return this.d; }
     public get Track(): string { return this.d.Track; }
