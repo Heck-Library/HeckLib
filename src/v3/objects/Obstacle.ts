@@ -52,8 +52,8 @@ export class ObstacleArray extends Array<Obstacle> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(obstacle => {
-                if (filters.StartBeat !== undefined && obstacle.Beat >= filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && obstacle.Beat <= filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && obstacle.Beat < filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && obstacle.Beat > filters.EndBeat) return false;
                 if (filters.MinDuration !== undefined && obstacle.Duration < filters.MinDuration) return false;
                 if (filters.MaxDuration !== undefined && obstacle.Duration > filters.MaxDuration) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(obstacle.X)) return false;

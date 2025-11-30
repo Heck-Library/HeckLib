@@ -61,8 +61,8 @@ export class BurstSliderArray extends Array<BurstSlider> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(burstSlider => {
-                if (filters.StartBeat !== undefined && burstSlider.Beat >= filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && burstSlider.Beat <= filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && burstSlider.Beat < filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && burstSlider.Beat > filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(burstSlider.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(burstSlider.Y)) return false;
                 if (filters.Colors !== undefined && !filters.Colors.includes(burstSlider.Color)) return false;
