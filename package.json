@@ -6,7 +6,10 @@
   "description": "A modular TypeScript library for Beat Saber modmapping using only Node.js",
   "main": "index.js",
   "types": "index.d.ts",
-  "repository": "github:heck-library/hecklib",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heck-library/hecklib.git"
+  },
   "scripts": {
     "build": "rm -rf package/ && npm version patch && tsc && cp package.json package/package.json",
     "build-publish": "npm run build && cd package && npm publish && cd ..",
