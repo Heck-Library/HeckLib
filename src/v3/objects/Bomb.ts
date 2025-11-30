@@ -46,8 +46,8 @@ export class BombArray extends Array<Bomb> {
         try {
             log.debug(`Selecting ${this.determineName()} with filters: ${this.filtersToString(filters)}`);
             const filtered = this.filter(bomb => {
-                if (filters.StartBeat !== undefined && bomb.Beat <= filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && bomb.Beat >= filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && bomb.Beat >= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && bomb.Beat <= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(bomb.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(bomb.Y)) return false;
                 return true;

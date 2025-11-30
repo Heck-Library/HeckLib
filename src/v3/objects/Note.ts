@@ -47,8 +47,8 @@ export class NoteArray extends Array<Note> {
         try {
             log.debug(`Selecting ${this.determineName()} with filters: ${log.console.OBJ_MSG(this.filtersToString(filters))}`);
             const filtered = this.filter(note => {
-                if (filters.StartBeat !== undefined && note.Beat <= filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && note.Beat >= filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && note.Beat >= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && note.Beat <= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(note.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(note.Y)) return false;
                 if (filters.Color !== undefined && note.Color !== filters.Color) return false;

@@ -61,8 +61,8 @@ export class SliderArray extends Array<Slider> {
         try {
             log.info(`Selecting ${this.determineName()} with filters: ${log.console.OBJ_MSG(this.filtersToString(filters))}`);
             const filtered = this.filter(slider => {
-                if (filters.StartBeat !== undefined && slider.Beat <= filters.StartBeat) return false;
-                if (filters.EndBeat !== undefined && slider.Beat >= filters.EndBeat) return false;
+                if (filters.StartBeat !== undefined && slider.Beat >= filters.StartBeat) return false;
+                if (filters.EndBeat !== undefined && slider.Beat <= filters.EndBeat) return false;
                 if (filters.Xs !== undefined && !filters.Xs.includes(slider.X)) return false;
                 if (filters.Ys !== undefined && !filters.Ys.includes(slider.Y)) return false;
                 if (filters.Color !== undefined && slider.Color !== filters.Color) return false;
