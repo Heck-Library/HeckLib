@@ -3,23 +3,23 @@ import { Vec3 } from "../../../util/vec";
 import { BaseCustomEvent } from "./BaseCustomEvent";
 
 interface IAssignObjectPrefabStruct {
-    Track: string;
-    Asset?: string;
+    track: string;
+    asset?: string;
 }
 interface IAssignCuttablePrefabStruct extends IAssignObjectPrefabStruct {
-    DebrisAsset?: string;
+    debrisAsset?: string;
 }
 interface IAssignNotePrefabStruct extends IAssignCuttablePrefabStruct {
-    AnyDirectionAsset?: string;
+    anyDirectionAsset?: string;
 }
 interface IAssignSaberPrefabStruct extends IAssignObjectPrefabStruct {
-    Type: PrefabSaber | keyof typeof PrefabSaber;
-    TrailAsset?: string;
-    TrailTopPos?: Vec3;
-    TrailBottomPos?: Vec3;
-    TrailDuration?: number;
-    TrailSamplingFrequency?: number;
-    TrailGranularity?: number;
+    type: PrefabSaber | keyof typeof PrefabSaber;
+    trailAsset?: string;
+    trailTopPos?: Vec3;
+    trailBottomPos?: Vec3;
+    trailDuration?: number;
+    trailSamplingFrequency?: number;
+    trailGranularity?: number;
 }
 
 export interface IAssignObjectPrefabData {
