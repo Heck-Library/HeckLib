@@ -1,6 +1,6 @@
 # HeckLib
 HeckLib is a TypeScript/Node.js library for scripting Beat Saber modcharts.
-It is published on npm (`npm i hecklib`), documented inline with JSDoc, and
+It is [published on npm](https://www.npmjs.com/package/hecklib) (`npm i hecklib`), documented inline with JSDoc, and
 provides typed APIs for map events, environment effects, and animations.
 
 ***
