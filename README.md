@@ -1,5 +1,7 @@
 # HeckLib
-HeckLib is a JavaScript/TypeScript library intended to be accessible to all Beat Saber modchart creators. It should be easy to set up.
+HeckLib is a TypeScript/Node.js library for scripting Beat Saber modcharts.
+It is published on npm (`npm i hecklib`), documented inline with JSDoc, and
+provides typed APIs for map events, environment effects, and animations.
 
 ***
 
@@ -12,7 +14,7 @@ HeckLib is a JavaScript/TypeScript library intended to be accessible to all Beat
 > IDE refers to your development environment, personally I prefer [Visual Studio Code](https://code.visualstudio.com/) due to it's simplicity.
 
 ## Library
-> To install the library to your project, you can run `npm i hecklib` in your project, this should install all depenedencies to run your code. 
+> To install the [library](https://www.npmjs.com/package/hecklib) to your project, you can run `npm i hecklib` in your project, this should install all depenedencies to run your code. 
 
 # Scripting
 
